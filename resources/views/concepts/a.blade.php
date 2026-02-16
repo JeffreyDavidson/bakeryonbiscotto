@@ -3,593 +3,675 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bakery on Biscotto — The Bakehouse</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title>The Bakehouse - Bakery on Biscotto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Amatic+SC:wght@400;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
     <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         :root {
             --dark-brown: #3D2314;
             --warm-brown: #8B5E3C;
             --cream: #F5E6D0;
-            --golden: #D4A574;
-            --light-cream: #FDF8F0;
-            --parchment: #F0DCC0;
+            --golden-tan: #D4A574;
         }
 
         body {
-            font-family: 'Lato', sans-serif;
-            color: var(--dark-brown);
-            background: var(--light-cream);
-            line-height: 1.7;
-            -webkit-font-smoothing: antialiased;
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, var(--cream) 0%, #f8f0e3 100%);
+            overflow-x: hidden;
         }
 
-        h1, h2, h3, h4, h5 {
-            font-family: 'Playfair Display', serif;
-            line-height: 1.2;
-        }
-
-        /* Concept Nav */
+        /* Concept Switcher */
         .concept-nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 20px;
+            right: 20px;
             z-index: 1000;
-            background: var(--dark-brown);
-            padding: 8px 0;
-            text-align: center;
-            font-size: 13px;
-        }
-        .concept-nav a {
-            color: var(--cream);
-            text-decoration: none;
-            margin: 0 16px;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-size: 11px;
-            font-weight: 700;
-        }
-        .concept-nav a:hover, .concept-nav a.active {
-            opacity: 1;
-        }
-
-        /* Main Nav */
-        .main-nav {
-            background: rgba(253, 248, 240, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 16px 40px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 33px;
-            z-index: 900;
-            border-bottom: 1px solid rgba(139, 94, 60, 0.1);
-        }
-        .main-nav .logo {
-            height: 50px;
-        }
-        .main-nav .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-        }
-        .main-nav .nav-links a {
-            text-decoration: none;
-            color: var(--dark-brown);
-            font-size: 14px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            font-weight: 400;
-            transition: color 0.2s;
-        }
-        .main-nav .nav-links a:hover {
-            color: var(--warm-brown);
-        }
-
-        /* Hero */
-        .hero {
-            position: relative;
-            height: 90vh;
-            min-height: 600px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            overflow: hidden;
-        }
-        .hero-bg {
-            position: absolute;
-            inset: 0;
-            background: url('/images/hero-banner.jpg') center/cover no-repeat;
-        }
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, rgba(61,35,20,0.3), rgba(61,35,20,0.5));
-        }
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            color: var(--cream);
-            max-width: 700px;
-            padding: 0 24px;
-        }
-        .hero-content h1 {
-            font-size: clamp(3rem, 7vw, 5.5rem);
-            font-weight: 700;
-            margin-bottom: 16px;
-            text-shadow: 0 2px 20px rgba(0,0,0,0.3);
-        }
-        .hero-content p {
-            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-            font-style: italic;
-            font-family: 'Playfair Display', serif;
-            opacity: 0.9;
-            margin-bottom: 32px;
-        }
-        .hero-cta {
-            display: inline-block;
-            padding: 14px 40px;
-            background: var(--golden);
-            color: var(--dark-brown);
-            text-decoration: none;
-            font-size: 13px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 700;
-            transition: all 0.3s;
-        }
-        .hero-cta:hover {
-            background: var(--cream);
-            transform: translateY(-2px);
+            gap: 10px;
+            background: rgba(61, 35, 20, 0.9);
+            padding: 12px;
+            border-radius: 25px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
 
-        /* Decorative Divider */
-        .divider {
-            text-align: center;
-            padding: 40px 0;
-        }
-        .divider svg {
-            width: 120px;
-            height: 20px;
-            fill: var(--golden);
-            opacity: 0.6;
-        }
-        .divider-wheat::before {
-            content: '🌾  ✦  🌾';
-            font-size: 18px;
-            letter-spacing: 8px;
-            opacity: 0.5;
+        .concept-nav a {
+            color: var(--cream);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-family: 'Amatic SC', cursive;
+            font-weight: 700;
         }
 
-        /* Sections */
-        .section {
-            padding: 80px 24px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .section-title {
-            text-align: center;
-            font-size: clamp(2rem, 4vw, 3rem);
-            margin-bottom: 16px;
+        .concept-nav a.active {
+            background: var(--golden-tan);
             color: var(--dark-brown);
         }
-        .section-subtitle {
-            text-align: center;
-            color: var(--warm-brown);
-            font-size: 1.05rem;
-            max-width: 600px;
-            margin: 0 auto 48px;
+
+        .concept-nav a:hover {
+            background: var(--warm-brown);
+            transform: translateY(-2px);
         }
 
-        /* Our Story */
-        .story-section {
-            background: var(--cream);
-            position: relative;
-        }
-        .story-section::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none;
-        }
-        .story-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 80px 24px;
-        }
-        .story-text h2 {
-            font-size: 2.5rem;
-            margin-bottom: 24px;
-        }
-        .story-text p {
-            margin-bottom: 16px;
-            color: #5a3a22;
-            font-size: 1.05rem;
-        }
-        .story-image {
-            width: 100%;
-            aspect-ratio: 4/3;
-            background: url('/images/branding-final.png') center/contain no-repeat;
-            background-color: var(--parchment);
-            border: 8px solid white;
-            box-shadow: 0 8px 40px rgba(61,35,20,0.1);
-        }
-
-        /* Breads */
-        .breads-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-        .bread-card {
-            background: white;
-            border: 1px solid rgba(139, 94, 60, 0.12);
-            padding: 0;
+        /* Hand-drawn wheat SVG animation */
+        .wheat-divider {
+            margin: 40px auto;
             text-align: center;
-            transition: all 0.3s;
             overflow: hidden;
         }
-        .bread-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(61,35,20,0.12);
+
+        .wheat-svg {
+            animation: drawWheat 2s ease-in-out;
         }
-        .bread-card-img {
-            height: 200px;
-            background: linear-gradient(135deg, var(--cream), var(--parchment));
+
+        @keyframes drawWheat {
+            0% { stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+            100% { stroke-dasharray: 1000; stroke-dashoffset: 0; }
+        }
+
+        /* Paper texture background */
+        .kraft-section {
+            background: linear-gradient(45deg, #d4a574 0%, #c49660 100%);
+            background-image: 
+                radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0),
+                repeating-linear-gradient(0deg, rgba(0,0,0,0.05), rgba(0,0,0,0.05) 2px, transparent 2px, transparent 4px);
+            position: relative;
+        }
+
+        .kraft-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f5e6d0' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
-        }
-        .bread-card-body {
-            padding: 28px 24px;
-        }
-        .bread-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 8px;
-        }
-        .bread-card p {
-            color: var(--warm-brown);
-            font-size: 0.95rem;
-        }
-        .bread-card .price {
-            display: inline-block;
-            margin-top: 12px;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            color: var(--dark-brown);
-            font-weight: 600;
+            text-align: center;
+            position: relative;
+            background: url('/images/hero-banner.jpg') center/cover;
         }
 
-        /* Visit Us */
-        .visit-section {
-            background: var(--dark-brown);
-            color: var(--cream);
-            padding: 80px 24px;
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(61,35,20,0.8) 0%, rgba(139,94,60,0.6) 100%);
         }
-        .visit-grid {
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            color: var(--cream);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            transform: translateY(50px);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        .hero-tagline {
+            font-family: 'Amatic SC', cursive;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--golden-tan);
+            margin-bottom: 30px;
+            font-weight: 400;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.8s forwards;
+        }
+
+        .biscotto-intro {
+            background: rgba(245,230,208,0.95);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 3px dashed var(--warm-brown);
+            transform: translateY(50px);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.1s forwards;
+        }
+
+        .biscotto-intro h3 {
+            font-family: 'Amatic SC', cursive;
+            font-size: 2rem;
+            color: var(--dark-brown);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .biscotto-intro p {
+            color: var(--warm-brown);
+            font-size: 1.2rem;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Letter from Baker Section */
+        .baker-letter {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .letter-paper {
+            background: var(--cream);
+            padding: 60px;
+            margin: 40px auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            transform: rotate(-1deg);
+            transition: transform 0.3s ease;
+        }
+
+        .letter-paper:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .letter-paper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 80px;
+            right: 0;
+            height: 100%;
+            background: repeating-linear-gradient(
+                transparent,
+                transparent 29px,
+                #e8d5bf 29px,
+                #e8d5bf 31px
+            );
+            pointer-events: none;
+        }
+
+        .letter-paper::after {
+            content: '';
+            position: absolute;
+            left: 60px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #d4a574;
+        }
+
+        .letter-header {
+            font-family: 'Amatic SC', cursive;
+            font-size: 2.5rem;
+            color: var(--dark-brown);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .letter-content {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: var(--dark-brown);
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 30px;
+            font-family: 'Amatic SC', cursive;
+            font-size: 1.8rem;
+            color: var(--warm-brown);
+        }
+
+        /* Menu Section */
+        .menu-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, var(--dark-brown) 0%, var(--warm-brown) 100%);
+            color: var(--cream);
+        }
+
+        .menu-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: 20px;
+            color: var(--cream);
+        }
+
+        .menu-subtitle {
+            text-align: center;
+            font-family: 'Amatic SC', cursive;
+            font-size: 1.8rem;
+            margin-bottom: 60px;
+            color: var(--golden-tan);
+        }
+
+        .menu-categories {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .menu-category {
+            background: rgba(245,230,208,0.1);
+            border: 2px solid var(--golden-tan);
+            border-radius: 15px;
+            padding: 40px 30px;
+            backdrop-filter: blur(10px);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.6s ease;
+        }
+
+        .menu-category.in-view {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .category-title {
+            font-family: 'Amatic SC', cursive;
+            font-size: 2.2rem;
+            color: var(--golden-tan);
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: underline;
+            text-decoration-color: var(--golden-tan);
+            text-underline-offset: 8px;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 15px 0;
+            border-bottom: 1px dotted var(--golden-tan);
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            background: rgba(212,165,116,0.1);
+            padding-left: 10px;
+            margin-left: -10px;
+            border-radius: 8px;
+        }
+
+        .item-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--cream);
+            flex-grow: 1;
+        }
+
+        .item-price {
+            font-family: 'Amatic SC', cursive;
+            font-size: 1.5rem;
+            color: var(--golden-tan);
+            font-weight: 700;
+            margin-left: 20px;
+        }
+
+        /* Product Photos */
+        .product-showcase {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
             max-width: 1000px;
             margin: 0 auto;
         }
-        .visit-section h2 {
-            color: var(--cream);
-            font-size: 2.5rem;
-            margin-bottom: 24px;
-        }
-        .visit-section h3 {
-            color: var(--golden);
-            font-size: 1.2rem;
-            margin-bottom: 12px;
-            margin-top: 24px;
-        }
-        .visit-section p, .visit-section li {
-            opacity: 0.85;
-            line-height: 1.8;
-        }
-        .visit-section ul {
-            list-style: none;
-        }
-        .visit-section ul li::before {
-            content: '✦ ';
-            color: var(--golden);
+
+        .product-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transform: scale(0.95);
+            opacity: 0;
+            transition: all 0.6s ease;
         }
 
-        /* Testimonial */
-        .testimonial {
-            background: var(--cream);
-            text-align: center;
-            padding: 100px 24px;
+        .product-card.in-view {
+            transform: scale(1);
+            opacity: 1;
         }
-        .testimonial blockquote {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(1.3rem, 3vw, 2rem);
-            font-style: italic;
-            max-width: 800px;
-            margin: 0 auto 24px;
+
+        .product-card:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent 70%, rgba(212,165,116,0.3));
+            pointer-events: none;
+        }
+
+        .product-label {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(61,35,20,0.9);
+            color: var(--cream);
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Amatic SC', cursive;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 80px 20px;
+            text-align: center;
+            background: var(--cream);
             color: var(--dark-brown);
+        }
+
+        .contact-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border: 3px solid var(--golden-tan);
+        }
+
+        .contact-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--dark-brown);
+        }
+
+        .contact-info p {
+            margin: 15px 0;
+            font-size: 1.1rem;
             line-height: 1.6;
         }
-        .testimonial cite {
-            color: var(--warm-brown);
-            font-style: normal;
-            font-size: 0.95rem;
-            letter-spacing: 1px;
-        }
 
-        /* Footer */
-        footer {
-            background: #2A1810;
-            color: var(--cream);
-            padding: 60px 24px 30px;
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            max-width: 1000px;
-            margin: 0 auto 40px;
-        }
-        footer h4 {
-            color: var(--golden);
-            font-size: 1rem;
-            margin-bottom: 16px;
-            letter-spacing: 1px;
-        }
-        footer p, footer li {
-            opacity: 0.7;
-            font-size: 0.9rem;
-            line-height: 1.8;
-        }
-        footer ul { list-style: none; }
-        footer a {
-            color: var(--cream);
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-        footer a:hover { opacity: 1; }
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(245,230,208,0.1);
-            opacity: 0.5;
-            font-size: 0.85rem;
-        }
-
-        /* Newsletter */
-        .newsletter-form {
-            display: flex;
-            gap: 0;
-            margin-top: 12px;
-        }
-        .newsletter-form input {
-            flex: 1;
-            padding: 10px 14px;
-            border: 1px solid rgba(245,230,208,0.2);
-            background: rgba(245,230,208,0.1);
-            color: var(--cream);
-            font-family: 'Lato', sans-serif;
-            font-size: 0.9rem;
-        }
-        .newsletter-form input::placeholder { color: rgba(245,230,208,0.4); }
-        .newsletter-form button {
-            padding: 10px 20px;
-            background: var(--golden);
-            color: var(--dark-brown);
-            border: none;
-            font-weight: 700;
-            font-size: 12px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            font-family: 'Lato', sans-serif;
-            transition: background 0.2s;
-        }
-        .newsletter-form button:hover { background: var(--cream); }
-
-        /* Mobile */
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .main-nav { padding: 12px 20px; }
-            .main-nav .nav-links { display: none; }
-            .story-grid { grid-template-columns: 1fr; gap: 30px; }
-            .breads-grid { grid-template-columns: 1fr; }
-            .visit-grid { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: 1fr; }
-            .hero { height: 70vh; min-height: 500px; }
+            .concept-nav {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 20px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .letter-paper {
+                padding: 30px 20px;
+                transform: none;
+            }
+
+            .menu-categories {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .item-price {
+                margin-left: 0;
+            }
         }
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .breads-grid { grid-template-columns: repeat(2, 1fr); }
+
+        /* Intersection Observer Animation */
+        .fade-in-up {
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+
+        .fade-in-up.in-view {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--cream);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--warm-brown);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--dark-brown);
         }
     </style>
 </head>
-<body>
-
-<!-- Concept Switcher -->
-<nav class="concept-nav">
-    <a href="/" class="active">A — The Bakehouse</a>
-    <a href="/concept-b">B — Modern Artisan</a>
-    <a href="/concept-c">C — Sunday Morning</a>
-</nav>
-
-<!-- Main Navigation -->
-<nav class="main-nav">
-    <img src="/images/logo.jpg" alt="Bakery on Biscotto" class="logo">
-    <ul class="nav-links">
-        <li><a href="#story">Our Story</a></li>
-        <li><a href="#breads">Our Breads</a></li>
-        <li><a href="#visit">Visit Us</a></li>
-        <li><a href="#contact">Contact</a></li>
-    </ul>
-</nav>
-
-<!-- Hero -->
-<section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-        <h1>Bakery on Biscotto</h1>
-        <p>Where every bite is a slice of heaven</p>
-        <a href="#breads" class="hero-cta">Explore Our Breads</a>
+<body x-data="{ scrollY: 0 }" @scroll.window="scrollY = window.pageYOffset">
+    
+    <!-- Concept Navigation -->
+    <div class="concept-nav">
+        <a href="/" class="active">The Bakehouse</a>
+        <a href="/concept-b">Modern Artisan</a>
+        <a href="/concept-c">Sunday Morning</a>
     </div>
-</section>
 
-<!-- Divider -->
-<div class="divider divider-wheat"></div>
-
-<!-- Our Story -->
-<section class="story-section" id="story">
-    <div class="story-grid">
-        <div class="story-text">
-            <h2>Our Story</h2>
-            <p>It started with a single jar of sourdough starter and a kitchen covered in flour. What began as a weekend experiment quickly became a passion — the kind that wakes you up at 4 AM with excitement rather than obligation.</p>
-            <p>At Bakery on Biscotto, every loaf is handcrafted with patience and care. Our sourdough ferments slowly, developing deep flavor and that perfect tangy crumb that only time can create. No shortcuts. No additives. Just flour, water, salt, and love.</p>
-            <p>From our family's kitchen to your table, we're honored to share the bread that brings people together.</p>
-        </div>
-        <div class="story-image"></div>
-    </div>
-</section>
-
-<!-- Divider -->
-<div class="divider divider-wheat"></div>
-
-<!-- Featured Breads -->
-<section class="section" id="breads">
-    <h2 class="section-title">Our Breads</h2>
-    <p class="section-subtitle">Each loaf is made by hand with a 24-hour fermentation process, local ingredients, and a whole lot of heart.</p>
-
-    <div class="breads-grid">
-        <div class="bread-card">
-            <div class="bread-card-img">🍞</div>
-            <div class="bread-card-body">
-                <h3>Rustic Sourdough</h3>
-                <p>Our signature loaf. Crispy crust, open crumb, unmistakable tang. The one that started it all.</p>
-                <span class="price">$8</span>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to The Bakehouse</h1>
+            <p class="hero-tagline">Where Sourdough Dreams Come True</p>
+            
+            <div class="biscotto-intro">
+                <h3>Meet Biscotto, Our Beloved Starter</h3>
+                <p>Born from a love of tradition and nurtured with Florida sunshine, Biscotto has been our faithful companion since day one. Every loaf tells the story of patience, craft, and the magic that happens when flour meets time.</p>
             </div>
         </div>
-        <div class="bread-card">
-            <div class="bread-card-img">🫒</div>
-            <div class="bread-card-body">
-                <h3>Olive Rosemary Loaf</h3>
-                <p>Kalamata olives and fresh rosemary folded into our classic dough. Perfect with a drizzle of olive oil.</p>
-                <span class="price">$10</span>
-            </div>
-        </div>
-        <div class="bread-card">
-            <div class="bread-card-img">🍇</div>
-            <div class="bread-card-body">
-                <h3>Cinnamon Raisin</h3>
-                <p>Swirls of cinnamon and plump raisins in a slightly sweet sourdough. A breakfast favorite.</p>
-                <span class="price">$9</span>
-            </div>
-        </div>
-        <div class="bread-card">
-            <div class="bread-card-img">🌾</div>
-            <div class="bread-card-body">
-                <h3>Honey Wheat</h3>
-                <p>Whole wheat flour and local honey create a soft, nutty loaf. Great for sandwiches.</p>
-                <span class="price">$8</span>
-            </div>
-        </div>
-        <div class="bread-card">
-            <div class="bread-card-img">🥖</div>
-            <div class="bread-card-body">
-                <h3>Classic Baguette</h3>
-                <p>Crispy outside, airy inside. Our take on the French classic with a sourdough twist.</p>
-                <span class="price">$6</span>
-            </div>
-        </div>
-        <div class="bread-card">
-            <div class="bread-card-img">🌻</div>
-            <div class="bread-card-body">
-                <h3>Seeded Multigrain</h3>
-                <p>Packed with sunflower, flax, sesame, and pumpkin seeds. Hearty and deeply flavorful.</p>
-                <span class="price">$10</span>
-            </div>
-        </div>
+    </section>
+
+    <!-- Hand-drawn Wheat Divider -->
+    <div class="wheat-divider">
+        <svg class="wheat-svg" width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 30 C 50 10, 150 10, 180 30" stroke="#8B5E3C" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M40 20 L 45 15 L 45 25 Z" stroke="#8B5E3C" stroke-width="1.5" fill="#D4A574"/>
+            <path d="M60 15 L 65 10 L 65 20 Z" stroke="#8B5E3C" stroke-width="1.5" fill="#D4A574"/>
+            <path d="M80 12 L 85 7 L 85 17 Z" stroke="#8B5E3C" stroke-width="1.5" fill="#D4A574"/>
+            <path d="M100 10 L 105 5 L 105 15 Z" stroke="#8B5E3C" stroke-width="1.5" fill="#D4A574"/>
+            <path d="M120 12 L 125 7 L 125 17 Z" stroke="#8B5E3C" stroke-width="1.5" fill="#D4A574"/>
+            <path d="M140 15 L 145 10 L 145 20 Z" stroke="#8B5E3C" stroke-width="1.5" fill="#D4A574"/>
+            <path d="M160 20 L 165 15 L 165 25 Z" stroke="#8B5E3C" stroke-width="1.5" fill="#D4A574"/>
+        </svg>
     </div>
-</section>
 
-<!-- Testimonial -->
-<section class="testimonial">
-    <div class="divider divider-wheat" style="padding-bottom:30px"></div>
-    <blockquote>"The moment I tasted their sourdough, I knew I'd never buy grocery store bread again. It's the real deal — crusty, tangy, and absolutely soul-warming."</blockquote>
-    <cite>— Sarah M., Farmers Market Regular</cite>
-    <div class="divider divider-wheat" style="padding-top:30px"></div>
-</section>
-
-<!-- Visit Us -->
-<section class="visit-section" id="visit">
-    <div class="visit-grid">
-        <div>
-            <h2>Visit Us</h2>
-            <p>Find us at local farmers markets and pop-up events throughout the season. Pre-orders are always welcome!</p>
-
-            <h3>Market Schedule</h3>
-            <ul>
-                <li>Saturday Morning Market — 8 AM to 1 PM</li>
-                <li>Wednesday Evening Market — 4 PM to 7 PM</li>
-                <li>First Sunday Pop-Up — 9 AM to 12 PM</li>
-            </ul>
+    <!-- Letter from the Baker -->
+    <section class="baker-letter kraft-section">
+        <div class="letter-paper fade-in-up">
+            <h2 class="letter-header">A Letter from Cassie's Kitchen</h2>
+            <div class="letter-content">
+                <p>Dear Friends,</p>
+                <p>What started as a simple desire to feed my family wholesome bread has blossomed into something magical. In our little cottage kitchen on Biscotto Circle, we craft each loaf with the same care and attention I'd give to bread for my own table.</p>
+                <p>Biscotto, our sourdough starter, is more than just flour and water — it's a living piece of our story. Fed daily with love and patience, it transforms simple ingredients into something extraordinary. When you taste our bread, you're tasting tradition, craft, and a little piece of our hearts.</p>
+                <p>From our kitchen to yours, welcome to the Bakery on Biscotto family.</p>
+                <div class="signature">With warm regards, Cassie ♥</div>
+            </div>
         </div>
-        <div>
-            <h3>Pre-Order</h3>
-            <p>Want to make sure your favorite loaf is waiting for you? Send us a message by Thursday evening for Saturday pickup.</p>
+    </section>
 
-            <h3>Get in Touch</h3>
-            <ul>
-                <li>hello@bakeryonbiscotto.com</li>
-                <li>@bakeryonbiscotto</li>
-                <li>Follow us for fresh-from-the-oven updates!</li>
-            </ul>
+    <!-- Product Showcase -->
+    <section class="product-showcase">
+        <div class="showcase-grid">
+            <div class="product-card fade-in-up">
+                <img src="/images/product-sourdough-boule.jpg" alt="Artisan Sourdough Boule">
+                <div class="product-label">Our Signature Sourdough Boule</div>
+            </div>
+            <div class="product-card fade-in-up">
+                <img src="/images/product-english-muffins.jpg" alt="Fresh English Muffins">
+                <div class="product-label">Handcrafted English Muffins</div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Footer -->
-<footer id="contact">
-    <div class="footer-grid">
-        <div>
-            <h4>Bakery on Biscotto</h4>
-            <p>Handcrafted sourdough made with love, patience, and a really good starter named Biscotto.</p>
-        </div>
-        <div>
-            <h4>Hours & Markets</h4>
-            <ul>
-                <li>Saturday: 8 AM – 1 PM</li>
-                <li>Wednesday: 4 PM – 7 PM</li>
-                <li>Sunday Pop-Up: 9 AM – 12 PM</li>
-            </ul>
-        </div>
-        <div>
-            <h4>Stay Connected</h4>
-            <p>Join our newsletter for weekly bread drops, recipes, and behind-the-scenes baking fun.</p>
-            <form class="newsletter-form" onsubmit="event.preventDefault()">
-                <input type="email" placeholder="Your email">
-                <button type="submit">Join</button>
-            </form>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p>&copy; 2026 Bakery on Biscotto. Made with flour, water, salt & love.</p>
-    </div>
-</footer>
+    <!-- Menu Section -->
+    <section class="menu-section">
+        <h2 class="menu-title">Our Daily Offerings</h2>
+        <p class="menu-subtitle">Handcrafted with Love, Baked Fresh Daily</p>
+        
+        <div class="menu-categories">
+            <div class="menu-category fade-in-up">
+                <h3 class="category-title">Sourdough Loafs</h3>
+                <div class="menu-item">
+                    <span class="item-name">Regular Loaf</span>
+                    <span class="item-price">$10</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Cheddar</span>
+                    <span class="item-price">$12</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Mozzarella and Garlic</span>
+                    <span class="item-price">$14</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Chocolate Chip</span>
+                    <span class="item-price">$12</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Cinnamon and Sugar</span>
+                    <span class="item-price">$14</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Chocolate, Chocolate Chip</span>
+                    <span class="item-price">$12</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Chocolate Almond, Chocolate Chip</span>
+                    <span class="item-price">$15</span>
+                </div>
+                <div class="menu-item" style="border-top: 2px solid #D4A574; border-bottom: 2px solid #D4A574; margin-top: 20px; padding: 20px 0;">
+                    <span class="item-name"><strong>4 Pack of Mini Loafs</strong><br><small>choose any 4</small></span>
+                    <span class="item-price">$25</span>
+                </div>
+            </div>
 
+            <div class="menu-category fade-in-up">
+                <h3 class="category-title">Other Bread</h3>
+                <div class="menu-item">
+                    <span class="item-name">Sourdough Honey Wheat Sandwich Bread</span>
+                    <span class="item-price">$10</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Sourdough English Muffins (6ct)</span>
+                    <span class="item-price">$8</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Sourdough English Muffins (12ct)</span>
+                    <span class="item-price">$15</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Banana Bread</span>
+                    <span class="item-price">$12</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Banana Walnut Bread</span>
+                    <span class="item-price">$15</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Pumpkin Chocolate Chip Bread</span>
+                    <span class="item-price">$12</span>
+                </div>
+                <div class="menu-item">
+                    <span class="item-name">Pumpkin Almond Chocolate Chip Bread</span>
+                    <span class="item-price">$15</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="contact-card fade-in-up">
+            <h2 class="contact-title">Visit Our Kitchen</h2>
+            <div class="contact-info">
+                <p><strong>Cassie's Cottage Food Operation</strong></p>
+                <p>📍 2339 Biscotto Cir, Davenport, FL 33897</p>
+                <p>📧 bakeryonbiscotto@gmail.com</p>
+                <p>📱 Follow us @bakeryonbiscotto</p>
+                <p style="margin-top: 30px; font-style: italic;">
+                    "From our kitchen to yours — because every meal deserves homemade bread."
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in-up, .menu-category, .product-card').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
