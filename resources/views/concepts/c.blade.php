@@ -3,725 +3,1226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bakery on Biscotto — Sunday Morning</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title>Sunday Morning - Bakery on Biscotto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Caveat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
     <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         :root {
             --dark-brown: #3D2314;
             --warm-brown: #8B5E3C;
             --cream: #F5E6D0;
-            --golden: #D4A574;
-            --peach: #F8E8D8;
-            --soft-pink: #FDF0E8;
-            --warm-white: #FFFBF5;
-            --coral: #E8956A;
+            --golden-tan: #D4A574;
+            --soft-peach: #F9E5D0;
+            --coral: #FF8A80;
+            --mint: #A8E6CF;
+            --lavender: #E1BEE7;
+            --sunny: #FFE082;
+            --rose: #F8BBD9;
         }
 
         body {
-            font-family: 'Lato', sans-serif;
-            color: var(--dark-brown);
-            background: var(--warm-white);
-            line-height: 1.7;
-            -webkit-font-smoothing: antialiased;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, var(--soft-peach) 0%, var(--cream) 50%, #FFF8E7 100%);
+            overflow-x: hidden;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Playfair Display', serif;
-            line-height: 1.2;
-        }
-
-        /* Concept Nav */
+        /* Concept Navigation */
         .concept-nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 25px;
+            right: 25px;
             z-index: 1000;
-            background: var(--dark-brown);
-            padding: 8px 0;
-            text-align: center;
-        }
-        .concept-nav a {
-            color: var(--cream);
-            text-decoration: none;
-            margin: 0 16px;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-size: 11px;
-            font-weight: 700;
-        }
-        .concept-nav a:hover, .concept-nav a.active { opacity: 1; }
-
-        /* Main Nav */
-        .main-nav {
-            position: sticky;
-            top: 33px;
-            z-index: 900;
-            background: rgba(255,251,245,0.95);
-            backdrop-filter: blur(15px);
-            padding: 16px 40px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .main-nav .logo { height: 48px; border-radius: 12px; }
-        .nav-links { display: flex; gap: 28px; list-style: none; }
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark-brown);
-            font-size: 14px;
-            font-weight: 700;
-            transition: color 0.2s;
-        }
-        .nav-links a:hover { color: var(--coral); }
-        .nav-cta {
-            background: var(--dark-brown) !important;
-            color: var(--cream) !important;
-            padding: 10px 24px;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 16px 20px;
             border-radius: 50px;
-            font-size: 13px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(212,165,116,0.2);
         }
-        .nav-cta:hover { background: var(--warm-brown) !important; }
 
-        /* Hero */
-        .hero {
-            text-align: center;
-            padding: 80px 24px 60px;
-            background: linear-gradient(180deg, var(--peach) 0%, var(--warm-white) 100%);
+        .concept-nav a {
+            color: var(--dark-brown);
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             position: relative;
             overflow: hidden;
         }
-        .hero-badge {
-            display: inline-block;
-            background: var(--dark-brown);
-            color: var(--cream);
-            padding: 8px 24px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 24px;
+
+        .concept-nav a.active {
+            background: linear-gradient(135deg, var(--coral) 0%, var(--rose) 100%);
+            color: white;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(248,187,217,0.4);
         }
-        .hero h1 {
-            font-size: clamp(2.8rem, 6vw, 5rem);
-            max-width: 700px;
-            margin: 0 auto 20px;
-            font-weight: 700;
+
+        .concept-nav a:hover:not(.active) {
+            background: linear-gradient(135deg, var(--mint) 0%, var(--lavender) 100%);
+            color: var(--dark-brown);
+            transform: translateY(-2px);
         }
-        .hero h1 .highlight {
-            color: var(--coral);
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
             position: relative;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255,224,130,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(168,230,207,0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(248,187,217,0.3) 0%, transparent 50%),
+                linear-gradient(135deg, var(--soft-peach) 0%, var(--cream) 100%);
         }
-        .hero h1 .highlight::after {
-            content: '';
+
+        .floating-elements {
             position: absolute;
-            bottom: 4px;
-            left: 0;
-            right: 0;
-            height: 8px;
-            background: rgba(232, 149, 106, 0.25);
-            border-radius: 4px;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
         }
-        .hero p {
-            font-size: 1.15rem;
+
+        .floating-element {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            background: linear-gradient(135deg, var(--sunny) 0%, var(--coral) 100%);
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            background: linear-gradient(135deg, var(--mint) 0%, var(--lavender) 100%);
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+            width: 80px;
+            height: 80px;
+        }
+
+        .floating-element:nth-child(3) {
+            background: linear-gradient(135deg, var(--rose) 0%, var(--coral) 100%);
+            bottom: 25%;
+            left: 20%;
+            animation-delay: 4s;
+            width: 40px;
+            height: 40px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 30px;
+        }
+
+        .hero h1 {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(3.5rem, 10vw, 7rem);
+            color: var(--dark-brown);
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.1;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: bounceInUp 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.3s forwards;
+        }
+
+        .hero-tagline {
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
             color: var(--warm-brown);
-            max-width: 500px;
-            margin: 0 auto 36px;
+            margin-bottom: 40px;
+            font-weight: 500;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: bounceInUp 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.6s forwards;
         }
+
         .hero-buttons {
             display: flex;
-            gap: 16px;
+            gap: 20px;
             justify-content: center;
             flex-wrap: wrap;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: bounceInUp 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.9s forwards;
         }
-        .btn-round {
-            display: inline-block;
-            padding: 16px 36px;
+
+        .btn {
+            padding: 16px 32px;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-        .btn-round.primary {
-            background: var(--dark-brown);
-            color: var(--cream);
-        }
-        .btn-round.primary:hover {
-            background: var(--warm-brown);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(61,35,20,0.2);
-        }
-        .btn-round.secondary {
-            background: white;
-            color: var(--dark-brown);
-            border: 2px solid var(--dark-brown);
-        }
-        .btn-round.secondary:hover {
-            background: var(--cream);
-        }
-        .hero-image {
-            max-width: 800px;
-            margin: 50px auto 0;
-            border-radius: 24px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 24px 80px rgba(61,35,20,0.15);
-        }
-        .hero-image img {
-            width: 100%;
-            display: block;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        /* Stats */
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            padding: 60px 24px;
-            flex-wrap: wrap;
+        .btn:before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        .stat-card {
-            background: white;
-            border-radius: 20px;
-            padding: 32px 40px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(61,35,20,0.06);
-            min-width: 200px;
-            transition: transform 0.3s;
+
+        .btn:hover:before {
+            opacity: 1;
         }
-        .stat-card:hover { transform: translateY(-4px); }
-        .stat-card .emoji { font-size: 2rem; margin-bottom: 8px; }
-        .stat-card .number {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            font-weight: 700;
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--coral) 0%, var(--rose) 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--mint) 0%, var(--lavender) 100%);
             color: var(--dark-brown);
         }
-        .stat-card .label {
-            color: var(--warm-brown);
-            font-size: 0.9rem;
-            font-weight: 400;
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
-        /* Section titles */
-        .section-header {
+        @keyframes bounceInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(-10px);
+            }
+            80% {
+                transform: translateY(5px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Biscotto Character Section */
+        .biscotto-section {
+            padding: 100px 30px;
             text-align: center;
-            padding: 60px 24px 40px;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(255,224,130,0.2) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(168,230,207,0.2) 0%, transparent 50%);
         }
-        .section-header .tag {
-            display: inline-block;
-            background: var(--peach);
-            color: var(--warm-brown);
-            padding: 6px 18px;
-            border-radius: 50px;
-            font-size: 12px;
+
+        .biscotto-card {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px 50px;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            border: 3px solid rgba(212,165,116,0.3);
+        }
+
+        .biscotto-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                rgba(255,224,130,0.1) 90deg,
+                rgba(168,230,207,0.1) 180deg,
+                rgba(248,187,217,0.1) 270deg,
+                transparent 360deg
+            );
+            animation: rotate 20s linear infinite;
+            z-index: 0;
+        }
+
+        .biscotto-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .biscotto-avatar {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--golden-tan) 0%, var(--warm-brown) 100%);
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Caveat', cursive;
+            font-size: 3rem;
+            color: white;
             font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 16px;
+            box-shadow: 0 15px 30px rgba(212,165,116,0.3);
+            position: relative;
+            animation: pulse 3s ease-in-out infinite;
         }
-        .section-header h2 {
-            font-size: clamp(2rem, 4vw, 2.8rem);
-            margin-bottom: 12px;
+
+        .biscotto-avatar::after {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 2rem;
+            animation: twinkle 2s ease-in-out infinite;
         }
-        .section-header p {
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+            50% { opacity: 0.7; transform: scale(1.2) rotate(180deg); }
+        }
+
+        .biscotto-title {
+            font-family: 'Caveat', cursive;
+            font-size: 3rem;
+            color: var(--dark-brown);
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .biscotto-story {
+            font-size: 1.2rem;
+            line-height: 1.8;
             color: var(--warm-brown);
-            max-width: 500px;
+            margin-bottom: 20px;
+        }
+
+        /* Stats Counter */
+        .stats-section {
+            padding: 80px 30px;
+            background: linear-gradient(135deg, var(--dark-brown) 0%, var(--warm-brown) 100%);
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        /* Favorites */
-        .favorites {
-            padding: 0 24px 80px;
+        .stat-item {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.4s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .stat-number {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--sunny);
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--cream);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Customer Favorites */
+        .favorites-section {
+            padding: 100px 30px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--dark-brown);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            font-size: 1.3rem;
+            color: var(--warm-brown);
+            margin-bottom: 60px;
+            font-weight: 500;
+        }
+
+        .favorites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
             max-width: 1200px;
             margin: 0 auto;
         }
-        .favorites-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-        .fav-card {
+
+        .favorite-card {
             background: white;
+            padding: 40px 30px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 2px solid rgba(212,165,116,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .favorite-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--coral) 0%, var(--rose) 50%, var(--lavender) 100%);
+            transition: left 0.6s ease;
+        }
+
+        .favorite-card:hover::before {
+            left: 0;
+        }
+
+        .favorite-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+        .favorite-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .favorite-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--dark-brown);
+            line-height: 1.3;
+        }
+
+        .favorite-rating {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+
+        .star {
+            color: var(--sunny);
+        }
+
+        .favorite-price {
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+            color: var(--warm-brown);
+            font-weight: 700;
+            margin: 15px 0;
+        }
+
+        .favorite-description {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .favorite-reviews {
+            font-size: 0.9rem;
+            color: var(--coral);
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        /* Menu Grid */
+        .menu-section {
+            padding: 100px 30px;
+            background: 
+                radial-gradient(circle at 20% 40%, rgba(168,230,207,0.2) 0%, transparent 60%),
+                radial-gradient(circle at 80% 60%, rgba(255,224,130,0.2) 0%, transparent 60%);
+        }
+
+        .menu-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .menu-category {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 35px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border: 3px solid rgba(212,165,116,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--mint) 0%, var(--sunny) 50%, var(--coral) 100%);
+        }
+
+        .category-title {
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            color: var(--dark-brown);
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px dashed rgba(212,165,116,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            background: linear-gradient(90deg, rgba(168,230,207,0.1) 0%, rgba(255,224,130,0.1) 100%);
+            margin: 0 -20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            border-radius: 20px;
+        }
+
+        .item-info h4 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark-brown);
+            margin-bottom: 5px;
+        }
+
+        .item-info p {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .item-price {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            color: var(--warm-brown);
+            font-weight: 700;
+        }
+
+        /* Instagram-style Gallery */
+        .gallery-section {
+            padding: 100px 30px;
+            background: linear-gradient(135deg, var(--cream) 0%, white 100%);
+        }
+
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 40px auto 0;
+        }
+
+        .insta-post {
+            aspect-ratio: 1;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(61,35,20,0.06);
-            transition: all 0.3s;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
-        .fav-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 40px rgba(61,35,20,0.12);
+
+        .insta-post:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         }
-        .fav-card-img {
-            height: 180px;
-            background: linear-gradient(135deg, var(--peach), var(--cream));
+
+        .insta-post img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .insta-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, rgba(255,138,128,0.8) 0%, rgba(248,187,217,0.8) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
-        }
-        .fav-card-body {
-            padding: 24px;
-        }
-        .fav-card-body .stars {
-            color: #F5A623;
-            font-size: 14px;
-            margin-bottom: 8px;
-            letter-spacing: 2px;
-        }
-        .fav-card-body h3 {
-            font-size: 1.2rem;
-            margin-bottom: 6px;
-        }
-        .fav-card-body p {
-            color: var(--warm-brown);
-            font-size: 0.9rem;
-        }
-        .fav-card-body .price-tag {
-            display: inline-block;
-            margin-top: 12px;
-            background: var(--peach);
-            color: var(--dark-brown);
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        /* Market Schedule */
-        .market-section {
-            background: linear-gradient(135deg, var(--dark-brown), #5A3828);
-            color: var(--cream);
-            padding: 80px 24px;
-            border-radius: 32px;
-            max-width: 1100px;
-            margin: 0 auto 80px;
+        .insta-post:hover .insta-overlay {
+            opacity: 1;
         }
-        .market-section h2 {
-            text-align: center;
-            font-size: 2.4rem;
-            margin-bottom: 40px;
-            color: var(--cream);
-        }
-        .market-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .market-card {
-            background: rgba(255,255,255,0.08);
-            border-radius: 16px;
-            padding: 28px 24px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.08);
-            transition: background 0.3s;
-        }
-        .market-card:hover { background: rgba(255,255,255,0.12); }
-        .market-day {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
+
+        .insta-likes {
+            color: white;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--golden);
-        }
-        .market-name {
-            font-size: 0.95rem;
-            opacity: 0.8;
-            margin-bottom: 12px;
-        }
-        .market-time {
-            display: inline-block;
-            background: var(--golden);
-            color: var(--dark-brown);
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 700;
-        }
-
-        /* About */
-        .about-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 24px 80px;
+            display: flex;
             align-items: center;
-        }
-        .about-img {
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 16px 60px rgba(61,35,20,0.1);
-        }
-        .about-img img { width: 100%; display: block; }
-        .about-text h2 {
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-        }
-        .about-text p {
-            color: #5a3a22;
-            margin-bottom: 14px;
-            font-size: 1.05rem;
-        }
-        .about-text .signature {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 1.2rem;
-            color: var(--warm-brown);
-            margin-top: 20px;
+            gap: 8px;
         }
 
-        /* Testimonials */
-        .testimonials {
-            background: var(--peach);
-            padding: 80px 24px;
-            border-radius: 32px;
-            max-width: 1100px;
-            margin: 0 auto 80px;
-        }
-        .testimonials h2 {
-            text-align: center;
-            font-size: 2.2rem;
-            margin-bottom: 40px;
-        }
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .testimonial-card {
-            background: white;
-            border-radius: 16px;
-            padding: 28px;
-            box-shadow: 0 4px 16px rgba(61,35,20,0.05);
-        }
-        .testimonial-card .stars {
-            color: #F5A623;
-            margin-bottom: 12px;
-        }
-        .testimonial-card p {
-            font-size: 0.95rem;
-            color: #5a3a22;
-            margin-bottom: 12px;
-            font-style: italic;
-        }
-        .testimonial-card cite {
-            font-style: normal;
-            font-weight: 700;
-            font-size: 0.85rem;
-            color: var(--warm-brown);
+        .placeholder-post {
+            background: linear-gradient(135deg, var(--mint) 0%, var(--lavender) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            font-weight: 600;
         }
 
-        /* Newsletter */
-        .newsletter {
+        /* Newsletter Section */
+        .newsletter-section {
+            padding: 100px 30px;
+            background: linear-gradient(135deg, var(--coral) 0%, var(--rose) 100%);
             text-align: center;
-            padding: 80px 24px;
+            color: white;
+        }
+
+        .newsletter-content {
             max-width: 600px;
             margin: 0 auto;
         }
-        .newsletter h2 {
-            font-size: 2rem;
-            margin-bottom: 12px;
+
+        .newsletter-title {
+            font-family: 'Caveat', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            font-weight: 700;
         }
-        .newsletter p {
-            color: var(--warm-brown);
-            margin-bottom: 28px;
+
+        .newsletter-text {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            line-height: 1.6;
         }
+
         .newsletter-form {
             display: flex;
-            gap: 0;
-            border-radius: 50px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(61,35,20,0.08);
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 0 auto;
         }
-        .newsletter-form input {
-            flex: 1;
-            padding: 16px 24px;
-            border: 2px solid var(--cream);
-            border-right: none;
-            font-size: 1rem;
-            font-family: 'Lato', sans-serif;
-            background: white;
-            border-radius: 50px 0 0 50px;
-            outline: none;
-        }
-        .newsletter-form input:focus { border-color: var(--golden); }
-        .newsletter-form button {
-            padding: 16px 32px;
-            background: var(--dark-brown);
-            color: var(--cream);
-            border: none;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            font-family: 'Lato', sans-serif;
-            border-radius: 0 50px 50px 0;
-            transition: background 0.2s;
-            white-space: nowrap;
-        }
-        .newsletter-form button:hover { background: var(--warm-brown); }
 
-        /* Footer */
-        footer {
-            background: var(--dark-brown);
-            color: var(--cream);
-            text-align: center;
-            padding: 40px 24px;
-            border-radius: 24px 24px 0 0;
+        .newsletter-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            backdrop-filter: blur(10px);
         }
-        footer .logo { height: 40px; border-radius: 8px; margin-bottom: 16px; }
-        footer p { opacity: 0.6; font-size: 0.85rem; }
-        .footer-links {
+
+        .newsletter-input::placeholder {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .newsletter-btn {
+            padding: 16px 32px;
+            background: white;
+            color: var(--coral);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 100px 30px;
+            text-align: center;
+            background: white;
+        }
+
+        .contact-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, var(--soft-peach) 0%, var(--cream) 100%);
+            padding: 60px 50px;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            border: 3px solid rgba(212,165,116,0.3);
+        }
+
+        .contact-title {
+            font-family: 'Caveat', cursive;
+            font-size: 3rem;
+            color: var(--dark-brown);
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .contact-info {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: var(--warm-brown);
+            margin-bottom: 40px;
+        }
+
+        .contact-info p {
+            margin-bottom: 10px;
+        }
+
+        .social-badges {
             display: flex;
             justify-content: center;
-            gap: 24px;
-            margin-bottom: 16px;
+            gap: 20px;
+            flex-wrap: wrap;
         }
-        .footer-links a {
-            color: var(--cream);
-            text-decoration: none;
-            opacity: 0.7;
-            font-size: 0.9rem;
-            transition: opacity 0.2s;
-        }
-        .footer-links a:hover { opacity: 1; }
 
+        .social-badge {
+            background: linear-gradient(135deg, var(--mint) 0%, var(--lavender) 100%);
+            color: var(--dark-brown);
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .social-badge:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-            .main-nav { padding: 12px 20px; }
-            .nav-links { display: none; }
-            .stats { gap: 16px; }
-            .stat-card { min-width: 140px; padding: 20px; }
-            .stat-card .number { font-size: 1.6rem; }
-            .favorites-grid { grid-template-columns: 1fr; }
-            .market-grid { grid-template-columns: 1fr; }
-            .about-section { grid-template-columns: 1fr; }
-            .testimonial-grid { grid-template-columns: 1fr; }
-            .newsletter-form { flex-direction: column; border-radius: 16px; }
-            .newsletter-form input { border-radius: 16px; border-right: 2px solid var(--cream); }
-            .newsletter-form button { border-radius: 16px; }
-            .market-section, .testimonials { border-radius: 20px; margin-left: 12px; margin-right: 12px; }
+            .concept-nav {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 20px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+
+            .menu-categories {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .newsletter-input {
+                min-width: auto;
+            }
+
+            .biscotto-card,
+            .contact-card {
+                padding: 40px 30px;
+                border-radius: 30px;
+            }
+
+            .floating-element {
+                display: none;
+            }
+        }
+
+        /* Custom animations for counters */
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-count {
+            animation: countUp 0.6s ease-out;
         }
     </style>
 </head>
-<body>
-
-<!-- Concept Switcher -->
-<nav class="concept-nav">
-    <a href="/">A — The Bakehouse</a>
-    <a href="/concept-b">B — Modern Artisan</a>
-    <a href="/concept-c" class="active">C — Sunday Morning</a>
-</nav>
-
-<!-- Main Nav -->
-<nav class="main-nav">
-    <img src="/images/logo.jpg" alt="Bakery on Biscotto" class="logo">
-    <ul class="nav-links">
-        <li><a href="#favorites">Breads</a></li>
-        <li><a href="#markets">Markets</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#" class="nav-cta">Pre-Order</a></li>
-    </ul>
-</nav>
-
-<!-- Hero -->
-<section class="hero">
-    <span class="hero-badge">🌾 Fresh Every Weekend</span>
-    <h1>Life's too short for <span class="highlight">boring bread</span></h1>
-    <p>Handmade sourdough baked with love, patience, and a starter named Biscotto. Find us at your local farmers market!</p>
-    <div class="hero-buttons">
-        <a href="#favorites" class="btn-round primary">See Our Breads 🍞</a>
-        <a href="#markets" class="btn-round secondary">Find Us This Week</a>
+<body x-data="{ 
+    loaves: 0, 
+    customers: 0, 
+    years: 0, 
+    smiles: 0,
+    animateCounters: false
+}">
+    
+    <!-- Concept Navigation -->
+    <div class="concept-nav">
+        <a href="/">The Bakehouse</a>
+        <a href="/concept-b">Modern Artisan</a>
+        <a href="/concept-c" class="active">Sunday Morning</a>
     </div>
-    <div class="hero-image">
-        <img src="/images/hero-banner.jpg" alt="Bakery on Biscotto breads">
-    </div>
-</section>
 
-<!-- Fun Stats -->
-<section class="stats" x-data="{ show: false }" x-intersect="show = true">
-    <div class="stat-card">
-        <div class="emoji">🍞</div>
-        <div class="number">1,200+</div>
-        <div class="label">Loaves Baked</div>
-    </div>
-    <div class="stat-card">
-        <div class="emoji">⏰</div>
-        <div class="number">5 AM</div>
-        <div class="label">Wake-Up Calls</div>
-    </div>
-    <div class="stat-card">
-        <div class="emoji">🌿</div>
-        <div class="number">4</div>
-        <div class="label">Simple Ingredients</div>
-    </div>
-    <div class="stat-card">
-        <div class="emoji">💛</div>
-        <div class="number">24 hrs</div>
-        <div class="label">Slow Fermented</div>
-    </div>
-</section>
-
-<!-- Customer Favorites -->
-<div class="section-header" id="favorites">
-    <span class="tag">Customer Favorites</span>
-    <h2>The Breads Everyone Loves</h2>
-    <p>Every loaf is made by hand with our 24-hour fermentation process.</p>
-</div>
-
-<section class="favorites">
-    <div class="favorites-grid">
-        <div class="fav-card">
-            <div class="fav-card-img">🍞</div>
-            <div class="fav-card-body">
-                <div class="stars">★★★★★</div>
-                <h3>Rustic Sourdough</h3>
-                <p>Our #1 seller. Crispy crust, tangy crumb, perfect for everything.</p>
-                <span class="price-tag">$8</span>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+        <div class="hero-content">
+            <h1>Sunday Morning Vibes ☀️</h1>
+            <p class="hero-tagline">Where every day feels like a cozy Sunday morning with fresh bread and warm smiles</p>
+            <div class="hero-buttons">
+                <a href="#favorites" class="btn btn-primary">See Our Favorites ⭐</a>
+                <a href="#menu" class="btn btn-secondary">Browse Menu 🍞</a>
             </div>
         </div>
-        <div class="fav-card">
-            <div class="fav-card-img">🫒</div>
-            <div class="fav-card-body">
-                <div class="stars">★★★★★</div>
-                <h3>Olive Rosemary Loaf</h3>
-                <p>Briny olives and fragrant rosemary. Dip it in good olive oil.</p>
-                <span class="price-tag">$10</span>
+    </section>
+
+    <!-- Biscotto Character Section -->
+    <section class="biscotto-section">
+        <div class="biscotto-card">
+            <div class="biscotto-content">
+                <div class="biscotto-avatar">
+                    Biscotto
+                </div>
+                <h2 class="biscotto-title">Meet Our Star! 🌟</h2>
+                <p class="biscotto-story">
+                    Hey there, beautiful humans! I'm Biscotto, your friendly neighborhood sourdough starter, and I'm absolutely OBSESSED with making your mornings better! 🥖✨
+                </p>
+                <p class="biscotto-story">
+                    Born and raised in sunny Florida, I've been bubbling with excitement since day one! Every morning, Cassie feeds me the good stuff (organic flour and spring water - I'm fancy like that! 💅), and together we create magic in the kitchen.
+                </p>
+                <p class="biscotto-story">
+                    I love meeting new friends and turning simple ingredients into something that makes people smile. That's my superpower! Want to be bread besties? 🤝
+                </p>
             </div>
         </div>
-        <div class="fav-card">
-            <div class="fav-card-img">🍇</div>
-            <div class="fav-card-body">
-                <div class="stars">★★★★★</div>
-                <h3>Cinnamon Raisin</h3>
-                <p>Sweet, warm, and perfect toasted with butter on a lazy morning.</p>
-                <span class="price-tag">$9</span>
+    </section>
+
+    <!-- Stats Counter Section -->
+    <section class="stats-section" 
+             x-intersect.once="
+                setTimeout(() => {
+                    let loavesCount = 0;
+                    let customersCount = 0;
+                    let yearsCount = 0;
+                    let smilesCount = 0;
+                    
+                    const loavesInterval = setInterval(() => {
+                        if (loavesCount < 2847) {
+                            loavesCount += 47;
+                            loaves = Math.min(loavesCount, 2847);
+                        } else clearInterval(loavesInterval);
+                    }, 50);
+                    
+                    const customersInterval = setInterval(() => {
+                        if (customersCount < 524) {
+                            customersCount += 8;
+                            customers = Math.min(customersCount, 524);
+                        } else clearInterval(customersInterval);
+                    }, 80);
+                    
+                    const yearsInterval = setInterval(() => {
+                        if (yearsCount < 1) {
+                            years = 1;
+                        }
+                        clearInterval(yearsInterval);
+                    }, 1000);
+                    
+                    const smilesInterval = setInterval(() => {
+                        if (smilesCount < 10000) {
+                            smilesCount += 147;
+                            smiles = Math.min(smilesCount, 10000);
+                        } else clearInterval(smilesInterval);
+                    }, 40);
+                    
+                    animateCounters = true;
+                }, 300)
+             ">
+        <div class="stats-grid">
+            <div class="stat-item" :class="{ 'animate-count': animateCounters }">
+                <span class="stat-number" x-text="loaves"></span>
+                <span class="stat-label">Loaves Baked</span>
+            </div>
+            <div class="stat-item" :class="{ 'animate-count': animateCounters }">
+                <span class="stat-number" x-text="customers"></span>
+                <span class="stat-label">Happy Customers</span>
+            </div>
+            <div class="stat-item" :class="{ 'animate-count': animateCounters }">
+                <span class="stat-number" x-text="years"></span>
+                <span class="stat-label">Years of Love</span>
+            </div>
+            <div class="stat-item" :class="{ 'animate-count': animateCounters }">
+                <span class="stat-number" x-text="smiles + '+'"></span>
+                <span class="stat-label">Smiles Created</span>
             </div>
         </div>
-        <div class="fav-card">
-            <div class="fav-card-img">🌾</div>
-            <div class="fav-card-body">
-                <div class="stars">★★★★☆</div>
-                <h3>Honey Wheat</h3>
-                <p>Soft whole wheat sweetened with local honey. A sandwich dream.</p>
-                <span class="price-tag">$8</span>
+    </section>
+
+    <!-- Customer Favorites Section -->
+    <section class="favorites-section" id="favorites">
+        <h2 class="section-title">Customer Favorites 💕</h2>
+        <p class="section-subtitle">These are the loaves our community absolutely adores!</p>
+        
+        <div class="favorites-grid">
+            <div class="favorite-card">
+                <div class="favorite-header">
+                    <h3 class="favorite-name">Chocolate Chip Sourdough</h3>
+                    <div class="favorite-rating">
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                    </div>
+                </div>
+                <div class="favorite-price">$12</div>
+                <p class="favorite-description">
+                    Belgian dark chocolate meets tangy sourdough in this perfect marriage of sweet and sour. It's like a warm hug in bread form!
+                </p>
+                <div class="favorite-reviews">"My kids fight over the last slice!" - Sarah M.</div>
+            </div>
+
+            <div class="favorite-card">
+                <div class="favorite-header">
+                    <h3 class="favorite-name">English Muffins</h3>
+                    <div class="favorite-rating">
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                    </div>
+                </div>
+                <div class="favorite-price">$8 / $15</div>
+                <p class="favorite-description">
+                    Hand-shaped and griddle-cooked to perfection. Those nooks and crannies are perfect for holding all the butter and jam your heart desires!
+                </p>
+                <div class="favorite-reviews">"Better than store-bought by a mile!" - Mike R.</div>
+            </div>
+
+            <div class="favorite-card">
+                <div class="favorite-header">
+                    <h3 class="favorite-name">Cinnamon Sugar Sourdough</h3>
+                    <div class="favorite-rating">
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                    </div>
+                </div>
+                <div class="favorite-price">$14</div>
+                <p class="favorite-description">
+                    Weekend morning magic! Ceylon cinnamon swirled with organic sugar creates the most heavenly breakfast bread. Toast it and thank us later!
+                </p>
+                <div class="favorite-reviews">"Sunday mornings just got better!" - Emma K.</div>
             </div>
         </div>
-        <div class="fav-card">
-            <div class="fav-card-img">🥖</div>
-            <div class="fav-card-body">
-                <div class="stars">★★★★★</div>
-                <h3>Classic Baguette</h3>
-                <p>Golden, crisp, and airy. Our sourdough spin on a French classic.</p>
-                <span class="price-tag">$6</span>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu-section" id="menu">
+        <h2 class="section-title">Our Daily Menu 📋</h2>
+        <p class="section-subtitle">Fresh-baked goodness made with love every single day</p>
+        
+        <div class="menu-categories">
+            <div class="menu-category">
+                <h3 class="category-title">Sourdough Loafs 🍞</h3>
+                
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h4>Regular Loaf</h4>
+                        <p>Our classic - simple, perfect, pure sourdough magic</p>
+                    </div>
+                    <span class="item-price">$10</span>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h4>Cheddar</h4>
+                        <p>Sharp Vermont cheddar brings the comfort vibes</p>
+                    </div>
+                    <span class="item-price">$12</span>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h4>Mozzarella and Garlic</h4>
+                        <p>Fresh mozz + roasted garlic = pure heaven</p>
+                    </div>
+                    <span class="item-price">$14</span>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h4>Chocolate Chip ⭐ Customer Fave!</h4>
+                        <p>Belgian dark chocolate chips in tangy sourdough</p>
+                    </div>
+                    <span class="item-price">$12</span>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h4>Cinnamon and Sugar ⭐ Customer Fave!</h4>
+                        <p>Weekend vibes with Ceylon cinnamon swirls</p>
+                    </div>
+                    <span class="item-price">$14</span>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h4>Chocolate, Chocolate Chip</h4>
+                        <p>Double chocolate dreams come true!</p>
+                    </div>
+                    <span class="item-price">$12</span>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h4>Chocolate Almond, Chocolate Chip</h4>
+                        <p>Premium almonds meet chocolate paradise</p>
+                    </div>
+                    <span class="item-price">$15</span>
+                </div>
+                
+                <div class="menu-item" style="background: linear-gradient(90deg, rgba(255,138,128,0.1) 0%, rgba(248,187,217,0.1) 100%); margin: 20px -20px; padding: 25px 20px; border-radius: 20px; border: 2px dashed var(--coral);">
+                    <div class="item-info">
+                        <h4>🎉 4 Pack Mini Loafs - Mix & Match!</h4>
+                        <p>Choose any 4 varieties - perfect for trying everything!</p>
+                    </div>
+                    <span class="item-price">$25</span>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h3 class="category-title">Other Breads 🥖</h3>
+                
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h4>Sourdough Honey Wheat Sandwich Bread</h4>
+                        <p>Whole wheat + wildflower honey = sandwich perfection</p>
+                    </div>
+                    <span class="item-price">$10</span>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h4>Sourdough English Muffins ⭐ Customer Fave!</h4>
+                        <p>Hand-shaped, griddle-cooked, nook-and-cranny perfection</p>
+                    </div>
+                    <span class="item-price">$8 / $15</span>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h4>Banana Bread</h4>
+                        <p>Ripe bananas + warm spices = comfort food gold</p>
+                    </div>
+                    <span class="item-price">$12</span>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h4>Banana Walnut Bread</h4>
+                        <p>All the banana love plus crunchy walnuts</p>
+                    </div>
+                    <span class="item-price">$15</span>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h4>Pumpkin Chocolate Chip Bread</h4>
+                        <p>Fall flavors meet chocolate chips - cozy vibes only</p>
+                    </div>
+                    <span class="item-price">$12</span>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h4>Pumpkin Almond Chocolate Chip Bread</h4>
+                        <p>The ultimate autumn indulgence with toasted almonds</p>
+                    </div>
+                    <span class="item-price">$15</span>
+                </div>
             </div>
         </div>
-        <div class="fav-card">
-            <div class="fav-card-img">🌻</div>
-            <div class="fav-card-body">
-                <div class="stars">★★★★★</div>
-                <h3>Seeded Multigrain</h3>
-                <p>Loaded with seeds — sunflower, flax, sesame, pumpkin. So hearty.</p>
-                <span class="price-tag">$10</span>
+    </section>
+
+    <!-- Instagram Gallery Section -->
+    <section class="gallery-section" id="gallery">
+        <h2 class="section-title">Our Instagram Moments 📸</h2>
+        <p class="section-subtitle">Follow @bakeryonbiscotto for daily bread inspo!</p>
+        
+        <div class="instagram-grid">
+            <div class="insta-post">
+                <img src="/images/product-sourdough-boule.jpg" alt="Beautiful Sourdough Boule">
+                <div class="insta-overlay">
+                    <div class="insta-likes">❤️ 284 likes</div>
+                </div>
+            </div>
+            <div class="insta-post">
+                <img src="/images/product-english-muffins.jpg" alt="Fresh English Muffins">
+                <div class="insta-overlay">
+                    <div class="insta-likes">❤️ 192 likes</div>
+                </div>
+            </div>
+            <div class="insta-post placeholder-post">
+                Behind the Scenes! 🎬
+            </div>
+            <div class="insta-post placeholder-post">
+                Biscotto's Daily Feed 🥣
+            </div>
+            <div class="insta-post placeholder-post">
+                Customer Smiles 😊
+            </div>
+            <div class="insta-post placeholder-post">
+                Recipe Sneak Peeks 👀
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Market Schedule -->
-<section class="market-section" id="markets">
-    <h2>📍 Find Us This Week</h2>
-    <div class="market-grid">
-        <div class="market-card">
-            <div class="market-day">Saturday</div>
-            <div class="market-name">Morning Market</div>
-            <span class="market-time">8 AM – 1 PM</span>
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="newsletter-content">
+            <h2 class="newsletter-title">Join the Bread Fam! 💌</h2>
+            <p class="newsletter-text">
+                Get first dibs on new flavors, behind-the-scenes content with Biscotto, and maybe a special discount or two! We promise not to spam you - just the good stuff! ✨
+            </p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="your.email@awesome.com" class="newsletter-input">
+                <button type="submit" class="newsletter-btn">Count Me In! 🙌</button>
+            </form>
         </div>
-        <div class="market-card">
-            <div class="market-day">Wednesday</div>
-            <div class="market-name">Evening Market</div>
-            <span class="market-time">4 PM – 7 PM</span>
-        </div>
-        <div class="market-card">
-            <div class="market-day">1st Sunday</div>
-            <div class="market-name">Pop-Up Event</div>
-            <span class="market-time">9 AM – 12 PM</span>
-        </div>
-    </div>
-</section>
+    </section>
 
-<!-- About -->
-<section class="about-section" id="about">
-    <div class="about-img">
-        <img src="/images/branding-final.png" alt="Bakery on Biscotto branding">
-    </div>
-    <div class="about-text">
-        <h2>A Little About Us 🤍</h2>
-        <p>Bakery on Biscotto started in our home kitchen with a dream and a sourdough starter we lovingly named Biscotto. What began as a weekend baking hobby quickly turned into a passion — and now we get to share our bread with the whole community.</p>
-        <p>Every loaf is handcrafted with just four ingredients: flour, water, salt, and our trusty starter. No shortcuts, no preservatives, just bread the way it should be made.</p>
-        <p class="signature">— Cassie, Head Baker & Chief Bread Enthusiast</p>
-    </div>
-</section>
-
-<!-- Testimonials -->
-<section class="testimonials">
-    <h2>Kind Words 💬</h2>
-    <div class="testimonial-grid">
-        <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <p>"Best sourdough I've ever had. The crust is incredible and the flavor is out of this world. I'm obsessed!"</p>
-            <cite>— Sarah M.</cite>
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="contact-card">
+            <h2 class="contact-title">Come Say Hi! 👋</h2>
+            <div class="contact-info">
+                <p><strong>Cassie's Cottage Food Operation</strong></p>
+                <p>🏠 2339 Biscotto Cir, Davenport, FL 33897</p>
+                <p>📧 bakeryonbiscotto@gmail.com</p>
+                <p style="margin-top: 30px; font-style: italic; color: var(--coral);">
+                    "From our kitchen to yours - spreading joy one loaf at a time!" 💕
+                </p>
+            </div>
+            <div class="social-badges">
+                <a href="#" class="social-badge">Facebook 📘</a>
+                <a href="#" class="social-badge">Instagram 📷</a>
+                <a href="#" class="social-badge">Say Hello! 👋</a>
+            </div>
         </div>
-        <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <p>"My kids won't eat any other bread now. The cinnamon raisin disappears before lunch!"</p>
-            <cite>— Jake & Family</cite>
-        </div>
-        <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <p>"I drive 30 minutes to the market just for their olive rosemary loaf. Worth every mile."</p>
-            <cite>— Linda R.</cite>
-        </div>
-        <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <p>"You can taste the love in every bite. This is what real bread should be. Thank you, Cassie!"</p>
-            <cite>— Mark T.</cite>
-        </div>
-    </div>
-</section>
+    </section>
 
-<!-- Newsletter -->
-<section class="newsletter">
-    <h2>Get the Fresh Loaf 📬</h2>
-    <p>Weekly updates on what's baking, market schedules, and first dibs on new flavors.</p>
-    <form class="newsletter-form" onsubmit="event.preventDefault()">
-        <input type="email" placeholder="your@email.com">
-        <button type="submit">Subscribe</button>
-    </form>
-</section>
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
 
-<!-- Footer -->
-<footer>
-    <img src="/images/logo.jpg" alt="Bakery on Biscotto" class="logo">
-    <div class="footer-links">
-        <a href="#">Instagram</a>
-        <a href="#">Facebook</a>
-        <a href="#">Email Us</a>
-    </div>
-    <p>&copy; 2026 Bakery on Biscotto. Made with flour, water, salt & a whole lot of love. 🍞</p>
-</footer>
-
+        // Add some fun hover effects to cards
+        document.querySelectorAll('.favorite-card, .menu-category').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
 </body>
 </html>
