@@ -841,6 +841,9 @@
         <a href="/">The Bakehouse</a>
         <a href="/concept-b">Modern Artisan</a>
         <a href="/concept-c" class="active">Sunday Morning</a>
+    <a href="/concept-d">D — Kitchen Table</a>
+    <a href="/concept-e">E — Flour &amp; Fire</a>
+    <a href="/concept-f">F — Neighborhood</a>
     </div>
 
     <!-- Hero Section -->
