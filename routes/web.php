@@ -8,3 +8,4 @@ Route::get('/concept-c', fn() => view('concepts.c'));
 Route::get('/concept-d', fn() => view('concepts.d'));
 Route::get('/concept-e', fn() => view('concepts.e'));
 Route::get('/concept-f', fn() => view('concepts.f'));
+Route::get('/concept-g', fn() => view('concepts.g'));
