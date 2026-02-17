@@ -3,763 +3,924 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bakery on Biscotto</title>
+    <title>Bakery on Biscotto | Handcrafted Sourdough, Davenport FL</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         :root {
-            --dark-brown: #3D2314;
-            --warm-brown: #8B5E3C;
+            --dark: #3D2314;
+            --brown: #8B5E3C;
             --cream: #F5E6D0;
             --golden: #D4A574;
-            --light-cream: #FDF8F2;
             --accent: #C17F4E;
-            --dark-brown-rgb: 61,35,20;
-            --golden-rgb: 212,165,116;
-            --accent-rgb: 193,127,78;
-            --warm-brown-rgb: 139,94,60;
+            --light: #FDF8F2;
+            --white: #FFFFFF;
         }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
         html { scroll-behavior: smooth; }
-
         body {
             font-family: 'Inter', sans-serif;
-            color: var(--dark-brown);
-            background: var(--light-cream);
+            color: var(--dark);
+            background: var(--light);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ── Noise overlay mixin ── */
-        .noise { position: relative; }
-        .noise::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* ── Ambient orb ── */
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.18;
-        }
-
-        /* ── Scroll animations ── */
-        .reveal {
-            opacity: 0;
-            transform: translateY(32px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ── Concept Nav ── */
+        /* ═══════════════════════════════════
+           CONCEPT NAV
+        ═══════════════════════════════════ */
         .concept-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            gap: 2px;
-            background: var(--dark-brown);
-            padding: 6px 0;
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1001;
+            display: flex; justify-content: center; gap: 2px;
+            background: var(--dark); padding: 5px 0;
         }
         .concept-nav a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: 13px;
-            color: rgba(245,230,208,0.5);
-            text-decoration: none;
-            transition: all 0.25s ease;
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 30px; height: 28px; border-radius: 6px;
+            font-size: 12px; font-weight: 600; color: rgba(245,230,208,0.4);
+            text-decoration: none; transition: all 0.2s;
         }
         .concept-nav a:hover { color: var(--cream); background: rgba(245,230,208,0.08); }
-        .concept-nav a.active {
-            color: var(--dark-brown);
-            background: var(--golden);
-        }
+        .concept-nav a.active { color: var(--dark); background: var(--golden); }
 
-        /* ── Main Nav ── */
+        /* ═══════════════════════════════════
+           MAIN NAV - Glassmorphism pill bar
+        ═══════════════════════════════════ */
         .main-nav {
-            position: sticky;
-            top: 44px;
-            z-index: 999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            padding: 12px 20px;
-            background: rgba(61,35,20,0.65);
-            backdrop-filter: blur(20px) saturate(1.4);
-            -webkit-backdrop-filter: blur(20px) saturate(1.4);
-            border-bottom: 1px solid rgba(212,165,116,0.12);
+            position: fixed; top: 50px; left: 50%; transform: translateX(-50%);
+            z-index: 1000;
+            display: flex; align-items: center; gap: 4px;
+            padding: 8px 12px;
+            background: rgba(61,35,20,0.75);
+            backdrop-filter: blur(24px) saturate(1.6);
+            -webkit-backdrop-filter: blur(24px) saturate(1.6);
+            border-radius: 100px;
+            border: 1px solid rgba(212,165,116,0.15);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
         }
         .main-nav a {
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            font-size: 14px;
-            color: var(--cream);
-            text-decoration: none;
-            padding: 8px 22px;
-            border-radius: 100px;
+            font-family: 'Playfair Display', serif;
+            font-size: 14px; font-weight: 500;
+            color: var(--cream); text-decoration: none;
+            padding: 10px 24px; border-radius: 100px;
             transition: all 0.3s ease;
-            letter-spacing: 0.02em;
         }
-        .main-nav a:hover {
-            background: rgba(212,165,116,0.15);
-            color: var(--golden);
-        }
+        .main-nav a:hover { background: rgba(212,165,116,0.2); color: var(--golden); }
 
-        /* ── Hero ── */
+        /* ═══════════════════════════════════
+           HERO - Parallax + floating recipe card
+        ═══════════════════════════════════ */
         .hero {
             position: relative;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
+            display: flex; align-items: center; justify-content: center;
             overflow: hidden;
-            margin-top: 44px;
         }
         .hero-bg {
-            position: absolute;
-            inset: 0;
+            position: absolute; inset: 0;
             background: url('/images/hero-banner.jpg') center/cover no-repeat;
+            transform: scale(1.1);
+            will-change: transform;
         }
-        .hero-bg::after {
-            content: '';
-            position: absolute;
-            inset: 0;
+        .hero-overlay {
+            position: absolute; inset: 0;
             background: linear-gradient(
                 180deg,
-                rgba(var(--dark-brown-rgb), 0.7) 0%,
-                rgba(var(--dark-brown-rgb), 0.5) 40%,
-                rgba(var(--dark-brown-rgb), 0.8) 100%
+                rgba(61,35,20,0.4) 0%,
+                rgba(61,35,20,0.6) 50%,
+                rgba(61,35,20,0.85) 100%
             );
         }
+        /* Flour particles */
+        .flour-particles {
+            position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+        }
+        .flour {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: rgba(245,230,208,0.6);
+            border-radius: 50%;
+            animation: flour-fall linear infinite;
+        }
+        @keyframes flour-fall {
+            0% { transform: translateY(-10px) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
         .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 40px 20px;
-        }
-        .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 600;
-            font-size: clamp(3rem, 8vw, 6.5rem);
-            color: var(--cream);
-            line-height: 1.05;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, var(--cream) 0%, var(--golden) 50%, var(--cream) 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 6s ease-in-out infinite;
-        }
-        @keyframes shimmer {
-            0%, 100% { background-position: 0% center; }
-            50% { background-position: 200% center; }
-        }
-        .hero .tagline {
-            font-family: 'Dancing Script', cursive;
-            font-size: clamp(1.3rem, 3vw, 2rem);
-            color: var(--golden);
-            margin-bottom: 40px;
-            opacity: 0.9;
-        }
-        .btn-primary {
-            display: inline-block;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: 15px;
-            letter-spacing: 0.04em;
-            color: var(--dark-brown);
-            background: linear-gradient(135deg, var(--golden), var(--accent));
-            padding: 16px 40px;
-            border-radius: 100px;
-            text-decoration: none;
-            transition: all 0.4s ease;
-            box-shadow: 0 4px 24px rgba(var(--accent-rgb), 0.25);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 40px rgba(var(--accent-rgb), 0.45);
-        }
-        .hero-fade {
-            animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
-        }
-        .hero-fade-d1 { animation-delay: 0.2s; }
-        .hero-fade-d2 { animation-delay: 0.5s; }
-        .hero-fade-d3 { animation-delay: 0.8s; }
-        @keyframes heroFadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ── Botanical Divider ── */
-        .divider {
-            display: flex;
+            position: relative; z-index: 3;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 60px;
+            max-width: 1200px;
+            padding: 120px 40px 80px;
             align-items: center;
-            justify-content: center;
-            gap: 20px;
-            padding: 48px 20px;
         }
-        .divider-line {
-            flex: 1;
-            max-width: 200px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--golden), transparent);
+        .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.2rem, 7vw, 5.5rem);
+            font-weight: 700; color: var(--cream);
+            line-height: 1.05; margin-bottom: 16px;
         }
-        .divider svg { flex-shrink: 0; opacity: 0.5; }
-
-        /* ── Meet Cassie ── */
-        .about-section {
-            position: relative;
-            padding: 100px 20px;
-            overflow: hidden;
+        .hero-text h1 em {
+            font-style: italic; font-weight: 400;
+            color: var(--golden);
+        }
+        .hero-text .tagline {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.4rem, 3vw, 2.2rem);
+            color: var(--golden); margin-bottom: 12px;
+        }
+        .hero-text .hero-desc {
+            font-size: 16px; color: rgba(245,230,208,0.7);
+            max-width: 480px; line-height: 1.7; margin-bottom: 32px;
+        }
+        .hero-btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 16px 36px;
+            background: var(--golden); color: var(--dark);
+            font-weight: 600; font-size: 15px;
+            border-radius: 100px; text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 24px rgba(193,127,78,0.3);
+        }
+        .hero-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(193,127,78,0.5);
             background: var(--cream);
         }
-        .about-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-        .about-photo {
+        .hero-btn svg { transition: transform 0.3s; }
+        .hero-btn:hover svg { transform: translateX(4px); }
+
+        /* Floating Recipe Card */
+        .recipe-card-float {
             width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--golden), var(--accent));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 80px;
-            box-shadow: 0 0 60px rgba(var(--accent-rgb), 0.25);
-            justify-self: center;
-        }
-        .about-card {
-            background: rgba(255,255,255,0.55);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(var(--golden-rgb), 0.18);
-            border-radius: 24px;
-            padding: 48px;
+            background: var(--cream);
+            border-radius: 4px;
+            padding: 32px 28px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(139,94,60,0.2);
+            transform: rotate(3deg);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
+            animation: card-float 6s ease-in-out infinite;
+        }
+        .recipe-card-float:hover { transform: rotate(0deg) scale(1.05); }
+        @keyframes card-float {
+            0%, 100% { transform: rotate(3deg) translateY(0); }
+            50% { transform: rotate(3deg) translateY(-12px); }
+        }
+        .recipe-card-float::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                transparent, transparent 27px,
+                rgba(139,94,60,0.12) 27px, rgba(139,94,60,0.12) 28px
+            );
+            pointer-events: none;
+        }
+        .recipe-card-float::after {
+            content: '📌';
+            position: absolute; top: -12px; right: 20px; font-size: 24px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+        .recipe-card-float .recipe-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3rem; color: var(--dark);
+            margin-bottom: 12px; font-weight: 700;
+        }
+        .recipe-card-float .recipe-line {
+            font-size: 13px; color: var(--brown);
+            margin-bottom: 6px; line-height: 1.6;
+            font-style: italic;
+        }
+        .recipe-card-float .recipe-heart {
+            text-align: right; font-size: 18px; margin-top: 12px;
+        }
+
+        /* Hero entrance animations */
+        .hero-enter { opacity: 0; transform: translateY(30px); animation: enter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .hero-enter-d1 { animation-delay: 0.2s; }
+        .hero-enter-d2 { animation-delay: 0.4s; }
+        .hero-enter-d3 { animation-delay: 0.6s; }
+        .hero-enter-d4 { animation-delay: 0.8s; }
+        @keyframes enter { to { opacity: 1; transform: translateY(0); } }
+
+        /* ═══════════════════════════════════
+           BOTANICAL DIVIDER
+        ═══════════════════════════════════ */
+        .divider {
+            display: flex; align-items: center; justify-content: center;
+            gap: 20px; padding: 40px 20px;
+        }
+        .divider-line {
+            flex: 1; max-width: 180px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--golden), transparent);
+        }
+        .divider-icon { opacity: 0.4; }
+
+        /* ═══════════════════════════════════
+           MEET CASSIE - Asymmetric + torn paper
+        ═══════════════════════════════════ */
+        .about {
+            position: relative; overflow: hidden;
+            padding: 80px 0;
+        }
+        /* Torn paper top edge */
+        .torn-top {
+            position: absolute; top: -2px; left: 0; right: 0; height: 40px;
+            background: var(--light);
+            clip-path: polygon(
+                0% 0%, 100% 0%,
+                100% 40%, 97% 55%, 94% 35%, 90% 60%, 87% 40%, 83% 55%,
+                80% 30%, 76% 50%, 73% 35%, 70% 55%, 66% 40%, 63% 60%,
+                60% 35%, 56% 50%, 53% 30%, 50% 55%, 46% 40%, 43% 60%,
+                40% 35%, 36% 50%, 33% 30%, 30% 55%, 26% 40%, 23% 60%,
+                20% 35%, 16% 55%, 13% 40%, 10% 55%, 6% 35%, 3% 50%, 0% 40%
+            );
             z-index: 2;
         }
-        .about-card h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--dark-brown);
+        .torn-bottom {
+            position: absolute; bottom: -2px; left: 0; right: 0; height: 40px;
+            background: var(--light);
+            clip-path: polygon(
+                0% 100%, 100% 100%,
+                100% 60%, 97% 45%, 94% 65%, 90% 40%, 87% 60%, 83% 45%,
+                80% 70%, 76% 50%, 73% 65%, 70% 45%, 66% 60%, 63% 40%,
+                60% 65%, 56% 50%, 53% 70%, 50% 45%, 46% 60%, 43% 40%,
+                40% 65%, 36% 50%, 33% 70%, 30% 45%, 26% 60%, 23% 40%,
+                20% 65%, 16% 45%, 13% 60%, 10% 45%, 6% 65%, 3% 50%, 0% 60%
+            );
+            z-index: 2;
         }
-        .about-card p {
-            font-size: 16px;
-            line-height: 1.75;
-            color: rgba(61,35,20,0.8);
-            margin-bottom: 14px;
+        .about-bg {
+            position: absolute; inset: 0;
+            background: var(--cream);
+            /* Kraft paper texture */
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(193,127,78,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 30%, rgba(212,165,116,0.1) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-blend-mode: overlay;
         }
-        .about-card .signature {
+        .about-inner {
+            position: relative; z-index: 3;
+            max-width: 1100px; margin: 0 auto; padding: 40px 40px;
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 80px;
+            align-items: center;
+        }
+        /* Photo with handwritten annotation */
+        .about-photo-wrap {
+            position: relative;
+            justify-self: center;
+        }
+        .about-photo {
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--golden), var(--accent));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 90px;
+            box-shadow:
+                0 0 0 6px var(--cream),
+                0 0 0 8px var(--golden),
+                0 20px 60px rgba(61,35,20,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .about-photo::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), transparent 60%);
+        }
+        /* Handwritten annotation arrow */
+        .annotation {
+            position: absolute;
             font-family: 'Dancing Script', cursive;
-            font-size: 1.4rem;
-            color: var(--accent);
+            font-size: 16px; color: var(--brown);
+            white-space: nowrap;
+        }
+        .annotation-1 {
+            bottom: -30px; left: 50%;
+            transform: translateX(-50%) rotate(-3deg);
+        }
+        .about-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem; font-weight: 600;
+            margin-bottom: 24px; color: var(--dark);
+            position: relative;
+        }
+        .about-text h2::after {
+            content: '';
+            display: block; width: 60px; height: 3px;
+            background: linear-gradient(90deg, var(--golden), var(--accent));
+            margin-top: 16px; border-radius: 2px;
+        }
+        .about-text p {
+            font-size: 16px; line-height: 1.8;
+            color: rgba(61,35,20,0.8); margin-bottom: 16px;
+        }
+        .about-text .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem; color: var(--accent);
             margin-top: 24px;
         }
 
-        /* ── Process ── */
-        .process-section {
+        /* ═══════════════════════════════════
+           SOURDOUGH STARTER JAR - Breathing animation
+           (The "trading card" equivalent)
+        ═══════════════════════════════════ */
+        .starter-showcase {
+            padding: 80px 20px;
+            background: var(--dark);
+            position: relative; overflow: hidden;
+        }
+        .starter-showcase::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: radial-gradient(circle, rgba(212,165,116,0.08) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        /* Noise overlay */
+        .starter-showcase::after {
+            content: '';
+            position: absolute; inset: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        .starter-inner {
+            position: relative; z-index: 2;
+            max-width: 900px; margin: 0 auto;
+            display: grid; grid-template-columns: auto 1fr;
+            gap: 80px; align-items: center;
+        }
+        /* The Jar */
+        .jar-container {
             position: relative;
-            padding: 100px 20px;
-            background: var(--dark-brown);
+            width: 200px; height: 280px;
+        }
+        .jar {
+            position: absolute; bottom: 0;
+            width: 160px; height: 220px; left: 20px;
+            border: 3px solid rgba(212,165,116,0.4);
+            border-radius: 8px 8px 20px 20px;
+            background: linear-gradient(180deg, transparent 0%, rgba(212,165,116,0.08) 100%);
             overflow: hidden;
         }
-        .process-section::after {
+        .jar-lid {
+            position: absolute; bottom: 220px; left: 10px;
+            width: 180px; height: 30px;
+            background: linear-gradient(180deg, rgba(212,165,116,0.6), rgba(193,127,78,0.6));
+            border-radius: 6px 6px 2px 2px;
+            border: 2px solid rgba(212,165,116,0.4);
+        }
+        .jar-label {
+            position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-family: 'Dancing Script', cursive;
+            font-size: 20px; color: var(--golden);
+            text-align: center; z-index: 3;
+            text-shadow: 0 0 20px rgba(212,165,116,0.5);
+        }
+        .jar-label small {
+            display: block; font-family: 'Inter', sans-serif;
+            font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+            color: rgba(212,165,116,0.6); margin-top: 4px;
+        }
+        /* Starter "breathing" inside jar */
+        .starter-level {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 55%;
+            background: linear-gradient(
+                180deg,
+                rgba(212,165,116,0.15) 0%,
+                rgba(212,165,116,0.3) 100%
+            );
+            animation: breathe 4s ease-in-out infinite;
+            border-top: 2px solid rgba(212,165,116,0.3);
+        }
+        @keyframes breathe {
+            0%, 100% { height: 55%; }
+            50% { height: 65%; }
+        }
+        /* Bubbles */
+        .bubble {
+            position: absolute; border-radius: 50%;
+            border: 1px solid rgba(212,165,116,0.4);
+            animation: bubble-rise linear infinite;
+        }
+        @keyframes bubble-rise {
+            0% { transform: translateY(0) scale(1); opacity: 0.6; }
+            100% { transform: translateY(-120px) scale(0.5); opacity: 0; }
+        }
+        /* Glow behind jar */
+        .jar-glow {
+            position: absolute;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(212,165,116,0.15), transparent 70%);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+        }
+        .starter-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem; color: var(--cream);
+            margin-bottom: 20px;
+        }
+        .starter-text p {
+            font-size: 15px; line-height: 1.8;
+            color: rgba(245,230,208,0.6); margin-bottom: 12px;
+        }
+        .starter-text .highlight {
+            color: var(--golden); font-weight: 500;
+        }
+
+        /* ═══════════════════════════════════
+           PROCESS - Horizontal timeline
+        ═══════════════════════════════════ */
+        .process {
+            padding: 80px 20px;
+            background: var(--light);
+        }
+        .section-head {
+            text-align: center; margin-bottom: 60px;
+        }
+        .section-head h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 2.6rem);
+            font-weight: 600; color: var(--dark);
+        }
+        .section-head .accent-line {
+            width: 60px; height: 3px; margin: 16px auto 0;
+            background: linear-gradient(90deg, var(--golden), var(--accent));
+            border-radius: 2px;
+        }
+        .timeline {
+            max-width: 1000px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            position: relative;
+        }
+        /* Connecting line */
+        .timeline::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background-image: radial-gradient(circle, rgba(212,165,116,0.15) 1px, transparent 1px);
-            background-size: 24px 24px;
-            pointer-events: none;
-            z-index: 1;
+            top: 40px; left: 12.5%; right: 12.5%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--golden), var(--accent), var(--golden));
+            opacity: 0.3;
         }
-        .process-section .section-title {
-            color: var(--cream);
-        }
-        .process-grid {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 32px;
+        .timeline-step {
+            text-align: center; padding: 0 16px;
             position: relative;
-            z-index: 2;
         }
-        .process-step {
-            text-align: center;
-            padding: 32px 16px;
-        }
-        .step-num {
-            width: 64px;
-            height: 64px;
+        .step-dot {
+            width: 80px; height: 80px;
             border-radius: 50%;
             border: 2px solid var(--golden);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--golden);
+            display: inline-flex; align-items: center; justify-content: center;
             margin-bottom: 20px;
-            background: rgba(var(--golden-rgb), 0.06);
+            background: var(--light);
+            position: relative; z-index: 2;
+            transition: all 0.4s ease;
         }
-        .process-step h3 {
+        .step-dot:hover {
+            background: var(--golden);
+            box-shadow: 0 0 30px rgba(212,165,116,0.4);
+        }
+        .step-dot:hover .step-emoji { transform: scale(1.2); }
+        .step-emoji {
+            font-size: 32px; transition: transform 0.3s;
+        }
+        .timeline-step h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            color: var(--cream);
-            margin-bottom: 10px;
+            font-size: 1.2rem; color: var(--dark);
+            margin-bottom: 8px;
         }
-        .process-step p {
-            font-size: 14px;
-            line-height: 1.7;
-            color: rgba(245,230,208,0.6);
+        .timeline-step p {
+            font-size: 14px; color: var(--brown);
+            line-height: 1.6;
         }
 
-        /* ── Section Title ── */
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 4vw, 2.8rem);
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 48px;
-            color: var(--dark-brown);
-        }
-
-        /* ── Menu ── */
-        .menu-section {
-            padding: 100px 20px;
-            background: var(--light-cream);
+        /* ═══════════════════════════════════
+           MENU - Recipe card style
+        ═══════════════════════════════════ */
+        .menu {
+            padding: 80px 20px;
+            background: var(--cream);
+            position: relative;
         }
         .menu-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 48px;
+            display: flex; justify-content: center;
+            gap: 8px; margin-bottom: 48px;
         }
         .menu-tab {
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            font-size: 15px;
-            padding: 10px 28px;
-            border-radius: 100px;
-            border: 1.5px solid var(--golden);
-            background: transparent;
-            color: var(--warm-brown);
-            cursor: pointer;
-            transition: all 0.3s ease;
+            font-family: 'Playfair Display', serif;
+            font-size: 15px; font-weight: 500;
+            padding: 12px 32px; border-radius: 100px;
+            border: 2px solid var(--golden);
+            background: transparent; color: var(--brown);
+            cursor: pointer; transition: all 0.3s;
         }
-        .menu-tab:hover { background: rgba(var(--golden-rgb), 0.1); }
+        .menu-tab:hover { background: rgba(212,165,116,0.15); }
         .menu-tab.active {
-            background: var(--golden);
-            color: var(--dark-brown);
-            font-weight: 600;
+            background: var(--dark); color: var(--cream);
+            border-color: var(--dark);
         }
         .menu-grid {
-            max-width: 1100px;
-            margin: 0 auto;
+            max-width: 1100px; margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 28px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
         }
+        /* Recipe-style menu card */
         .menu-card {
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(var(--golden-rgb), 0.12);
-            border-radius: 20px;
+            background: var(--white);
+            border-radius: 16px;
             overflow: hidden;
+            border: 1px solid rgba(139,94,60,0.1);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            border-top: 3px solid;
-            border-image: linear-gradient(90deg, var(--golden), var(--accent)) 1;
+            position: relative;
+        }
+        .menu-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--golden), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s;
         }
         .menu-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 16px 48px rgba(var(--accent-rgb), 0.18);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(61,35,20,0.12);
         }
+        .menu-card:hover::before { opacity: 1; }
         .menu-card-img {
-            height: 180px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            background: linear-gradient(135deg, rgba(var(--golden-rgb),0.2), rgba(var(--accent-rgb),0.15));
+            height: 200px;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
         }
+        .menu-card-img.has-photo { height: 220px; }
         .menu-card-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .menu-card:hover .menu-card-img img { transform: scale(1.08); }
+        .menu-card-img.placeholder-img {
+            background: linear-gradient(135deg, rgba(212,165,116,0.15), rgba(193,127,78,0.1));
+        }
+        .menu-card-img .emoji-icon {
+            font-size: 56px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
         }
         .menu-card-body {
             padding: 24px;
         }
         .menu-card-body h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.15rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--dark-brown);
+            font-size: 1.15rem; font-weight: 600;
+            color: var(--dark); margin-bottom: 8px;
         }
         .menu-card-body .desc {
-            font-size: 13.5px;
-            color: rgba(61,35,20,0.6);
-            line-height: 1.5;
-            margin-bottom: 12px;
+            font-size: 14px; color: rgba(61,35,20,0.6);
+            line-height: 1.6; margin-bottom: 16px;
         }
-        .price-badge {
+        .menu-card-footer {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem; font-weight: 700; color: var(--accent);
+        }
+        .price-pill {
             display: inline-block;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: 14px;
-            padding: 4px 16px;
-            border-radius: 100px;
+            padding: 4px 16px; border-radius: 100px;
             background: linear-gradient(135deg, var(--golden), var(--accent));
-            color: var(--dark-brown);
+            color: var(--dark); font-weight: 700; font-size: 15px;
+            font-family: 'Inter', sans-serif;
+        }
+        /* Special deal card */
+        .menu-card.special {
+            background: linear-gradient(135deg, var(--dark), #4d2e1c);
+            border: 1px solid rgba(212,165,116,0.2);
+        }
+        .menu-card.special .menu-card-body h3 { color: var(--cream); }
+        .menu-card.special .desc { color: rgba(245,230,208,0.6); }
+        .menu-card.special .price-pill {
+            background: var(--golden); color: var(--dark);
         }
 
-        /* ── Reviews ── */
-        .reviews-section {
-            padding: 100px 20px;
-            background: var(--cream);
+        /* ═══════════════════════════════════
+           REVIEWS - Polaroid style
+        ═══════════════════════════════════ */
+        .reviews {
+            padding: 80px 20px;
+            background: var(--light);
         }
         .reviews-grid {
-            max-width: 1100px;
-            margin: 0 auto;
+            max-width: 1100px; margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 28px;
+            gap: 32px;
         }
         .review-card {
-            background: rgba(255,255,255,0.6);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(var(--golden-rgb), 0.12);
-            border-radius: 20px;
-            padding: 36px 28px;
+            background: var(--white);
+            padding: 36px 28px 28px;
+            border-radius: 4px;
+            box-shadow: 0 4px 20px rgba(61,35,20,0.06);
             position: relative;
             transition: all 0.4s ease;
         }
+        .review-card:nth-child(1) { transform: rotate(-1.5deg); }
+        .review-card:nth-child(2) { transform: rotate(1deg); }
+        .review-card:nth-child(3) { transform: rotate(-0.5deg); }
+        .review-card:nth-child(4) { transform: rotate(2deg); }
         .review-card:hover {
-            box-shadow: 0 8px 40px rgba(var(--accent-rgb), 0.15);
+            transform: rotate(0deg) translateY(-6px) !important;
+            box-shadow: 0 16px 48px rgba(61,35,20,0.12);
         }
-        .review-card .quote-mark {
-            font-family: 'Playfair Display', serif;
-            font-size: 4rem;
-            line-height: 1;
-            color: var(--golden);
-            opacity: 0.35;
-            position: absolute;
-            top: 16px;
-            left: 24px;
+        .review-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--golden), var(--accent));
+            border-radius: 4px 4px 0 0;
         }
-        .review-card p {
-            font-size: 15px;
-            line-height: 1.7;
-            color: rgba(61,35,20,0.75);
-            font-style: italic;
-            margin-bottom: 16px;
-            position: relative;
-            z-index: 1;
+        .review-stars {
+            color: var(--golden); font-size: 14px;
+            margin-bottom: 16px; letter-spacing: 2px;
         }
-        .review-card .reviewer {
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--warm-brown);
-            font-style: normal;
+        .review-card blockquote {
+            font-size: 15px; line-height: 1.7;
+            color: rgba(61,35,20,0.75); font-style: italic;
+            margin-bottom: 20px;
+        }
+        .review-author {
+            font-weight: 600; font-size: 14px; color: var(--brown);
+        }
+        .review-location {
+            font-size: 13px; color: rgba(61,35,20,0.4);
+        }
+        /* Tape effect */
+        .tape {
+            position: absolute; top: -8px; left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 80px; height: 24px;
+            background: rgba(212,165,116,0.35);
+            border-radius: 2px;
         }
 
-        /* ── Instagram ── */
-        .instagram-section {
-            padding: 100px 20px;
-            background: var(--light-cream);
+        /* ═══════════════════════════════════
+           INSTAGRAM GRID
+        ═══════════════════════════════════ */
+        .insta {
+            padding: 80px 20px;
+            background: var(--cream);
         }
         .insta-grid {
-            max-width: 900px;
-            margin: 0 auto 40px;
+            max-width: 900px; margin: 0 auto 40px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 8px;
         }
         .insta-item {
             aspect-ratio: 1;
-            border-radius: 16px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            background: linear-gradient(135deg, rgba(var(--golden-rgb),0.25), rgba(var(--accent-rgb),0.18));
+            border-radius: 12px; overflow: hidden;
+            position: relative; cursor: pointer;
             transition: all 0.4s ease;
-            cursor: pointer;
-            position: relative;
         }
         .insta-item:hover {
-            transform: scale(1.04);
-            box-shadow: 0 8px 32px rgba(var(--accent-rgb), 0.2);
+            transform: scale(1.03);
+            box-shadow: 0 8px 32px rgba(61,35,20,0.15);
+            z-index: 2;
         }
         .insta-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            width: 100%; height: 100%; object-fit: cover;
         }
-        .insta-item .placeholder-text {
-            position: absolute;
-            bottom: 8px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 11px;
-            color: var(--warm-brown);
-            font-weight: 500;
-            opacity: 0.7;
+        .insta-item.placeholder {
+            background: linear-gradient(135deg, rgba(212,165,116,0.2), rgba(193,127,78,0.12));
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 8px;
+        }
+        .insta-item.placeholder .emoji { font-size: 40px; }
+        .insta-item.placeholder .label {
+            font-size: 12px; color: var(--brown); font-weight: 500;
+            letter-spacing: 0.5px;
         }
         .insta-cta {
             text-align: center;
         }
         .insta-cta a {
             font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: 16px;
-            color: var(--accent);
-            text-decoration: none;
-            transition: color 0.3s;
+            font-weight: 600; font-size: 16px;
+            color: var(--accent); text-decoration: none;
         }
-        .insta-cta a:hover { color: var(--warm-brown); }
-        .insta-cta .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-top: 12px;
-        }
-        .insta-cta .social-icons a {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 1.5px solid var(--golden);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        .insta-cta .social-icons a:hover {
-            background: var(--golden);
-        }
-        .insta-cta .social-icons a:hover svg { fill: var(--dark-brown); }
-        .insta-cta .social-icons svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--warm-brown);
-            transition: fill 0.3s;
-        }
+        .insta-cta a:hover { color: var(--dark); }
 
-        /* ── Order ── */
-        .order-section {
-            position: relative;
-            padding: 100px 20px;
-            background: var(--dark-brown);
-            overflow: hidden;
+        /* ═══════════════════════════════════
+           ORDER SECTION - Recipe card motif
+        ═══════════════════════════════════ */
+        .order {
+            padding: 80px 20px;
+            background: var(--dark);
+            position: relative; overflow: hidden;
         }
-        .order-section .section-title { color: var(--cream); }
-        .order-grid {
-            max-width: 900px;
-            margin: 0 auto 48px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            position: relative;
-            z-index: 2;
+        .order::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: radial-gradient(circle, rgba(212,165,116,0.06) 1px, transparent 1px);
+            background-size: 24px 24px;
         }
-        .order-step {
-            background: rgba(245,230,208,0.06);
+        .order-inner {
+            max-width: 900px; margin: 0 auto;
+            position: relative; z-index: 2;
+        }
+        .order-card {
+            background: rgba(245,230,208,0.04);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(var(--golden-rgb), 0.12);
-            border-radius: 20px;
-            padding: 36px 24px;
+            border: 1px solid rgba(212,165,116,0.15);
+            border-radius: 24px;
+            padding: 60px 48px;
             text-align: center;
         }
-        .order-step .order-num {
-            width: 48px;
-            height: 48px;
+        .order-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem; color: var(--cream);
+            margin-bottom: 12px;
+        }
+        .order-card .sub {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem; color: var(--golden);
+            margin-bottom: 48px;
+        }
+        .order-steps {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 32px; margin-bottom: 48px;
+        }
+        .order-step {
+            position: relative; padding: 24px 16px;
+        }
+        /* Connecting arrows between steps */
+        .order-step:not(:last-child)::after {
+            content: '→';
+            position: absolute; right: -20px; top: 40px;
+            font-size: 24px; color: rgba(212,165,116,0.3);
+        }
+        .order-num {
+            width: 56px; height: 56px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--golden), var(--accent));
-            color: var(--dark-brown);
+            color: var(--dark);
             font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 1.2rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 18px;
+            font-size: 1.4rem; font-weight: 700;
+            display: inline-flex; align-items: center; justify-content: center;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 20px rgba(193,127,78,0.3);
         }
         .order-step h3 {
             font-family: 'Playfair Display', serif;
-            color: var(--cream);
-            font-size: 1.15rem;
+            font-size: 1.15rem; color: var(--cream);
             margin-bottom: 8px;
         }
         .order-step p {
-            font-size: 14px;
-            color: rgba(245,230,208,0.6);
+            font-size: 14px; color: rgba(245,230,208,0.5);
             line-height: 1.6;
         }
-        .order-cta {
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-        .btn-glow {
-            display: inline-block;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: 16px;
-            color: var(--dark-brown);
-            background: linear-gradient(135deg, var(--golden), var(--accent));
+        .order-btn {
+            display: inline-flex; align-items: center; gap: 10px;
             padding: 18px 48px;
-            border-radius: 100px;
-            text-decoration: none;
+            background: linear-gradient(135deg, var(--golden), var(--accent));
+            color: var(--dark); font-weight: 700; font-size: 16px;
+            border-radius: 100px; text-decoration: none;
             transition: all 0.4s ease;
-            box-shadow: 0 4px 32px rgba(var(--accent-rgb), 0.35);
+            box-shadow: 0 4px 32px rgba(193,127,78,0.35);
         }
-        .btn-glow:hover {
+        .order-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 56px rgba(var(--accent-rgb), 0.55);
+            box-shadow: 0 12px 48px rgba(193,127,78,0.55);
         }
 
-        /* ── Footer ── */
+        /* ═══════════════════════════════════
+           FOOTER
+        ═══════════════════════════════════ */
         .footer {
-            position: relative;
-            background: var(--dark-brown);
-            padding: 80px 20px 40px;
+            background: var(--dark);
+            position: relative; overflow: hidden;
+            padding: 0 20px 40px;
             text-align: center;
-            overflow: hidden;
         }
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+        .footer-gradient {
             height: 3px;
-            background: linear-gradient(90deg, transparent, var(--golden), var(--accent), var(--golden), transparent);
+            background: linear-gradient(90deg, transparent 5%, var(--golden), var(--accent), var(--golden), transparent 95%);
+            margin-bottom: 60px;
         }
         .footer h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            color: var(--cream);
+            font-size: 1.8rem; color: var(--cream);
             margin-bottom: 8px;
-            position: relative;
-            z-index: 2;
         }
-        .footer .footer-tagline {
+        .footer .tagline {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.2rem;
-            color: var(--golden);
-            margin-bottom: 28px;
-            position: relative;
-            z-index: 2;
+            font-size: 1.15rem; color: var(--golden);
+            margin-bottom: 24px;
         }
         .footer-badge {
             display: inline-block;
-            padding: 8px 24px;
-            border: 1.5px solid rgba(var(--golden-rgb), 0.3);
+            padding: 10px 28px;
+            border: 1.5px solid rgba(212,165,116,0.25);
             border-radius: 100px;
-            font-size: 13px;
-            font-weight: 500;
-            color: rgba(245,230,208,0.7);
+            font-size: 13px; font-weight: 500;
+            color: rgba(245,230,208,0.6);
             margin-bottom: 28px;
-            position: relative;
-            z-index: 2;
+            letter-spacing: 0.5px;
         }
         .footer-info {
-            font-size: 14px;
-            color: rgba(245,230,208,0.5);
-            line-height: 2;
-            position: relative;
-            z-index: 2;
+            font-size: 14px; color: rgba(245,230,208,0.4);
+            line-height: 2.2;
         }
         .footer-info a {
-            color: var(--golden);
-            text-decoration: none;
+            color: var(--golden); text-decoration: none;
             transition: color 0.3s;
         }
         .footer-info a:hover { color: var(--cream); }
         .footer-bottom {
-            margin-top: 40px;
-            padding-top: 24px;
-            border-top: 1px solid rgba(245,230,208,0.08);
-            font-size: 13px;
-            color: rgba(245,230,208,0.3);
-            position: relative;
-            z-index: 2;
+            margin-top: 40px; padding-top: 20px;
+            border-top: 1px solid rgba(245,230,208,0.06);
+            font-size: 12px; color: rgba(245,230,208,0.2);
         }
 
-        /* ── Mobile ── */
-        @media (max-width: 768px) {
+        /* ═══════════════════════════════════
+           SCROLL ANIMATIONS
+        ═══════════════════════════════════ */
+        .reveal {
+            opacity: 0; transform: translateY(28px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1; transform: translateY(0);
+        }
+
+        /* ═══════════════════════════════════
+           MOBILE
+        ═══════════════════════════════════ */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center; gap: 40px;
+                padding: 140px 20px 60px;
+            }
+            .hero-text .hero-desc { margin: 0 auto 32px; }
+            .recipe-card-float { margin: 0 auto; }
             .about-inner {
                 grid-template-columns: 1fr;
-                gap: 40px;
-                text-align: center;
+                gap: 40px; text-align: center;
             }
-            .about-photo {
-                width: 200px;
-                height: 200px;
-                font-size: 60px;
+            .about-text h2::after { margin: 16px auto 0; }
+            .starter-inner {
+                grid-template-columns: 1fr;
+                gap: 40px; text-align: center;
             }
-            .about-card { padding: 32px 24px; }
-            .process-grid {
+            .jar-container { margin: 0 auto; }
+        }
+        @media (max-width: 768px) {
+            .main-nav {
+                top: 38px; padding: 6px 8px; gap: 2px;
+            }
+            .main-nav a {
+                padding: 8px 14px; font-size: 12px;
+            }
+            .timeline {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
+                gap: 32px;
             }
+            .timeline::before { display: none; }
             .menu-grid { grid-template-columns: 1fr; }
             .reviews-grid { grid-template-columns: 1fr; }
-            .order-grid {
+            .review-card { transform: none !important; }
+            .order-steps {
                 grid-template-columns: 1fr;
-                gap: 16px;
+                gap: 20px;
             }
-            .insta-grid { grid-template-columns: repeat(3, 1fr); }
-            .main-nav { gap: 2px; padding: 10px 12px; flex-wrap: wrap; }
-            .main-nav a { padding: 6px 14px; font-size: 13px; }
-        }
-
-        @media (max-width: 480px) {
-            .process-grid { grid-template-columns: 1fr; }
+            .order-step::after { display: none; }
             .insta-grid { grid-template-columns: repeat(2, 1fr); }
-            .menu-tabs { flex-direction: column; align-items: center; }
+            .about-photo { width: 220px; height: 220px; font-size: 64px; }
+        }
+        @media (max-width: 480px) {
+            .timeline { grid-template-columns: 1fr; }
+            .main-nav {
+                left: 10px; right: 10px; transform: none;
+                flex-wrap: wrap; justify-content: center;
+                border-radius: 20px;
+            }
         }
     </style>
 </head>
@@ -785,328 +946,422 @@
         <a href="#contact">Contact</a>
     </nav>
 
-    {{-- Hero --}}
-    <section class="hero noise" id="home">
+    {{-- ═══ HERO ═══ --}}
+    <section class="hero" id="home">
         <div class="hero-bg"></div>
-        <div class="orb" style="width:400px;height:400px;background:rgba(var(--accent-rgb),0.4);top:-100px;left:-80px;"></div>
-        <div class="orb" style="width:300px;height:300px;background:rgba(var(--golden-rgb),0.3);bottom:-50px;right:-60px;"></div>
-        <div class="orb" style="width:200px;height:200px;background:rgba(var(--accent-rgb),0.2);top:40%;right:15%;"></div>
+        <div class="hero-overlay"></div>
+        <div class="flour-particles" id="flour-particles"></div>
         <div class="hero-content">
-            <h1 class="hero-fade hero-fade-d1">Bakery on Biscotto</h1>
-            <p class="tagline hero-fade hero-fade-d2">Where Sourdough Dreams Come True</p>
-            <a href="#menu" class="btn-primary hero-fade hero-fade-d3">Explore Our Menu</a>
+            <div class="hero-text">
+                <p class="tagline hero-enter hero-enter-d1">Where Sourdough Dreams Come True</p>
+                <h1 class="hero-enter hero-enter-d2">Bakery on<br><em>Biscotto</em></h1>
+                <p class="hero-desc hero-enter hero-enter-d3">Handcrafted bread from our cottage kitchen to your table. Every loaf is made with care, patience, and our beloved sourdough starter.</p>
+                <a href="#menu" class="hero-btn hero-enter hero-enter-d4">
+                    Explore Our Menu
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+            <div class="recipe-card-float hero-enter hero-enter-d4">
+                <div class="recipe-title">Cassie's Sourdough</div>
+                <div class="recipe-line">flour, water, salt, time</div>
+                <div class="recipe-line">Feed Biscotto at dawn</div>
+                <div class="recipe-line">Mix with love, shape by hand</div>
+                <div class="recipe-line">Let it rise... and rise...</div>
+                <div class="recipe-line">Bake until golden perfection</div>
+                <div class="recipe-heart">♥</div>
+            </div>
         </div>
     </section>
 
     {{-- Divider --}}
     <div class="divider">
         <span class="divider-line"></span>
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 4C20 4 22 12 20 20C18 12 20 4 20 4Z" fill="var(--golden)" opacity="0.6"/>
-            <path d="M20 8C20 8 26 14 24 22C22 16 20 8 20 8Z" fill="var(--golden)" opacity="0.4"/>
-            <path d="M20 8C20 8 14 14 16 22C18 16 20 8 20 8Z" fill="var(--golden)" opacity="0.4"/>
-            <path d="M20 12C20 12 28 16 26 24C24 18 20 12 20 12Z" fill="var(--golden)" opacity="0.3"/>
-            <path d="M20 12C20 12 12 16 14 24C16 18 20 12 20 12Z" fill="var(--golden)" opacity="0.3"/>
-            <line x1="20" y1="20" x2="20" y2="36" stroke="var(--golden)" stroke-width="1.5" opacity="0.5"/>
+        <svg class="divider-icon" width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M16 2C16 2 17.5 10 16 16C14.5 10 16 2 16 2Z" fill="var(--golden)" opacity="0.6"/>
+            <path d="M16 6C16 6 21 11 19.5 17C18 12 16 6 16 6Z" fill="var(--golden)" opacity="0.4"/>
+            <path d="M16 6C16 6 11 11 12.5 17C14 12 16 6 16 6Z" fill="var(--golden)" opacity="0.4"/>
+            <line x1="16" y1="16" x2="16" y2="30" stroke="var(--golden)" stroke-width="1.5" opacity="0.4"/>
         </svg>
         <span class="divider-line"></span>
     </div>
 
-    {{-- Meet Cassie --}}
-    <section class="about-section noise" id="about">
-        <div class="orb" style="width:350px;height:350px;background:rgba(var(--accent-rgb),0.15);top:-80px;right:-100px;"></div>
-        <div class="orb" style="width:250px;height:250px;background:rgba(var(--golden-rgb),0.12);bottom:-60px;left:-80px;"></div>
+    {{-- ═══ MEET CASSIE ═══ --}}
+    <section class="about" id="about">
+        <div class="torn-top"></div>
+        <div class="about-bg"></div>
         <div class="about-inner">
-            <div class="about-photo reveal">👩‍🍳</div>
-            <div class="about-card reveal" style="transition-delay: 0.15s;">
+            <div class="about-photo-wrap reveal">
+                <div class="about-photo">👩‍🍳</div>
+                <div class="annotation annotation-1">That's me! ↑</div>
+            </div>
+            <div class="about-text reveal" style="transition-delay: 0.15s;">
                 <h2>Meet Cassie</h2>
-                <p>Hi there! I'm Cassie, the baker behind every loaf, every muffin, and every crumb at Bakery on Biscotto. What started as a love affair with sourdough in my home kitchen has grown into something I'm so proud of.</p>
-                <p>My sourdough starter, Biscotto, is the heart of this bakery. But what really drives me is the joy of feeding my community with bread made slowly, with care, and with the best ingredients I can find.</p>
-                <p>Every single thing I bake is made by hand, from scratch, with love. No shortcuts, no preservatives, just real bread the way it should be.</p>
+                <p>Hi! I'm Cassie, and this little bakery is my heart and soul. What started as feeding my family homemade bread has turned into something so much bigger: a way to bring real, handmade bread to our amazing community here in Davenport.</p>
+                <p>Every single loaf, muffin, and slice comes from my kitchen. I measure by feel, shape by hand, and bake with the kind of care I'd put into bread for my own family. Because honestly? That's exactly what you are.</p>
+                <p>My sourdough starter Biscotto (named after our street!) has been bubbling away for years. It's the secret ingredient in everything we make, and I wouldn't have it any other way.</p>
                 <p class="signature">With love and flour dust, Cassie ✨</p>
             </div>
         </div>
+        <div class="torn-bottom"></div>
+    </section>
+
+    {{-- ═══ BISCOTTO STARTER SHOWCASE ═══ --}}
+    <section class="starter-showcase">
+        <div class="starter-inner">
+            <div class="jar-container reveal">
+                <div class="jar-glow"></div>
+                <div class="jar-lid"></div>
+                <div class="jar">
+                    <div class="starter-level">
+                        <div class="bubble" style="width:8px;height:8px;left:20%;bottom:30%;animation-duration:3s;"></div>
+                        <div class="bubble" style="width:5px;height:5px;left:60%;bottom:20%;animation-duration:4s;animation-delay:1s;"></div>
+                        <div class="bubble" style="width:6px;height:6px;left:40%;bottom:40%;animation-duration:3.5s;animation-delay:2s;"></div>
+                        <div class="bubble" style="width:4px;height:4px;left:75%;bottom:15%;animation-duration:4.5s;animation-delay:0.5s;"></div>
+                    </div>
+                    <div class="jar-label">
+                        Biscotto
+                        <small>Est. 2024</small>
+                    </div>
+                </div>
+            </div>
+            <div class="starter-text reveal" style="transition-delay: 0.2s;">
+                <h2>The Heart of Every Loaf</h2>
+                <p>Biscotto isn't just a sourdough starter. It's a <span class="highlight">living culture</span> that we feed every single day, rain or shine. Named after our street, Biscotto Circle, it's been the foundation of our bakery since day one.</p>
+                <p>Those bubbles you see? That's <span class="highlight">wild yeast at work</span>, transforming simple flour and water into something extraordinary. The longer we nurture it, the more complex and delicious the flavor becomes.</p>
+                <p>Every loaf of sourdough we bake carries a piece of Biscotto's story. And now, a piece of yours too.</p>
+            </div>
+        </div>
     </section>
 
     {{-- Divider --}}
     <div class="divider">
         <span class="divider-line"></span>
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 4C20 4 22 12 20 20C18 12 20 4 20 4Z" fill="var(--golden)" opacity="0.6"/>
-            <path d="M20 8C20 8 26 14 24 22C22 16 20 8 20 8Z" fill="var(--golden)" opacity="0.4"/>
-            <path d="M20 8C20 8 14 14 16 22C18 16 20 8 20 8Z" fill="var(--golden)" opacity="0.4"/>
-            <line x1="20" y1="20" x2="20" y2="36" stroke="var(--golden)" stroke-width="1.5" opacity="0.5"/>
+        <svg class="divider-icon" width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M16 2C16 2 17.5 10 16 16C14.5 10 16 2 16 2Z" fill="var(--golden)" opacity="0.6"/>
+            <path d="M16 6C16 6 21 11 19.5 17C18 12 16 6 16 6Z" fill="var(--golden)" opacity="0.4"/>
+            <path d="M16 6C16 6 11 11 12.5 17C14 12 16 6 16 6Z" fill="var(--golden)" opacity="0.4"/>
+            <line x1="16" y1="16" x2="16" y2="30" stroke="var(--golden)" stroke-width="1.5" opacity="0.4"/>
         </svg>
         <span class="divider-line"></span>
     </div>
 
-    {{-- Process --}}
-    <section class="process-section noise">
-        <div class="orb" style="width:300px;height:300px;background:rgba(var(--golden-rgb),0.15);top:-60px;left:10%;"></div>
-        <div class="orb" style="width:250px;height:250px;background:rgba(var(--accent-rgb),0.1);bottom:-80px;right:5%;"></div>
-        <h2 class="section-title reveal">Our Process</h2>
-        <div class="process-grid">
-            <div class="process-step reveal" style="transition-delay: 0s;">
-                <div class="step-num">1</div>
+    {{-- ═══ PROCESS ═══ --}}
+    <section class="process">
+        <div class="section-head reveal">
+            <h2>Our Process</h2>
+            <div class="accent-line"></div>
+        </div>
+        <div class="timeline">
+            <div class="timeline-step reveal">
+                <div class="step-dot"><span class="step-emoji">🌾</span></div>
                 <h3>Source</h3>
                 <p>Quality ingredients, locally when possible</p>
             </div>
-            <div class="process-step reveal" style="transition-delay: 0.12s;">
-                <div class="step-num">2</div>
+            <div class="timeline-step reveal" style="transition-delay: 0.1s;">
+                <div class="step-dot"><span class="step-emoji">🤲</span></div>
                 <h3>Craft</h3>
                 <p>Mixed and shaped by hand with care</p>
             </div>
-            <div class="process-step reveal" style="transition-delay: 0.24s;">
-                <div class="step-num">3</div>
+            <div class="timeline-step reveal" style="transition-delay: 0.2s;">
+                <div class="step-dot"><span class="step-emoji">⏳</span></div>
                 <h3>Time</h3>
-                <p>Slow rise for deep flavor and perfect texture</p>
+                <p>Slow rise for deep flavor and texture</p>
             </div>
-            <div class="process-step reveal" style="transition-delay: 0.36s;">
-                <div class="step-num">4</div>
+            <div class="timeline-step reveal" style="transition-delay: 0.3s;">
+                <div class="step-dot"><span class="step-emoji">🔥</span></div>
                 <h3>Bake</h3>
                 <p>Fresh from the oven to your table</p>
             </div>
         </div>
     </section>
 
-    {{-- Menu --}}
-    <section class="menu-section" id="menu" x-data="{ tab: 'sourdough' }">
-        <h2 class="section-title reveal">What We Bake</h2>
+    {{-- ═══ MENU ═══ --}}
+    <section class="menu" id="menu" x-data="{ tab: 'sourdough' }">
+        <div class="section-head reveal">
+            <h2>What We Bake</h2>
+            <div class="accent-line"></div>
+        </div>
         <div class="menu-tabs reveal">
             <button class="menu-tab" :class="{ 'active': tab === 'sourdough' }" @click="tab = 'sourdough'">Sourdough Loaves</button>
             <button class="menu-tab" :class="{ 'active': tab === 'other' }" @click="tab = 'other'">Other Breads</button>
         </div>
 
-        {{-- Sourdough --}}
-        <div class="menu-grid" x-show="tab === 'sourdough'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+        <div class="menu-grid" x-show="tab === 'sourdough'" x-transition.opacity.duration.300ms>
             <div class="menu-card reveal">
-                <div class="menu-card-img"><img src="/images/product-sourdough-boule.jpg" alt="Regular Sourdough Loaf"></div>
+                <div class="menu-card-img has-photo"><img src="/images/product-sourdough-boule.jpg" alt="Regular Sourdough Loaf"></div>
                 <div class="menu-card-body">
                     <h3>Regular Loaf</h3>
-                    <p class="desc">Classic sourdough with a golden crust and airy crumb</p>
-                    <span class="price-badge">$10</span>
+                    <p class="desc">Our signature. Golden crust, airy crumb, perfectly tangy. The one that started it all.</p>
+                    <div class="menu-card-footer"><span class="price">$10</span></div>
                 </div>
             </div>
             <div class="menu-card reveal" style="transition-delay:0.06s;">
-                <div class="menu-card-img">🧀</div>
+                <div class="menu-card-img placeholder-img"><span class="emoji-icon">🧀</span></div>
                 <div class="menu-card-body">
                     <h3>Cheddar</h3>
-                    <p class="desc">Sharp cheddar folded into tangy sourdough</p>
-                    <span class="price-badge">$12</span>
+                    <p class="desc">Sharp cheddar folded through tangy sourdough. Melty pockets in every slice.</p>
+                    <div class="menu-card-footer"><span class="price">$12</span></div>
                 </div>
             </div>
             <div class="menu-card reveal" style="transition-delay:0.12s;">
-                <div class="menu-card-img">🧄</div>
+                <div class="menu-card-img placeholder-img"><span class="emoji-icon">🧄</span></div>
                 <div class="menu-card-body">
                     <h3>Mozzarella and Garlic</h3>
-                    <p class="desc">Melty mozzarella with roasted garlic throughout</p>
-                    <span class="price-badge">$14</span>
+                    <p class="desc">Fresh mozzarella and roasted garlic. Your kitchen will smell incredible.</p>
+                    <div class="menu-card-footer"><span class="price">$14</span></div>
                 </div>
             </div>
             <div class="menu-card reveal" style="transition-delay:0.18s;">
-                <div class="menu-card-img">🍫</div>
+                <div class="menu-card-img placeholder-img"><span class="emoji-icon">🍫</span></div>
                 <div class="menu-card-body">
                     <h3>Chocolate Chip</h3>
-                    <p class="desc">Rich chocolate chips in every slice</p>
-                    <span class="price-badge">$12</span>
+                    <p class="desc">Rich chocolate meets tangy sourdough. Sweet and sour perfection.</p>
+                    <div class="menu-card-footer"><span class="price">$12</span></div>
                 </div>
             </div>
             <div class="menu-card reveal" style="transition-delay:0.24s;">
-                <div class="menu-card-img">✨</div>
+                <div class="menu-card-img placeholder-img"><span class="emoji-icon">✨</span></div>
                 <div class="menu-card-body">
                     <h3>Cinnamon and Sugar</h3>
-                    <p class="desc">Warm cinnamon swirled with sweet sugar</p>
-                    <span class="price-badge">$14</span>
+                    <p class="desc">Warm cinnamon swirls with sweet sugar. Weekend mornings were made for this.</p>
+                    <div class="menu-card-footer"><span class="price">$14</span></div>
                 </div>
             </div>
             <div class="menu-card reveal" style="transition-delay:0.3s;">
-                <div class="menu-card-img">🍫</div>
+                <div class="menu-card-img placeholder-img"><span class="emoji-icon">🍫</span></div>
                 <div class="menu-card-body">
                     <h3>Chocolate, Chocolate Chip</h3>
-                    <p class="desc">Double chocolate for the true chocolate lover</p>
-                    <span class="price-badge">$12</span>
+                    <p class="desc">Cocoa in the dough, chips throughout. For the true chocolate lovers.</p>
+                    <div class="menu-card-footer"><span class="price">$12</span></div>
                 </div>
             </div>
             <div class="menu-card reveal" style="transition-delay:0.36s;">
-                <div class="menu-card-img">🍫</div>
+                <div class="menu-card-img placeholder-img"><span class="emoji-icon">🍫</span></div>
                 <div class="menu-card-body">
                     <h3>Chocolate Almond, Chocolate Chip</h3>
-                    <p class="desc">Chocolate and almond with chips for extra indulgence</p>
-                    <span class="price-badge">$15</span>
+                    <p class="desc">Toasted almonds join the chocolate celebration. Crunchy, rich, and indulgent.</p>
+                    <div class="menu-card-footer"><span class="price">$15</span></div>
                 </div>
             </div>
             <div class="menu-card reveal" style="transition-delay:0.42s;">
-                <div class="menu-card-img">🌶️</div>
+                <div class="menu-card-img placeholder-img"><span class="emoji-icon">🌶️</span></div>
                 <div class="menu-card-body">
                     <h3>Jalape&ntilde;o Cheddar</h3>
-                    <p class="desc">Spicy jalape&ntilde;os and melty cheddar, a perfect pair</p>
-                    <span class="price-badge">$14</span>
+                    <p class="desc">Spicy jalape&ntilde;os and melty cheddar. A kick in every bite.</p>
+                    <div class="menu-card-footer"><span class="price">$14</span></div>
                 </div>
             </div>
-            <div class="menu-card reveal" style="transition-delay:0.48s;">
-                <div class="menu-card-img">🍞</div>
+            <div class="menu-card special reveal" style="transition-delay:0.48s;">
+                <div class="menu-card-img placeholder-img" style="background: linear-gradient(135deg, rgba(212,165,116,0.2), rgba(193,127,78,0.15));"><span class="emoji-icon">🎁</span></div>
                 <div class="menu-card-body">
                     <h3>4 Pack of Mini Loaves</h3>
-                    <p class="desc">Choose any 4 flavors for a variety pack</p>
-                    <span class="price-badge">$25</span>
+                    <p class="desc">Can't choose? Don't. Pick any 4 flavors in perfectly portioned mini loaves.</p>
+                    <div class="menu-card-footer"><span class="price-pill">$25</span></div>
                 </div>
             </div>
         </div>
 
-        {{-- Other Breads --}}
-        <div class="menu-grid" x-show="tab === 'other'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+        <div class="menu-grid" x-show="tab === 'other'" x-transition.opacity.duration.300ms>
             <div class="menu-card reveal">
-                <div class="menu-card-img">🍯</div>
+                <div class="menu-card-img placeholder-img"><span class="emoji-icon">🍯</span></div>
                 <div class="menu-card-body">
                     <h3>Sourdough Honey Wheat Sandwich Bread</h3>
-                    <p class="desc">Soft honey wheat perfect for sandwiches</p>
-                    <span class="price-badge">$10</span>
+                    <p class="desc">Soft, wholesome, and perfect for sandwiches. Honey sweetness with a sourdough twist.</p>
+                    <div class="menu-card-footer"><span class="price">$10</span></div>
                 </div>
             </div>
             <div class="menu-card reveal" style="transition-delay:0.06s;">
-                <div class="menu-card-img"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
+                <div class="menu-card-img has-photo"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
                 <div class="menu-card-body">
                     <h3>Sourdough English Muffins (6ct)</h3>
-                    <p class="desc">Nooks and crannies in every single one</p>
-                    <span class="price-badge">$8</span>
+                    <p class="desc">Those perfect nooks and crannies. Griddle-cooked and ready for toasting.</p>
+                    <div class="menu-card-footer"><span class="price">$8</span></div>
                 </div>
             </div>
             <div class="menu-card reveal" style="transition-delay:0.12s;">
-                <div class="menu-card-img"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
+                <div class="menu-card-img has-photo"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
                 <div class="menu-card-body">
                     <h3>Sourdough English Muffins (12ct)</h3>
-                    <p class="desc">Double the muffins, double the joy</p>
-                    <span class="price-badge">$15</span>
+                    <p class="desc">The family pack. Because six is never enough.</p>
+                    <div class="menu-card-footer"><span class="price">$15</span></div>
                 </div>
             </div>
             <div class="menu-card reveal" style="transition-delay:0.18s;">
-                <div class="menu-card-img">🍌</div>
+                <div class="menu-card-img placeholder-img"><span class="emoji-icon">🍌</span></div>
                 <div class="menu-card-body">
                     <h3>Banana Bread</h3>
-                    <p class="desc">Moist, sweet, and perfectly spiced</p>
-                    <span class="price-badge">$12</span>
+                    <p class="desc">Moist, sweet, perfectly spiced. Made with bananas so ripe they're basically pudding.</p>
+                    <div class="menu-card-footer"><span class="price">$12</span></div>
                 </div>
             </div>
             <div class="menu-card reveal" style="transition-delay:0.24s;">
-                <div class="menu-card-img">🍌</div>
+                <div class="menu-card-img placeholder-img"><span class="emoji-icon">🍌</span></div>
                 <div class="menu-card-body">
                     <h3>Banana Walnut Bread</h3>
-                    <p class="desc">Classic banana bread loaded with crunchy walnuts</p>
-                    <span class="price-badge">$15</span>
+                    <p class="desc">Our classic banana bread loaded with crunchy toasted walnuts.</p>
+                    <div class="menu-card-footer"><span class="price">$15</span></div>
                 </div>
             </div>
             <div class="menu-card reveal" style="transition-delay:0.3s;">
-                <div class="menu-card-img">🎃</div>
+                <div class="menu-card-img placeholder-img"><span class="emoji-icon">🎃</span></div>
                 <div class="menu-card-body">
                     <h3>Pumpkin Chocolate Chip Bread</h3>
-                    <p class="desc">Warm pumpkin spice with chocolate chips</p>
-                    <span class="price-badge">$12</span>
+                    <p class="desc">Warm pumpkin spice studded with chocolate chips. Seasonal magic.</p>
+                    <div class="menu-card-footer"><span class="price">$12</span></div>
                 </div>
             </div>
             <div class="menu-card reveal" style="transition-delay:0.36s;">
-                <div class="menu-card-img">🎃</div>
+                <div class="menu-card-img placeholder-img"><span class="emoji-icon">🎃</span></div>
                 <div class="menu-card-body">
                     <h3>Pumpkin Almond Chocolate Chip Bread</h3>
-                    <p class="desc">Pumpkin, almond, and chocolate in every bite</p>
-                    <span class="price-badge">$15</span>
+                    <p class="desc">Pumpkin spice, toasted almonds, and chocolate chips. The ultimate fall loaf.</p>
+                    <div class="menu-card-footer"><span class="price">$15</span></div>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- Reviews --}}
-    <section class="reviews-section">
-        <h2 class="section-title reveal">What Our Neighbors Say</h2>
+    {{-- Divider --}}
+    <div class="divider">
+        <span class="divider-line"></span>
+        <svg class="divider-icon" width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M16 2C16 2 17.5 10 16 16C14.5 10 16 2 16 2Z" fill="var(--golden)" opacity="0.6"/>
+            <path d="M16 6C16 6 21 11 19.5 17C18 12 16 6 16 6Z" fill="var(--golden)" opacity="0.4"/>
+            <path d="M16 6C16 6 11 11 12.5 17C14 12 16 6 16 6Z" fill="var(--golden)" opacity="0.4"/>
+            <line x1="16" y1="16" x2="16" y2="30" stroke="var(--golden)" stroke-width="1.5" opacity="0.4"/>
+        </svg>
+        <span class="divider-line"></span>
+    </div>
+
+    {{-- ═══ REVIEWS ═══ --}}
+    <section class="reviews">
+        <div class="section-head reveal">
+            <h2>What Our Neighbors Say</h2>
+            <div class="accent-line"></div>
+        </div>
         <div class="reviews-grid">
             <div class="review-card reveal">
-                <span class="quote-mark">&ldquo;</span>
-                <p>The best sourdough I've ever had, and I've tried a lot! The crust is perfectly crispy and the inside is so soft. We order every single week now.</p>
-                <span class="reviewer">Sarah M., Davenport</span>
+                <div class="tape"></div>
+                <div class="review-stars">★★★★★</div>
+                <blockquote>The best sourdough I've ever had. The crust is perfectly crispy and the inside is so soft. We order every single week now and my kids fight over the last piece.</blockquote>
+                <div class="review-author">Sarah M.</div>
+                <div class="review-location">Davenport, FL</div>
             </div>
-            <div class="review-card reveal" style="transition-delay:0.1s;">
-                <span class="quote-mark">&ldquo;</span>
-                <p>Cassie's chocolate chip sourdough changed my life. I'm not even being dramatic. My kids fight over the last slice every time.</p>
-                <span class="reviewer">Mike T., Haines City</span>
+            <div class="review-card reveal" style="transition-delay: 0.1s;">
+                <div class="tape"></div>
+                <div class="review-stars">★★★★★</div>
+                <blockquote>Cassie's chocolate chip sourdough changed my life. I'm not being dramatic. My family goes through a loaf in a single day and then immediately orders another.</blockquote>
+                <div class="review-author">Mike T.</div>
+                <div class="review-location">Haines City, FL</div>
             </div>
-            <div class="review-card reveal" style="transition-delay:0.2s;">
-                <span class="quote-mark">&ldquo;</span>
-                <p>Finally, real bread from someone who actually cares. You can taste the difference. The English muffins are out of this world!</p>
-                <span class="reviewer">Jessica R., Clermont</span>
+            <div class="review-card reveal" style="transition-delay: 0.2s;">
+                <div class="tape"></div>
+                <div class="review-stars">★★★★★</div>
+                <blockquote>Finally, real bread from someone who actually cares. You can taste the difference in every bite. The English muffins are out of this world!</blockquote>
+                <div class="review-author">Jessica R.</div>
+                <div class="review-location">Clermont, FL</div>
             </div>
-            <div class="review-card reveal" style="transition-delay:0.3s;">
-                <span class="quote-mark">&ldquo;</span>
-                <p>I ordered the mini loaf variety pack and now I can't pick a favorite. The jalape&ntilde;o cheddar and cinnamon sugar are tied for first place.</p>
-                <span class="reviewer">David L., Kissimmee</span>
+            <div class="review-card reveal" style="transition-delay: 0.3s;">
+                <div class="tape"></div>
+                <div class="review-stars">★★★★★</div>
+                <blockquote>I ordered the mini loaf variety pack and now I can't pick a favorite. The jalape&ntilde;o cheddar and cinnamon sugar are tied for first place.</blockquote>
+                <div class="review-author">David L.</div>
+                <div class="review-location">Kissimmee, FL</div>
             </div>
         </div>
     </section>
 
-    {{-- Instagram --}}
-    <section class="instagram-section">
-        <h2 class="section-title reveal">Fresh from the Oven</h2>
+    {{-- ═══ INSTAGRAM ═══ --}}
+    <section class="insta">
+        <div class="section-head reveal">
+            <h2>Fresh from the Oven</h2>
+            <div class="accent-line"></div>
+        </div>
         <div class="insta-grid">
             <div class="insta-item reveal"><img src="/images/product-sourdough-boule.jpg" alt="Sourdough boule"></div>
-            <div class="insta-item reveal" style="transition-delay:0.06s;"><img src="/images/product-english-muffins.jpg" alt="English muffins"></div>
-            <div class="insta-item reveal" style="transition-delay:0.12s;">🍞<span class="placeholder-text">Bake day</span></div>
-            <div class="insta-item reveal" style="transition-delay:0.18s;">🧈<span class="placeholder-text">Fresh butter</span></div>
-            <div class="insta-item reveal" style="transition-delay:0.24s;">🌾<span class="placeholder-text">Local flour</span></div>
-            <div class="insta-item reveal" style="transition-delay:0.3s;">🥖<span class="placeholder-text">Cooling rack</span></div>
+            <div class="insta-item reveal" style="transition-delay:0.05s;"><img src="/images/product-english-muffins.jpg" alt="English muffins"></div>
+            <div class="insta-item placeholder reveal" style="transition-delay:0.1s;"><span class="emoji">🍞</span><span class="label">Bake day</span></div>
+            <div class="insta-item placeholder reveal" style="transition-delay:0.15s;"><span class="emoji">🫧</span><span class="label">Biscotto bubbling</span></div>
+            <div class="insta-item placeholder reveal" style="transition-delay:0.2s;"><span class="emoji">🤲</span><span class="label">Shaping dough</span></div>
+            <div class="insta-item placeholder reveal" style="transition-delay:0.25s;"><span class="emoji">📦</span><span class="label">Ready for pickup</span></div>
         </div>
         <div class="insta-cta reveal">
             <a href="https://instagram.com/bakeryonbiscotto" target="_blank">Follow @bakeryonbiscotto</a>
-            <div class="social-icons">
-                <a href="https://facebook.com/bakeryonbiscotto" target="_blank" aria-label="Facebook">
-                    <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                </a>
-                <a href="https://instagram.com/bakeryonbiscotto" target="_blank" aria-label="Instagram">
-                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </div>
+    </section>
+
+    {{-- ═══ ORDER ═══ --}}
+    <section class="order" id="order">
+        <div class="order-inner">
+            <div class="order-card reveal">
+                <h2>Ready to Order?</h2>
+                <p class="sub">It's as easy as 1, 2, 3</p>
+                <div class="order-steps">
+                    <div class="order-step">
+                        <div class="order-num">1</div>
+                        <h3>Browse</h3>
+                        <p>Check out our menu above and pick your favorites</p>
+                    </div>
+                    <div class="order-step">
+                        <div class="order-num">2</div>
+                        <h3>Email Us</h3>
+                        <p>Send your order and we'll confirm details and timing</p>
+                    </div>
+                    <div class="order-step">
+                        <div class="order-num">3</div>
+                        <h3>Enjoy</h3>
+                        <p>Pick up your fresh bread or get it delivered locally</p>
+                    </div>
+                </div>
+                <a href="mailto:bakeryonbiscotto@gmail.com?subject=Bread%20Order" class="order-btn">
+                    Place Your Order
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
             </div>
         </div>
     </section>
 
-    {{-- Order --}}
-    <section class="order-section noise" id="order">
-        <div class="orb" style="width:350px;height:350px;background:rgba(var(--golden-rgb),0.12);top:-100px;right:-80px;"></div>
-        <div class="orb" style="width:280px;height:280px;background:rgba(var(--accent-rgb),0.1);bottom:-60px;left:-60px;"></div>
-        <h2 class="section-title reveal">Ready to Order?</h2>
-        <div class="order-grid">
-            <div class="order-step reveal">
-                <div class="order-num">1</div>
-                <h3>Browse</h3>
-                <p>Check out our menu and pick your favorites</p>
-            </div>
-            <div class="order-step reveal" style="transition-delay:0.12s;">
-                <div class="order-num">2</div>
-                <h3>Email Us</h3>
-                <p>Send us your order and we'll confirm the details</p>
-            </div>
-            <div class="order-step reveal" style="transition-delay:0.24s;">
-                <div class="order-num">3</div>
-                <h3>Pick Up</h3>
-                <p>Grab your fresh bread, still warm from the oven</p>
-            </div>
-        </div>
-        <div class="order-cta reveal">
-            <a href="mailto:bakeryonbiscotto@gmail.com" class="btn-glow">Place Your Order</a>
-        </div>
-    </section>
-
-    {{-- Footer --}}
-    <footer class="footer noise" id="contact">
+    {{-- ═══ FOOTER ═══ --}}
+    <footer class="footer" id="contact">
+        <div class="footer-gradient"></div>
         <h3>Bakery on Biscotto</h3>
-        <p class="footer-tagline">With love and flour dust</p>
-        <div class="footer-badge">Local Pickup &amp; Delivery Available</div>
+        <p class="tagline">With love and flour dust</p>
+        <div class="footer-badge">📍 Davenport, FL &nbsp;·&nbsp; Local Pickup &amp; Delivery Available</div>
         <div class="footer-info">
-            Davenport, FL<br>
             <a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a><br>
-            <a href="https://facebook.com/bakeryonbiscotto" target="_blank">Facebook</a> &middot; <a href="https://instagram.com/bakeryonbiscotto" target="_blank">Instagram</a> &middot; @bakeryonbiscotto
+            <a href="https://facebook.com/bakeryonbiscotto" target="_blank">Facebook</a> &nbsp;·&nbsp;
+            <a href="https://instagram.com/bakeryonbiscotto" target="_blank">Instagram</a> &nbsp;·&nbsp;
+            @bakeryonbiscotto
         </div>
         <div class="footer-bottom">&copy; {{ date('Y') }} Bakery on Biscotto. All rights reserved.</div>
     </footer>
 
     <script>
-        // Intersection Observer for scroll animations
+        // ── Flour particles ──
+        (function() {
+            const container = document.getElementById('flour-particles');
+            for (let i = 0; i < 30; i++) {
+                const f = document.createElement('div');
+                f.className = 'flour';
+                f.style.left = Math.random() * 100 + '%';
+                f.style.animationDuration = (6 + Math.random() * 8) + 's';
+                f.style.animationDelay = Math.random() * 10 + 's';
+                f.style.width = f.style.height = (2 + Math.random() * 4) + 'px';
+                f.style.opacity = 0.2 + Math.random() * 0.4;
+                container.appendChild(f);
+            }
+        })();
+
+        // ── Parallax hero ──
+        const heroBg = document.querySelector('.hero-bg');
+        window.addEventListener('scroll', () => {
+            const y = window.pageYOffset;
+            if (y < window.innerHeight) {
+                heroBg.style.transform = `scale(1.1) translateY(${y * 0.3}px)`;
+            }
+        }, { passive: true });
+
+        // ── Scroll reveal ──
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
