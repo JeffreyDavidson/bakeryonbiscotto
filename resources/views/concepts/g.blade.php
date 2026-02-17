@@ -3,22 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bakery on Biscotto | Handcrafted Bread, Davenport FL</title>
+    <title>Bakery on Biscotto</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
         :root {
             --dark-brown: #3D2314;
             --warm-brown: #8B5E3C;
             --cream: #F5E6D0;
-            --golden-tan: #D4A574;
+            --golden: #D4A574;
             --light-cream: #FDF8F2;
-            --white: #FFFFFF;
+            --accent: #C17F4E;
+            --dark-brown-rgb: 61,35,20;
+            --golden-rgb: 212,165,116;
+            --accent-rgb: 193,127,78;
+            --warm-brown-rgb: 139,94,60;
         }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         html { scroll-behavior: smooth; }
 
@@ -26,11 +30,44 @@
             font-family: 'Inter', sans-serif;
             color: var(--dark-brown);
             background: var(--light-cream);
-            line-height: 1.6;
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ── Concept Switcher ── */
+        /* ── Noise overlay mixin ── */
+        .noise { position: relative; }
+        .noise::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ── Ambient orb ── */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.18;
+        }
+
+        /* ── Scroll animations ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Concept Nav ── */
         .concept-nav {
             position: fixed;
             top: 0;
@@ -39,331 +76,348 @@
             z-index: 1000;
             display: flex;
             justify-content: center;
-            gap: 4px;
-            padding: 6px 10px;
-            background: rgba(61, 35, 20, 0.92);
-            backdrop-filter: blur(8px);
+            gap: 2px;
+            background: var(--dark-brown);
+            padding: 6px 0;
         }
         .concept-nav a {
-            color: var(--cream);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-            padding: 3px 12px;
-            border-radius: 20px;
-            transition: all 0.2s;
-        }
-        .concept-nav a:hover { background: rgba(212, 165, 116, 0.3); }
-        .concept-nav a.active {
-            background: var(--golden-tan);
-            color: var(--dark-brown);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
             font-weight: 600;
+            font-size: 13px;
+            color: rgba(245,230,208,0.5);
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+        .concept-nav a:hover { color: var(--cream); background: rgba(245,230,208,0.08); }
+        .concept-nav a.active {
+            color: var(--dark-brown);
+            background: var(--golden);
         }
 
         /* ── Main Nav ── */
         .main-nav {
-            position: fixed;
-            top: 34px;
-            left: 0;
-            right: 0;
+            position: sticky;
+            top: 44px;
             z-index: 999;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
-            padding: 14px 20px;
-            background: rgba(253, 248, 242, 0.95);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 2px 20px rgba(61, 35, 20, 0.08);
-            transition: all 0.3s;
+            gap: 6px;
+            padding: 12px 20px;
+            background: rgba(61,35,20,0.65);
+            backdrop-filter: blur(20px) saturate(1.4);
+            -webkit-backdrop-filter: blur(20px) saturate(1.4);
+            border-bottom: 1px solid rgba(212,165,116,0.12);
         }
         .main-nav a {
-            font-family: 'Playfair Display', serif;
-            font-size: 15px;
+            font-family: 'Inter', sans-serif;
             font-weight: 500;
-            color: var(--dark-brown);
+            font-size: 14px;
+            color: var(--cream);
             text-decoration: none;
-            padding: 10px 26px;
-            border-radius: 50px;
-            border: 1.5px solid transparent;
-            transition: all 0.3s;
-            letter-spacing: 0.3px;
+            padding: 8px 22px;
+            border-radius: 100px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.02em;
         }
         .main-nav a:hover {
-            border-color: var(--golden-tan);
-            background: rgba(212, 165, 116, 0.12);
-        }
-        .main-nav a.active-link {
-            background: var(--dark-brown);
-            color: var(--cream);
+            background: rgba(212,165,116,0.15);
+            color: var(--golden);
         }
 
         /* ── Hero ── */
         .hero {
             position: relative;
-            height: 100vh;
-            min-height: 600px;
-            max-height: 900px;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             overflow: hidden;
-            margin-top: 0;
+            margin-top: 44px;
         }
         .hero-bg {
             position: absolute;
             inset: 0;
             background: url('/images/hero-banner.jpg') center/cover no-repeat;
         }
-        .hero-overlay {
+        .hero-bg::after {
+            content: '';
             position: absolute;
             inset: 0;
             background: linear-gradient(
-                to bottom,
-                rgba(61, 35, 20, 0.35) 0%,
-                rgba(61, 35, 20, 0.55) 100%
+                180deg,
+                rgba(var(--dark-brown-rgb), 0.7) 0%,
+                rgba(var(--dark-brown-rgb), 0.5) 40%,
+                rgba(var(--dark-brown-rgb), 0.8) 100%
             );
         }
         .hero-content {
             position: relative;
             z-index: 2;
-            padding: 0 20px;
+            padding: 40px 20px;
         }
-        .hero-content h1 {
+        .hero h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 7vw, 5.5rem);
-            font-weight: 700;
-            color: var(--white);
-            line-height: 1.1;
+            font-weight: 600;
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            color: var(--cream);
+            line-height: 1.05;
             margin-bottom: 16px;
-            text-shadow: 0 2px 30px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, var(--cream) 0%, var(--golden) 50%, var(--cream) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 6s ease-in-out infinite;
         }
-        .hero-content h1 span {
-            display: block;
-            font-style: italic;
-            font-weight: 400;
-            font-size: 0.55em;
-            color: var(--golden-tan);
-            margin-top: 4px;
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 200% center; }
         }
-        .hero-tagline {
+        .hero .tagline {
             font-family: 'Dancing Script', cursive;
             font-size: clamp(1.3rem, 3vw, 2rem);
-            color: var(--cream);
-            margin-bottom: 32px;
+            color: var(--golden);
+            margin-bottom: 40px;
+            opacity: 0.9;
         }
-        .hero-cta {
+        .btn-primary {
             display: inline-block;
-            padding: 14px 40px;
-            background: var(--golden-tan);
-            color: var(--dark-brown);
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
+            font-family: 'Inter', sans-serif;
             font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.04em;
+            color: var(--dark-brown);
+            background: linear-gradient(135deg, var(--golden), var(--accent));
+            padding: 16px 40px;
+            border-radius: 100px;
             text-decoration: none;
-            border-radius: 50px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 24px rgba(var(--accent-rgb), 0.25);
         }
-        .hero-cta:hover {
-            background: var(--cream);
+        .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+            box-shadow: 0 8px 40px rgba(var(--accent-rgb), 0.45);
+        }
+        .hero-fade {
+            animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        .hero-fade-d1 { animation-delay: 0.2s; }
+        .hero-fade-d2 { animation-delay: 0.5s; }
+        .hero-fade-d3 { animation-delay: 0.8s; }
+        @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ── Section Divider ── */
+        /* ── Botanical Divider ── */
         .divider {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 16px;
-            padding: 48px 0;
+            gap: 20px;
+            padding: 48px 20px;
         }
         .divider-line {
-            width: 80px;
+            flex: 1;
+            max-width: 200px;
             height: 1px;
-            background: var(--golden-tan);
-            opacity: 0.5;
+            background: linear-gradient(90deg, transparent, var(--golden), transparent);
         }
-        .divider-icon {
-            color: var(--golden-tan);
-            font-size: 18px;
-            opacity: 0.7;
-        }
-        .divider-icon svg {
-            width: 28px;
-            height: 28px;
-            fill: var(--golden-tan);
-            opacity: 0.6;
-        }
+        .divider svg { flex-shrink: 0; opacity: 0.5; }
 
-        /* ── Section Shared ── */
-        .section {
-            padding: 40px 20px;
+        /* ── Meet Cassie ── */
+        .about-section {
+            position: relative;
+            padding: 100px 20px;
+            overflow: hidden;
+            background: var(--cream);
+        }
+        .about-inner {
             max-width: 1100px;
             margin: 0 auto;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 60px;
+            align-items: center;
         }
+        .about-photo {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--golden), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            box-shadow: 0 0 60px rgba(var(--accent-rgb), 0.25);
+            justify-self: center;
+        }
+        .about-card {
+            background: rgba(255,255,255,0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(var(--golden-rgb), 0.18);
+            border-radius: 24px;
+            padding: 48px;
+            position: relative;
+            z-index: 2;
+        }
+        .about-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark-brown);
+        }
+        .about-card p {
+            font-size: 16px;
+            line-height: 1.75;
+            color: rgba(61,35,20,0.8);
+            margin-bottom: 14px;
+        }
+        .about-card .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-top: 24px;
+        }
+
+        /* ── Process ── */
+        .process-section {
+            position: relative;
+            padding: 100px 20px;
+            background: var(--dark-brown);
+            overflow: hidden;
+        }
+        .process-section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(212,165,116,0.15) 1px, transparent 1px);
+            background-size: 24px 24px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .process-section .section-title {
+            color: var(--cream);
+        }
+        .process-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            position: relative;
+            z-index: 2;
+        }
+        .process-step {
+            text-align: center;
+            padding: 32px 16px;
+        }
+        .step-num {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 2px solid var(--golden);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--golden);
+            margin-bottom: 20px;
+            background: rgba(var(--golden-rgb), 0.06);
+        }
+        .process-step h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--cream);
+            margin-bottom: 10px;
+        }
+        .process-step p {
+            font-size: 14px;
+            line-height: 1.7;
+            color: rgba(245,230,208,0.6);
+        }
+
+        /* ── Section Title ── */
         .section-title {
             font-family: 'Playfair Display', serif;
             font-size: clamp(2rem, 4vw, 2.8rem);
             font-weight: 600;
             text-align: center;
+            margin-bottom: 48px;
             color: var(--dark-brown);
-            margin-bottom: 12px;
-        }
-        .section-subtitle {
-            text-align: center;
-            color: var(--warm-brown);
-            font-size: 16px;
-            max-width: 560px;
-            margin: 0 auto 40px;
-            line-height: 1.7;
-        }
-
-        /* ── Scroll Animation ── */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ── Meet Cassie ── */
-        .meet-cassie {
-            display: flex;
-            align-items: center;
-            gap: 60px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .cassie-photo {
-            flex-shrink: 0;
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--cream), var(--golden-tan));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Dancing Script', cursive;
-            font-size: 18px;
-            color: var(--warm-brown);
-            border: 4px solid var(--white);
-            box-shadow: 0 8px 30px rgba(61, 35, 20, 0.12);
-        }
-        .cassie-text p {
-            color: var(--dark-brown);
-            font-size: 16px;
-            line-height: 1.8;
-            margin-bottom: 16px;
-        }
-        .cassie-signature {
-            font-family: 'Dancing Script', cursive;
-            font-size: 22px;
-            color: var(--warm-brown);
-            margin-top: 8px;
-        }
-
-        /* ── Process ── */
-        .process-row {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-        .process-step {
-            text-align: center;
-            flex: 1;
-            min-width: 180px;
-            max-width: 240px;
-        }
-        .process-icon {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: var(--cream);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 28px;
-            box-shadow: 0 4px 16px rgba(61, 35, 20, 0.08);
-        }
-        .process-step h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--dark-brown);
-        }
-        .process-step p {
-            font-size: 14px;
-            color: var(--warm-brown);
-            line-height: 1.6;
         }
 
         /* ── Menu ── */
         .menu-section {
-            background: var(--white);
-            padding: 60px 20px;
-        }
-        .menu-inner {
-            max-width: 1100px;
-            margin: 0 auto;
+            padding: 100px 20px;
+            background: var(--light-cream);
         }
         .menu-tabs {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 36px;
+            gap: 8px;
+            margin-bottom: 48px;
         }
         .menu-tab {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 15px;
             padding: 10px 28px;
-            border-radius: 50px;
-            border: 2px solid var(--golden-tan);
+            border-radius: 100px;
+            border: 1.5px solid var(--golden);
             background: transparent;
             color: var(--warm-brown);
-            font-family: 'Playfair Display', serif;
-            font-size: 15px;
-            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
-        .menu-tab:hover { background: rgba(212, 165, 116, 0.15); }
+        .menu-tab:hover { background: rgba(var(--golden-rgb), 0.1); }
         .menu-tab.active {
-            background: var(--dark-brown);
-            border-color: var(--dark-brown);
-            color: var(--cream);
+            background: var(--golden);
+            color: var(--dark-brown);
+            font-weight: 600;
         }
         .menu-grid {
+            max-width: 1100px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 28px;
         }
         .menu-card {
-            border-radius: 16px;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(var(--golden-rgb), 0.12);
+            border-radius: 20px;
             overflow: hidden;
-            background: var(--white);
-            box-shadow: 0 4px 20px rgba(61, 35, 20, 0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border-top: 3px solid;
+            border-image: linear-gradient(90deg, var(--golden), var(--accent)) 1;
         }
         .menu-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(61, 35, 20, 0.14);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(var(--accent-rgb), 0.18);
         }
         .menu-card-img {
-            height: 160px;
-            background: linear-gradient(135deg, var(--cream) 0%, var(--golden-tan) 100%);
+            height: 180px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
-            position: relative;
-            overflow: hidden;
+            font-size: 48px;
+            background: linear-gradient(135deg, rgba(var(--golden-rgb),0.2), rgba(var(--accent-rgb),0.15));
         }
         .menu-card-img img {
             width: 100%;
@@ -371,591 +425,699 @@
             object-fit: cover;
         }
         .menu-card-body {
-            padding: 16px 20px;
+            padding: 24px;
         }
         .menu-card-body h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 16px;
+            font-size: 1.15rem;
             font-weight: 600;
-            color: var(--dark-brown);
             margin-bottom: 6px;
+            color: var(--dark-brown);
         }
-        .menu-card-price {
-            font-size: 18px;
+        .menu-card-body .desc {
+            font-size: 13.5px;
+            color: rgba(61,35,20,0.6);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        .price-badge {
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
             font-weight: 600;
-            color: var(--warm-brown);
+            font-size: 14px;
+            padding: 4px 16px;
+            border-radius: 100px;
+            background: linear-gradient(135deg, var(--golden), var(--accent));
+            color: var(--dark-brown);
         }
 
         /* ── Reviews ── */
+        .reviews-section {
+            padding: 100px 20px;
+            background: var(--cream);
+        }
         .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
             max-width: 1100px;
             margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 28px;
         }
         .review-card {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 28px;
-            box-shadow: 0 4px 16px rgba(61, 35, 20, 0.06);
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(var(--golden-rgb), 0.12);
+            border-radius: 20px;
+            padding: 36px 28px;
             position: relative;
+            transition: all 0.4s ease;
         }
-        .review-card::before {
-            content: '\201C';
+        .review-card:hover {
+            box-shadow: 0 8px 40px rgba(var(--accent-rgb), 0.15);
+        }
+        .review-card .quote-mark {
             font-family: 'Playfair Display', serif;
-            font-size: 60px;
-            color: var(--golden-tan);
-            opacity: 0.3;
-            position: absolute;
-            top: 8px;
-            left: 20px;
+            font-size: 4rem;
             line-height: 1;
+            color: var(--golden);
+            opacity: 0.35;
+            position: absolute;
+            top: 16px;
+            left: 24px;
         }
-        .review-text {
+        .review-card p {
             font-size: 15px;
             line-height: 1.7;
-            color: var(--dark-brown);
-            margin-bottom: 16px;
-            padding-top: 20px;
+            color: rgba(61,35,20,0.75);
             font-style: italic;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
         }
-        .review-stars { color: var(--golden-tan); font-size: 14px; margin-bottom: 8px; }
-        .review-author {
+        .review-card .reviewer {
             font-weight: 600;
             font-size: 14px;
             color: var(--warm-brown);
+            font-style: normal;
         }
 
         /* ── Instagram ── */
-        .insta-section {
-            background: var(--cream);
-            padding: 60px 20px;
+        .instagram-section {
+            padding: 100px 20px;
+            background: var(--light-cream);
         }
         .insta-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
             max-width: 900px;
-            margin: 0 auto 28px;
+            margin: 0 auto 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
         }
         .insta-item {
             aspect-ratio: 1;
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            background: linear-gradient(135deg, var(--golden-tan), var(--warm-brown));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--cream);
-            font-size: 32px;
+            font-size: 36px;
+            background: linear-gradient(135deg, rgba(var(--golden-rgb),0.25), rgba(var(--accent-rgb),0.18));
+            transition: all 0.4s ease;
+            cursor: pointer;
             position: relative;
-            transition: transform 0.3s;
         }
-        .insta-item:hover { transform: scale(1.03); }
+        .insta-item:hover {
+            transform: scale(1.04);
+            box-shadow: 0 8px 32px rgba(var(--accent-rgb), 0.2);
+        }
         .insta-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        .insta-link {
-            display: block;
+        .insta-item .placeholder-text {
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            right: 0;
             text-align: center;
+            font-size: 11px;
             color: var(--warm-brown);
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            text-decoration: none;
             font-weight: 500;
+            opacity: 0.7;
         }
-        .insta-link:hover { color: var(--dark-brown); }
-
-        /* ── Order ── */
-        .order-section {
-            background: var(--dark-brown);
-            padding: 80px 20px;
+        .insta-cta {
             text-align: center;
         }
-        .order-section .section-title { color: var(--cream); }
-        .order-section .section-subtitle { color: var(--golden-tan); }
-        .order-steps {
+        .insta-cta a {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .insta-cta a:hover { color: var(--warm-brown); }
+        .insta-cta .social-icons {
             display: flex;
             justify-content: center;
-            gap: 48px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 12px;
         }
-        .order-step {
-            text-align: center;
-            max-width: 200px;
-        }
-        .order-num {
-            width: 56px;
-            height: 56px;
+        .insta-cta .social-icons a {
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background: var(--golden-tan);
-            color: var(--dark-brown);
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            font-weight: 700;
+            border: 1.5px solid var(--golden);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 14px;
+            transition: all 0.3s ease;
+        }
+        .insta-cta .social-icons a:hover {
+            background: var(--golden);
+        }
+        .insta-cta .social-icons a:hover svg { fill: var(--dark-brown); }
+        .insta-cta .social-icons svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--warm-brown);
+            transition: fill 0.3s;
+        }
+
+        /* ── Order ── */
+        .order-section {
+            position: relative;
+            padding: 100px 20px;
+            background: var(--dark-brown);
+            overflow: hidden;
+        }
+        .order-section .section-title { color: var(--cream); }
+        .order-grid {
+            max-width: 900px;
+            margin: 0 auto 48px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            position: relative;
+            z-index: 2;
+        }
+        .order-step {
+            background: rgba(245,230,208,0.06);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(var(--golden-rgb), 0.12);
+            border-radius: 20px;
+            padding: 36px 24px;
+            text-align: center;
+        }
+        .order-step .order-num {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--golden), var(--accent));
+            color: var(--dark-brown);
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
         }
         .order-step h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 17px;
             color: var(--cream);
-            margin-bottom: 6px;
+            font-size: 1.15rem;
+            margin-bottom: 8px;
         }
         .order-step p {
             font-size: 14px;
-            color: var(--golden-tan);
+            color: rgba(245,230,208,0.6);
             line-height: 1.6;
         }
         .order-cta {
-            display: inline-block;
-            padding: 16px 48px;
-            background: var(--golden-tan);
-            color: var(--dark-brown);
-            font-family: 'Playfair Display', serif;
-            font-size: 17px;
-            font-weight: 600;
-            text-decoration: none;
-            border-radius: 50px;
-            transition: all 0.3s;
+            text-align: center;
+            position: relative;
+            z-index: 2;
         }
-        .order-cta:hover {
-            background: var(--cream);
-            transform: translateY(-2px);
+        .btn-glow {
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--dark-brown);
+            background: linear-gradient(135deg, var(--golden), var(--accent));
+            padding: 18px 48px;
+            border-radius: 100px;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 32px rgba(var(--accent-rgb), 0.35);
+        }
+        .btn-glow:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 56px rgba(var(--accent-rgb), 0.55);
         }
 
         /* ── Footer ── */
         .footer {
-            background: #2A1810;
-            color: var(--cream);
-            padding: 60px 20px 30px;
-        }
-        .footer-inner {
-            max-width: 900px;
-            margin: 0 auto;
+            position: relative;
+            background: var(--dark-brown);
+            padding: 80px 20px 40px;
             text-align: center;
+            overflow: hidden;
         }
-        .footer-name {
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--golden), var(--accent), var(--golden), transparent);
+        }
+        .footer h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .footer-tagline {
-            font-family: 'Dancing Script', cursive;
-            font-size: 18px;
-            color: var(--golden-tan);
-            margin-bottom: 28px;
-        }
-        .footer-pickup {
-            display: inline-block;
-            padding: 14px 32px;
-            border: 1.5px solid var(--golden-tan);
-            border-radius: 12px;
-            margin-bottom: 28px;
+            font-size: 1.8rem;
             color: var(--cream);
-            font-size: 14px;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
         }
-        .footer-pickup strong { color: var(--golden-tan); }
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 28px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
+        .footer .footer-tagline {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+            color: var(--golden);
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 2;
         }
-        .footer-links a {
-            color: var(--golden-tan);
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.2s;
-        }
-        .footer-links a:hover { color: var(--cream); }
-        .footer-copy {
+        .footer-badge {
+            display: inline-block;
+            padding: 8px 24px;
+            border: 1.5px solid rgba(var(--golden-rgb), 0.3);
+            border-radius: 100px;
             font-size: 13px;
-            color: rgba(245, 230, 208, 0.5);
-            margin-top: 20px;
+            font-weight: 500;
+            color: rgba(245,230,208,0.7);
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 2;
+        }
+        .footer-info {
+            font-size: 14px;
+            color: rgba(245,230,208,0.5);
+            line-height: 2;
+            position: relative;
+            z-index: 2;
+        }
+        .footer-info a {
+            color: var(--golden);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-info a:hover { color: var(--cream); }
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(245,230,208,0.08);
+            font-size: 13px;
+            color: rgba(245,230,208,0.3);
+            position: relative;
+            z-index: 2;
         }
 
         /* ── Mobile ── */
         @media (max-width: 768px) {
-            .main-nav {
-                gap: 4px;
-                padding: 10px 12px;
-                flex-wrap: wrap;
-            }
-            .main-nav a {
-                padding: 8px 16px;
-                font-size: 13px;
-            }
-            .meet-cassie {
-                flex-direction: column;
+            .about-inner {
+                grid-template-columns: 1fr;
+                gap: 40px;
                 text-align: center;
-                gap: 30px;
             }
-            .cassie-photo { width: 180px; height: 180px; }
-            .process-row { gap: 24px; }
-            .process-step { min-width: 140px; }
-            .menu-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-            .insta-grid { grid-template-columns: repeat(2, 1fr); }
-            .order-steps { gap: 28px; }
+            .about-photo {
+                width: 200px;
+                height: 200px;
+                font-size: 60px;
+            }
+            .about-card { padding: 32px 24px; }
+            .process-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            .menu-grid { grid-template-columns: 1fr; }
+            .reviews-grid { grid-template-columns: 1fr; }
+            .order-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .insta-grid { grid-template-columns: repeat(3, 1fr); }
+            .main-nav { gap: 2px; padding: 10px 12px; flex-wrap: wrap; }
+            .main-nav a { padding: 6px 14px; font-size: 13px; }
         }
 
         @media (max-width: 480px) {
-            .main-nav a { padding: 7px 12px; font-size: 12px; }
-            .menu-grid { grid-template-columns: 1fr; }
+            .process-grid { grid-template-columns: 1fr; }
+            .insta-grid { grid-template-columns: repeat(2, 1fr); }
+            .menu-tabs { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
 <body>
 
-<!-- Concept Switcher -->
-<div class="concept-nav">
-    <a href="/">A</a>
-    <a href="/concept-b">B</a>
-    <a href="/concept-c">C</a>
-    <a href="/concept-d">D</a>
-    <a href="/concept-e">E</a>
-    <a href="/concept-f">F</a>
-    <a href="/concept-g" class="active">G</a>
-</div>
-
-<!-- Main Navigation -->
-<nav class="main-nav">
-    <a href="#home" class="active-link">Home</a>
-    <a href="#menu">Menu</a>
-    <a href="#about">About</a>
-    <a href="#order">Order</a>
-    <a href="#contact">Contact</a>
-</nav>
-
-<!-- Hero -->
-<section class="hero" id="home">
-    <div class="hero-bg"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-        <h1>Bakery on Biscotto <span>Where Sourdough Dreams Come True</span></h1>
-        <p class="hero-tagline">Handcrafted with love in Davenport, FL</p>
-        <a href="#menu" class="hero-cta">Explore Our Menu</a>
+    {{-- Concept Nav --}}
+    <div class="concept-nav">
+        <a href="/">A</a>
+        <a href="/concept-b">B</a>
+        <a href="/concept-c">C</a>
+        <a href="/concept-d">D</a>
+        <a href="/concept-e">E</a>
+        <a href="/concept-f">F</a>
+        <a href="/concept-g" class="active">G</a>
     </div>
-</section>
 
-<!-- Divider -->
-<div class="divider">
-    <div class="divider-line"></div>
-    <div class="divider-icon">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c0 0-2 4-2 8s2 6 2 6 2-2 2-6-2-8-2-8zm-4 6c-1 2-1 5 0 7 1 1.5 2 2 3 3-1-1-3-3-3-5s0-4 0-5zm8 0c1 2 1 5 0 7-1 1.5-2 2-3 3 1-1 3-3 3-5s0-4 0-5zM12 18c-2 1-4 2-5 4h10c-1-2-3-3-5-4z"/></svg>
+    {{-- Main Nav --}}
+    <nav class="main-nav">
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+        <a href="#order">Order</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    {{-- Hero --}}
+    <section class="hero noise" id="home">
+        <div class="hero-bg"></div>
+        <div class="orb" style="width:400px;height:400px;background:rgba(var(--accent-rgb),0.4);top:-100px;left:-80px;"></div>
+        <div class="orb" style="width:300px;height:300px;background:rgba(var(--golden-rgb),0.3);bottom:-50px;right:-60px;"></div>
+        <div class="orb" style="width:200px;height:200px;background:rgba(var(--accent-rgb),0.2);top:40%;right:15%;"></div>
+        <div class="hero-content">
+            <h1 class="hero-fade hero-fade-d1">Bakery on Biscotto</h1>
+            <p class="tagline hero-fade hero-fade-d2">Where Sourdough Dreams Come True</p>
+            <a href="#menu" class="btn-primary hero-fade hero-fade-d3">Explore Our Menu</a>
+        </div>
+    </section>
+
+    {{-- Divider --}}
+    <div class="divider">
+        <span class="divider-line"></span>
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 4C20 4 22 12 20 20C18 12 20 4 20 4Z" fill="var(--golden)" opacity="0.6"/>
+            <path d="M20 8C20 8 26 14 24 22C22 16 20 8 20 8Z" fill="var(--golden)" opacity="0.4"/>
+            <path d="M20 8C20 8 14 14 16 22C18 16 20 8 20 8Z" fill="var(--golden)" opacity="0.4"/>
+            <path d="M20 12C20 12 28 16 26 24C24 18 20 12 20 12Z" fill="var(--golden)" opacity="0.3"/>
+            <path d="M20 12C20 12 12 16 14 24C16 18 20 12 20 12Z" fill="var(--golden)" opacity="0.3"/>
+            <line x1="20" y1="20" x2="20" y2="36" stroke="var(--golden)" stroke-width="1.5" opacity="0.5"/>
+        </svg>
+        <span class="divider-line"></span>
     </div>
-    <div class="divider-line"></div>
-</div>
 
-<!-- Meet Cassie -->
-<section class="section fade-in" id="about">
-    <h2 class="section-title">Meet Cassie</h2>
-    <p class="section-subtitle">The heart and hands behind every loaf</p>
-    <div class="meet-cassie">
-        <div class="cassie-photo">Cassie's Photo</div>
-        <div class="cassie-text">
-            <p>Hi there! I'm Cassie, and baking has been my passion for as long as I can remember. What started as a simple experiment with my sourdough starter, Biscotto (named after our street, Biscotto Circle), quickly turned into something so much bigger.</p>
-            <p>Every loaf, every muffin, every bread that leaves my kitchen is made by hand with real ingredients and a whole lot of love. My husband Jeffrey says the house always smells like a bakery, and honestly, I wouldn't have it any other way.</p>
-            <p>I believe that good bread brings people together. Whether it's a classic sourdough for your family dinner or a chocolate chip loaf for a special treat, I put the same care into every single one.</p>
-            <p class="cassie-signature">With love and flour dust, Cassie</p>
+    {{-- Meet Cassie --}}
+    <section class="about-section noise" id="about">
+        <div class="orb" style="width:350px;height:350px;background:rgba(var(--accent-rgb),0.15);top:-80px;right:-100px;"></div>
+        <div class="orb" style="width:250px;height:250px;background:rgba(var(--golden-rgb),0.12);bottom:-60px;left:-80px;"></div>
+        <div class="about-inner">
+            <div class="about-photo reveal">👩‍🍳</div>
+            <div class="about-card reveal" style="transition-delay: 0.15s;">
+                <h2>Meet Cassie</h2>
+                <p>Hi there! I'm Cassie, the baker behind every loaf, every muffin, and every crumb at Bakery on Biscotto. What started as a love affair with sourdough in my home kitchen has grown into something I'm so proud of.</p>
+                <p>My sourdough starter, Biscotto, is the heart of this bakery. But what really drives me is the joy of feeding my community with bread made slowly, with care, and with the best ingredients I can find.</p>
+                <p>Every single thing I bake is made by hand, from scratch, with love. No shortcuts, no preservatives, just real bread the way it should be.</p>
+                <p class="signature">With love and flour dust, Cassie ✨</p>
+            </div>
         </div>
+    </section>
+
+    {{-- Divider --}}
+    <div class="divider">
+        <span class="divider-line"></span>
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 4C20 4 22 12 20 20C18 12 20 4 20 4Z" fill="var(--golden)" opacity="0.6"/>
+            <path d="M20 8C20 8 26 14 24 22C22 16 20 8 20 8Z" fill="var(--golden)" opacity="0.4"/>
+            <path d="M20 8C20 8 14 14 16 22C18 16 20 8 20 8Z" fill="var(--golden)" opacity="0.4"/>
+            <line x1="20" y1="20" x2="20" y2="36" stroke="var(--golden)" stroke-width="1.5" opacity="0.5"/>
+        </svg>
+        <span class="divider-line"></span>
     </div>
-</section>
 
-<!-- Divider -->
-<div class="divider">
-    <div class="divider-line"></div>
-    <div class="divider-icon">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c0 0-2 4-2 8s2 6 2 6 2-2 2-6-2-8-2-8zm-4 6c-1 2-1 5 0 7 1 1.5 2 2 3 3-1-1-3-3-3-5s0-4 0-5zm8 0c1 2 1 5 0 7-1 1.5-2 2-3 3 1-1 3-3 3-5s0-4 0-5zM12 18c-2 1-4 2-5 4h10c-1-2-3-3-5-4z"/></svg>
-    </div>
-    <div class="divider-line"></div>
-</div>
-
-<!-- Our Process -->
-<section class="section fade-in">
-    <h2 class="section-title">Our Process</h2>
-    <p class="section-subtitle">Care and craft in every step</p>
-    <div class="process-row">
-        <div class="process-step">
-            <div class="process-icon">🌾</div>
-            <h3>Quality Ingredients</h3>
-            <p>We start with the best flour, butter, and real ingredients. No shortcuts, no preservatives.</p>
+    {{-- Process --}}
+    <section class="process-section noise">
+        <div class="orb" style="width:300px;height:300px;background:rgba(var(--golden-rgb),0.15);top:-60px;left:10%;"></div>
+        <div class="orb" style="width:250px;height:250px;background:rgba(var(--accent-rgb),0.1);bottom:-80px;right:5%;"></div>
+        <h2 class="section-title reveal">Our Process</h2>
+        <div class="process-grid">
+            <div class="process-step reveal" style="transition-delay: 0s;">
+                <div class="step-num">1</div>
+                <h3>Source</h3>
+                <p>Quality ingredients, locally when possible</p>
+            </div>
+            <div class="process-step reveal" style="transition-delay: 0.12s;">
+                <div class="step-num">2</div>
+                <h3>Craft</h3>
+                <p>Mixed and shaped by hand with care</p>
+            </div>
+            <div class="process-step reveal" style="transition-delay: 0.24s;">
+                <div class="step-num">3</div>
+                <h3>Time</h3>
+                <p>Slow rise for deep flavor and perfect texture</p>
+            </div>
+            <div class="process-step reveal" style="transition-delay: 0.36s;">
+                <div class="step-num">4</div>
+                <h3>Bake</h3>
+                <p>Fresh from the oven to your table</p>
+            </div>
         </div>
-        <div class="process-step">
-            <div class="process-icon">🤲</div>
-            <h3>Made by Hand</h3>
-            <p>Every loaf is hand-shaped and crafted with attention to detail and years of practice.</p>
-        </div>
-        <div class="process-step">
-            <div class="process-icon">⏳</div>
-            <h3>Slow and Steady</h3>
-            <p>Good things take time. We never rush the process, letting flavor develop naturally.</p>
-        </div>
-        <div class="process-step">
-            <div class="process-icon">🍞</div>
-            <h3>Baked Fresh</h3>
-            <p>Your order is baked fresh, so it arrives at your door at its very best.</p>
-        </div>
-    </div>
-</section>
+    </section>
 
-<!-- Divider -->
-<div class="divider">
-    <div class="divider-line"></div>
-    <div class="divider-icon">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c0 0-2 4-2 8s2 6 2 6 2-2 2-6-2-8-2-8zm-4 6c-1 2-1 5 0 7 1 1.5 2 2 3 3-1-1-3-3-3-5s0-4 0-5zm8 0c1 2 1 5 0 7-1 1.5-2 2-3 3 1-1 3-3 3-5s0-4 0-5zM12 18c-2 1-4 2-5 4h10c-1-2-3-3-5-4z"/></svg>
-    </div>
-    <div class="divider-line"></div>
-</div>
-
-<!-- Menu -->
-<section class="menu-section" id="menu" x-data="{ tab: 'sourdough' }">
-    <div class="menu-inner">
-        <h2 class="section-title fade-in">What We Bake</h2>
-        <p class="section-subtitle fade-in">Handcrafted breads made to order, right here in Davenport</p>
-
-        <div class="menu-tabs fade-in">
-            <button class="menu-tab" :class="{ active: tab === 'sourdough' }" @click="tab = 'sourdough'">Sourdough Loaves</button>
-            <button class="menu-tab" :class="{ active: tab === 'other' }" @click="tab = 'other'">Other Breads</button>
+    {{-- Menu --}}
+    <section class="menu-section" id="menu" x-data="{ tab: 'sourdough' }">
+        <h2 class="section-title reveal">What We Bake</h2>
+        <div class="menu-tabs reveal">
+            <button class="menu-tab" :class="{ 'active': tab === 'sourdough' }" @click="tab = 'sourdough'">Sourdough Loaves</button>
+            <button class="menu-tab" :class="{ 'active': tab === 'other' }" @click="tab = 'other'">Other Breads</button>
         </div>
 
-        <!-- Sourdough Loaves -->
-        <div class="menu-grid fade-in" x-show="tab === 'sourdough'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-            <div class="menu-card">
+        {{-- Sourdough --}}
+        <div class="menu-grid" x-show="tab === 'sourdough'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+            <div class="menu-card reveal">
                 <div class="menu-card-img"><img src="/images/product-sourdough-boule.jpg" alt="Regular Sourdough Loaf"></div>
                 <div class="menu-card-body">
                     <h3>Regular Loaf</h3>
-                    <div class="menu-card-price">$10</div>
+                    <p class="desc">Classic sourdough with a golden crust and airy crumb</p>
+                    <span class="price-badge">$10</span>
                 </div>
             </div>
-            <div class="menu-card">
+            <div class="menu-card reveal" style="transition-delay:0.06s;">
                 <div class="menu-card-img">🧀</div>
                 <div class="menu-card-body">
                     <h3>Cheddar</h3>
-                    <div class="menu-card-price">$12</div>
+                    <p class="desc">Sharp cheddar folded into tangy sourdough</p>
+                    <span class="price-badge">$12</span>
                 </div>
             </div>
-            <div class="menu-card">
+            <div class="menu-card reveal" style="transition-delay:0.12s;">
                 <div class="menu-card-img">🧄</div>
                 <div class="menu-card-body">
                     <h3>Mozzarella and Garlic</h3>
-                    <div class="menu-card-price">$14</div>
+                    <p class="desc">Melty mozzarella with roasted garlic throughout</p>
+                    <span class="price-badge">$14</span>
                 </div>
             </div>
-            <div class="menu-card">
+            <div class="menu-card reveal" style="transition-delay:0.18s;">
                 <div class="menu-card-img">🍫</div>
                 <div class="menu-card-body">
                     <h3>Chocolate Chip</h3>
-                    <div class="menu-card-price">$12</div>
+                    <p class="desc">Rich chocolate chips in every slice</p>
+                    <span class="price-badge">$12</span>
                 </div>
             </div>
-            <div class="menu-card">
+            <div class="menu-card reveal" style="transition-delay:0.24s;">
                 <div class="menu-card-img">✨</div>
                 <div class="menu-card-body">
                     <h3>Cinnamon and Sugar</h3>
-                    <div class="menu-card-price">$14</div>
+                    <p class="desc">Warm cinnamon swirled with sweet sugar</p>
+                    <span class="price-badge">$14</span>
                 </div>
             </div>
-            <div class="menu-card">
+            <div class="menu-card reveal" style="transition-delay:0.3s;">
                 <div class="menu-card-img">🍫</div>
                 <div class="menu-card-body">
                     <h3>Chocolate, Chocolate Chip</h3>
-                    <div class="menu-card-price">$12</div>
+                    <p class="desc">Double chocolate for the true chocolate lover</p>
+                    <span class="price-badge">$12</span>
                 </div>
             </div>
-            <div class="menu-card">
-                <div class="menu-card-img">🌰</div>
+            <div class="menu-card reveal" style="transition-delay:0.36s;">
+                <div class="menu-card-img">🍫</div>
                 <div class="menu-card-body">
                     <h3>Chocolate Almond, Chocolate Chip</h3>
-                    <div class="menu-card-price">$15</div>
+                    <p class="desc">Chocolate and almond with chips for extra indulgence</p>
+                    <span class="price-badge">$15</span>
                 </div>
             </div>
-            <div class="menu-card">
+            <div class="menu-card reveal" style="transition-delay:0.42s;">
                 <div class="menu-card-img">🌶️</div>
                 <div class="menu-card-body">
-                    <h3>Jalape&#241;o Cheddar</h3>
-                    <div class="menu-card-price">$14</div>
+                    <h3>Jalape&ntilde;o Cheddar</h3>
+                    <p class="desc">Spicy jalape&ntilde;os and melty cheddar, a perfect pair</p>
+                    <span class="price-badge">$14</span>
                 </div>
             </div>
-            <div class="menu-card">
-                <div class="menu-card-img">🎁</div>
+            <div class="menu-card reveal" style="transition-delay:0.48s;">
+                <div class="menu-card-img">🍞</div>
                 <div class="menu-card-body">
                     <h3>4 Pack of Mini Loaves</h3>
-                    <p style="font-size:13px;color:var(--warm-brown);margin-bottom:4px;">Choose any 4</p>
-                    <div class="menu-card-price">$25</div>
+                    <p class="desc">Choose any 4 flavors for a variety pack</p>
+                    <span class="price-badge">$25</span>
                 </div>
             </div>
         </div>
 
-        <!-- Other Breads -->
-        <div class="menu-grid fade-in" x-show="tab === 'other'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
-            <div class="menu-card">
+        {{-- Other Breads --}}
+        <div class="menu-grid" x-show="tab === 'other'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+            <div class="menu-card reveal">
                 <div class="menu-card-img">🍯</div>
                 <div class="menu-card-body">
                     <h3>Sourdough Honey Wheat Sandwich Bread</h3>
-                    <div class="menu-card-price">$10</div>
+                    <p class="desc">Soft honey wheat perfect for sandwiches</p>
+                    <span class="price-badge">$10</span>
                 </div>
             </div>
-            <div class="menu-card">
+            <div class="menu-card reveal" style="transition-delay:0.06s;">
                 <div class="menu-card-img"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
                 <div class="menu-card-body">
                     <h3>Sourdough English Muffins (6ct)</h3>
-                    <div class="menu-card-price">$8</div>
+                    <p class="desc">Nooks and crannies in every single one</p>
+                    <span class="price-badge">$8</span>
                 </div>
             </div>
-            <div class="menu-card">
+            <div class="menu-card reveal" style="transition-delay:0.12s;">
                 <div class="menu-card-img"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
                 <div class="menu-card-body">
                     <h3>Sourdough English Muffins (12ct)</h3>
-                    <div class="menu-card-price">$15</div>
+                    <p class="desc">Double the muffins, double the joy</p>
+                    <span class="price-badge">$15</span>
                 </div>
             </div>
-            <div class="menu-card">
+            <div class="menu-card reveal" style="transition-delay:0.18s;">
                 <div class="menu-card-img">🍌</div>
                 <div class="menu-card-body">
                     <h3>Banana Bread</h3>
-                    <div class="menu-card-price">$12</div>
+                    <p class="desc">Moist, sweet, and perfectly spiced</p>
+                    <span class="price-badge">$12</span>
                 </div>
             </div>
-            <div class="menu-card">
-                <div class="menu-card-img">🥜</div>
+            <div class="menu-card reveal" style="transition-delay:0.24s;">
+                <div class="menu-card-img">🍌</div>
                 <div class="menu-card-body">
                     <h3>Banana Walnut Bread</h3>
-                    <div class="menu-card-price">$15</div>
+                    <p class="desc">Classic banana bread loaded with crunchy walnuts</p>
+                    <span class="price-badge">$15</span>
                 </div>
             </div>
-            <div class="menu-card">
+            <div class="menu-card reveal" style="transition-delay:0.3s;">
                 <div class="menu-card-img">🎃</div>
                 <div class="menu-card-body">
                     <h3>Pumpkin Chocolate Chip Bread</h3>
-                    <div class="menu-card-price">$12</div>
+                    <p class="desc">Warm pumpkin spice with chocolate chips</p>
+                    <span class="price-badge">$12</span>
                 </div>
             </div>
-            <div class="menu-card">
+            <div class="menu-card reveal" style="transition-delay:0.36s;">
                 <div class="menu-card-img">🎃</div>
                 <div class="menu-card-body">
                     <h3>Pumpkin Almond Chocolate Chip Bread</h3>
-                    <div class="menu-card-price">$15</div>
+                    <p class="desc">Pumpkin, almond, and chocolate in every bite</p>
+                    <span class="price-badge">$15</span>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Divider -->
-<div class="divider">
-    <div class="divider-line"></div>
-    <div class="divider-icon">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c0 0-2 4-2 8s2 6 2 6 2-2 2-6-2-8-2-8zm-4 6c-1 2-1 5 0 7 1 1.5 2 2 3 3-1-1-3-3-3-5s0-4 0-5zm8 0c1 2 1 5 0 7-1 1.5-2 2-3 3 1-1 3-3 3-5s0-4 0-5zM12 18c-2 1-4 2-5 4h10c-1-2-3-3-5-4z"/></svg>
-    </div>
-    <div class="divider-line"></div>
-</div>
+    {{-- Reviews --}}
+    <section class="reviews-section">
+        <h2 class="section-title reveal">What Our Neighbors Say</h2>
+        <div class="reviews-grid">
+            <div class="review-card reveal">
+                <span class="quote-mark">&ldquo;</span>
+                <p>The best sourdough I've ever had, and I've tried a lot! The crust is perfectly crispy and the inside is so soft. We order every single week now.</p>
+                <span class="reviewer">Sarah M., Davenport</span>
+            </div>
+            <div class="review-card reveal" style="transition-delay:0.1s;">
+                <span class="quote-mark">&ldquo;</span>
+                <p>Cassie's chocolate chip sourdough changed my life. I'm not even being dramatic. My kids fight over the last slice every time.</p>
+                <span class="reviewer">Mike T., Haines City</span>
+            </div>
+            <div class="review-card reveal" style="transition-delay:0.2s;">
+                <span class="quote-mark">&ldquo;</span>
+                <p>Finally, real bread from someone who actually cares. You can taste the difference. The English muffins are out of this world!</p>
+                <span class="reviewer">Jessica R., Clermont</span>
+            </div>
+            <div class="review-card reveal" style="transition-delay:0.3s;">
+                <span class="quote-mark">&ldquo;</span>
+                <p>I ordered the mini loaf variety pack and now I can't pick a favorite. The jalape&ntilde;o cheddar and cinnamon sugar are tied for first place.</p>
+                <span class="reviewer">David L., Kissimmee</span>
+            </div>
+        </div>
+    </section>
 
-<!-- Customer Favorites -->
-<section class="section fade-in">
-    <h2 class="section-title">Customer Favorites</h2>
-    <p class="section-subtitle">Kind words from our bread-loving community</p>
-    <div class="reviews-grid">
-        <div class="review-card">
-            <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-            <p class="review-text">The jalape&#241;o cheddar loaf is out of this world. My family fights over the last slice every single time!</p>
-            <div class="review-author">Sarah M.</div>
+    {{-- Instagram --}}
+    <section class="instagram-section">
+        <h2 class="section-title reveal">Fresh from the Oven</h2>
+        <div class="insta-grid">
+            <div class="insta-item reveal"><img src="/images/product-sourdough-boule.jpg" alt="Sourdough boule"></div>
+            <div class="insta-item reveal" style="transition-delay:0.06s;"><img src="/images/product-english-muffins.jpg" alt="English muffins"></div>
+            <div class="insta-item reveal" style="transition-delay:0.12s;">🍞<span class="placeholder-text">Bake day</span></div>
+            <div class="insta-item reveal" style="transition-delay:0.18s;">🧈<span class="placeholder-text">Fresh butter</span></div>
+            <div class="insta-item reveal" style="transition-delay:0.24s;">🌾<span class="placeholder-text">Local flour</span></div>
+            <div class="insta-item reveal" style="transition-delay:0.3s;">🥖<span class="placeholder-text">Cooling rack</span></div>
         </div>
-        <div class="review-card">
-            <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-            <p class="review-text">I've tried bakeries all over central Florida and nothing compares. The sourdough is perfectly tangy with the most amazing crust.</p>
-            <div class="review-author">David R.</div>
+        <div class="insta-cta reveal">
+            <a href="https://instagram.com/bakeryonbiscotto" target="_blank">Follow @bakeryonbiscotto</a>
+            <div class="social-icons">
+                <a href="https://facebook.com/bakeryonbiscotto" target="_blank" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="https://instagram.com/bakeryonbiscotto" target="_blank" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                </a>
+            </div>
         </div>
-        <div class="review-card">
-            <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-            <p class="review-text">Ordered the mini loaves pack to try different flavors. Every single one was incredible. The cinnamon sugar is now a weekly must-have!</p>
-            <div class="review-author">Emily T.</div>
-        </div>
-        <div class="review-card">
-            <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-            <p class="review-text">The English muffins are the best I've ever had. You can taste the love and care in every bite. We're customers for life!</p>
-            <div class="review-author">Mike and Jen K.</div>
-        </div>
-    </div>
-</section>
+    </section>
 
-<!-- Instagram -->
-<section class="insta-section fade-in">
-    <h2 class="section-title" style="margin-bottom:8px;">Fresh from the Oven</h2>
-    <p class="section-subtitle">Follow along for behind-the-scenes baking and fresh batch alerts</p>
-    <div class="insta-grid">
-        <div class="insta-item"><img src="/images/product-sourdough-boule.jpg" alt="Sourdough Boule"></div>
-        <div class="insta-item"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
-        <div class="insta-item">📸</div>
-        <div class="insta-item">📸</div>
-    </div>
-    <a href="https://instagram.com/bakeryonbiscotto" target="_blank" class="insta-link">@bakeryonbiscotto on Instagram</a>
-</section>
+    {{-- Order --}}
+    <section class="order-section noise" id="order">
+        <div class="orb" style="width:350px;height:350px;background:rgba(var(--golden-rgb),0.12);top:-100px;right:-80px;"></div>
+        <div class="orb" style="width:280px;height:280px;background:rgba(var(--accent-rgb),0.1);bottom:-60px;left:-60px;"></div>
+        <h2 class="section-title reveal">Ready to Order?</h2>
+        <div class="order-grid">
+            <div class="order-step reveal">
+                <div class="order-num">1</div>
+                <h3>Browse</h3>
+                <p>Check out our menu and pick your favorites</p>
+            </div>
+            <div class="order-step reveal" style="transition-delay:0.12s;">
+                <div class="order-num">2</div>
+                <h3>Email Us</h3>
+                <p>Send us your order and we'll confirm the details</p>
+            </div>
+            <div class="order-step reveal" style="transition-delay:0.24s;">
+                <div class="order-num">3</div>
+                <h3>Pick Up</h3>
+                <p>Grab your fresh bread, still warm from the oven</p>
+            </div>
+        </div>
+        <div class="order-cta reveal">
+            <a href="mailto:bakeryonbiscotto@gmail.com" class="btn-glow">Place Your Order</a>
+        </div>
+    </section>
 
-<!-- Ready to Order -->
-<section class="order-section fade-in" id="order">
-    <h2 class="section-title">Ready to Order?</h2>
-    <p class="section-subtitle">Getting fresh bread is as easy as 1, 2, 3</p>
-    <div class="order-steps">
-        <div class="order-step">
-            <div class="order-num">1</div>
-            <h3>Send Us a Message</h3>
-            <p>Email us with what you'd like to order. We'll confirm availability and timing.</p>
+    {{-- Footer --}}
+    <footer class="footer noise" id="contact">
+        <h3>Bakery on Biscotto</h3>
+        <p class="footer-tagline">With love and flour dust</p>
+        <div class="footer-badge">Local Pickup &amp; Delivery Available</div>
+        <div class="footer-info">
+            Davenport, FL<br>
+            <a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a><br>
+            <a href="https://facebook.com/bakeryonbiscotto" target="_blank">Facebook</a> &middot; <a href="https://instagram.com/bakeryonbiscotto" target="_blank">Instagram</a> &middot; @bakeryonbiscotto
         </div>
-        <div class="order-step">
-            <div class="order-num">2</div>
-            <h3>We Bake It Fresh</h3>
-            <p>Your order is baked just for you. No day-old bread here!</p>
-        </div>
-        <div class="order-step">
-            <div class="order-num">3</div>
-            <h3>Pickup or Delivery</h3>
-            <p>Grab your order locally in Davenport, or we can deliver it to your door.</p>
-        </div>
-    </div>
-    <a href="mailto:bakeryonbiscotto@gmail.com" class="order-cta">Place Your Order</a>
-</section>
+        <div class="footer-bottom">&copy; {{ date('Y') }} Bakery on Biscotto. All rights reserved.</div>
+    </footer>
 
-<!-- Footer -->
-<footer class="footer" id="contact">
-    <div class="footer-inner">
-        <div class="footer-name">Bakery on Biscotto</div>
-        <div class="footer-tagline">With love and flour dust</div>
-        <div class="footer-pickup">
-            <strong>Local Pickup &amp; Delivery</strong><br>
-            Davenport, FL
-        </div>
-        <div class="footer-links">
-            <a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a>
-            <a href="https://instagram.com/bakeryonbiscotto" target="_blank">Instagram @bakeryonbiscotto</a>
-            <a href="https://facebook.com/bakeryonbiscotto" target="_blank">Facebook @bakeryonbiscotto</a>
-        </div>
-        <div class="footer-copy">&copy; {{ date('Y') }} Bakery on Biscotto. All rights reserved.</div>
-    </div>
-</footer>
-
-<script>
-    // Intersection Observer for scroll animations
-    document.addEventListener('DOMContentLoaded', function() {
+    <script>
+        // Intersection Observer for scroll animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-    });
-</script>
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
 
 </body>
 </html>
