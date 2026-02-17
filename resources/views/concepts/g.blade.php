@@ -574,7 +574,17 @@
         }
         .menu-card:hover .menu-card-img img { transform: scale(1.08); }
         .menu-card-img.placeholder-img {
-            background: linear-gradient(135deg, rgba(212,165,116,0.15), rgba(193,127,78,0.1));
+            background:
+                radial-gradient(circle at 30% 70%, rgba(212,165,116,0.2) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(193,127,78,0.15) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(212,165,116,0.08), rgba(193,127,78,0.04));
+            position: relative;
+        }
+        .menu-card-img.placeholder-img::after {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: radial-gradient(circle, rgba(139,94,60,0.06) 1px, transparent 1px);
+            background-size: 16px 16px;
         }
         .menu-card-img .emoji-icon {
             font-size: 56px;
@@ -687,11 +697,13 @@
             max-width: 900px; margin: 0 auto 40px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(2, 1fr);
+            grid-auto-rows: 180px;
             gap: 8px;
         }
+        .insta-item:first-child {
+            grid-row: span 2;
+        }
         .insta-item {
-            aspect-ratio: 1;
             border-radius: 12px; overflow: hidden;
             position: relative; cursor: pointer;
             transition: all 0.4s ease;
@@ -744,22 +756,44 @@
             position: relative; z-index: 2;
         }
         .order-card {
-            background: rgba(245,230,208,0.04);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(212,165,116,0.15);
-            border-radius: 24px;
+            background: var(--cream);
+            border: none;
+            border-radius: 4px;
             padding: 60px 48px;
             text-align: center;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: rotate(-0.5deg);
+        }
+        /* Lined paper effect */
+        .order-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: repeating-linear-gradient(
+                transparent, transparent 31px,
+                rgba(139,94,60,0.08) 31px, rgba(139,94,60,0.08) 32px
+            );
+            pointer-events: none;
+        }
+        /* Red margin line */
+        .order-card::after {
+            content: '';
+            position: absolute; top: 0; bottom: 0; left: 60px;
+            width: 2px;
+            background: rgba(200,80,80,0.2);
+            pointer-events: none;
         }
         .order-card h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem; color: var(--cream);
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.4rem; color: var(--dark);
             margin-bottom: 12px;
+            position: relative; z-index: 2;
         }
         .order-card .sub {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.2rem; color: var(--golden);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem; color: var(--brown);
             margin-bottom: 48px;
+            position: relative; z-index: 2;
         }
         .order-steps {
             display: grid; grid-template-columns: repeat(3, 1fr);
@@ -772,7 +806,7 @@
         .order-step:not(:last-child)::after {
             content: '→';
             position: absolute; right: -20px; top: 40px;
-            font-size: 24px; color: rgba(212,165,116,0.3);
+            font-size: 24px; color: var(--golden); opacity: 0.5;
         }
         .order-num {
             width: 56px; height: 56px;
@@ -787,11 +821,11 @@
         }
         .order-step h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.15rem; color: var(--cream);
+            font-size: 1.15rem; color: var(--dark);
             margin-bottom: 8px;
         }
         .order-step p {
-            font-size: 14px; color: rgba(245,230,208,0.5);
+            font-size: 14px; color: var(--brown);
             line-height: 1.6;
         }
         .order-btn {
@@ -858,6 +892,121 @@
         }
 
         /* ═══════════════════════════════════
+           INGREDIENTS MARQUEE
+        ═══════════════════════════════════ */
+        .marquee-section {
+            padding: 0;
+            background: var(--dark);
+            overflow: hidden;
+            border-top: 1px solid rgba(212,165,116,0.15);
+            border-bottom: 1px solid rgba(212,165,116,0.15);
+        }
+        .marquee-track {
+            display: flex;
+            animation: marquee-scroll 30s linear infinite;
+            width: max-content;
+        }
+        .marquee-track:hover { animation-play-state: paused; }
+        .marquee-content {
+            display: flex; align-items: center;
+            white-space: nowrap; padding: 16px 0;
+        }
+        .marquee-item {
+            font-family: 'Playfair Display', serif;
+            font-size: 15px; font-weight: 400;
+            color: rgba(245,230,208,0.5);
+            padding: 0 20px;
+            font-style: italic;
+        }
+        .marquee-dot {
+            width: 4px; height: 4px; border-radius: 50%;
+            background: var(--golden); opacity: 0.4;
+            flex-shrink: 0;
+        }
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ═══════════════════════════════════
+           STATS BAR
+        ═══════════════════════════════════ */
+        .stats-bar {
+            display: flex; justify-content: center; align-items: center;
+            gap: 48px; padding: 24px 20px;
+            background: var(--cream);
+            border-bottom: 1px solid rgba(139,94,60,0.1);
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem; font-weight: 700;
+            color: var(--dark);
+            line-height: 1.2;
+        }
+        .stat-label {
+            font-size: 12px; font-weight: 500;
+            color: var(--brown); letter-spacing: 1px;
+            text-transform: uppercase; margin-top: 2px;
+        }
+        .stat-divider {
+            width: 1px; height: 36px;
+            background: rgba(139,94,60,0.2);
+        }
+
+        /* ═══════════════════════════════════
+           TYPEWRITER
+        ═══════════════════════════════════ */
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid var(--golden);
+            white-space: nowrap;
+            width: 0;
+            animation: typing 2.5s steps(38, end) 0.5s forwards, blink-caret 0.75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--golden); }
+        }
+
+        /* ═══════════════════════════════════
+           SPECIAL DEAL RIBBON
+        ═══════════════════════════════════ */
+        .ribbon-wrap {
+            position: absolute; top: 16px; right: -8px; z-index: 3;
+        }
+        .ribbon {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase;
+            padding: 6px 16px 6px 12px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .ribbon::before {
+            content: '';
+            position: absolute; left: 0; bottom: -6px;
+            border-left: 6px solid transparent;
+            border-right: 0px solid transparent;
+            border-top: 6px solid #922b21;
+        }
+        .ribbon::after {
+            content: '';
+            position: absolute; right: -8px; top: 0;
+            border-top: 16px solid #e74c3c;
+            border-bottom: 16px solid #e74c3c;
+            border-right: 8px solid transparent;
+        }
+
+        /* ═══════════════════════════════════
            SCROLL ANIMATIONS
         ═══════════════════════════════════ */
         .reveal {
@@ -892,6 +1041,12 @@
             .jar-container { margin: 0 auto; }
         }
         @media (max-width: 768px) {
+            .stats-bar {
+                flex-wrap: wrap; gap: 24px;
+                padding: 20px;
+            }
+            .stat-divider { display: none; }
+            .stat-item { flex: 0 0 40%; }
             .main-nav {
                 top: 38px; padding: 6px 8px; gap: 2px;
             }
@@ -911,7 +1066,8 @@
                 gap: 20px;
             }
             .order-step::after { display: none; }
-            .insta-grid { grid-template-columns: repeat(2, 1fr); }
+            .insta-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 150px; }
+            .insta-item:first-child { grid-row: span 1; }
             .about-photo { width: 220px; height: 220px; font-size: 64px; }
         }
         @media (max-width: 480px) {
@@ -953,7 +1109,7 @@
         <div class="flour-particles" id="flour-particles"></div>
         <div class="hero-content">
             <div class="hero-text">
-                <p class="tagline hero-enter hero-enter-d1">Where Sourdough Dreams Come True</p>
+                <p class="tagline hero-enter hero-enter-d1"><span class="typewriter">Where Sourdough Dreams Come True</span></p>
                 <h1 class="hero-enter hero-enter-d2">Bakery on<br><em>Biscotto</em></h1>
                 <p class="hero-desc hero-enter hero-enter-d3">Handcrafted bread from our cottage kitchen to your table. Every loaf is made with care, patience, and our beloved sourdough starter.</p>
                 <a href="#menu" class="hero-btn hero-enter hero-enter-d4">
@@ -972,6 +1128,75 @@
             </div>
         </div>
     </section>
+
+    {{-- ═══ STATS BAR ═══ --}}
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-value" x-data="{ count: 0 }" x-intersect.once="let i = setInterval(() => { count += 10; if(count >= 500) { count = 500; clearInterval(i); } }, 20)">
+                <span x-text="count + '+'">500+</span>
+            </div>
+            <div class="stat-label">Loaves Baked</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <div class="stat-value">2024</div>
+            <div class="stat-label">Established</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <div class="stat-value">100%</div>
+            <div class="stat-label">Handmade</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <div class="stat-value">14</div>
+            <div class="stat-label">Varieties</div>
+        </div>
+    </div>
+
+    {{-- ═══ INGREDIENTS MARQUEE ═══ --}}
+    <div class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-content">
+                <span class="marquee-item">flour</span><span class="marquee-dot"></span>
+                <span class="marquee-item">water</span><span class="marquee-dot"></span>
+                <span class="marquee-item">salt</span><span class="marquee-dot"></span>
+                <span class="marquee-item">time</span><span class="marquee-dot"></span>
+                <span class="marquee-item">love</span><span class="marquee-dot"></span>
+                <span class="marquee-item">cheddar</span><span class="marquee-dot"></span>
+                <span class="marquee-item">cinnamon</span><span class="marquee-dot"></span>
+                <span class="marquee-item">chocolate</span><span class="marquee-dot"></span>
+                <span class="marquee-item">garlic</span><span class="marquee-dot"></span>
+                <span class="marquee-item">mozzarella</span><span class="marquee-dot"></span>
+                <span class="marquee-item">pumpkin</span><span class="marquee-dot"></span>
+                <span class="marquee-item">walnuts</span><span class="marquee-dot"></span>
+                <span class="marquee-item">honey</span><span class="marquee-dot"></span>
+                <span class="marquee-item">banana</span><span class="marquee-dot"></span>
+                <span class="marquee-item">jalape&ntilde;o</span><span class="marquee-dot"></span>
+                <span class="marquee-item">almonds</span><span class="marquee-dot"></span>
+                <span class="marquee-item">patience</span><span class="marquee-dot"></span>
+            </div>
+            <div class="marquee-content" aria-hidden="true">
+                <span class="marquee-item">flour</span><span class="marquee-dot"></span>
+                <span class="marquee-item">water</span><span class="marquee-dot"></span>
+                <span class="marquee-item">salt</span><span class="marquee-dot"></span>
+                <span class="marquee-item">time</span><span class="marquee-dot"></span>
+                <span class="marquee-item">love</span><span class="marquee-dot"></span>
+                <span class="marquee-item">cheddar</span><span class="marquee-dot"></span>
+                <span class="marquee-item">cinnamon</span><span class="marquee-dot"></span>
+                <span class="marquee-item">chocolate</span><span class="marquee-dot"></span>
+                <span class="marquee-item">garlic</span><span class="marquee-dot"></span>
+                <span class="marquee-item">mozzarella</span><span class="marquee-dot"></span>
+                <span class="marquee-item">pumpkin</span><span class="marquee-dot"></span>
+                <span class="marquee-item">walnuts</span><span class="marquee-dot"></span>
+                <span class="marquee-item">honey</span><span class="marquee-dot"></span>
+                <span class="marquee-item">banana</span><span class="marquee-dot"></span>
+                <span class="marquee-item">jalape&ntilde;o</span><span class="marquee-dot"></span>
+                <span class="marquee-item">almonds</span><span class="marquee-dot"></span>
+                <span class="marquee-item">patience</span><span class="marquee-dot"></span>
+            </div>
+        </div>
+    </div>
 
     {{-- Divider --}}
     <div class="divider">
@@ -1151,7 +1376,8 @@
                     <div class="menu-card-footer"><span class="price">$14</span></div>
                 </div>
             </div>
-            <div class="menu-card special reveal" style="transition-delay:0.48s;">
+            <div class="menu-card special reveal" style="transition-delay:0.48s; position: relative;">
+                <div class="ribbon-wrap"><div class="ribbon">Best Value</div></div>
                 <div class="menu-card-img placeholder-img" style="background: linear-gradient(135deg, rgba(212,165,116,0.2), rgba(193,127,78,0.15));"><span class="emoji-icon">🎁</span></div>
                 <div class="menu-card-body">
                     <h3>4 Pack of Mini Loaves</h3>
