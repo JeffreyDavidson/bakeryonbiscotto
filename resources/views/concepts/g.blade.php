@@ -3,761 +3,620 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bakery on Biscotto — Where Sourdough Dreams Come True</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
+    <title>Bakery on Biscotto | Handcrafted Bread, Davenport FL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --dark-brown: #3D2314;
             --warm-brown: #8B5E3C;
             --cream: #F5E6D0;
             --golden-tan: #D4A574;
-            --soft-white: #FEFCF8;
-            --light-cream: #FFF9F0;
-            --text-muted: #9A8573;
+            --light-cream: #FDF8F2;
+            --white: #FFFFFF;
         }
 
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--soft-white);
+            font-family: 'Inter', sans-serif;
             color: var(--dark-brown);
+            background: var(--light-cream);
             line-height: 1.6;
-            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* ── Concept Switcher ── */
         .concept-nav {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 0;
+            left: 0;
+            right: 0;
             z-index: 1000;
             display: flex;
-            gap: 8px;
-            background: rgba(255,255,255,0.95);
-            padding: 10px 16px;
-            border-radius: 50px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
+            justify-content: center;
+            gap: 4px;
+            padding: 6px 10px;
+            background: rgba(61, 35, 20, 0.92);
+            backdrop-filter: blur(8px);
         }
         .concept-nav a {
-            padding: 6px 14px;
-            border-radius: 20px;
+            color: var(--cream);
             text-decoration: none;
             font-size: 13px;
             font-weight: 500;
-            color: var(--warm-brown);
+            padding: 3px 12px;
+            border-radius: 20px;
             transition: all 0.2s;
         }
-        .concept-nav a:hover { background: var(--cream); }
-        .concept-nav a.active { background: var(--dark-brown); color: white; }
+        .concept-nav a:hover { background: rgba(212, 165, 116, 0.3); }
+        .concept-nav a.active {
+            background: var(--golden-tan);
+            color: var(--dark-brown);
+            font-weight: 600;
+        }
 
-        /* ── Navigation ── */
+        /* ── Main Nav ── */
         .main-nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(254, 252, 248, 0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(139, 94, 60, 0.1);
-            padding: 16px 0;
-        }
-
-        .nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
+            position: fixed;
+            top: 34px;
+            left: 0;
+            right: 0;
+            z-index: 999;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-        }
-
-        .nav-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--dark-brown);
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
             gap: 8px;
-            list-style: none;
+            padding: 14px 20px;
+            background: rgba(253, 248, 242, 0.95);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 2px 20px rgba(61, 35, 20, 0.08);
+            transition: all 0.3s;
         }
-
-        .nav-links a {
-            padding: 10px 22px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-size: 0.9rem;
+        .main-nav a {
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
             font-weight: 500;
-            color: var(--warm-brown);
-            transition: all 0.25s;
-        }
-
-        .nav-links a:hover {
-            background: var(--cream);
             color: var(--dark-brown);
+            text-decoration: none;
+            padding: 10px 26px;
+            border-radius: 50px;
+            border: 1.5px solid transparent;
+            transition: all 0.3s;
+            letter-spacing: 0.3px;
+        }
+        .main-nav a:hover {
+            border-color: var(--golden-tan);
+            background: rgba(212, 165, 116, 0.12);
+        }
+        .main-nav a.active-link {
+            background: var(--dark-brown);
+            color: var(--cream);
         }
 
         /* ── Hero ── */
         .hero {
             position: relative;
-            min-height: 75vh;
+            height: 100vh;
+            min-height: 600px;
+            max-height: 900px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             overflow: hidden;
+            margin-top: 0;
         }
-
         .hero-bg {
             position: absolute;
             inset: 0;
             background: url('/images/hero-banner.jpg') center/cover no-repeat;
         }
-
         .hero-overlay {
             position: absolute;
             inset: 0;
             background: linear-gradient(
                 to bottom,
-                rgba(61, 35, 20, 0.3) 0%,
-                rgba(61, 35, 20, 0.5) 50%,
-                rgba(61, 35, 20, 0.7) 100%
+                rgba(61, 35, 20, 0.35) 0%,
+                rgba(61, 35, 20, 0.55) 100%
             );
         }
-
         .hero-content {
             position: relative;
             z-index: 2;
-            max-width: 700px;
-            padding: 40px 24px;
+            padding: 0 20px;
         }
-
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.1;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 30px rgba(0,0,0,0.3);
+        }
+        .hero-content h1 span {
+            display: block;
+            font-style: italic;
+            font-weight: 400;
+            font-size: 0.55em;
+            color: var(--golden-tan);
+            margin-top: 4px;
+        }
         .hero-tagline {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.3rem;
-            color: var(--golden-tan);
-            margin-bottom: 16px;
-            letter-spacing: 1px;
-        }
-
-        .hero-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            color: white;
-            line-height: 1.15;
-            margin-bottom: 20px;
-        }
-
-        .hero-subtitle {
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.85);
-            font-weight: 300;
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            color: var(--cream);
             margin-bottom: 32px;
-            line-height: 1.7;
         }
-
-        .hero-btn {
+        .hero-cta {
             display: inline-block;
-            padding: 16px 40px;
+            padding: 14px 40px;
             background: var(--golden-tan);
-            color: white;
+            color: var(--dark-brown);
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
             text-decoration: none;
             border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            letter-spacing: 0.5px;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
-
-        .hero-btn:hover {
-            background: var(--warm-brown);
+        .hero-cta:hover {
+            background: var(--cream);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(139, 94, 60, 0.4);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.25);
         }
 
         /* ── Section Divider ── */
-        .section-divider {
+        .divider {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
-            padding: 12px 0;
+            gap: 16px;
+            padding: 48px 0;
         }
-
         .divider-line {
-            height: 1px;
             width: 80px;
-            background: linear-gradient(to right, transparent, var(--golden-tan), transparent);
+            height: 1px;
+            background: var(--golden-tan);
+            opacity: 0.5;
         }
-
         .divider-icon {
-            font-size: 1.4rem;
             color: var(--golden-tan);
+            font-size: 18px;
             opacity: 0.7;
         }
+        .divider-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--golden-tan);
+            opacity: 0.6;
+        }
 
-        /* ── Section Styling ── */
+        /* ── Section Shared ── */
         .section {
-            padding: 80px 24px;
-        }
-
-        .section-alt {
-            background: var(--light-cream);
-        }
-
-        .section-inner {
-            max-width: 1200px;
+            padding: 40px 20px;
+            max-width: 1100px;
             margin: 0 auto;
         }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .section-label {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.1rem;
-            color: var(--golden-tan);
-            margin-bottom: 8px;
-        }
-
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 600;
+            text-align: center;
             color: var(--dark-brown);
-            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+        .section-subtitle {
+            text-align: center;
+            color: var(--warm-brown);
+            font-size: 16px;
+            max-width: 560px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
         }
 
-        .section-subtitle {
-            margin-top: 12px;
-            color: var(--text-muted);
-            font-size: 1rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+        /* ── Scroll Animation ── */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* ── Meet Cassie ── */
         .meet-cassie {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            display: flex;
             align-items: center;
+            gap: 60px;
+            max-width: 900px;
+            margin: 0 auto;
         }
-
-        .cassie-image {
-            border-radius: 20px;
-            overflow: hidden;
-            aspect-ratio: 4/5;
-            background: var(--cream);
+        .cassie-photo {
+            flex-shrink: 0;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cream), var(--golden-tan));
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .cassie-image-placeholder {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.5rem;
+            font-size: 18px;
             color: var(--warm-brown);
-            text-align: center;
-            padding: 40px;
+            border: 4px solid var(--white);
+            box-shadow: 0 8px 30px rgba(61, 35, 20, 0.12);
         }
-
-        .cassie-text h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: var(--dark-brown);
-        }
-
         .cassie-text p {
-            color: var(--text-muted);
-            font-size: 1rem;
+            color: var(--dark-brown);
+            font-size: 16px;
             line-height: 1.8;
             margin-bottom: 16px;
         }
-
         .cassie-signature {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.5rem;
+            font-size: 22px;
             color: var(--warm-brown);
-            margin-top: 24px;
+            margin-top: 8px;
         }
 
-        /* ── Our Process ── */
-        .process-steps {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
+        /* ── Process ── */
+        .process-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
         }
-
         .process-step {
             text-align: center;
-            padding: 30px 20px;
-            position: relative;
+            flex: 1;
+            min-width: 180px;
+            max-width: 240px;
         }
-
-        .process-step::after {
-            content: '→';
-            position: absolute;
-            right: -18px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.5rem;
-            color: var(--golden-tan);
-            opacity: 0.4;
-        }
-
-        .process-step:last-child::after { display: none; }
-
         .process-icon {
-            width: 60px;
-            height: 60px;
+            width: 72px;
+            height: 72px;
             border-radius: 50%;
             background: var(--cream);
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 16px;
-            font-size: 1.5rem;
+            font-size: 28px;
+            box-shadow: 0 4px 16px rgba(61, 35, 20, 0.08);
         }
-
-        .process-step h4 {
+        .process-step h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
+            font-size: 18px;
+            font-weight: 600;
             margin-bottom: 8px;
             color: var(--dark-brown);
         }
-
         .process-step p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.5;
+            font-size: 14px;
+            color: var(--warm-brown);
+            line-height: 1.6;
         }
 
         /* ── Menu ── */
+        .menu-section {
+            background: var(--white);
+            padding: 60px 20px;
+        }
+        .menu-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
         .menu-tabs {
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin-bottom: 40px;
+            margin-bottom: 36px;
         }
-
         .menu-tab {
-            padding: 12px 32px;
+            padding: 10px 28px;
             border-radius: 50px;
-            border: 2px solid var(--cream);
+            border: 2px solid var(--golden-tan);
             background: transparent;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 500;
             color: var(--warm-brown);
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
         }
-
-        .menu-tab.active, .menu-tab:hover {
+        .menu-tab:hover { background: rgba(212, 165, 116, 0.15); }
+        .menu-tab.active {
             background: var(--dark-brown);
             border-color: var(--dark-brown);
-            color: white;
+            color: var(--cream);
         }
-
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 24px;
         }
-
         .menu-card {
-            background: white;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.06);
-            transition: all 0.3s;
+            background: var(--white);
+            box-shadow: 0 4px 20px rgba(61, 35, 20, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-
         .menu-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 30px rgba(61, 35, 20, 0.14);
         }
-
-        .menu-card-image {
-            width: 100%;
-            height: 200px;
-            background: var(--cream);
+        .menu-card-img {
+            height: 160px;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--golden-tan) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 40px;
+            position: relative;
             overflow: hidden;
         }
-
-        .menu-card-image img {
+        .menu-card-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
-        .menu-card-image-placeholder {
-            font-size: 3rem;
-        }
-
         .menu-card-body {
-            padding: 20px;
+            padding: 16px 20px;
         }
-
-        .menu-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 8px;
-        }
-
-        .menu-card-name {
+        .menu-card-body h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
+            font-size: 16px;
+            font-weight: 600;
             color: var(--dark-brown);
+            margin-bottom: 6px;
         }
-
         .menu-card-price {
-            font-weight: 700;
+            font-size: 18px;
+            font-weight: 600;
             color: var(--warm-brown);
-            font-size: 1.1rem;
-            white-space: nowrap;
-            margin-left: 12px;
         }
 
-        .menu-card-desc {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .menu-special {
-            margin-top: 40px;
-            background: linear-gradient(135deg, var(--cream) 0%, var(--light-cream) 100%);
-            border-radius: 16px;
-            padding: 30px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 2px dashed var(--golden-tan);
-        }
-
-        .menu-special-text h4 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            color: var(--dark-brown);
-            margin-bottom: 4px;
-        }
-
-        .menu-special-text p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .menu-special-price {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            color: var(--warm-brown);
-            font-weight: 700;
-        }
-
-        /* ── Customer Favorites ── */
-        .favorites-grid {
+        /* ── Reviews ── */
+        .reviews-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 24px;
+            max-width: 1100px;
+            margin: 0 auto;
         }
-
-        .favorite-card {
-            background: white;
+        .review-card {
+            background: var(--white);
             border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            padding: 28px;
+            box-shadow: 0 4px 16px rgba(61, 35, 20, 0.06);
             position: relative;
         }
-
-        .favorite-card::before {
-            content: '"';
+        .review-card::before {
+            content: '\201C';
             font-family: 'Playfair Display', serif;
-            font-size: 4rem;
+            font-size: 60px;
             color: var(--golden-tan);
             opacity: 0.3;
             position: absolute;
-            top: 10px;
+            top: 8px;
             left: 20px;
             line-height: 1;
         }
-
-        .favorite-stars {
-            color: var(--golden-tan);
-            font-size: 0.85rem;
-            margin-bottom: 12px;
-            letter-spacing: 2px;
-        }
-
-        .favorite-text {
-            font-size: 0.95rem;
-            color: var(--text-muted);
+        .review-text {
+            font-size: 15px;
             line-height: 1.7;
-            font-style: italic;
-            margin-bottom: 16px;
-        }
-
-        .favorite-author {
-            font-weight: 600;
-            font-size: 0.85rem;
             color: var(--dark-brown);
+            margin-bottom: 16px;
+            padding-top: 20px;
+            font-style: italic;
+        }
+        .review-stars { color: var(--golden-tan); font-size: 14px; margin-bottom: 8px; }
+        .review-author {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--warm-brown);
         }
 
         /* ── Instagram ── */
-        .instagram-grid {
+        .insta-section {
+            background: var(--cream);
+            padding: 60px 20px;
+        }
+        .insta-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 16px;
+            max-width: 900px;
+            margin: 0 auto 28px;
         }
-
-        .instagram-item {
+        .insta-item {
             aspect-ratio: 1;
             border-radius: 12px;
             overflow: hidden;
-            background: var(--cream);
+            background: linear-gradient(135deg, var(--golden-tan), var(--warm-brown));
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
+            color: var(--cream);
+            font-size: 32px;
             position: relative;
+            transition: transform 0.3s;
         }
-
-        .instagram-item:hover {
-            transform: scale(1.03);
-        }
-
-        .instagram-item img {
+        .insta-item:hover { transform: scale(1.03); }
+        .insta-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
-        .instagram-placeholder {
-            font-size: 2.5rem;
-        }
-
-        .instagram-handle {
+        .insta-link {
+            display: block;
             text-align: center;
-            margin-top: 24px;
-        }
-
-        .instagram-handle a {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.3rem;
             color: var(--warm-brown);
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
             text-decoration: none;
+            font-weight: 500;
         }
+        .insta-link:hover { color: var(--dark-brown); }
 
-        .instagram-handle a:hover { text-decoration: underline; }
-
-        /* ── Ready to Order ── */
+        /* ── Order ── */
         .order-section {
             background: var(--dark-brown);
-            color: white;
+            padding: 80px 20px;
             text-align: center;
         }
-
-        .order-section .section-label {
-            color: var(--golden-tan);
+        .order-section .section-title { color: var(--cream); }
+        .order-section .section-subtitle { color: var(--golden-tan); }
+        .order-steps {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
         }
-
-        .order-section .section-title {
-            color: white;
+        .order-step {
+            text-align: center;
+            max-width: 200px;
         }
-
-        .order-section .section-subtitle {
-            color: rgba(255,255,255,0.7);
-        }
-
-        .order-methods {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-top: 40px;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .order-method {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 16px;
-            padding: 30px 24px;
-            transition: all 0.3s;
-        }
-
-        .order-method:hover {
-            background: rgba(255,255,255,0.12);
-            border-color: var(--golden-tan);
-        }
-
-        .order-method-icon {
-            font-size: 2rem;
-            margin-bottom: 12px;
-        }
-
-        .order-method h4 {
+        .order-num {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--golden-tan);
+            color: var(--dark-brown);
             font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            margin-bottom: 8px;
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
         }
-
-        .order-method p {
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.6);
-            line-height: 1.5;
+        .order-step h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            color: var(--cream);
+            margin-bottom: 6px;
         }
-
-        .order-btn {
+        .order-step p {
+            font-size: 14px;
+            color: var(--golden-tan);
+            line-height: 1.6;
+        }
+        .order-cta {
             display: inline-block;
-            margin-top: 40px;
             padding: 16px 48px;
             background: var(--golden-tan);
-            color: white;
+            color: var(--dark-brown);
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            font-weight: 600;
             text-decoration: none;
             border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
             transition: all 0.3s;
         }
-
-        .order-btn:hover {
-            background: var(--warm-brown);
+        .order-cta:hover {
+            background: var(--cream);
             transform: translateY(-2px);
         }
 
         /* ── Footer ── */
         .footer {
-            background: #2A1A0E;
-            color: rgba(255,255,255,0.7);
-            padding: 60px 24px 30px;
+            background: #2A1810;
+            color: var(--cream);
+            padding: 60px 20px 30px;
         }
-
         .footer-inner {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 40px;
+            text-align: center;
         }
-
-        .footer-brand h3 {
+        .footer-name {
             font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            color: white;
-            margin-bottom: 12px;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 6px;
         }
-
-        .footer-brand p {
-            font-size: 0.9rem;
-            line-height: 1.7;
-            max-width: 350px;
-        }
-
-        .footer-brand .flour-dust {
+        .footer-tagline {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.1rem;
+            font-size: 18px;
             color: var(--golden-tan);
-            margin-top: 16px;
+            margin-bottom: 28px;
         }
-
-        .footer h4 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1rem;
-            color: white;
-            margin-bottom: 16px;
+        .footer-pickup {
+            display: inline-block;
+            padding: 14px 32px;
+            border: 1.5px solid var(--golden-tan);
+            border-radius: 12px;
+            margin-bottom: 28px;
+            color: var(--cream);
+            font-size: 14px;
         }
-
-        .footer ul {
-            list-style: none;
+        .footer-pickup strong { color: var(--golden-tan); }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
         }
-
-        .footer ul li {
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-        }
-
-        .footer a {
-            color: rgba(255,255,255,0.7);
+        .footer-links a {
+            color: var(--golden-tan);
             text-decoration: none;
+            font-size: 14px;
             transition: color 0.2s;
         }
-
-        .footer a:hover { color: var(--golden-tan); }
-
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 40px auto 0;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
+        .footer-links a:hover { color: var(--cream); }
+        .footer-copy {
+            font-size: 13px;
+            color: rgba(245, 230, 208, 0.5);
+            margin-top: 20px;
         }
 
-        .footer-social {
-            display: flex;
-            gap: 16px;
-        }
-
-        .footer-social a {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .footer-social a:hover {
-            background: var(--golden-tan);
-            border-color: var(--golden-tan);
-            color: white;
-        }
-
-        /* ── Responsive ── */
+        /* ── Mobile ── */
         @media (max-width: 768px) {
-            .concept-nav { display: none; }
-            .nav-links { display: none; }
-            .meet-cassie { grid-template-columns: 1fr; gap: 40px; }
-            .process-steps { grid-template-columns: repeat(2, 1fr); }
-            .process-step::after { display: none; }
-            .favorites-grid { grid-template-columns: 1fr; }
-            .instagram-grid { grid-template-columns: repeat(2, 1fr); }
-            .order-methods { grid-template-columns: 1fr; }
-            .footer-inner { grid-template-columns: 1fr; }
-            .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
-            .menu-special { flex-direction: column; text-align: center; gap: 16px; }
+            .main-nav {
+                gap: 4px;
+                padding: 10px 12px;
+                flex-wrap: wrap;
+            }
+            .main-nav a {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+            .meet-cassie {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+            }
+            .cassie-photo { width: 180px; height: 180px; }
+            .process-row { gap: 24px; }
+            .process-step { min-width: 140px; }
+            .menu-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+            .insta-grid { grid-template-columns: repeat(2, 1fr); }
+            .order-steps { gap: 28px; }
+        }
+
+        @media (max-width: 480px) {
+            .main-nav a { padding: 7px 12px; font-size: 12px; }
+            .menu-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
 <!-- Concept Switcher -->
-<nav class="concept-nav">
+<div class="concept-nav">
     <a href="/">A</a>
     <a href="/concept-b">B</a>
     <a href="/concept-c">C</a>
@@ -765,400 +624,338 @@
     <a href="/concept-e">E</a>
     <a href="/concept-f">F</a>
     <a href="/concept-g" class="active">G</a>
-</nav>
+</div>
 
-<!-- Navigation -->
+<!-- Main Navigation -->
 <nav class="main-nav">
-    <div class="nav-inner">
-        <a href="#" class="nav-logo">Bakery on Biscotto</a>
-        <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#menu">Menu</a></li>
-            <li><a href="#reviews">Reviews</a></li>
-            <li><a href="#order">Order</a></li>
-        </ul>
-    </div>
+    <a href="#home" class="active-link">Home</a>
+    <a href="#menu">Menu</a>
+    <a href="#about">About</a>
+    <a href="#order">Order</a>
+    <a href="#contact">Contact</a>
 </nav>
 
 <!-- Hero -->
-<section class="hero">
+<section class="hero" id="home">
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-        <p class="hero-tagline">Handcrafted in Davenport, Florida</p>
-        <h1 class="hero-title">Where Sourdough Dreams Come True</h1>
-        <p class="hero-subtitle">Fresh, handcrafted bread baked with love using our signature sourdough starter, Biscotto. Available for local pickup and delivery.</p>
-        <a href="#menu" class="hero-btn">Explore Our Bread</a>
+        <h1>Bakery on Biscotto <span>Where Sourdough Dreams Come True</span></h1>
+        <p class="hero-tagline">Handcrafted with love in Davenport, FL</p>
+        <a href="#menu" class="hero-cta">Explore Our Menu</a>
     </div>
 </section>
 
 <!-- Divider -->
-<div class="section-divider"><div class="divider-line"></div><span class="divider-icon">🌾</span><div class="divider-line"></div></div>
+<div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c0 0-2 4-2 8s2 6 2 6 2-2 2-6-2-8-2-8zm-4 6c-1 2-1 5 0 7 1 1.5 2 2 3 3-1-1-3-3-3-5s0-4 0-5zm8 0c1 2 1 5 0 7-1 1.5-2 2-3 3 1-1 3-3 3-5s0-4 0-5zM12 18c-2 1-4 2-5 4h10c-1-2-3-3-5-4z"/></svg>
+    </div>
+    <div class="divider-line"></div>
+</div>
 
 <!-- Meet Cassie -->
-<section class="section" id="about">
-    <div class="section-inner">
-        <div class="meet-cassie">
-            <div class="cassie-image">
-                <div class="cassie-image-placeholder">
-                    Photo of Cassie<br>coming soon
-                </div>
-            </div>
-            <div class="cassie-text">
-                <p class="section-label">The Baker Behind the Bread</p>
-                <h3>Meet Cassie</h3>
-                <p>What started as a pandemic hobby quickly turned into an obsession. After countless loaves, late-night feedings, and one very spoiled sourdough starter named Biscotto, I realized I wanted to share this with my community.</p>
-                <p>Every loaf that leaves my kitchen is made with the same care I'd put into feeding my own family. Simple ingredients, slow fermentation, and a whole lot of love. No shortcuts, no preservatives, just real bread the way it should be.</p>
-                <p>Whether you're a sourdough purist or just craving a good loaf of banana bread, I've got something for you.</p>
-                <p class="cassie-signature">With love and flour dust, Cassie ♡</p>
-            </div>
+<section class="section fade-in" id="about">
+    <h2 class="section-title">Meet Cassie</h2>
+    <p class="section-subtitle">The heart and hands behind every loaf</p>
+    <div class="meet-cassie">
+        <div class="cassie-photo">Cassie's Photo</div>
+        <div class="cassie-text">
+            <p>Hi there! I'm Cassie, and baking has been my passion for as long as I can remember. What started as a simple experiment with my sourdough starter, Biscotto (named after our street, Biscotto Circle), quickly turned into something so much bigger.</p>
+            <p>Every loaf, every muffin, every bread that leaves my kitchen is made by hand with real ingredients and a whole lot of love. My husband Jeffrey says the house always smells like a bakery, and honestly, I wouldn't have it any other way.</p>
+            <p>I believe that good bread brings people together. Whether it's a classic sourdough for your family dinner or a chocolate chip loaf for a special treat, I put the same care into every single one.</p>
+            <p class="cassie-signature">With love and flour dust, Cassie</p>
         </div>
     </div>
 </section>
 
 <!-- Divider -->
-<div class="section-divider"><div class="divider-line"></div><span class="divider-icon">🌾</span><div class="divider-line"></div></div>
+<div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c0 0-2 4-2 8s2 6 2 6 2-2 2-6-2-8-2-8zm-4 6c-1 2-1 5 0 7 1 1.5 2 2 3 3-1-1-3-3-3-5s0-4 0-5zm8 0c1 2 1 5 0 7-1 1.5-2 2-3 3 1-1 3-3 3-5s0-4 0-5zM12 18c-2 1-4 2-5 4h10c-1-2-3-3-5-4z"/></svg>
+    </div>
+    <div class="divider-line"></div>
+</div>
 
 <!-- Our Process -->
-<section class="section section-alt">
-    <div class="section-inner">
-        <div class="section-header">
-            <p class="section-label">From Starter to Table</p>
-            <h2 class="section-title">How We Bake</h2>
-            <p class="section-subtitle">Every loaf follows a slow, thoughtful process. Great bread can't be rushed.</p>
+<section class="section fade-in">
+    <h2 class="section-title">Our Process</h2>
+    <p class="section-subtitle">Care and craft in every step</p>
+    <div class="process-row">
+        <div class="process-step">
+            <div class="process-icon">🌾</div>
+            <h3>Quality Ingredients</h3>
+            <p>We start with the best flour, butter, and real ingredients. No shortcuts, no preservatives.</p>
         </div>
-        <div class="process-steps">
-            <div class="process-step">
-                <div class="process-icon">🫙</div>
-                <h4>Feed the Starter</h4>
-                <p>Biscotto gets fed daily to stay happy, bubbly, and ready for baking</p>
-            </div>
-            <div class="process-step">
-                <div class="process-icon">🤲</div>
-                <h4>Mix &amp; Shape</h4>
-                <p>Simple ingredients come together by hand with care and intention</p>
-            </div>
-            <div class="process-step">
-                <div class="process-icon">⏳</div>
-                <h4>Slow Rise</h4>
-                <p>Long fermentation develops deep flavor and that perfect texture</p>
-            </div>
-            <div class="process-step">
-                <div class="process-icon">🍞</div>
-                <h4>Bake &amp; Enjoy</h4>
-                <p>Into the oven and straight to your table, fresh and golden</p>
-            </div>
+        <div class="process-step">
+            <div class="process-icon">🤲</div>
+            <h3>Made by Hand</h3>
+            <p>Every loaf is hand-shaped and crafted with attention to detail and years of practice.</p>
+        </div>
+        <div class="process-step">
+            <div class="process-icon">⏳</div>
+            <h3>Slow and Steady</h3>
+            <p>Good things take time. We never rush the process, letting flavor develop naturally.</p>
+        </div>
+        <div class="process-step">
+            <div class="process-icon">🍞</div>
+            <h3>Baked Fresh</h3>
+            <p>Your order is baked fresh, so it arrives at your door at its very best.</p>
         </div>
     </div>
 </section>
 
 <!-- Divider -->
-<div class="section-divider"><div class="divider-line"></div><span class="divider-icon">🌾</span><div class="divider-line"></div></div>
+<div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c0 0-2 4-2 8s2 6 2 6 2-2 2-6-2-8-2-8zm-4 6c-1 2-1 5 0 7 1 1.5 2 2 3 3-1-1-3-3-3-5s0-4 0-5zm8 0c1 2 1 5 0 7-1 1.5-2 2-3 3 1-1 3-3 3-5s0-4 0-5zM12 18c-2 1-4 2-5 4h10c-1-2-3-3-5-4z"/></svg>
+    </div>
+    <div class="divider-line"></div>
+</div>
 
 <!-- Menu -->
-<section class="section" id="menu" x-data="{ tab: 'sourdough' }">
-    <div class="section-inner">
-        <div class="section-header">
-            <p class="section-label">Explore Our Collection</p>
-            <h2 class="section-title">Freshly Baked, Made to Order</h2>
-            <p class="section-subtitle">Everything is baked fresh for your order. Choose your favorites and we'll have them ready for pickup or delivery.</p>
-        </div>
+<section class="menu-section" id="menu" x-data="{ tab: 'sourdough' }">
+    <div class="menu-inner">
+        <h2 class="section-title fade-in">What We Bake</h2>
+        <p class="section-subtitle fade-in">Handcrafted breads made to order, right here in Davenport</p>
 
-        <!-- Tabs -->
-        <div class="menu-tabs">
-            <button class="menu-tab" :class="{ 'active': tab === 'sourdough' }" @click="tab = 'sourdough'">Sourdough Loaves</button>
-            <button class="menu-tab" :class="{ 'active': tab === 'other' }" @click="tab = 'other'">Other Breads</button>
+        <div class="menu-tabs fade-in">
+            <button class="menu-tab" :class="{ active: tab === 'sourdough' }" @click="tab = 'sourdough'">Sourdough Loaves</button>
+            <button class="menu-tab" :class="{ active: tab === 'other' }" @click="tab = 'other'">Other Breads</button>
         </div>
 
         <!-- Sourdough Loaves -->
-        <div x-show="tab === 'sourdough'" x-transition>
-            <div class="menu-grid">
-                <div class="menu-card">
-                    <div class="menu-card-image">
-                        <img src="/images/product-sourdough-boule.jpg" alt="Sourdough Boule">
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Regular Sourdough</span>
-                            <span class="menu-card-price">$10</span>
-                        </div>
-                        <p class="menu-card-desc">Our classic loaf. Crispy crust, tangy crumb, perfect for everything.</p>
-                    </div>
+        <div class="menu-grid fade-in" x-show="tab === 'sourdough'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+            <div class="menu-card">
+                <div class="menu-card-img"><img src="/images/product-sourdough-boule.jpg" alt="Regular Sourdough Loaf"></div>
+                <div class="menu-card-body">
+                    <h3>Regular Loaf</h3>
+                    <div class="menu-card-price">$10</div>
                 </div>
-                <div class="menu-card">
-                    <div class="menu-card-image"><span class="menu-card-image-placeholder">🧀</span></div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Cheddar Sourdough</span>
-                            <span class="menu-card-price">$12</span>
-                        </div>
-                        <p class="menu-card-desc">Loaded with sharp cheddar that melts into golden pockets throughout.</p>
-                    </div>
+            </div>
+            <div class="menu-card">
+                <div class="menu-card-img">🧀</div>
+                <div class="menu-card-body">
+                    <h3>Cheddar</h3>
+                    <div class="menu-card-price">$12</div>
                 </div>
-                <div class="menu-card">
-                    <div class="menu-card-image"><span class="menu-card-image-placeholder">🧄</span></div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Mozzarella &amp; Garlic</span>
-                            <span class="menu-card-price">$14</span>
-                        </div>
-                        <p class="menu-card-desc">Gooey mozzarella meets roasted garlic in every irresistible slice.</p>
-                    </div>
+            </div>
+            <div class="menu-card">
+                <div class="menu-card-img">🧄</div>
+                <div class="menu-card-body">
+                    <h3>Mozzarella and Garlic</h3>
+                    <div class="menu-card-price">$14</div>
                 </div>
-                <div class="menu-card">
-                    <div class="menu-card-image"><span class="menu-card-image-placeholder">🍫</span></div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Chocolate Chip</span>
-                            <span class="menu-card-price">$12</span>
-                        </div>
-                        <p class="menu-card-desc">Sweet meets tangy. Semi-sweet chocolate chips in every bite.</p>
-                    </div>
+            </div>
+            <div class="menu-card">
+                <div class="menu-card-img">🍫</div>
+                <div class="menu-card-body">
+                    <h3>Chocolate Chip</h3>
+                    <div class="menu-card-price">$12</div>
                 </div>
-                <div class="menu-card">
-                    <div class="menu-card-image"><span class="menu-card-image-placeholder">🍬</span></div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Cinnamon &amp; Sugar</span>
-                            <span class="menu-card-price">$14</span>
-                        </div>
-                        <p class="menu-card-desc">Warm cinnamon swirled through with a sweet sugar crust on top.</p>
-                    </div>
+            </div>
+            <div class="menu-card">
+                <div class="menu-card-img">✨</div>
+                <div class="menu-card-body">
+                    <h3>Cinnamon and Sugar</h3>
+                    <div class="menu-card-price">$14</div>
                 </div>
-                <div class="menu-card">
-                    <div class="menu-card-image"><span class="menu-card-image-placeholder">🍫🍫</span></div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Double Chocolate Chip</span>
-                            <span class="menu-card-price">$12</span>
-                        </div>
-                        <p class="menu-card-desc">Chocolate dough packed with chocolate chips. For the serious chocoholics.</p>
-                    </div>
+            </div>
+            <div class="menu-card">
+                <div class="menu-card-img">🍫</div>
+                <div class="menu-card-body">
+                    <h3>Chocolate, Chocolate Chip</h3>
+                    <div class="menu-card-price">$12</div>
                 </div>
-                <div class="menu-card">
-                    <div class="menu-card-image"><span class="menu-card-image-placeholder">🍫🌰</span></div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Chocolate Almond Chip</span>
-                            <span class="menu-card-price">$15</span>
-                        </div>
-                        <p class="menu-card-desc">Rich chocolate dough with crunchy almonds and chocolate chips.</p>
-                    </div>
+            </div>
+            <div class="menu-card">
+                <div class="menu-card-img">🌰</div>
+                <div class="menu-card-body">
+                    <h3>Chocolate Almond, Chocolate Chip</h3>
+                    <div class="menu-card-price">$15</div>
+                </div>
+            </div>
+            <div class="menu-card">
+                <div class="menu-card-img">🌶️</div>
+                <div class="menu-card-body">
+                    <h3>Jalape&#241;o Cheddar</h3>
+                    <div class="menu-card-price">$14</div>
+                </div>
+            </div>
+            <div class="menu-card">
+                <div class="menu-card-img">🎁</div>
+                <div class="menu-card-body">
+                    <h3>4 Pack of Mini Loaves</h3>
+                    <p style="font-size:13px;color:var(--warm-brown);margin-bottom:4px;">Choose any 4</p>
+                    <div class="menu-card-price">$25</div>
                 </div>
             </div>
         </div>
 
         <!-- Other Breads -->
-        <div x-show="tab === 'other'" x-transition>
-            <div class="menu-grid">
-                <div class="menu-card">
-                    <div class="menu-card-image"><span class="menu-card-image-placeholder">🍯</span></div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Honey Wheat Sandwich</span>
-                            <span class="menu-card-price">$10</span>
-                        </div>
-                        <p class="menu-card-desc">Soft sourdough sandwich bread with a touch of honey. Perfect for everyday.</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-image">
-                        <img src="/images/product-english-muffins.jpg" alt="English Muffins">
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">English Muffins (6ct)</span>
-                            <span class="menu-card-price">$8</span>
-                        </div>
-                        <p class="menu-card-desc">Nooks and crannies for days. You'll never go back to store-bought.</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-image"><span class="menu-card-image-placeholder">🧁</span></div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">English Muffins (12ct)</span>
-                            <span class="menu-card-price">$15</span>
-                        </div>
-                        <p class="menu-card-desc">The smart buy. Stock up, freeze some, thank yourself later.</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-image"><span class="menu-card-image-placeholder">🍌</span></div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Banana Bread</span>
-                            <span class="menu-card-price">$12</span>
-                        </div>
-                        <p class="menu-card-desc">Moist, sweet, and loaded with ripe bananas. A classic done right.</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-image"><span class="menu-card-image-placeholder">🍌🌰</span></div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Banana Walnut</span>
-                            <span class="menu-card-price">$15</span>
-                        </div>
-                        <p class="menu-card-desc">Everything you love about our banana bread with toasty walnut crunch.</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-image"><span class="menu-card-image-placeholder">🎃</span></div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Pumpkin Chocolate Chip</span>
-                            <span class="menu-card-price">$12</span>
-                        </div>
-                        <p class="menu-card-desc">Spiced pumpkin bread studded with chocolate chips. Cozy in every slice.</p>
-                    </div>
-                </div>
-                <div class="menu-card">
-                    <div class="menu-card-image"><span class="menu-card-image-placeholder">🎃🌰</span></div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Pumpkin Almond Chip</span>
-                            <span class="menu-card-price">$15</span>
-                        </div>
-                        <p class="menu-card-desc">Our pumpkin bread elevated with almonds and chocolate chips.</p>
-                    </div>
+        <div class="menu-grid fade-in" x-show="tab === 'other'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100">
+            <div class="menu-card">
+                <div class="menu-card-img">🍯</div>
+                <div class="menu-card-body">
+                    <h3>Sourdough Honey Wheat Sandwich Bread</h3>
+                    <div class="menu-card-price">$10</div>
                 </div>
             </div>
-        </div>
-
-        <!-- Mini Loaf Deal -->
-        <div class="menu-special">
-            <div class="menu-special-text">
-                <h4>🎉 Mix &amp; Match Mini Loaves</h4>
-                <p>Pick any 4 mini loaves and save! Perfect for trying new flavors or sharing with friends.</p>
+            <div class="menu-card">
+                <div class="menu-card-img"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
+                <div class="menu-card-body">
+                    <h3>Sourdough English Muffins (6ct)</h3>
+                    <div class="menu-card-price">$8</div>
+                </div>
             </div>
-            <div class="menu-special-price">$25</div>
+            <div class="menu-card">
+                <div class="menu-card-img"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
+                <div class="menu-card-body">
+                    <h3>Sourdough English Muffins (12ct)</h3>
+                    <div class="menu-card-price">$15</div>
+                </div>
+            </div>
+            <div class="menu-card">
+                <div class="menu-card-img">🍌</div>
+                <div class="menu-card-body">
+                    <h3>Banana Bread</h3>
+                    <div class="menu-card-price">$12</div>
+                </div>
+            </div>
+            <div class="menu-card">
+                <div class="menu-card-img">🥜</div>
+                <div class="menu-card-body">
+                    <h3>Banana Walnut Bread</h3>
+                    <div class="menu-card-price">$15</div>
+                </div>
+            </div>
+            <div class="menu-card">
+                <div class="menu-card-img">🎃</div>
+                <div class="menu-card-body">
+                    <h3>Pumpkin Chocolate Chip Bread</h3>
+                    <div class="menu-card-price">$12</div>
+                </div>
+            </div>
+            <div class="menu-card">
+                <div class="menu-card-img">🎃</div>
+                <div class="menu-card-body">
+                    <h3>Pumpkin Almond Chocolate Chip Bread</h3>
+                    <div class="menu-card-price">$15</div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- Divider -->
-<div class="section-divider"><div class="divider-line"></div><span class="divider-icon">🌾</span><div class="divider-line"></div></div>
+<div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c0 0-2 4-2 8s2 6 2 6 2-2 2-6-2-8-2-8zm-4 6c-1 2-1 5 0 7 1 1.5 2 2 3 3-1-1-3-3-3-5s0-4 0-5zm8 0c1 2 1 5 0 7-1 1.5-2 2-3 3 1-1 3-3 3-5s0-4 0-5zM12 18c-2 1-4 2-5 4h10c-1-2-3-3-5-4z"/></svg>
+    </div>
+    <div class="divider-line"></div>
+</div>
 
 <!-- Customer Favorites -->
-<section class="section section-alt" id="reviews">
-    <div class="section-inner">
-        <div class="section-header">
-            <p class="section-label">What People Are Saying</p>
-            <h2 class="section-title">Customer Favorites</h2>
+<section class="section fade-in">
+    <h2 class="section-title">Customer Favorites</h2>
+    <p class="section-subtitle">Kind words from our bread-loving community</p>
+    <div class="reviews-grid">
+        <div class="review-card">
+            <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="review-text">The jalape&#241;o cheddar loaf is out of this world. My family fights over the last slice every single time!</p>
+            <div class="review-author">Sarah M.</div>
         </div>
-        <div class="favorites-grid">
-            <div class="favorite-card">
-                <div class="favorite-stars">★★★★★</div>
-                <p class="favorite-text">The cheddar sourdough is absolutely incredible. My family fights over the last slice every single time.</p>
-                <p class="favorite-author">Sarah M.</p>
-            </div>
-            <div class="favorite-card">
-                <div class="favorite-stars">★★★★★</div>
-                <p class="favorite-text">I ordered English muffins on a whim and now I can never go back to Thomas'. They're that good.</p>
-                <p class="favorite-author">Mike T.</p>
-            </div>
-            <div class="favorite-card">
-                <div class="favorite-stars">★★★★★</div>
-                <p class="favorite-text">Cassie's banana bread is the best I've ever had, and I don't say that lightly. It's moist, flavorful, and disappears in minutes.</p>
-                <p class="favorite-author">Jennifer R.</p>
-            </div>
+        <div class="review-card">
+            <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="review-text">I've tried bakeries all over central Florida and nothing compares. The sourdough is perfectly tangy with the most amazing crust.</p>
+            <div class="review-author">David R.</div>
+        </div>
+        <div class="review-card">
+            <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="review-text">Ordered the mini loaves pack to try different flavors. Every single one was incredible. The cinnamon sugar is now a weekly must-have!</p>
+            <div class="review-author">Emily T.</div>
+        </div>
+        <div class="review-card">
+            <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="review-text">The English muffins are the best I've ever had. You can taste the love and care in every bite. We're customers for life!</p>
+            <div class="review-author">Mike and Jen K.</div>
         </div>
     </div>
 </section>
 
 <!-- Instagram -->
-<section class="section">
-    <div class="section-inner">
-        <div class="section-header">
-            <p class="section-label">Follow Along</p>
-            <h2 class="section-title">Fresh from the Oven</h2>
-            <p class="section-subtitle">Peek behind the scenes at what's baking today</p>
-        </div>
-        <div class="instagram-grid">
-            <div class="instagram-item">
-                <img src="/images/product-sourdough-boule.jpg" alt="Fresh sourdough">
-            </div>
-            <div class="instagram-item">
-                <img src="/images/product-english-muffins.jpg" alt="English muffins">
-            </div>
-            <div class="instagram-item">
-                <span class="instagram-placeholder">🍞</span>
-            </div>
-            <div class="instagram-item">
-                <span class="instagram-placeholder">🫙</span>
-            </div>
-        </div>
-        <div class="instagram-handle">
-            <a href="https://instagram.com/bakeryonbiscotto" target="_blank">@bakeryonbiscotto</a>
-        </div>
+<section class="insta-section fade-in">
+    <h2 class="section-title" style="margin-bottom:8px;">Fresh from the Oven</h2>
+    <p class="section-subtitle">Follow along for behind-the-scenes baking and fresh batch alerts</p>
+    <div class="insta-grid">
+        <div class="insta-item"><img src="/images/product-sourdough-boule.jpg" alt="Sourdough Boule"></div>
+        <div class="insta-item"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
+        <div class="insta-item">📸</div>
+        <div class="insta-item">📸</div>
     </div>
+    <a href="https://instagram.com/bakeryonbiscotto" target="_blank" class="insta-link">@bakeryonbiscotto on Instagram</a>
 </section>
 
 <!-- Ready to Order -->
-<section class="section order-section" id="order">
-    <div class="section-inner">
-        <div class="section-header">
-            <p class="section-label">Ready to Order?</p>
-            <h2 class="section-title">Let's Get You Some Bread</h2>
-            <p class="section-subtitle">Everything is baked fresh to order. Just tell us what you'd like and we'll take care of the rest.</p>
+<section class="order-section fade-in" id="order">
+    <h2 class="section-title">Ready to Order?</h2>
+    <p class="section-subtitle">Getting fresh bread is as easy as 1, 2, 3</p>
+    <div class="order-steps">
+        <div class="order-step">
+            <div class="order-num">1</div>
+            <h3>Send Us a Message</h3>
+            <p>Email us with what you'd like to order. We'll confirm availability and timing.</p>
         </div>
-        <div class="order-methods">
-            <div class="order-method">
-                <div class="order-method-icon">📱</div>
-                <h4>Message Us</h4>
-                <p>DM us on Facebook or Instagram with your order</p>
-            </div>
-            <div class="order-method">
-                <div class="order-method-icon">🏠</div>
-                <h4>Local Pickup</h4>
-                <p>Grab your order fresh from our kitchen in Davenport, FL</p>
-            </div>
-            <div class="order-method">
-                <div class="order-method-icon">🚗</div>
-                <h4>Local Delivery</h4>
-                <p>We deliver to the Davenport area. Ask us about delivery!</p>
-            </div>
+        <div class="order-step">
+            <div class="order-num">2</div>
+            <h3>We Bake It Fresh</h3>
+            <p>Your order is baked just for you. No day-old bread here!</p>
         </div>
-        <a href="https://facebook.com/bakeryonbiscotto" target="_blank" class="order-btn">Place an Order</a>
+        <div class="order-step">
+            <div class="order-num">3</div>
+            <h3>Pickup or Delivery</h3>
+            <p>Grab your order locally in Davenport, or we can deliver it to your door.</p>
+        </div>
     </div>
+    <a href="mailto:bakeryonbiscotto@gmail.com" class="order-cta">Place Your Order</a>
 </section>
 
 <!-- Footer -->
-<footer class="footer">
+<footer class="footer" id="contact">
     <div class="footer-inner">
-        <div class="footer-brand">
-            <h3>Bakery on Biscotto</h3>
-            <p>Handcrafted sourdough and artisan breads baked with love in Davenport, Florida. Made to order, always fresh.</p>
-            <p class="flour-dust">With love and flour dust ♡</p>
+        <div class="footer-name">Bakery on Biscotto</div>
+        <div class="footer-tagline">With love and flour dust</div>
+        <div class="footer-pickup">
+            <strong>Local Pickup &amp; Delivery</strong><br>
+            Davenport, FL
         </div>
-        <div>
-            <h4>Quick Links</h4>
-            <ul>
-                <li><a href="#about">About Cassie</a></li>
-                <li><a href="#menu">Our Menu</a></li>
-                <li><a href="#reviews">Reviews</a></li>
-                <li><a href="#order">Order Now</a></li>
-            </ul>
+        <div class="footer-links">
+            <a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a>
+            <a href="https://instagram.com/bakeryonbiscotto" target="_blank">Instagram @bakeryonbiscotto</a>
+            <a href="https://facebook.com/bakeryonbiscotto" target="_blank">Facebook @bakeryonbiscotto</a>
         </div>
-        <div>
-            <h4>Find Us</h4>
-            <ul>
-                <li>Davenport, Florida</li>
-                <li><a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a></li>
-                <li style="margin-top: 12px;"><a href="https://facebook.com/bakeryonbiscotto" target="_blank">Facebook</a></li>
-                <li><a href="https://instagram.com/bakeryonbiscotto" target="_blank">Instagram</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <span>&copy; 2026 Bakery on Biscotto. All rights reserved.</span>
-        <div class="footer-social">
-            <a href="https://facebook.com/bakeryonbiscotto" target="_blank">f</a>
-            <a href="https://instagram.com/bakeryonbiscotto" target="_blank">ig</a>
-        </div>
+        <div class="footer-copy">&copy; {{ date('Y') }} Bakery on Biscotto. All rights reserved.</div>
     </div>
 </footer>
+
+<script>
+    // Intersection Observer for scroll animations
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    });
+</script>
 
 </body>
 </html>
