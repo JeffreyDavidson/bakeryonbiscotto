@@ -1207,7 +1207,6 @@
                 <h2>Meet Cassie</h2>
                 <p>Hi! I'm Cassie, and this little bakery is my heart and soul. What started as feeding my family homemade bread has turned into something so much bigger: a way to bring real, handmade bread to our amazing community here in Davenport.</p>
                 <p>Every single loaf, muffin, and slice comes from my kitchen. I measure by feel, shape by hand, and bake with the kind of care I'd put into bread for my own family. Because honestly? That's exactly what you are.</p>
-                <p>My sourdough starter Biscotto (named after our street!) has been bubbling away for years. It's the secret ingredient in everything we make, and I wouldn't have it any other way.</p>
                 <p class="signature">With love and flour dust, Cassie ✨</p>
             </div>
         </div>
