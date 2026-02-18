@@ -89,9 +89,9 @@
             position: absolute; inset: 0;
             background: linear-gradient(
                 180deg,
-                rgba(61,35,20,0.4) 0%,
-                rgba(61,35,20,0.6) 50%,
-                rgba(61,35,20,0.85) 100%
+                rgba(61,35,20,0.5) 0%,
+                rgba(61,35,20,0.65) 50%,
+                rgba(61,35,20,0.88) 100%
             );
         }
         /* Flour particles */
@@ -113,18 +113,16 @@
         }
         .hero-content {
             position: relative; z-index: 3;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 60px;
             max-width: 1200px;
             padding: 120px 40px 80px;
-            align-items: center;
+            text-align: center;
         }
         .hero-text h1 {
             font-family: 'Playfair Display', serif;
             font-size: clamp(3.2rem, 7vw, 5.5rem);
             font-weight: 700; color: var(--cream);
             line-height: 1.05; margin-bottom: 16px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
         }
         .hero-text h1 em {
             font-style: italic; font-weight: 400;
@@ -134,10 +132,13 @@
             font-family: 'Dancing Script', cursive;
             font-size: clamp(1.4rem, 3vw, 2.2rem);
             color: var(--golden); margin-bottom: 12px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.4);
         }
         .hero-text .hero-desc {
-            font-size: 16px; color: rgba(245,230,208,0.7);
-            max-width: 480px; line-height: 1.7; margin-bottom: 32px;
+            font-size: 16px; color: rgba(245,230,208,0.85);
+            max-width: 560px; line-height: 1.7; margin-bottom: 32px;
+            margin-left: auto; margin-right: auto;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
         }
         .hero-btn {
             display: inline-flex; align-items: center; gap: 10px;
@@ -217,10 +218,10 @@
             gap: 20px; padding: 40px 20px;
         }
         .divider-line {
-            flex: 1; max-width: 180px; height: 1px;
+            flex: 1; max-width: 180px; height: 2px;
             background: linear-gradient(90deg, transparent, var(--golden), transparent);
         }
-        .divider-icon { opacity: 0.4; }
+        .divider-icon { opacity: 0.7; }
 
         /* ═══════════════════════════════════
            MEET CASSIE - Asymmetric + torn paper
@@ -1023,12 +1024,8 @@
         ═══════════════════════════════════ */
         @media (max-width: 1024px) {
             .hero-content {
-                grid-template-columns: 1fr;
-                text-align: center; gap: 40px;
                 padding: 140px 20px 60px;
             }
-            .hero-text .hero-desc { margin: 0 auto 32px; }
-            .recipe-card-float { margin: 0 auto; }
             .about-inner {
                 grid-template-columns: 1fr;
                 gap: 40px; text-align: center;
@@ -1117,42 +1114,8 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
             </div>
-            <div class="recipe-card-float hero-enter hero-enter-d4">
-                <div class="recipe-title">Cassie's Sourdough</div>
-                <div class="recipe-line">flour, water, salt, time</div>
-                <div class="recipe-line">Feed Biscotto at dawn</div>
-                <div class="recipe-line">Mix with love, shape by hand</div>
-                <div class="recipe-line">Let it rise... and rise...</div>
-                <div class="recipe-line">Bake until golden perfection</div>
-                <div class="recipe-heart">♥</div>
-            </div>
         </div>
     </section>
-
-    {{-- ═══ STATS BAR ═══ --}}
-    <div class="stats-bar">
-        <div class="stat-item">
-            <div class="stat-value" x-data="{ count: 0 }" x-intersect.once="let i = setInterval(() => { count += 10; if(count >= 500) { count = 500; clearInterval(i); } }, 20)">
-                <span x-text="count + '+'">500+</span>
-            </div>
-            <div class="stat-label">Loaves Baked</div>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-            <div class="stat-value">2024</div>
-            <div class="stat-label">Established</div>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-            <div class="stat-value">100%</div>
-            <div class="stat-label">Handmade</div>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-            <div class="stat-value">14</div>
-            <div class="stat-label">Varieties</div>
-        </div>
-    </div>
 
     {{-- ═══ INGREDIENTS MARQUEE ═══ --}}
     <div class="marquee-section">
@@ -1172,7 +1135,6 @@
                 <span class="marquee-item">walnuts</span><span class="marquee-dot"></span>
                 <span class="marquee-item">honey</span><span class="marquee-dot"></span>
                 <span class="marquee-item">banana</span><span class="marquee-dot"></span>
-                <span class="marquee-item">jalape&ntilde;o</span><span class="marquee-dot"></span>
                 <span class="marquee-item">almonds</span><span class="marquee-dot"></span>
                 <span class="marquee-item">patience</span><span class="marquee-dot"></span>
             </div>
@@ -1191,7 +1153,6 @@
                 <span class="marquee-item">walnuts</span><span class="marquee-dot"></span>
                 <span class="marquee-item">honey</span><span class="marquee-dot"></span>
                 <span class="marquee-item">banana</span><span class="marquee-dot"></span>
-                <span class="marquee-item">jalape&ntilde;o</span><span class="marquee-dot"></span>
                 <span class="marquee-item">almonds</span><span class="marquee-dot"></span>
                 <span class="marquee-item">patience</span><span class="marquee-dot"></span>
             </div>
@@ -1251,9 +1212,7 @@
             </div>
             <div class="starter-text reveal" style="transition-delay: 0.2s;">
                 <h2>The Heart of Every Loaf</h2>
-                <p>Biscotto isn't just a sourdough starter. It's a <span class="highlight">living culture</span> that we feed every single day, rain or shine. Named after our street, Biscotto Circle, it's been the foundation of our bakery since day one.</p>
-                <p>Those bubbles you see? That's <span class="highlight">wild yeast at work</span>, transforming simple flour and water into something extraordinary. The longer we nurture it, the more complex and delicious the flavor becomes.</p>
-                <p>Every loaf of sourdough we bake carries a piece of Biscotto's story. And now, a piece of yours too.</p>
+                <p>Named after our street, Biscotto Circle. Fed every single day. The foundation of everything we bake.</p>
             </div>
         </div>
     </section>
@@ -1368,15 +1327,7 @@
                     <div class="menu-card-footer"><span class="price">$15</span></div>
                 </div>
             </div>
-            <div class="menu-card reveal" style="transition-delay:0.42s;">
-                <div class="menu-card-img placeholder-img"><span class="emoji-icon">🌶️</span></div>
-                <div class="menu-card-body">
-                    <h3>Jalape&ntilde;o Cheddar</h3>
-                    <p class="desc">Spicy jalape&ntilde;os and melty cheddar. A kick in every bite.</p>
-                    <div class="menu-card-footer"><span class="price">$14</span></div>
-                </div>
-            </div>
-            <div class="menu-card special reveal" style="transition-delay:0.48s; position: relative;">
+            <div class="menu-card special reveal" style="transition-delay:0.42s; position: relative;">
                 <div class="ribbon-wrap"><div class="ribbon">Best Value</div></div>
                 <div class="menu-card-img placeholder-img" style="background: linear-gradient(135deg, rgba(212,165,116,0.2), rgba(193,127,78,0.15));"><span class="emoji-icon">🎁</span></div>
                 <div class="menu-card-body">
@@ -1399,17 +1350,12 @@
             <div class="menu-card reveal" style="transition-delay:0.06s;">
                 <div class="menu-card-img has-photo"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
                 <div class="menu-card-body">
-                    <h3>Sourdough English Muffins (6ct)</h3>
+                    <h3>Sourdough English Muffins</h3>
                     <p class="desc">Those perfect nooks and crannies. Griddle-cooked and ready for toasting.</p>
-                    <div class="menu-card-footer"><span class="price">$8</span></div>
-                </div>
-            </div>
-            <div class="menu-card reveal" style="transition-delay:0.12s;">
-                <div class="menu-card-img has-photo"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
-                <div class="menu-card-body">
-                    <h3>Sourdough English Muffins (12ct)</h3>
-                    <p class="desc">The family pack. Because six is never enough.</p>
-                    <div class="menu-card-footer"><span class="price">$15</span></div>
+                    <div class="menu-card-footer">
+                        <span class="price">6ct · $8</span>
+                        <span class="price">12ct · $15</span>
+                    </div>
                 </div>
             </div>
             <div class="menu-card reveal" style="transition-delay:0.18s;">
@@ -1490,7 +1436,7 @@
             <div class="review-card reveal" style="transition-delay: 0.3s;">
                 <div class="tape"></div>
                 <div class="review-stars">★★★★★</div>
-                <blockquote>I ordered the mini loaf variety pack and now I can't pick a favorite. The jalape&ntilde;o cheddar and cinnamon sugar are tied for first place.</blockquote>
+                <blockquote>I ordered the mini loaf variety pack and now I can't pick a favorite. The chocolate chip and cinnamon sugar are tied for first place.</blockquote>
                 <div class="review-author">David L.</div>
                 <div class="review-location">Kissimmee, FL</div>
             </div>
