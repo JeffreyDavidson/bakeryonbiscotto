@@ -30,27 +30,10 @@
         }
 
         /* ═══════════════════════════════════
-           CONCEPT NAV
-        ═══════════════════════════════════ */
-        .concept-nav {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 1001;
-            display: flex; justify-content: center; gap: 2px;
-            background: var(--dark); padding: 5px 0;
-        }
-        .concept-nav a {
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 30px; height: 28px; border-radius: 6px;
-            font-size: 12px; font-weight: 600; color: rgba(245,230,208,0.4);
-            text-decoration: none; transition: all 0.2s;
-        }
-        .concept-nav a:hover { color: var(--cream); background: rgba(245,230,208,0.08); }
-        .concept-nav a.active { color: var(--dark); background: var(--golden); }
-
-        /* ═══════════════════════════════════
            MAIN NAV - Glassmorphism pill bar
         ═══════════════════════════════════ */
         .main-nav {
-            position: fixed; top: 50px; left: 50%; transform: translateX(-50%);
+            position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
             z-index: 1000;
             display: flex; align-items: center; gap: 4px;
             padding: 8px 12px;
@@ -1089,17 +1072,6 @@
     </style>
 </head>
 <body>
-
-    {{-- Concept Nav --}}
-    <div class="concept-nav">
-        <a href="/">A</a>
-        <a href="/concept-b">B</a>
-        <a href="/concept-c">C</a>
-        <a href="/concept-d">D</a>
-        <a href="/concept-e">E</a>
-        <a href="/concept-f">F</a>
-        <a href="/concept-g" class="active">G</a>
-    </div>
 
     {{-- Main Nav --}}
     <nav class="main-nav">
