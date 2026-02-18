@@ -121,18 +121,26 @@
             font-family: 'Playfair Display', serif;
             font-size: clamp(3.2rem, 7vw, 5.5rem);
             font-weight: 700; color: var(--cream);
-            line-height: 1.05; margin-bottom: 16px;
+            line-height: 1.05; margin-bottom: 24px;
             text-shadow: 0 2px 8px rgba(0,0,0,0.4);
         }
         .hero-text h1 em {
             font-style: italic; font-weight: 400;
             color: var(--golden);
         }
+        .tagline-wrap {
+            display: flex; align-items: center; justify-content: center;
+            gap: 16px; margin-bottom: 20px;
+        }
+        .tagline-flourish {
+            color: var(--golden); font-size: 14px; opacity: 0.6;
+        }
         .hero-text .tagline {
             font-family: 'Dancing Script', cursive;
-            font-size: clamp(1.4rem, 3vw, 2.2rem);
-            color: var(--golden); margin-bottom: 12px;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: var(--golden); margin-bottom: 0;
+            text-shadow: 0 0 20px rgba(212,165,116,0.5), 0 0 40px rgba(212,165,116,0.2), 0 2px 6px rgba(0,0,0,0.4);
+            letter-spacing: 1px;
         }
         .hero-text .hero-desc {
             font-size: 16px; color: rgba(245,230,208,0.85);
@@ -1106,8 +1114,12 @@
         <div class="flour-particles" id="flour-particles"></div>
         <div class="hero-content">
             <div class="hero-text">
-                <p class="tagline hero-enter hero-enter-d1"><span class="typewriter">Where Sourdough Dreams Come True</span></p>
-                <h1 class="hero-enter hero-enter-d2">Bakery on<br><em>Biscotto</em></h1>
+                <h1 class="hero-enter hero-enter-d1">Bakery on<br><em>Biscotto</em></h1>
+                <div class="tagline-wrap hero-enter hero-enter-d2">
+                    <span class="tagline-flourish">✦</span>
+                    <p class="tagline">Where Sourdough Dreams Come True</p>
+                    <span class="tagline-flourish">✦</span>
+                </div>
                 <p class="hero-desc hero-enter hero-enter-d3">Handcrafted bread from our cottage kitchen to your table. Every loaf is made with care, patience, and our beloved sourdough starter.</p>
                 <a href="#menu" class="hero-btn hero-enter hero-enter-d4">
                     Explore Our Menu
