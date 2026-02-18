@@ -656,6 +656,8 @@
             box-shadow: 0 4px 20px rgba(61,35,20,0.06);
             position: relative;
             transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
         }
         .review-card:nth-child(1) { transform: rotate(-1.5deg); }
         .review-card:nth-child(2) { transform: rotate(1deg); }
@@ -682,6 +684,7 @@
         }
         .review-author {
             font-weight: 600; font-size: 14px; color: var(--brown);
+            margin-top: auto;
         }
         .review-location {
             font-size: 13px; color: rgba(61,35,20,0.4);
