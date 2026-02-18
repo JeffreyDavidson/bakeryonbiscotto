@@ -1203,44 +1203,6 @@
         <div class="torn-bottom"></div>
     </section>
 
-    {{-- ═══ BISCOTTO STARTER SHOWCASE ═══ --}}
-    <section class="starter-showcase">
-        <div class="starter-inner">
-            <div class="jar-container reveal">
-                <div class="jar-glow"></div>
-                <div class="jar-lid"></div>
-                <div class="jar">
-                    <div class="starter-level">
-                        <div class="bubble" style="width:8px;height:8px;left:20%;bottom:30%;animation-duration:3s;"></div>
-                        <div class="bubble" style="width:5px;height:5px;left:60%;bottom:20%;animation-duration:4s;animation-delay:1s;"></div>
-                        <div class="bubble" style="width:6px;height:6px;left:40%;bottom:40%;animation-duration:3.5s;animation-delay:2s;"></div>
-                        <div class="bubble" style="width:4px;height:4px;left:75%;bottom:15%;animation-duration:4.5s;animation-delay:0.5s;"></div>
-                    </div>
-                    <div class="jar-label">
-                        Biscotto
-                        <small>Est. 2024</small>
-                    </div>
-                </div>
-            </div>
-            <div class="starter-text reveal" style="transition-delay: 0.2s;">
-                <h2>The Heart of Every Loaf</h2>
-                <p>Named after our street, Biscotto Circle. Fed every single day. The foundation of everything we bake.</p>
-            </div>
-        </div>
-    </section>
-
-    {{-- Divider --}}
-    <div class="divider">
-        <span class="divider-line"></span>
-        <svg class="divider-icon" width="32" height="32" viewBox="0 0 32 32" fill="none">
-            <path d="M16 2C16 2 17.5 10 16 16C14.5 10 16 2 16 2Z" fill="var(--golden)" opacity="0.6"/>
-            <path d="M16 6C16 6 21 11 19.5 17C18 12 16 6 16 6Z" fill="var(--golden)" opacity="0.4"/>
-            <path d="M16 6C16 6 11 11 12.5 17C14 12 16 6 16 6Z" fill="var(--golden)" opacity="0.4"/>
-            <line x1="16" y1="16" x2="16" y2="30" stroke="var(--golden)" stroke-width="1.5" opacity="0.4"/>
-        </svg>
-        <span class="divider-line"></span>
-    </div>
-
     {{-- ═══ PROCESS ═══ --}}
     <section class="process">
         <div class="section-head reveal">
