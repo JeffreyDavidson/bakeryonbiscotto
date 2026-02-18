@@ -1095,7 +1095,7 @@
                     <p class="tagline">Where Sourdough Dreams Come True</p>
                     <span class="tagline-flourish">✦</span>
                 </div>
-                <p class="hero-desc hero-enter hero-enter-d3">Handcrafted bread from our cottage kitchen to your table. Every loaf is made with care, patience, and our beloved sourdough starter.</p>
+                <p class="hero-desc hero-enter hero-enter-d3">Handcrafted sourdough and baked goods from our cottage kitchen to your table. Every creation starts with care, patience, and our beloved starter.</p>
                 <a href="#menu" class="hero-btn hero-enter hero-enter-d4">
                     Explore Our Menu
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
