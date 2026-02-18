@@ -1205,8 +1205,10 @@
             </div>
             <div class="about-text reveal" style="transition-delay: 0.15s;">
                 <h2>Meet Cassie</h2>
-                <p>Hi! I'm Cassie, and this little bakery is my heart and soul. What started as feeding my family homemade bread has turned into something so much bigger: a way to bring real, handmade bread to our amazing community here in Davenport.</p>
-                <p>Every single loaf, muffin, and slice comes from my kitchen. I measure by feel, shape by hand, and bake with the kind of care I'd put into bread for my own family. Because honestly? That's exactly what you are.</p>
+                <p>I've always loved being in the kitchen, but bread changed everything. It started simple: I wanted my family to have bread without all the processed ingredients and preservatives. I began with yeast bread, then curiosity took over. I started experimenting, tweaking, trying new things, and that's when sourdough found me.</p>
+                <p>My approach isn't complicated, and I like it that way. Good ingredients, good technique, something genuinely good to eat. No fuss.</p>
+                <p>What started as care packages for friends turned into something bigger. People kept asking for more, and eventually the question became: could this be a business? Turns out, yes.</p>
+                <p>I bake everything in the same kitchen where I cook dinner for my husband and daughter. Nothing leaves this house that I wouldn't put on our own table. I have a background in music and a love for the arts, and I bring that same creativity to every loaf I shape. Baking is my art form, and every piece is made by hand, with care.</p>
                 <p class="signature">With love and flour dust, Cassie ✨</p>
             </div>
         </div>
