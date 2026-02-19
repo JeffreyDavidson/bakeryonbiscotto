@@ -999,6 +999,28 @@
         {{-- ═══ OTHER BREADS ═══ --}}
         <div x-show="tab === 'other'" x-transition.opacity.duration.400ms>
 
+            {{-- Signature: Pumpkin Almond Chocolate Chip --}}
+            <div class="signature-item ink-reveal">
+                <div class="signature-photo">
+                    <img src="/images/product-pumpkin-bread.jpg" alt="Pumpkin Almond Chocolate Chip Bread">
+                    <div class="steam-wrap">
+                        <div class="steam"></div>
+                        <div class="steam"></div>
+                        <div class="steam"></div>
+                        <div class="steam"></div>
+                    </div>
+                </div>
+                <div class="signature-body">
+                    <span class="signature-label">✦ Fall Favorite</span>
+                    <h3>Pumpkin Almond Chocolate Chip</h3>
+                    <p class="desc">Pumpkin spice, toasted almonds, and chocolate chips. The ultimate fall loaf.</p>
+                    <div class="signature-price-wrap">
+                        <span class="signature-price">$15</span>
+                        <span class="signature-price-line"></span>
+                    </div>
+                </div>
+            </div>
+
             <div class="menu-item ink-reveal">
                 <div class="menu-item-row">
                     <span class="menu-item-name">Banana Bread</span>
@@ -1026,14 +1048,6 @@
                 <p class="menu-item-desc">Warm pumpkin spice studded with chocolate chips. Seasonal magic.</p>
             </div>
 
-            <div class="menu-item ink-reveal">
-                <div class="menu-item-row">
-                    <span class="menu-item-name">Pumpkin Almond Chocolate Chip Bread</span>
-                    <span class="menu-item-dots"></span>
-                    <span class="menu-item-price">$15</span>
-                </div>
-                <p class="menu-item-desc">Pumpkin spice, toasted almonds, and chocolate chips. The ultimate fall loaf.</p>
-            </div>
         </div>
 
     </div>{{-- /parchment --}}
