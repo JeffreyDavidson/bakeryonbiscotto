@@ -527,10 +527,6 @@
             position: relative;
             overflow: hidden;
             background: #2a1810;
-            /* Worn leather/dark wood texture */
-            background-image:
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-            background-blend-mode: soft-light;
         }
         .menu::before {
             content: '';
@@ -591,9 +587,10 @@
         /* Polaroid-style card on dark surface */
         .menu-card {
             background: #fffdf8;
-            border-radius: 4px;
+            border-radius: 6px;
             overflow: hidden;
             padding: 10px 10px 0 10px;
+            border: 2px solid var(--golden);
             box-shadow:
                 0 4px 12px rgba(0,0,0,0.2),
                 0 12px 40px rgba(0,0,0,0.15);
@@ -611,9 +608,10 @@
         .menu-card:nth-child(8) { transform: rotate(0.3deg); }
         .menu-card:hover {
             transform: rotate(0deg) translateY(-10px) scale(1.03) !important;
+            border-color: var(--accent);
             box-shadow:
                 0 24px 60px rgba(0,0,0,0.25),
-                0 0 30px rgba(212,165,116,0.1);
+                0 0 30px rgba(212,165,116,0.15);
             z-index: 3;
         }
         .menu-card-img {
