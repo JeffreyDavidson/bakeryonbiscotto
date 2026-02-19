@@ -398,7 +398,7 @@
                 0 0 0 1px rgba(139,94,60,0.1);
         }
         .signature-photo {
-            height: 280px; overflow: hidden; position: relative;
+            min-height: 280px; overflow: hidden; position: relative;
         }
         .signature-photo img {
             width: 100%; height: 100%; object-fit: cover;
