@@ -520,55 +520,92 @@
         }
 
         /* ═══════════════════════════════════
-           MENU - Recipe card style
+           MENU - Rich dark section
         ═══════════════════════════════════ */
         .menu {
-            padding: 80px 20px;
-            background: var(--cream);
+            padding: 100px 20px;
+            background: var(--dark);
             position: relative;
+            overflow: hidden;
+        }
+        .menu::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 0%, rgba(212,165,116,0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(193,127,78,0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .menu::after {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+        .menu .section-head h2 { color: var(--cream); }
+        .menu .section-head .accent-line {
+            background: linear-gradient(90deg, var(--golden), var(--accent), var(--golden));
+            width: 80px;
+        }
+        .menu-subtitle {
+            text-align: center;
+            color: rgba(245,230,208,0.5);
+            font-size: 15px;
+            font-style: italic;
+            margin-top: -40px;
+            margin-bottom: 48px;
         }
         .menu-tabs {
             display: flex; justify-content: center;
             gap: 8px; margin-bottom: 48px;
+            position: relative; z-index: 2;
         }
         .menu-tab {
             font-family: 'Playfair Display', serif;
             font-size: 15px; font-weight: 500;
             padding: 12px 32px; border-radius: 100px;
-            border: 2px solid var(--golden);
-            background: transparent; color: var(--brown);
+            border: 2px solid rgba(212,165,116,0.4);
+            background: transparent; color: rgba(245,230,208,0.6);
             cursor: pointer; transition: all 0.3s;
         }
-        .menu-tab:hover { background: rgba(212,165,116,0.15); }
+        .menu-tab:hover { background: rgba(212,165,116,0.1); color: var(--cream); border-color: var(--golden); }
         .menu-tab.active {
-            background: var(--dark); color: var(--cream);
-            border-color: var(--dark);
+            background: var(--golden); color: var(--dark);
+            border-color: var(--golden);
+            box-shadow: 0 4px 20px rgba(212,165,116,0.3);
         }
         .menu-grid {
             max-width: 1100px; margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px;
+            gap: 28px;
+            position: relative; z-index: 2;
         }
-        /* Recipe-style menu card */
+        /* Menu card — warm glass on dark */
         .menu-card {
-            background: var(--white);
-            border-radius: 16px;
+            background: rgba(245,230,208,0.06);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             overflow: hidden;
-            border: 1px solid rgba(139,94,60,0.1);
+            border: 1px solid rgba(212,165,116,0.15);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
         }
         .menu-card::before {
             content: '';
-            position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
             background: linear-gradient(90deg, var(--golden), var(--accent));
             opacity: 0;
             transition: opacity 0.3s;
         }
         .menu-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(61,35,20,0.12);
+            background: rgba(245,230,208,0.1);
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.3),
+                0 0 40px rgba(212,165,116,0.08);
+            border-color: rgba(212,165,116,0.3);
         }
         .menu-card:hover::before { opacity: 1; }
         .menu-card-img {
@@ -584,20 +621,20 @@
         .menu-card:hover .menu-card-img img { transform: scale(1.08); }
         .menu-card-img.placeholder-img {
             background:
-                radial-gradient(circle at 30% 70%, rgba(212,165,116,0.2) 0%, transparent 50%),
-                radial-gradient(circle at 70% 30%, rgba(193,127,78,0.15) 0%, transparent 50%),
-                linear-gradient(135deg, rgba(212,165,116,0.08), rgba(193,127,78,0.04));
+                radial-gradient(circle at 30% 70%, rgba(212,165,116,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(193,127,78,0.1) 0%, transparent 50%),
+                rgba(245,230,208,0.04);
             position: relative;
         }
         .menu-card-img.placeholder-img::after {
             content: '';
             position: absolute; inset: 0;
-            background-image: radial-gradient(circle, rgba(139,94,60,0.06) 1px, transparent 1px);
+            background-image: radial-gradient(circle, rgba(212,165,116,0.08) 1px, transparent 1px);
             background-size: 16px 16px;
         }
         .menu-card-img .emoji-icon {
             font-size: 56px;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
         }
         .menu-card-body {
             padding: 24px;
@@ -605,10 +642,10 @@
         .menu-card-body h3 {
             font-family: 'Playfair Display', serif;
             font-size: 1.15rem; font-weight: 600;
-            color: var(--dark); margin-bottom: 8px;
+            color: var(--cream); margin-bottom: 8px;
         }
         .menu-card-body .desc {
-            font-size: 14px; color: rgba(61,35,20,0.6);
+            font-size: 14px; color: rgba(245,230,208,0.5);
             line-height: 1.6; margin-bottom: 16px;
         }
         .menu-card-footer {
@@ -616,19 +653,20 @@
         }
         .price {
             font-family: 'Playfair Display', serif;
-            font-size: 1.3rem; font-weight: 700; color: var(--accent);
+            font-size: 1.3rem; font-weight: 700; color: var(--golden);
         }
         .price-pill {
             display: inline-block;
-            padding: 4px 16px; border-radius: 100px;
+            padding: 6px 20px; border-radius: 100px;
             background: linear-gradient(135deg, var(--golden), var(--accent));
             color: var(--dark); font-weight: 700; font-size: 15px;
             font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 15px rgba(212,165,116,0.3);
         }
         /* Special deal card */
         .menu-card.special {
-            background: linear-gradient(135deg, var(--dark), #4d2e1c);
-            border: 1px solid rgba(212,165,116,0.2);
+            background: linear-gradient(135deg, rgba(212,165,116,0.15), rgba(193,127,78,0.1));
+            border: 1px solid rgba(212,165,116,0.3);
         }
         .menu-card.special .menu-card-body h3 { color: var(--cream); }
         .menu-card.special .desc { color: rgba(245,230,208,0.6); }
@@ -1238,6 +1276,7 @@
             <h2>What We Bake</h2>
             <div class="accent-line"></div>
         </div>
+        <p class="menu-subtitle reveal">Everything baked fresh to order. Never frozen, never rushed.</p>
         <div class="menu-tabs reveal">
             <button class="menu-tab" :class="{ 'active': tab === 'sourdough' }" @click="tab = 'sourdough'">Sourdough Loaves</button>
             <button class="menu-tab" :class="{ 'active': tab === 'other' }" @click="tab = 'other'">Other Breads</button>
