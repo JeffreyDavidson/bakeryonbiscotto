@@ -526,7 +526,7 @@
             padding: 100px 20px;
             position: relative;
             overflow: hidden;
-            background: #2a1810;
+            background: #4a3228;
         }
         .menu::before {
             content: '';
@@ -680,13 +680,42 @@
         }
         /* Special deal card */
         .menu-card.special {
-            background: #fffdf8;
-            border: 2px dashed var(--golden);
+            background: linear-gradient(135deg, #fff9ed, #fff3dc);
+            border: 3px solid var(--golden);
+            box-shadow:
+                0 4px 12px rgba(0,0,0,0.2),
+                0 12px 40px rgba(0,0,0,0.15),
+                0 0 40px rgba(212,165,116,0.2),
+                inset 0 0 30px rgba(212,165,116,0.08);
+            transform: rotate(0deg) scale(1.03) !important;
+        }
+        .menu-card.special:hover {
+            transform: rotate(0deg) translateY(-10px) scale(1.06) !important;
+            box-shadow:
+                0 24px 60px rgba(0,0,0,0.25),
+                0 0 60px rgba(212,165,116,0.3);
         }
         .menu-card.special .menu-card-body h3 { color: var(--dark); }
         .menu-card.special .desc { color: var(--brown); }
         .menu-card.special .price-pill {
             background: var(--golden); color: var(--dark);
+            font-size: 16px;
+            padding: 8px 24px;
+            box-shadow: 0 4px 12px rgba(212,165,116,0.3);
+        }
+        .ribbon-wrap { position: absolute; top: 0; right: 0; z-index: 5; overflow: hidden; width: 120px; height: 120px; }
+        .ribbon {
+            position: absolute;
+            top: 22px; right: -30px;
+            transform: rotate(45deg);
+            background: linear-gradient(135deg, #d4a574, var(--accent));
+            color: var(--dark);
+            font-family: 'Playfair Display', serif;
+            font-size: 12px; font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 40px;
+            box-shadow: 0 4px 12px rgba(193,127,78,0.4);
         }
 
         /* ═══════════════════════════════════
