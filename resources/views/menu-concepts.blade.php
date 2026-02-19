@@ -558,37 +558,99 @@
            BUNDLE CALLOUT — wax seal accent
         ═══════════════════════════════════════════ */
         .bundle-callout {
-            margin: 48px -10px 8px;
-            padding: 40px 36px;
-            text-align: center;
+            margin: 48px -34px 8px;
+            padding: 0;
             position: relative;
-            border-top: 1px solid rgba(139,94,60,0.15);
-            border-bottom: 1px solid rgba(139,94,60,0.15);
+            background: linear-gradient(135deg, var(--dark) 0%, #4a2a18 100%);
+            overflow: hidden;
+            border-radius: 3px;
+            box-shadow:
+                0 8px 30px rgba(0,0,0,0.15),
+                0 0 0 1px rgba(212,165,116,0.15);
         }
-
+        .bundle-callout::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse at 0% 50%, rgba(244,200,122,0.1), transparent 60%),
+                radial-gradient(ellipse at 100% 50%, rgba(212,165,116,0.06), transparent 50%);
+            pointer-events: none;
+        }
+        .bundle-inner {
+            display: flex;
+            align-items: center;
+            padding: 40px 48px;
+            gap: 32px;
+            position: relative;
+        }
+        .bundle-emoji {
+            font-size: 56px;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+            flex-shrink: 0;
+        }
+        .bundle-text { flex: 1; }
         .bundle-callout h3 {
             font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            color: var(--ink);
-            margin-bottom: 10px;
+            color: var(--cream);
+            margin-bottom: 8px;
         }
         .bundle-callout .desc {
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
             font-size: 16px;
-            color: var(--warm);
-            margin-bottom: 24px;
+            color: rgba(245,230,208,0.5);
         }
-        .bundle-price-wrap {
-            display: inline-flex; align-items: center; gap: 16px;
+        .bundle-price-tag {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 35%, var(--golden), var(--accent));
+            box-shadow:
+                0 4px 20px rgba(212,165,116,0.4),
+                0 0 40px rgba(212,165,116,0.15);
+            position: relative;
         }
-        .bundle-line { width: 40px; height: 1px; background: var(--golden); }
-        .bundle-price {
+        .bundle-price-tag::before {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border: 1.5px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+        }
+        .bundle-price-tag .amount {
             font-family: 'Dancing Script', cursive;
-            font-size: 2.6rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            color: var(--accent);
+            color: var(--dark);
+            line-height: 1;
+        }
+        .bundle-price-tag .label {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(61,35,20,0.6);
+            margin-top: 2px;
+        }
+        .bundle-ribbon {
+            position: absolute;
+            top: 16px; right: -32px;
+            background: var(--golden);
+            color: var(--dark);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 6px 40px;
+            transform: rotate(45deg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
         /* ═══════════════════════════════════════════
@@ -719,7 +781,9 @@
             .polaroid-break { width: 260px; }
             .menu-item-desc { padding-right: 0; }
             .margin-note { display: none; }
-            .bundle-callout { margin: 40px 0 8px; padding: 28px 24px; }
+            .bundle-callout { margin: 40px -20px 8px; }
+            .bundle-inner { padding: 28px 24px; flex-wrap: wrap; justify-content: center; text-align: center; }
+            .bundle-ribbon { display: none; }
         }
         @media (max-width: 480px) {
             .parchment { padding: 48px 24px 40px; }
@@ -881,12 +945,17 @@
 
             {{-- Bundle --}}
             <div class="bundle-callout ink-reveal">
-                <h3>4 Pack of Mini Loaves</h3>
-                <p class="desc">Can't choose? Don't. Pick any 4 flavors in perfectly portioned mini loaves.</p>
-                <div class="bundle-price-wrap">
-                    <span class="bundle-line"></span>
-                    <span class="bundle-price">$25</span>
-                    <span class="bundle-line"></span>
+                <span class="bundle-ribbon">Best Deal</span>
+                <div class="bundle-inner">
+                    <span class="bundle-emoji">🎁</span>
+                    <div class="bundle-text">
+                        <h3>4 Pack of Mini Loaves</h3>
+                        <p class="desc">Can't choose? Don't. Pick any 4 flavors in perfectly portioned mini loaves.</p>
+                    </div>
+                    <div class="bundle-price-tag">
+                        <span class="amount">$25</span>
+                        <span class="label">bundle</span>
+                    </div>
                 </div>
             </div>
         </div>
