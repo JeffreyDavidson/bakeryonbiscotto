@@ -858,17 +858,6 @@
                 <p class="menu-item-desc">Fresh mozzarella and roasted garlic. Your kitchen will smell incredible.</p>
             </div>
 
-            <div class="wheat-divider">
-                <span class="wd-line"></span>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2C12 2 13 7 12 12C11 7 12 2 12 2Z" fill="var(--golden)" opacity="0.5"/>
-                    <path d="M12 4C12 4 16 8 15 12C13.5 9 12 4 12 4Z" fill="var(--golden)" opacity="0.3"/>
-                    <path d="M12 4C12 4 8 8 9 12C10.5 9 12 4 12 4Z" fill="var(--golden)" opacity="0.3"/>
-                    <line x1="12" y1="12" x2="12" y2="22" stroke="var(--golden)" stroke-width="1" opacity="0.2"/>
-                </svg>
-                <span class="wd-line"></span>
-            </div>
-
             <div class="menu-item ink-reveal">
                 <div class="menu-item-row">
                     <span class="menu-item-name">Chocolate Chip</span>
@@ -922,6 +911,28 @@
         {{-- ═══ OTHER BREADS ═══ --}}
         <div x-show="tab === 'other'" x-transition.opacity.duration.400ms>
 
+            {{-- Signature: English Muffins with steam --}}
+            <div class="signature-item ink-reveal">
+                <div class="signature-photo">
+                    <img src="/images/product-english-muffins.jpg" alt="Sourdough English Muffins">
+                    <div class="steam-wrap">
+                        <div class="steam"></div>
+                        <div class="steam"></div>
+                        <div class="steam"></div>
+                        <div class="steam"></div>
+                    </div>
+                </div>
+                <div class="signature-body">
+                    <span class="signature-label">✦ Fan Favorite</span>
+                    <h3>Sourdough English Muffins</h3>
+                    <p class="desc">Those perfect nooks and crannies. Griddle-cooked and ready for toasting.</p>
+                    <div class="signature-price-wrap">
+                        <span class="signature-price">6ct · $8 | 12ct · $15</span>
+                        <span class="signature-price-line"></span>
+                    </div>
+                </div>
+            </div>
+
             <div class="menu-item ink-reveal">
                 <div class="menu-item-row">
                     <span class="menu-item-name">Sourdough Honey Wheat Sandwich Bread</span>
@@ -929,33 +940,6 @@
                     <span class="menu-item-price">$10</span>
                 </div>
                 <p class="menu-item-desc">Soft, wholesome, and perfect for sandwiches. Honey sweetness with a sourdough twist.</p>
-            </div>
-
-            {{-- English muffins polaroid --}}
-            <div class="polaroid-break ink-reveal">
-                <div class="tape"></div>
-                <img src="/images/product-english-muffins.jpg" alt="Sourdough English Muffins">
-                <span class="polaroid-caption">griddle-cooked perfection</span>
-            </div>
-
-            <div class="menu-item ink-reveal">
-                <div class="menu-item-row">
-                    <span class="menu-item-name">Sourdough English Muffins</span>
-                    <span class="menu-item-dots"></span>
-                    <span class="menu-item-price">6ct · $8 | 12ct · $15</span>
-                </div>
-                <p class="menu-item-desc">Those perfect nooks and crannies. Griddle-cooked and ready for toasting.</p>
-            </div>
-
-            <div class="wheat-divider">
-                <span class="wd-line"></span>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2C12 2 13 7 12 12C11 7 12 2 12 2Z" fill="var(--golden)" opacity="0.5"/>
-                    <path d="M12 4C12 4 16 8 15 12C13.5 9 12 4 12 4Z" fill="var(--golden)" opacity="0.3"/>
-                    <path d="M12 4C12 4 8 8 9 12C10.5 9 12 4 12 4Z" fill="var(--golden)" opacity="0.3"/>
-                    <line x1="12" y1="12" x2="12" y2="22" stroke="var(--golden)" stroke-width="1" opacity="0.2"/>
-                </svg>
-                <span class="wd-line"></span>
             </div>
 
             <div class="menu-item ink-reveal">
