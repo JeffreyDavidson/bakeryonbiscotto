@@ -621,7 +621,7 @@
             border-radius: 2px;
             background: #f5ede0;
         }
-        .menu-card-img.has-photo { height: 220px; }
+        .menu-card-img.has-photo { height: 200px; }
         .menu-card-img img {
             width: 100%; height: 100%; object-fit: cover;
             transition: transform 0.6s ease;
