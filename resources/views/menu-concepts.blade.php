@@ -787,10 +787,6 @@
         {{-- Title --}}
         <div class="menu-title ink-reveal">
             <h2>Our Menu<span class="ink-drip"></span></h2>
-            <div class="title-flourish">
-                <span class="tf-line"></span>
-                <span class="tf-line"></span>
-            </div>
         </div>
         <p class="menu-epigraph ink-reveal">Everything baked fresh to order. Never frozen, never rushed.</p>
 
