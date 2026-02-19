@@ -388,7 +388,7 @@
         ═══════════════════════════════════════════ */
         .signature-item {
             position: relative;
-            margin: 20px -34px 44px;
+            margin: 20px -34px 0;
             display: grid;
             grid-template-columns: 1fr 1fr;
             overflow: hidden;
@@ -490,7 +490,7 @@
         }
         .signature-price {
             font-family: 'Dancing Script', cursive;
-            font-size: 2.4rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--golden);
             position: relative;
@@ -562,16 +562,9 @@
             padding: 40px 36px;
             text-align: center;
             position: relative;
-            border: 2px solid var(--golden);
+            border-top: 1px solid rgba(139,94,60,0.15);
+            border-bottom: 1px solid rgba(139,94,60,0.15);
         }
-        /* Ornate corner brackets */
-        .corner-tl, .corner-tr, .corner-bl, .corner-br {
-            position: absolute; width: 20px; height: 20px;
-        }
-        .corner-tl { top: 6px; left: 6px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
-        .corner-tr { top: 6px; right: 6px; border-top: 2px solid var(--accent); border-right: 2px solid var(--accent); }
-        .corner-bl { bottom: 6px; left: 6px; border-bottom: 2px solid var(--accent); border-left: 2px solid var(--accent); }
-        .corner-br { bottom: 6px; right: 6px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
 
         .bundle-callout h3 {
             font-family: 'Dancing Script', cursive;
@@ -896,8 +889,6 @@
 
             {{-- Bundle --}}
             <div class="bundle-callout ink-reveal">
-                <div class="corner-tl"></div><div class="corner-tr"></div>
-                <div class="corner-bl"></div><div class="corner-br"></div>
                 <h3>4 Pack of Mini Loaves</h3>
                 <p class="desc">Can't choose? Don't. Pick any 4 flavors in perfectly portioned mini loaves.</p>
                 <div class="bundle-price-wrap">
@@ -977,17 +968,6 @@
                 </div>
                 <p class="menu-item-desc">Pumpkin spice, toasted almonds, and chocolate chips. The ultimate fall loaf.</p>
             </div>
-        </div>
-
-        {{-- Wax seal --}}
-        <div class="menu-seal ink-reveal">
-            <div class="seal-stamp">
-                <div class="seal-inner">
-                    <span class="seal-b">B</span>
-                    <span class="seal-est">est. 2024</span>
-                </div>
-            </div>
-            <p class="seal-tagline">Handcrafted in our cottage kitchen, Davenport FL</p>
         </div>
 
     </div>{{-- /parchment --}}
