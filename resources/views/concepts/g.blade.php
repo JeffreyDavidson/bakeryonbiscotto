@@ -1232,52 +1232,6 @@
         <div class="torn-bottom"></div>
     </section>
 
-    {{-- ═══ PROCESS ═══ --}}
-    <section class="faq" id="faq" x-data="{ open: null }">
-        <div class="section-head reveal">
-            <h2>Frequently Asked Questions</h2>
-            <div class="accent-line"></div>
-        </div>
-        <div class="faq-list reveal">
-            <div class="faq-item" :class="{ 'open': open === 1 }">
-                <button class="faq-question" @click="open = open === 1 ? null : 1">How do I order?</button>
-                <div class="faq-answer"><div class="faq-answer-inner">
-                    <p>Send us an email at <a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a> with what you'd like and we'll work out timing and logistics together.</p>
-                </div></div>
-            </div>
-            <div class="faq-item" :class="{ 'open': open === 2 }">
-                <button class="faq-question" @click="open = open === 2 ? null : 2">How far in advance should I order?</button>
-                <div class="faq-answer"><div class="faq-answer-inner">
-                    <p>At least 2 days. Sourdough is a slow process. A basic loaf takes a minimum of 24 hours from feeding the starter to pulling it out of the oven. Every order is baked fresh, never in advance.</p>
-                </div></div>
-            </div>
-            <div class="faq-item" :class="{ 'open': open === 3 }">
-                <button class="faq-question" @click="open = open === 3 ? null : 3">Do you deliver?</button>
-                <div class="faq-answer"><div class="faq-answer-inner">
-                    <p>Yes! We offer both pickup and delivery. Delivery includes a small fee based on mileage.</p>
-                </div></div>
-            </div>
-            <div class="faq-item" :class="{ 'open': open === 4 }">
-                <button class="faq-question" @click="open = open === 4 ? null : 4">What area do you serve?</button>
-                <div class="faq-answer"><div class="faq-answer-inner">
-                    <p>We easily serve the Four Corners, FL area. We can also accommodate the greater Orlando area with a bit more lead time and coordination.</p>
-                </div></div>
-            </div>
-            <div class="faq-item" :class="{ 'open': open === 5 }">
-                <button class="faq-question" @click="open = open === 5 ? null : 5">Can I customize my order?</button>
-                <div class="faq-answer"><div class="faq-answer-inner">
-                    <p>We don't take fully custom orders, but we can make small adjustments. Don't like walnuts in your banana bread? We can swap in pecans. We can't accommodate items outside our menu, but we always love hearing suggestions for future offerings.</p>
-                </div></div>
-            </div>
-            <div class="faq-item" :class="{ 'open': open === 6 }">
-                <button class="faq-question" @click="open = open === 6 ? null : 6">Why sourdough?</button>
-                <div class="faq-answer"><div class="faq-answer-inner">
-                    <p>It started with wanting bread without processed ingredients and preservatives. Sourdough uses a natural fermentation process, which means simpler ingredients and better flavor. No shortcuts, no additives.</p>
-                </div></div>
-            </div>
-        </div>
-    </section>
-
     {{-- ═══ MENU ═══ --}}
     <section class="menu" id="menu" x-data="{ tab: 'sourdough' }">
         <div class="section-head reveal">
@@ -1408,6 +1362,52 @@
                     <p class="desc">Pumpkin spice, toasted almonds, and chocolate chips. The ultimate fall loaf.</p>
                     <div class="menu-card-footer"><span class="price">$15</span></div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ═══ PROCESS ═══ --}}
+    <section class="faq" id="faq" x-data="{ open: null }">
+        <div class="section-head reveal">
+            <h2>Frequently Asked Questions</h2>
+            <div class="accent-line"></div>
+        </div>
+        <div class="faq-list reveal">
+            <div class="faq-item" :class="{ 'open': open === 1 }">
+                <button class="faq-question" @click="open = open === 1 ? null : 1">How do I order?</button>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    <p>Send us an email at <a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a> with what you'd like and we'll work out timing and logistics together.</p>
+                </div></div>
+            </div>
+            <div class="faq-item" :class="{ 'open': open === 2 }">
+                <button class="faq-question" @click="open = open === 2 ? null : 2">How far in advance should I order?</button>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    <p>At least 2 days. Sourdough is a slow process. A basic loaf takes a minimum of 24 hours from feeding the starter to pulling it out of the oven. Every order is baked fresh, never in advance.</p>
+                </div></div>
+            </div>
+            <div class="faq-item" :class="{ 'open': open === 3 }">
+                <button class="faq-question" @click="open = open === 3 ? null : 3">Do you deliver?</button>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    <p>Yes! We offer both pickup and delivery. Delivery includes a small fee based on mileage.</p>
+                </div></div>
+            </div>
+            <div class="faq-item" :class="{ 'open': open === 4 }">
+                <button class="faq-question" @click="open = open === 4 ? null : 4">What area do you serve?</button>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    <p>We easily serve the Four Corners, FL area. We can also accommodate the greater Orlando area with a bit more lead time and coordination.</p>
+                </div></div>
+            </div>
+            <div class="faq-item" :class="{ 'open': open === 5 }">
+                <button class="faq-question" @click="open = open === 5 ? null : 5">Can I customize my order?</button>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    <p>We don't take fully custom orders, but we can make small adjustments. Don't like walnuts in your banana bread? We can swap in pecans. We can't accommodate items outside our menu, but we always love hearing suggestions for future offerings.</p>
+                </div></div>
+            </div>
+            <div class="faq-item" :class="{ 'open': open === 6 }">
+                <button class="faq-question" @click="open = open === 6 ? null : 6">Why sourdough?</button>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    <p>It started with wanting bread without processed ingredients and preservatives. Sourdough uses a natural fermentation process, which means simpler ingredients and better flavor. No shortcuts, no additives.</p>
+                </div></div>
             </div>
         </div>
     </section>
