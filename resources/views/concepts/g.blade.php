@@ -520,45 +520,32 @@
         }
 
         /* ═══════════════════════════════════
-           MENU - Recipe book + Polaroid
+           MENU - Dark cookbook + Polaroid
         ═══════════════════════════════════ */
         .menu {
             padding: 100px 20px;
             position: relative;
             overflow: hidden;
-            background: #faf3e8;
-            /* Aged cookbook page feel */
+            background: #2a1810;
+            /* Worn leather/dark wood texture */
             background-image:
-                repeating-linear-gradient(
-                    transparent,
-                    transparent 39px,
-                    rgba(193,127,78,0.06) 39px,
-                    rgba(193,127,78,0.06) 40px
-                ),
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-            background-blend-mode: overlay;
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-blend-mode: soft-light;
         }
-        /* Aged edges */
         .menu::before {
             content: '';
             position: absolute; inset: 0;
-            box-shadow: inset 0 0 100px rgba(139,94,60,0.12);
-            pointer-events: none;
-        }
-        /* Coffee ring stain decoration */
-        .menu::after {
-            content: '';
-            position: absolute;
-            top: 60px; right: 8%;
-            width: 120px; height: 120px;
-            border-radius: 50%;
-            border: 2px solid rgba(139,94,60,0.06);
-            box-shadow: inset 0 0 20px rgba(139,94,60,0.04);
+            background:
+                radial-gradient(ellipse at 20% 0%, rgba(212,165,116,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(193,127,78,0.06) 0%, transparent 50%);
             pointer-events: none;
         }
         .menu .section-head h2 {
-            color: var(--dark);
-            font-size: clamp(2.2rem, 5vw, 3rem);
+            font-family: 'Dancing Script', cursive;
+            color: var(--cream);
+            font-size: clamp(2.8rem, 6vw, 4rem);
+            font-weight: 700;
+            letter-spacing: 1px;
         }
         .menu .section-head .accent-line {
             background: linear-gradient(90deg, transparent, var(--golden), var(--accent), var(--golden), transparent);
@@ -566,34 +553,33 @@
         }
         .menu-subtitle {
             text-align: center;
-            color: var(--warm);
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            font-style: italic;
+            color: rgba(245,230,208,0.45);
+            font-family: 'Dancing Script', cursive;
+            font-size: 18px;
             margin-top: -40px;
             margin-bottom: 48px;
+            letter-spacing: 0.5px;
         }
         .menu-tabs {
             display: flex; justify-content: center;
-            gap: 0; margin-bottom: 48px;
+            gap: 12px; margin-bottom: 48px;
             position: relative; z-index: 2;
         }
         .menu-tab {
             font-family: 'Playfair Display', serif;
             font-size: 15px; font-weight: 500;
             padding: 14px 36px;
-            border: none;
-            background: rgba(139,94,60,0.06);
-            color: var(--brown);
+            border: 1px solid rgba(212,165,116,0.25);
+            border-radius: 8px;
+            background: rgba(245,230,208,0.05);
+            color: rgba(245,230,208,0.5);
             cursor: pointer; transition: all 0.3s;
-            position: relative;
         }
-        .menu-tab:first-child { border-radius: 8px 0 0 8px; }
-        .menu-tab:last-child { border-radius: 0 8px 8px 0; }
-        .menu-tab:hover { background: rgba(139,94,60,0.1); }
+        .menu-tab:hover { background: rgba(245,230,208,0.08); color: var(--cream); border-color: rgba(212,165,116,0.4); }
         .menu-tab.active {
-            background: var(--dark); color: var(--cream);
-            box-shadow: 0 4px 16px rgba(61,35,20,0.2);
+            background: var(--golden); color: var(--dark);
+            border-color: var(--golden);
+            box-shadow: 0 4px 20px rgba(212,165,116,0.25);
         }
         .menu-grid {
             max-width: 1100px; margin: 0 auto;
@@ -602,38 +588,33 @@
             gap: 32px;
             position: relative; z-index: 2;
         }
-        /* Polaroid-style menu card */
+        /* Polaroid-style card on dark surface */
         .menu-card {
-            background: white;
+            background: #fffdf8;
             border-radius: 4px;
             overflow: hidden;
             padding: 10px 10px 0 10px;
             box-shadow:
-                0 2px 8px rgba(61,35,20,0.08),
-                0 8px 30px rgba(61,35,20,0.06);
+                0 4px 12px rgba(0,0,0,0.2),
+                0 12px 40px rgba(0,0,0,0.15);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
         }
         /* Subtle random rotations for pinned feel */
-        .menu-card:nth-child(odd) { transform: rotate(-0.8deg); }
-        .menu-card:nth-child(even) { transform: rotate(0.6deg); }
-        .menu-card:nth-child(3n) { transform: rotate(-0.4deg); }
+        .menu-card:nth-child(1) { transform: rotate(-0.8deg); }
+        .menu-card:nth-child(2) { transform: rotate(0.5deg); }
+        .menu-card:nth-child(3) { transform: rotate(-0.3deg); }
+        .menu-card:nth-child(4) { transform: rotate(0.7deg); }
+        .menu-card:nth-child(5) { transform: rotate(-0.5deg); }
+        .menu-card:nth-child(6) { transform: rotate(0.4deg); }
+        .menu-card:nth-child(7) { transform: rotate(-0.6deg); }
+        .menu-card:nth-child(8) { transform: rotate(0.3deg); }
         .menu-card:hover {
-            transform: rotate(0deg) translateY(-8px) scale(1.02) !important;
+            transform: rotate(0deg) translateY(-10px) scale(1.03) !important;
             box-shadow:
-                0 20px 50px rgba(61,35,20,0.15),
-                0 8px 20px rgba(61,35,20,0.1);
+                0 24px 60px rgba(0,0,0,0.25),
+                0 0 30px rgba(212,165,116,0.1);
             z-index: 3;
-        }
-        /* Tape strip on top */
-        .menu-card::before {
-            content: '';
-            position: absolute;
-            top: -6px; left: 50%; transform: translateX(-50%);
-            width: 60px; height: 24px;
-            background: rgba(212,165,116,0.35);
-            border-radius: 2px;
-            z-index: 4;
         }
         .menu-card-img {
             height: 200px;
@@ -646,12 +627,8 @@
         .menu-card-img img {
             width: 100%; height: 100%; object-fit: cover;
             transition: transform 0.6s ease;
-            filter: saturate(0.9) contrast(1.05);
         }
-        .menu-card:hover .menu-card-img img {
-            transform: scale(1.08);
-            filter: saturate(1) contrast(1.05);
-        }
+        .menu-card:hover .menu-card-img img { transform: scale(1.08); }
         .menu-card-img.placeholder-img {
             background:
                 radial-gradient(circle at 30% 70%, rgba(212,165,116,0.15) 0%, transparent 50%),
@@ -673,18 +650,18 @@
             padding: 16px 14px 20px;
         }
         .menu-card-body h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.15rem; font-weight: 600;
-            color: var(--dark); margin-bottom: 6px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem; font-weight: 700;
+            color: var(--dark); margin-bottom: 8px;
         }
         .menu-card-body .desc {
-            font-size: 13px; color: var(--warm);
-            line-height: 1.6; margin-bottom: 12px;
-            font-style: italic;
+            font-family: 'Dancing Script', cursive;
+            font-size: 15px; color: var(--warm);
+            line-height: 1.5; margin-bottom: 14px;
         }
         .menu-card-footer {
             display: flex; justify-content: space-between; align-items: center;
-            border-top: 1px dashed rgba(139,94,60,0.15);
+            border-top: 1px dashed rgba(139,94,60,0.2);
             padding-top: 12px;
         }
         .price {
@@ -700,12 +677,8 @@
         }
         /* Special deal card */
         .menu-card.special {
-            background: linear-gradient(135deg, #fdf6ec, #f8edd8);
+            background: #fffdf8;
             border: 2px dashed var(--golden);
-            padding: 10px;
-        }
-        .menu-card.special::before {
-            background: rgba(212,165,116,0.5);
         }
         .menu-card.special .menu-card-body h3 { color: var(--dark); }
         .menu-card.special .desc { color: var(--brown); }
@@ -1312,7 +1285,7 @@
     {{-- ═══ MENU ═══ --}}
     <section class="menu" id="menu" x-data="{ tab: 'sourdough' }">
         <div class="section-head reveal">
-            <h2>What We Bake</h2>
+            <h2>Our Menu</h2>
             <div class="accent-line"></div>
         </div>
         <p class="menu-subtitle reveal">Everything baked fresh to order. Never frozen, never rushed.</p>
