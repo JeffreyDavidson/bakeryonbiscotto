@@ -437,9 +437,9 @@
         }
 
         /* ═══════════════════════════════════
-           PROCESS - Horizontal timeline
+           FAQ
         ═══════════════════════════════════ */
-        .process {
+        .faq {
             padding: 80px 20px;
             background: var(--light);
         }
@@ -456,46 +456,63 @@
             background: linear-gradient(90deg, var(--golden), var(--accent));
             border-radius: 2px;
         }
-        .timeline {
-            max-width: 1000px; margin: 0 auto;
-            display: grid; grid-template-columns: repeat(4, 1fr);
-            position: relative;
+        .faq-list {
+            max-width: 800px; margin: 0 auto;
+            display: flex; flex-direction: column; gap: 0;
         }
-        /* Connecting line */
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 40px; left: 12.5%; right: 12.5%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--golden), var(--accent), var(--golden));
-            opacity: 0.3;
+        .faq-item {
+            border-bottom: 1px solid rgba(61,35,20,0.1);
         }
-        .timeline-step {
-            text-align: center; padding: 0 16px;
-            position: relative;
+        .faq-item:first-child {
+            border-top: 1px solid rgba(61,35,20,0.1);
         }
-        .step-dot {
-            width: 80px; height: 80px;
-            border-radius: 50%;
-            border: 2px solid var(--golden);
-            display: inline-flex; align-items: center; justify-content: center;
-            margin-bottom: 20px;
-            background: var(--light);
-            position: relative; z-index: 2;
-            transition: all 0.4s ease;
-        }
-        .step-dot:hover {
-            background: var(--golden);
-            box-shadow: 0 0 30px rgba(212,165,116,0.4);
-        }
-        .step-dot:hover .step-emoji { transform: scale(1.2); }
-        .step-emoji {
-            font-size: 32px; transition: transform 0.3s;
-        }
-        .timeline-step h3 {
+        .faq-question {
+            width: 100%;
+            background: none; border: none;
+            padding: 24px 40px 24px 0;
             font-family: 'Playfair Display', serif;
-            font-size: 1.2rem; color: var(--dark);
-            margin-bottom: 8px;
+            font-size: 1.15rem; font-weight: 600;
+            color: var(--dark);
+            text-align: left;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s;
+        }
+        .faq-question:hover { color: var(--accent); }
+        .faq-question::after {
+            content: '+';
+            position: absolute; right: 0; top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem; font-weight: 300;
+            color: var(--golden);
+            transition: transform 0.3s;
+        }
+        .faq-item.open .faq-question::after {
+            transform: translateY(-50%) rotate(45deg);
+        }
+        .faq-answer {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s ease;
+        }
+        .faq-item.open .faq-answer {
+            grid-template-rows: 1fr;
+        }
+        .faq-answer-inner {
+            overflow: hidden;
+        }
+        .faq-answer-inner p {
+            padding: 0 0 24px 0;
+            color: var(--warm);
+            line-height: 1.7;
+        }
+        .faq-answer-inner a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .faq-answer-inner a:hover {
+            text-decoration: underline;
         }
         .timeline-step p {
             font-size: 14px; color: var(--brown);
@@ -1216,31 +1233,47 @@
     </section>
 
     {{-- ═══ PROCESS ═══ --}}
-    <section class="process">
+    <section class="faq" id="faq" x-data="{ open: null }">
         <div class="section-head reveal">
-            <h2>Our Process</h2>
+            <h2>Frequently Asked Questions</h2>
             <div class="accent-line"></div>
         </div>
-        <div class="timeline">
-            <div class="timeline-step reveal">
-                <div class="step-dot"><span class="step-emoji">🌾</span></div>
-                <h3>Source</h3>
-                <p>Quality ingredients, locally when possible</p>
+        <div class="faq-list reveal">
+            <div class="faq-item" :class="{ 'open': open === 1 }">
+                <button class="faq-question" @click="open = open === 1 ? null : 1">How do I order?</button>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    <p>Send us an email at <a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a> with what you'd like and we'll work out timing and logistics together.</p>
+                </div></div>
             </div>
-            <div class="timeline-step reveal" style="transition-delay: 0.1s;">
-                <div class="step-dot"><span class="step-emoji">🤲</span></div>
-                <h3>Craft</h3>
-                <p>Mixed and shaped by hand with care</p>
+            <div class="faq-item" :class="{ 'open': open === 2 }">
+                <button class="faq-question" @click="open = open === 2 ? null : 2">How far in advance should I order?</button>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    <p>At least 2 days. Sourdough is a slow process. A basic loaf takes a minimum of 24 hours from feeding the starter to pulling it out of the oven. Every order is baked fresh, never in advance.</p>
+                </div></div>
             </div>
-            <div class="timeline-step reveal" style="transition-delay: 0.2s;">
-                <div class="step-dot"><span class="step-emoji">⏳</span></div>
-                <h3>Time</h3>
-                <p>Slow rise for deep flavor and texture</p>
+            <div class="faq-item" :class="{ 'open': open === 3 }">
+                <button class="faq-question" @click="open = open === 3 ? null : 3">Do you deliver?</button>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    <p>Yes! We offer both pickup and delivery. Delivery includes a small fee based on mileage.</p>
+                </div></div>
             </div>
-            <div class="timeline-step reveal" style="transition-delay: 0.3s;">
-                <div class="step-dot"><span class="step-emoji">🔥</span></div>
-                <h3>Bake</h3>
-                <p>Fresh from the oven to your table</p>
+            <div class="faq-item" :class="{ 'open': open === 4 }">
+                <button class="faq-question" @click="open = open === 4 ? null : 4">What area do you serve?</button>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    <p>We easily serve the Four Corners, FL area. We can also accommodate the greater Orlando area with a bit more lead time and coordination.</p>
+                </div></div>
+            </div>
+            <div class="faq-item" :class="{ 'open': open === 5 }">
+                <button class="faq-question" @click="open = open === 5 ? null : 5">Can I customize my order?</button>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    <p>We don't take fully custom orders, but we can make small adjustments. Don't like walnuts in your banana bread? We can swap in pecans. We can't accommodate items outside our menu, but we always love hearing suggestions for future offerings.</p>
+                </div></div>
+            </div>
+            <div class="faq-item" :class="{ 'open': open === 6 }">
+                <button class="faq-question" @click="open = open === 6 ? null : 6">Why sourdough?</button>
+                <div class="faq-answer"><div class="faq-answer-inner">
+                    <p>It started with wanting bread without processed ingredients and preservatives. Sourdough uses a natural fermentation process, which means simpler ingredients and better flavor. No shortcuts, no additives.</p>
+                </div></div>
             </div>
         </div>
     </section>
