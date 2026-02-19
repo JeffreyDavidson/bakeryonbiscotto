@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Design Concepts | Bakery on Biscotto</title>
+    <title>Menu Design | Bakery on Biscotto</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         :root {
@@ -18,1289 +18,812 @@
             --light: #FDF8F2;
             --white: #FFFFFF;
             --warm: #6B4C3B;
+            --parchment: #f0e0c8;
+            --ink: #2a1a0e;
         }
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', sans-serif;
             color: var(--dark);
-            background: var(--light);
+            background: var(--dark);
             -webkit-font-smoothing: antialiased;
-        }
-
-        /* ── Concept Selector ── */
-        .concept-nav {
-            position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-            z-index: 1000;
-            display: flex; gap: 4px;
-            padding: 6px 8px;
-            background: rgba(61,35,20,0.9);
-            backdrop-filter: blur(20px);
-            border-radius: 100px;
-            border: 1px solid rgba(212,165,116,0.2);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
-        .concept-nav a {
-            font-family: 'Playfair Display', serif;
-            font-size: 14px; font-weight: 500;
-            color: var(--cream); text-decoration: none;
-            padding: 10px 28px; border-radius: 100px;
-            transition: all 0.3s;
-        }
-        .concept-nav a:hover { background: rgba(212,165,116,0.2); }
-        .concept-nav a.active { background: var(--golden); color: var(--dark); }
-
-        .concept-label {
-            text-align: center;
-            padding: 80px 20px 0;
-        }
-        .concept-label h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            color: var(--dark);
-            margin-bottom: 8px;
-        }
-        .concept-label p {
-            color: var(--warm);
-            font-size: 16px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Shared section-head */
-        .section-head {
-            text-align: center;
-            margin-bottom: 48px;
-        }
-        .section-head h2 {
-            font-family: 'Dancing Script', cursive;
-            font-size: clamp(2.8rem, 6vw, 4rem);
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        .accent-line {
-            width: 120px;
-            height: 3px;
-            margin: 16px auto 0;
-            border-radius: 2px;
+            overflow-x: hidden;
         }
 
         /* ═══════════════════════════════════════
-           CONCEPT 1: "Chalkboard Bistro"
-           Dark bg, handwritten chalk aesthetic,
-           items laid out like a real cafe menu board
+           THE BAKER'S TABLE
+           Looking down at a flour-dusted surface.
+           A single parchment scroll with hand-drawn
+           illustrations, flowing typography, and
+           photos that break out of the frame.
         ═══════════════════════════════════════ */
-        .menu-chalk {
-            padding: 100px 20px;
+
+        .menu-scene {
             position: relative;
-            background: #1a1008;
-            background-image:
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            min-height: 100vh;
+            padding: 60px 20px 100px;
+            /* Wooden table texture */
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(212,165,116,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(139,94,60,0.08) 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 60%, rgba(193,127,78,0.06) 0%, transparent 40%),
+                linear-gradient(180deg, #2a1a0e 0%, #3D2314 5%, #33200f 50%, #2a1a0e 100%);
+            /* Wood grain effect */
+            background-size: 100%, 100%, 100%, 100%;
         }
-        /* Chalkboard border frame */
-        .menu-chalk::before {
-            content: '';
-            position: absolute;
-            inset: 20px;
-            border: 3px solid rgba(212,165,116,0.25);
-            border-radius: 4px;
+
+        /* Flour dust particles */
+        .flour-dust {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
             pointer-events: none;
-        }
-        .menu-chalk::after {
-            content: '';
-            position: absolute;
-            inset: 28px;
-            border: 1px solid rgba(212,165,116,0.1);
-            border-radius: 2px;
-            pointer-events: none;
-        }
-        .menu-chalk .section-head h2 {
-            color: var(--cream);
-            text-shadow: 0 0 40px rgba(212,165,116,0.3);
-        }
-        .menu-chalk .accent-line {
-            background: linear-gradient(90deg, transparent, var(--golden), transparent);
-        }
-        .chalk-subtitle {
-            text-align: center;
-            font-family: 'Dancing Script', cursive;
-            color: rgba(245,230,208,0.5);
-            font-size: 18px;
-            margin-top: -32px;
-            margin-bottom: 56px;
-            letter-spacing: 1px;
-        }
-        .chalk-tabs {
-            display: flex; justify-content: center;
-            gap: 12px; margin-bottom: 56px;
-        }
-        .chalk-tab {
-            font-family: 'Playfair Display', serif;
-            font-size: 15px; font-weight: 500;
-            padding: 12px 36px;
-            border: 1.5px solid rgba(212,165,116,0.3);
-            border-radius: 100px;
-            background: transparent;
-            color: var(--cream);
-            cursor: pointer;
-            transition: all 0.3s;
-            letter-spacing: 0.5px;
-        }
-        .chalk-tab:hover { border-color: var(--golden); background: rgba(212,165,116,0.08); }
-        .chalk-tab.active {
-            background: var(--golden);
-            color: var(--dark);
-            border-color: var(--golden);
-            box-shadow: 0 0 30px rgba(212,165,116,0.2);
-        }
-        .chalk-grid {
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-        }
-        .chalk-category-label {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.6rem;
-            color: var(--golden);
-            text-align: center;
-            margin-bottom: 32px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .chalk-category-label::before,
-        .chalk-category-label::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212,165,116,0.2), transparent);
-        }
-        .chalk-item {
-            display: flex;
-            align-items: baseline;
-            padding: 18px 0;
-            border-bottom: 1px dashed rgba(212,165,116,0.08);
-            transition: all 0.3s;
-        }
-        .chalk-item:hover {
-            padding-left: 12px;
-            background: rgba(212,165,116,0.03);
-            border-radius: 8px;
-        }
-        .chalk-item:last-child { border-bottom: none; }
-        .chalk-icon {
-            font-size: 28px;
-            margin-right: 20px;
-            width: 40px;
-            text-align: center;
-            filter: drop-shadow(0 0 8px rgba(0,0,0,0.3));
-        }
-        .chalk-item-info { flex: 1; }
-        .chalk-item-name {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--cream);
-            margin-bottom: 4px;
-        }
-        .chalk-item-desc {
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            color: rgba(245,230,208,0.4);
-            line-height: 1.5;
-        }
-        .chalk-dots {
-            flex: 1;
-            min-width: 40px;
-            margin: 0 16px;
-            border-bottom: 2px dotted rgba(212,165,116,0.15);
-            align-self: center;
-        }
-        .chalk-price {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--golden);
-            white-space: nowrap;
-            text-shadow: 0 0 20px rgba(212,165,116,0.2);
-        }
-        /* Featured / special item */
-        .chalk-featured {
-            margin: 24px 0 40px;
-            padding: 32px;
-            border: 2px solid rgba(212,165,116,0.2);
-            border-radius: 12px;
-            background: linear-gradient(135deg, rgba(212,165,116,0.06), rgba(193,127,78,0.03));
-            position: relative;
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 20px;
-            align-items: center;
-        }
-        .chalk-featured .chalk-icon { font-size: 48px; margin-right: 0; }
-        .chalk-featured .chalk-item-name { font-size: 1.8rem; }
-        .chalk-featured .chalk-item-desc { font-size: 15px; }
-        .chalk-featured-badge {
-            position: absolute;
-            top: -12px; right: 24px;
-            background: var(--golden);
-            color: var(--dark);
-            font-family: 'Playfair Display', serif;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            padding: 5px 20px;
-            border-radius: 100px;
-        }
-        .chalk-featured .chalk-price {
-            font-size: 1.6rem;
-            background: var(--golden);
-            color: var(--dark);
-            padding: 10px 24px;
-            border-radius: 100px;
-            font-weight: 700;
-        }
-        /* Photo callout */
-        .chalk-photo-row {
-            max-width: 900px;
-            margin: 48px auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-        .chalk-photo {
-            border-radius: 12px;
+            z-index: 1;
             overflow: hidden;
-            border: 2px solid rgba(212,165,116,0.15);
-            aspect-ratio: 4/3;
         }
-        .chalk-photo img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.6s;
+        .flour-particle {
+            position: absolute;
+            width: 3px; height: 3px;
+            background: rgba(245,230,208,0.15);
+            border-radius: 50%;
+            animation: flour-float 20s infinite linear;
         }
-        .chalk-photo:hover img { transform: scale(1.05); }
-
-        @media (max-width: 600px) {
-            .chalk-item { flex-wrap: wrap; gap: 4px; }
-            .chalk-dots { display: none; }
-            .chalk-price { margin-left: auto; }
-            .chalk-featured { grid-template-columns: 1fr; text-align: center; }
-            .chalk-featured .chalk-price { justify-self: center; }
-            .chalk-photo-row { grid-template-columns: 1fr; }
+        @keyframes flour-float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
         }
 
-
-        /* ═══════════════════════════════════════
-           CONCEPT 2: "Recipe Book"
-           Warm cream bg, open-book aesthetic,
-           two-column spread with torn-edge cards
-        ═══════════════════════════════════════ */
-        .menu-book {
-            padding: 100px 20px;
+        /* ── The Parchment Scroll ── */
+        .parchment {
             position: relative;
-            background: var(--cream);
+            z-index: 2;
+            max-width: 780px;
+            margin: 0 auto;
+            background: var(--parchment);
+            padding: 80px 60px 60px;
+            /* Aged paper edges */
+            box-shadow:
+                0 0 0 1px rgba(139,94,60,0.15),
+                4px 4px 0 rgba(139,94,60,0.08),
+                8px 8px 0 rgba(139,94,60,0.04),
+                0 20px 60px rgba(0,0,0,0.4),
+                inset 0 0 80px rgba(139,94,60,0.06);
+            /* Subtle paper texture */
             background-image:
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            background-color: var(--parchment);
         }
-        .menu-book .section-head h2 { color: var(--dark); }
-        .menu-book .accent-line {
-            background: linear-gradient(90deg, transparent, var(--accent), var(--golden), var(--accent), transparent);
+        /* Burned/aged edges */
+        .parchment::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow:
+                inset 8px 0 20px rgba(139,94,60,0.08),
+                inset -8px 0 20px rgba(139,94,60,0.08),
+                inset 0 8px 20px rgba(139,94,60,0.06),
+                inset 0 -8px 20px rgba(139,94,60,0.06);
+            pointer-events: none;
         }
-        .book-subtitle {
+        /* Coffee ring stain (subtle) */
+        .parchment::after {
+            content: '';
+            position: absolute;
+            top: 140px; right: -20px;
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            border: 3px solid rgba(139,94,60,0.05);
+            transform: rotate(-15deg);
+            pointer-events: none;
+        }
+
+        /* ── Title Area ── */
+        .menu-title {
             text-align: center;
-            font-family: 'Playfair Display', serif;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        .menu-title h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(3rem, 7vw, 4.5rem);
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.1;
+            letter-spacing: 1px;
+        }
+        .menu-title-flourish {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 20px 0 8px;
+        }
+        .flourish-line {
+            width: 80px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--brown), transparent);
+        }
+        .flourish-icon {
+            color: var(--accent);
+            font-size: 20px;
+            line-height: 1;
+        }
+        .menu-epigraph {
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
             font-style: italic;
-            color: var(--warm);
             font-size: 17px;
-            margin-top: -32px;
-            margin-bottom: 56px;
+            color: var(--warm);
+            margin-bottom: 48px;
+            letter-spacing: 0.3px;
         }
-        .book-tabs {
-            display: flex; justify-content: center;
-            gap: 0; margin-bottom: 56px;
+
+        /* ── Category Tabs ── */
+        .scroll-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 48px;
+            position: relative;
         }
-        .book-tab {
-            font-family: 'Playfair Display', serif;
-            font-size: 15px; font-weight: 500;
-            padding: 14px 40px;
+        .scroll-tabs::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 10%; right: 10%;
+            height: 1px;
+            background: rgba(139,94,60,0.15);
+        }
+        .scroll-tab {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            font-weight: 500;
+            padding: 12px 32px;
             border: none;
             background: transparent;
             color: var(--brown);
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
-        .book-tab::after {
+        .scroll-tab::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 50%; transform: translateX(-50%);
-            width: 0; height: 2px;
+            bottom: -1px; left: 20%; right: 20%;
+            height: 2px;
             background: var(--accent);
-            transition: width 0.3s;
+            transform: scaleX(0);
+            transition: transform 0.3s;
         }
-        .book-tab:hover::after { width: 60%; }
-        .book-tab.active {
-            color: var(--dark);
-            font-weight: 700;
+        .scroll-tab:hover { color: var(--dark); }
+        .scroll-tab.active {
+            color: var(--ink);
+            font-weight: 600;
         }
-        .book-tab.active::after { width: 80%; background: var(--dark); }
-        .book-spread {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1px 1fr;
-            gap: 0;
-            position: relative;
-        }
-        .book-spine {
-            background: linear-gradient(180deg,
-                transparent,
-                rgba(139,94,60,0.15) 20%,
-                rgba(139,94,60,0.2) 50%,
-                rgba(139,94,60,0.15) 80%,
-                transparent
-            );
-            width: 1px;
-            position: relative;
-        }
-        .book-spine::before {
-            content: '';
-            position: absolute;
-            top: 0; bottom: 0; left: -6px; right: -6px;
-            background: linear-gradient(90deg,
-                rgba(61,35,20,0.04),
-                rgba(61,35,20,0.08),
-                rgba(61,35,20,0.04)
-            );
-        }
-        .book-page {
-            padding: 20px 40px;
-        }
-        .book-page-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.4rem;
-            color: var(--accent);
-            text-align: center;
-            margin-bottom: 32px;
-            position: relative;
-        }
-        .book-page-title::after {
-            content: '❧';
-            display: block;
-            font-size: 18px;
-            color: var(--golden);
-            margin-top: 8px;
+        .scroll-tab.active::after { transform: scaleX(1); }
+
+        /* ── Hand-drawn wheat divider (SVG) ── */
+        .wheat-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 40px 0 36px;
             opacity: 0.5;
         }
-        .book-item {
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(139,94,60,0.1);
-            transition: all 0.3s;
+        .wheat-divider .wd-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(139,94,60,0.25), transparent);
+        }
+
+        /* ── Menu Item ── */
+        .menu-item {
+            padding: 24px 0;
             position: relative;
+            transition: all 0.3s;
         }
-        .book-item:last-child { border-bottom: none; }
-        .book-item:hover {
-            padding-left: 8px;
+        .menu-item + .menu-item {
+            border-top: 1px solid rgba(139,94,60,0.08);
         }
-        .book-item-header {
+        .menu-item:hover {
+            padding-left: 6px;
+        }
+        .menu-item-row {
             display: flex;
             align-items: baseline;
-            margin-bottom: 6px;
+            gap: 8px;
         }
-        .book-item-icon {
-            font-size: 20px;
-            margin-right: 12px;
-        }
-        .book-item-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        .book-item-dots {
-            flex: 1;
-            margin: 0 12px;
-            border-bottom: 1px dotted rgba(139,94,60,0.2);
-            min-width: 20px;
-        }
-        .book-item-price {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-        .book-item-desc {
-            font-family: 'Inter', sans-serif;
-            font-size: 13.5px;
-            color: var(--warm);
-            line-height: 1.6;
-            padding-left: 32px;
-            font-style: italic;
-        }
-        /* Featured photo items */
-        .book-featured-card {
-            margin: 24px 0;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid rgba(139,94,60,0.15);
-            background: var(--white);
-            box-shadow: 0 4px 20px rgba(61,35,20,0.06);
-            transition: all 0.4s;
-        }
-        .book-featured-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(61,35,20,0.1);
-        }
-        .book-featured-img {
-            height: 180px;
-            overflow: hidden;
-        }
-        .book-featured-img img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.6s;
-        }
-        .book-featured-card:hover img { transform: scale(1.05); }
-        .book-featured-body {
-            padding: 20px;
-        }
-        .book-featured-body h3 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 8px;
-        }
-        .book-featured-body .desc {
-            font-size: 14px;
-            color: var(--warm);
-            line-height: 1.5;
-            margin-bottom: 12px;
-        }
-        .book-featured-body .price-tag {
-            display: inline-block;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--accent);
-            background: rgba(193,127,78,0.08);
-            padding: 6px 20px;
-            border-radius: 100px;
-            border: 1px solid rgba(193,127,78,0.15);
-        }
-        /* Mini loaves special */
-        .book-special {
-            margin: 32px 0 0;
-            padding: 24px;
-            background: linear-gradient(135deg, var(--dark), #4a2a18);
-            border-radius: 8px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .book-special::before {
-            content: '';
-            position: absolute; inset: 0;
-            background: radial-gradient(circle at 50% 0%, rgba(212,165,116,0.15), transparent 70%);
-        }
-        .book-special h3 {
+        .menu-item-name {
             font-family: 'Dancing Script', cursive;
             font-size: 1.6rem;
-            color: var(--cream);
-            margin-bottom: 8px;
-            position: relative;
-        }
-        .book-special p {
-            font-size: 14px;
-            color: rgba(245,230,208,0.5);
-            margin-bottom: 16px;
-            position: relative;
-        }
-        .book-special .price-badge {
-            display: inline-block;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
             font-weight: 700;
-            color: var(--dark);
-            background: var(--golden);
-            padding: 10px 32px;
-            border-radius: 100px;
+            color: var(--ink);
+            white-space: nowrap;
+        }
+        .menu-item-dots {
+            flex: 1;
+            min-width: 20px;
+            border-bottom: 2px dotted rgba(139,94,60,0.15);
+            margin: 0 4px;
+            align-self: baseline;
             position: relative;
-            box-shadow: 0 4px 20px rgba(212,165,116,0.4);
+            top: -4px;
+        }
+        .menu-item-price {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+        .menu-item-desc {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 15px;
+            color: var(--warm);
+            line-height: 1.6;
+            margin-top: 6px;
+            padding-right: 60px;
         }
 
-        @media (max-width: 768px) {
-            .book-spread { grid-template-columns: 1fr; }
-            .book-spine { display: none; }
-            .book-page { padding: 20px 0; }
-        }
-
-
-        /* ═══════════════════════════════════════
-           CONCEPT 3: "Marketplace"
-           Rich wood-dark bg, product card gallery,
-           horizontal scroll categories, floating prices
-        ═══════════════════════════════════════ */
-        .menu-market {
-            padding: 100px 20px;
+        /* ── Signature Item (breaks out of parchment) ── */
+        .signature-item {
             position: relative;
-            overflow: hidden;
-            background: linear-gradient(180deg, #241508 0%, #1a1008 50%, #241508 100%);
-        }
-        .menu-market::before {
-            content: '';
-            position: absolute; inset: 0;
-            background:
-                radial-gradient(ellipse at 20% 20%, rgba(212,165,116,0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(193,127,78,0.06) 0%, transparent 50%);
-            pointer-events: none;
-        }
-        .menu-market .section-head h2 {
-            color: var(--cream);
-            text-shadow: 0 2px 30px rgba(212,165,116,0.2);
-        }
-        .menu-market .accent-line {
-            background: linear-gradient(90deg, transparent, var(--golden), transparent);
-        }
-        .market-subtitle {
-            text-align: center;
-            font-family: 'Dancing Script', cursive;
-            color: rgba(245,230,208,0.4);
-            font-size: 18px;
-            margin-top: -32px;
-            margin-bottom: 56px;
-        }
-        .market-tabs {
-            display: flex; justify-content: center;
-            gap: 8px; margin-bottom: 56px;
-        }
-        .market-tab {
-            font-family: 'Playfair Display', serif;
-            font-size: 14px; font-weight: 500;
-            padding: 12px 32px;
-            border: none;
-            border-radius: 100px;
-            background: rgba(245,230,208,0.06);
-            color: rgba(245,230,208,0.6);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .market-tab:hover { background: rgba(245,230,208,0.1); color: var(--cream); }
-        .market-tab.active {
-            background: linear-gradient(135deg, var(--golden), var(--accent));
-            color: var(--dark);
-            font-weight: 700;
-            box-shadow: 0 4px 20px rgba(212,165,116,0.3);
-        }
-        .market-grid {
-            max-width: 1100px;
-            margin: 0 auto;
+            margin: 32px -30px 40px;
+            padding: 0;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
-        }
-        .market-card {
-            position: relative;
-            border-radius: 16px;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border-radius: 4px;
             overflow: hidden;
-            background: rgba(245,230,208,0.04);
-            border: 1px solid rgba(212,165,116,0.1);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: default;
-        }
-        .market-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(212,165,116,0.3);
             box-shadow:
-                0 20px 60px rgba(0,0,0,0.3),
-                0 0 40px rgba(212,165,116,0.06);
+                0 4px 20px rgba(0,0,0,0.08),
+                0 0 0 1px rgba(139,94,60,0.1);
         }
-        .market-card-visual {
-            height: 200px;
-            position: relative;
+        .signature-photo {
+            height: 260px;
             overflow: hidden;
-            background:
-                radial-gradient(circle at 30% 50%, rgba(212,165,116,0.1) 0%, transparent 60%),
-                rgba(245,230,208,0.04);
+            position: relative;
         }
-        .market-card-visual.has-photo img {
+        .signature-photo img {
             width: 100%; height: 100%; object-fit: cover;
             transition: transform 0.6s;
         }
-        .market-card:hover .market-card-visual img { transform: scale(1.08); }
-        .market-card-visual .emoji-display {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 64px;
-            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+        .signature-item:hover .signature-photo img {
+            transform: scale(1.05);
         }
-        /* Floating price badge */
-        .market-price-badge {
-            position: absolute;
-            bottom: -16px; right: 20px;
-            background: var(--golden);
-            color: var(--dark);
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            padding: 8px 24px;
-            border-radius: 100px;
-            box-shadow: 0 4px 16px rgba(212,165,116,0.4);
-            z-index: 2;
+        .signature-body {
+            background: var(--dark);
+            padding: 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
         }
-        .market-card-content {
-            padding: 28px 24px 24px;
+        .signature-body::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(212,165,116,0.08), transparent 60%);
         }
-        .market-card-content h3 {
+        .signature-label {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--golden);
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .signature-body h3 {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--cream);
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .signature-body .desc {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 15px;
+            color: rgba(245,230,208,0.55);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .signature-price {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--golden);
+            position: relative;
+        }
+
+        /* ── Photo Break (product photo that peeks out) ── */
+        .photo-break {
+            margin: 36px -30px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 3px;
+            height: 200px;
+            box-shadow:
+                0 4px 20px rgba(0,0,0,0.08),
+                0 0 0 1px rgba(139,94,60,0.1);
+        }
+        .photo-break img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.6s;
+        }
+        .photo-break:hover img { transform: scale(1.04); }
+        .photo-break .photo-caption {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 40px 24px 16px;
+            background: linear-gradient(transparent, rgba(42,26,14,0.7));
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 15px;
+            color: var(--cream);
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Bundle Callout ── */
+        .bundle-callout {
+            margin: 40px 0 8px;
+            padding: 32px;
+            text-align: center;
+            position: relative;
+            border: 2px solid var(--golden);
+            border-radius: 2px;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(212,165,116,0.06), transparent 70%),
+                var(--parchment);
+        }
+        /* Corner ornaments */
+        .bundle-callout::before,
+        .bundle-callout::after {
+            content: '✦';
+            position: absolute;
+            font-size: 10px;
+            color: var(--golden);
+        }
+        .bundle-callout::before { top: 8px; left: 12px; }
+        .bundle-callout::after { bottom: 8px; right: 12px; }
+        .bundle-corners::before,
+        .bundle-corners::after {
+            content: '✦';
+            position: absolute;
+            font-size: 10px;
+            color: var(--golden);
+        }
+        .bundle-corners::before { top: 8px; right: 12px; }
+        .bundle-corners::after { bottom: 8px; left: 12px; }
+        .bundle-callout h3 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--ink);
             margin-bottom: 8px;
         }
-        .market-card-content p {
-            font-size: 14px;
-            color: rgba(245,230,208,0.4);
-            line-height: 1.6;
+        .bundle-callout .desc {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 16px;
+            color: var(--warm);
+            margin-bottom: 20px;
         }
-        /* Hero/featured card */
-        .market-card.hero-card {
-            grid-column: span 2;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            background: linear-gradient(135deg, rgba(212,165,116,0.08), rgba(193,127,78,0.04));
-            border-color: rgba(212,165,116,0.2);
-        }
-        .market-card.hero-card .market-card-visual { height: 100%; min-height: 280px; }
-        .market-card.hero-card .market-card-content {
-            display: flex; flex-direction: column; justify-content: center;
-            padding: 40px;
-        }
-        .market-card.hero-card h3 { font-size: 2rem; }
-        .market-card.hero-card p { font-size: 15px; }
-        .market-card.hero-card .market-price-badge {
-            position: static;
+        .bundle-price {
             display: inline-block;
-            margin-top: 20px;
-            width: fit-content;
-            font-size: 1.3rem;
-            padding: 12px 32px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            position: relative;
         }
-        /* Bundle card */
-        .market-card.bundle-card {
-            grid-column: span 2;
-            display: grid;
-            grid-template-columns: 200px 1fr;
-            background: linear-gradient(135deg, var(--dark), #3d2314);
+        .bundle-price::before,
+        .bundle-price::after {
+            content: '~';
+            margin: 0 12px;
+            color: var(--golden);
+            font-size: 1.5rem;
+        }
+
+        /* ── Decorative Wheat SVGs ── */
+        .deco-wheat {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.06;
+            pointer-events: none;
+        }
+        .deco-wheat-left {
+            top: 200px; left: -80px;
+            transform: rotate(-20deg);
+        }
+        .deco-wheat-right {
+            top: 600px; right: -60px;
+            transform: rotate(15deg) scaleX(-1);
+        }
+        .deco-wheat-bottom {
+            bottom: 100px; left: 50%;
+            transform: translateX(-50%) rotate(0deg);
+        }
+
+        /* ── Floating elements outside parchment ── */
+        .table-objects {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        /* Scattered flour on the table */
+        .flour-smudge {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(245,230,208,0.04), transparent 70%);
+        }
+
+        /* ── Bottom seal / stamp ── */
+        .menu-seal {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(139,94,60,0.1);
+        }
+        .seal-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px; height: 100px;
             border: 2px solid var(--golden);
+            border-radius: 50%;
+            position: relative;
+            margin-bottom: 16px;
         }
-        .market-card.bundle-card .market-card-visual {
-            height: 100%;
-            display: flex; align-items: center; justify-content: center;
+        .seal-circle::before {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border: 1px solid rgba(212,165,116,0.3);
+            border-radius: 50%;
         }
-        .market-card.bundle-card .market-card-content {
-            display: flex; flex-direction: column; justify-content: center;
+        .seal-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            text-align: center;
+            line-height: 1.2;
         }
-        .market-card.bundle-card .market-price-badge {
-            position: static;
-            display: inline-block;
-            margin-top: 16px;
-            width: fit-content;
-            font-size: 1.3rem;
-            padding: 12px 32px;
-            box-shadow: 0 4px 20px rgba(212,165,116,0.5);
+        .seal-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 14px;
+            color: var(--warm);
+            letter-spacing: 0.5px;
         }
 
+        /* ── Handwritten margin notes ── */
+        .margin-note {
+            position: absolute;
+            font-family: 'Dancing Script', cursive;
+            font-size: 13px;
+            color: rgba(193,127,78,0.25);
+            transform: rotate(-5deg);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .margin-note.right {
+            right: -10px;
+            transform: rotate(3deg);
+        }
+
+        /* ── Responsive ── */
         @media (max-width: 768px) {
-            .market-grid { grid-template-columns: 1fr; }
-            .market-card.hero-card,
-            .market-card.bundle-card { grid-column: span 1; grid-template-columns: 1fr; }
-            .market-card.hero-card .market-card-visual { min-height: 200px; }
-            .market-card.bundle-card .market-card-visual { height: 200px; }
+            .parchment {
+                padding: 60px 32px 48px;
+                margin: 0 -10px;
+            }
+            .signature-item {
+                grid-template-columns: 1fr;
+                margin: 24px -16px 32px;
+            }
+            .signature-photo { height: 200px; }
+            .photo-break { margin: 24px -16px; height: 160px; }
+            .menu-item-desc { padding-right: 0; }
+            .margin-note { display: none; }
+            .bundle-callout { padding: 24px 20px; }
+        }
+        @media (max-width: 480px) {
+            .parchment { padding: 48px 24px 40px; }
+            .menu-item-name { font-size: 1.3rem; }
+            .menu-item-row { flex-wrap: wrap; }
+            .menu-item-dots { display: none; }
+            .menu-item-price { margin-left: auto; }
+            .scroll-tab { padding: 10px 20px; font-size: 15px; }
         }
 
-        /* ── Dividers ── */
-        .concept-divider {
-            display: flex; align-items: center; justify-content: center;
-            gap: 20px;
-            padding: 60px 20px;
-            background: var(--light);
+        /* ── Reveal animation ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
-        .concept-divider span {
-            flex: 1; max-width: 200px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(139,94,60,0.2), transparent);
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
-        .concept-divider svg { opacity: 0.3; }
     </style>
 </head>
-<body x-data="{ concept: 'chalk' }">
+<body>
 
-    {{-- Concept Nav --}}
-    <nav class="concept-nav">
-        <a href="#concept-1" :class="{ 'active': concept === 'chalk' }" @click.prevent="concept = 'chalk'; document.getElementById('concept-1').scrollIntoView({behavior:'smooth'})">Chalkboard</a>
-        <a href="#concept-2" :class="{ 'active': concept === 'book' }" @click.prevent="concept = 'book'; document.getElementById('concept-2').scrollIntoView({behavior:'smooth'})">Recipe Book</a>
-        <a href="#concept-3" :class="{ 'active': concept === 'market' }" @click.prevent="concept = 'market'; document.getElementById('concept-3').scrollIntoView({behavior:'smooth'})">Marketplace</a>
-    </nav>
+<div class="menu-scene">
 
-    {{-- ═══════════════════════════════════════
-         CONCEPT 1: Chalkboard Bistro
-    ═══════════════════════════════════════ --}}
-    <div id="concept-1">
-        <div class="concept-label">
-            <h2>Concept 1: Chalkboard Bistro</h2>
-            <p>Classic cafe menu board feel. Dark background, handwritten typography, dotted price leaders. Clean, elegant, and easy to scan.</p>
-        </div>
+    {{-- Flour dust particles --}}
+    <div class="flour-dust">
+        @for ($i = 0; $i < 30; $i++)
+        <div class="flour-particle" style="
+            left: {{ rand(0, 100) }}%;
+            animation-delay: {{ $i * 0.7 }}s;
+            animation-duration: {{ rand(15, 30) }}s;
+            width: {{ rand(2, 5) }}px;
+            height: {{ rand(2, 5) }}px;
+            opacity: {{ rand(5, 20) / 100 }};
+        "></div>
+        @endfor
     </div>
 
-    <section class="menu-chalk" x-data="{ tab: 'sourdough' }">
-        <div class="section-head">
+    {{-- Table objects (flour smudges) --}}
+    <div class="table-objects">
+        <div class="flour-smudge" style="top: 15%; left: 5%; width: 200px; height: 150px;"></div>
+        <div class="flour-smudge" style="top: 45%; right: 3%; width: 180px; height: 180px;"></div>
+        <div class="flour-smudge" style="bottom: 20%; left: 8%; width: 160px; height: 120px;"></div>
+    </div>
+
+    {{-- Decorative wheat --}}
+    <svg class="deco-wheat deco-wheat-left" width="200" height="400" viewBox="0 0 200 400" fill="none">
+        <path d="M100 400 C100 400 100 200 100 0" stroke="var(--golden)" stroke-width="2"/>
+        <ellipse cx="85" cy="60" rx="25" ry="40" fill="var(--golden)" transform="rotate(-30 85 60)"/>
+        <ellipse cx="115" cy="100" rx="25" ry="40" fill="var(--golden)" transform="rotate(30 115 100)"/>
+        <ellipse cx="85" cy="140" rx="22" ry="35" fill="var(--golden)" transform="rotate(-25 85 140)"/>
+        <ellipse cx="115" cy="180" rx="22" ry="35" fill="var(--golden)" transform="rotate(25 115 180)"/>
+        <ellipse cx="90" cy="220" rx="18" ry="28" fill="var(--golden)" transform="rotate(-20 90 220)"/>
+        <ellipse cx="110" cy="260" rx="18" ry="28" fill="var(--golden)" transform="rotate(20 110 260)"/>
+    </svg>
+    <svg class="deco-wheat deco-wheat-right" width="200" height="400" viewBox="0 0 200 400" fill="none">
+        <path d="M100 400 C100 400 100 200 100 0" stroke="var(--golden)" stroke-width="2"/>
+        <ellipse cx="85" cy="60" rx="25" ry="40" fill="var(--golden)" transform="rotate(-30 85 60)"/>
+        <ellipse cx="115" cy="100" rx="25" ry="40" fill="var(--golden)" transform="rotate(30 115 100)"/>
+        <ellipse cx="85" cy="140" rx="22" ry="35" fill="var(--golden)" transform="rotate(-25 85 140)"/>
+        <ellipse cx="115" cy="180" rx="22" ry="35" fill="var(--golden)" transform="rotate(25 115 180)"/>
+        <ellipse cx="90" cy="220" rx="18" ry="28" fill="var(--golden)" transform="rotate(-20 90 220)"/>
+    </svg>
+
+    {{-- ═══ THE PARCHMENT ═══ --}}
+    <div class="parchment" x-data="{ tab: 'sourdough' }">
+
+        {{-- Margin notes --}}
+        <span class="margin-note" style="top: 320px; left: -8px;">our favorite ♡</span>
+        <span class="margin-note right" style="top: 700px;">so good!</span>
+        <span class="margin-note" style="top: 1100px; left: -4px;">try this one →</span>
+
+        {{-- Title --}}
+        <div class="menu-title reveal">
             <h2>Our Menu</h2>
-            <div class="accent-line"></div>
-        </div>
-        <p class="chalk-subtitle">Everything baked fresh to order. Never frozen, never rushed.</p>
-
-        <div class="chalk-tabs">
-            <button class="chalk-tab" :class="{ 'active': tab === 'sourdough' }" @click="tab = 'sourdough'">Sourdough Loaves</button>
-            <button class="chalk-tab" :class="{ 'active': tab === 'other' }" @click="tab = 'other'">Other Breads</button>
-        </div>
-
-        <div x-show="tab === 'sourdough'" x-transition.opacity>
-            {{-- Photo row --}}
-            <div class="chalk-photo-row">
-                <div class="chalk-photo"><img src="/images/product-sourdough-boule.jpg" alt="Sourdough Boule"></div>
-                <div class="chalk-photo"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
-            </div>
-
-            <div class="chalk-grid">
-                {{-- Featured: Regular Loaf --}}
-                <div class="chalk-featured">
-                    <span class="chalk-featured-badge">Signature</span>
-                    <div class="chalk-icon">🍞</div>
-                    <div class="chalk-item-info">
-                        <div class="chalk-item-name">Regular Loaf</div>
-                        <div class="chalk-item-desc">Our signature. Golden crust, airy crumb, perfectly tangy. The one that started it all.</div>
-                    </div>
-                    <div class="chalk-price">$10</div>
-                </div>
-
-                {{-- List items --}}
-                <div class="chalk-item">
-                    <span class="chalk-icon">🧀</span>
-                    <div class="chalk-item-info">
-                        <div class="chalk-item-name">Cheddar</div>
-                        <div class="chalk-item-desc">Sharp cheddar folded through tangy sourdough. Melty pockets in every slice.</div>
-                    </div>
-                    <span class="chalk-dots"></span>
-                    <span class="chalk-price">$12</span>
-                </div>
-                <div class="chalk-item">
-                    <span class="chalk-icon">🧄</span>
-                    <div class="chalk-item-info">
-                        <div class="chalk-item-name">Mozzarella and Garlic</div>
-                        <div class="chalk-item-desc">Fresh mozzarella and roasted garlic. Your kitchen will smell incredible.</div>
-                    </div>
-                    <span class="chalk-dots"></span>
-                    <span class="chalk-price">$14</span>
-                </div>
-                <div class="chalk-item">
-                    <span class="chalk-icon">🍫</span>
-                    <div class="chalk-item-info">
-                        <div class="chalk-item-name">Chocolate Chip</div>
-                        <div class="chalk-item-desc">Rich chocolate meets tangy sourdough. Sweet and sour perfection.</div>
-                    </div>
-                    <span class="chalk-dots"></span>
-                    <span class="chalk-price">$12</span>
-                </div>
-                <div class="chalk-item">
-                    <span class="chalk-icon">✨</span>
-                    <div class="chalk-item-info">
-                        <div class="chalk-item-name">Cinnamon and Sugar</div>
-                        <div class="chalk-item-desc">Warm cinnamon swirls with sweet sugar. Weekend mornings were made for this.</div>
-                    </div>
-                    <span class="chalk-dots"></span>
-                    <span class="chalk-price">$14</span>
-                </div>
-                <div class="chalk-item">
-                    <span class="chalk-icon">🍫</span>
-                    <div class="chalk-item-info">
-                        <div class="chalk-item-name">Chocolate, Chocolate Chip</div>
-                        <div class="chalk-item-desc">Cocoa in the dough, chips throughout. For the true chocolate lovers.</div>
-                    </div>
-                    <span class="chalk-dots"></span>
-                    <span class="chalk-price">$12</span>
-                </div>
-                <div class="chalk-item">
-                    <span class="chalk-icon">🍫</span>
-                    <div class="chalk-item-info">
-                        <div class="chalk-item-name">Chocolate Almond, Chocolate Chip</div>
-                        <div class="chalk-item-desc">Toasted almonds join the chocolate celebration. Crunchy, rich, and indulgent.</div>
-                    </div>
-                    <span class="chalk-dots"></span>
-                    <span class="chalk-price">$15</span>
-                </div>
-
-                {{-- Mini loaves special --}}
-                <div class="chalk-featured" style="margin-top: 40px;">
-                    <span class="chalk-featured-badge">Best Value</span>
-                    <div class="chalk-icon">🎁</div>
-                    <div class="chalk-item-info">
-                        <div class="chalk-item-name">4 Pack of Mini Loaves</div>
-                        <div class="chalk-item-desc">Can't choose? Don't. Pick any 4 flavors in perfectly portioned mini loaves.</div>
-                    </div>
-                    <div class="chalk-featured .chalk-price" style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; background: var(--golden); color: var(--dark); padding: 10px 24px; border-radius: 100px;">$25</div>
-                </div>
+            <div class="menu-title-flourish">
+                <span class="flourish-line"></span>
+                <span class="flourish-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2C12 2 13 8 12 12C11 8 12 2 12 2Z" fill="currentColor" opacity="0.6"/>
+                        <path d="M12 4C12 4 16 8 15 13C13.5 9 12 4 12 4Z" fill="currentColor" opacity="0.4"/>
+                        <path d="M12 4C12 4 8 8 9 13C10.5 9 12 4 12 4Z" fill="currentColor" opacity="0.4"/>
+                        <line x1="12" y1="12" x2="12" y2="22" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                    </svg>
+                </span>
+                <span class="flourish-line"></span>
             </div>
         </div>
+        <p class="menu-epigraph reveal">Everything baked fresh to order. Never frozen, never rushed.</p>
 
-        <div x-show="tab === 'other'" x-transition.opacity>
-            <div class="chalk-grid">
-                <div class="chalk-item">
-                    <span class="chalk-icon">🍯</span>
-                    <div class="chalk-item-info">
-                        <div class="chalk-item-name">Sourdough Honey Wheat Sandwich Bread</div>
-                        <div class="chalk-item-desc">Soft, wholesome, and perfect for sandwiches. Honey sweetness with a sourdough twist.</div>
-                    </div>
-                    <span class="chalk-dots"></span>
-                    <span class="chalk-price">$10</span>
+        {{-- Tabs --}}
+        <div class="scroll-tabs reveal">
+            <button class="scroll-tab" :class="{ 'active': tab === 'sourdough' }" @click="tab = 'sourdough'">Sourdough Loaves</button>
+            <button class="scroll-tab" :class="{ 'active': tab === 'other' }" @click="tab = 'other'">Other Breads</button>
+        </div>
+
+        {{-- ═══ SOURDOUGH TAB ═══ --}}
+        <div x-show="tab === 'sourdough'" x-transition.opacity.duration.400ms>
+
+            {{-- Signature: Regular Loaf with photo --}}
+            <div class="signature-item reveal">
+                <div class="signature-photo">
+                    <img src="/images/product-sourdough-boule.jpg" alt="Regular Sourdough Loaf">
                 </div>
-                <div class="chalk-item">
-                    <span class="chalk-icon">🫓</span>
-                    <div class="chalk-item-info">
-                        <div class="chalk-item-name">Sourdough English Muffins</div>
-                        <div class="chalk-item-desc">Those perfect nooks and crannies. Griddle-cooked and ready for toasting.</div>
-                    </div>
-                    <span class="chalk-dots"></span>
-                    <span class="chalk-price">6ct · $8 &nbsp;|&nbsp; 12ct · $15</span>
-                </div>
-                <div class="chalk-item">
-                    <span class="chalk-icon">🍌</span>
-                    <div class="chalk-item-info">
-                        <div class="chalk-item-name">Banana Bread</div>
-                        <div class="chalk-item-desc">Moist, sweet, perfectly spiced. Made with bananas so ripe they're basically pudding.</div>
-                    </div>
-                    <span class="chalk-dots"></span>
-                    <span class="chalk-price">$12</span>
-                </div>
-                <div class="chalk-item">
-                    <span class="chalk-icon">🍌</span>
-                    <div class="chalk-item-info">
-                        <div class="chalk-item-name">Banana Walnut Bread</div>
-                        <div class="chalk-item-desc">Our classic banana bread loaded with crunchy toasted walnuts.</div>
-                    </div>
-                    <span class="chalk-dots"></span>
-                    <span class="chalk-price">$15</span>
-                </div>
-                <div class="chalk-item">
-                    <span class="chalk-icon">🎃</span>
-                    <div class="chalk-item-info">
-                        <div class="chalk-item-name">Pumpkin Chocolate Chip Bread</div>
-                        <div class="chalk-item-desc">Warm pumpkin spice studded with chocolate chips. Seasonal magic.</div>
-                    </div>
-                    <span class="chalk-dots"></span>
-                    <span class="chalk-price">$12</span>
-                </div>
-                <div class="chalk-item">
-                    <span class="chalk-icon">🎃</span>
-                    <div class="chalk-item-info">
-                        <div class="chalk-item-name">Pumpkin Almond Chocolate Chip Bread</div>
-                        <div class="chalk-item-desc">Pumpkin spice, toasted almonds, and chocolate chips. The ultimate fall loaf.</div>
-                    </div>
-                    <span class="chalk-dots"></span>
-                    <span class="chalk-price">$15</span>
+                <div class="signature-body">
+                    <span class="signature-label">✦ Our Signature</span>
+                    <h3>Regular Loaf</h3>
+                    <p class="desc">Golden crust, airy crumb, perfectly tangy. The one that started it all.</p>
+                    <span class="signature-price">$10</span>
                 </div>
             </div>
-        </div>
-    </section>
 
-
-    {{-- Divider --}}
-    <div class="concept-divider">
-        <span></span>
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 2C16 2 17.5 10 16 16C14.5 10 16 2 16 2Z" fill="var(--golden)"/><path d="M16 6C16 6 21 11 19.5 17C18 12 16 6 16 6Z" fill="var(--golden)"/><path d="M16 6C16 6 11 11 12.5 17C14 12 16 6 16 6Z" fill="var(--golden)"/></svg>
-        <span></span>
-    </div>
-
-
-    {{-- ═══════════════════════════════════════
-         CONCEPT 2: Recipe Book
-    ═══════════════════════════════════════ --}}
-    <div id="concept-2">
-        <div class="concept-label">
-            <h2>Concept 2: Recipe Book</h2>
-            <p>Open cookbook spread with a spine down the middle. Warm, inviting, feels like flipping through a family recipe collection. Photo cards for hero items.</p>
-        </div>
-    </div>
-
-    <section class="menu-book" x-data="{ tab: 'sourdough' }">
-        <div class="section-head">
-            <h2>Our Menu</h2>
-            <div class="accent-line"></div>
-        </div>
-        <p class="book-subtitle">Everything baked fresh to order. Never frozen, never rushed.</p>
-
-        <div class="book-tabs">
-            <button class="book-tab" :class="{ 'active': tab === 'sourdough' }" @click="tab = 'sourdough'">Sourdough Loaves</button>
-            <button class="book-tab" :class="{ 'active': tab === 'other' }" @click="tab = 'other'">Other Breads</button>
-        </div>
-
-        <div x-show="tab === 'sourdough'" x-transition.opacity>
-            <div class="book-spread">
-                {{-- Left page --}}
-                <div class="book-page">
-                    <div class="book-page-title">Our Favorites</div>
-
-                    <div class="book-featured-card">
-                        <div class="book-featured-img"><img src="/images/product-sourdough-boule.jpg" alt="Regular Sourdough"></div>
-                        <div class="book-featured-body">
-                            <h3>Regular Loaf</h3>
-                            <p class="desc">Our signature. Golden crust, airy crumb, perfectly tangy. The one that started it all.</p>
-                            <span class="price-tag">$10</span>
-                        </div>
-                    </div>
-
-                    <div class="book-item">
-                        <div class="book-item-header">
-                            <span class="book-item-icon">🧀</span>
-                            <span class="book-item-name">Cheddar</span>
-                            <span class="book-item-dots"></span>
-                            <span class="book-item-price">$12</span>
-                        </div>
-                        <p class="book-item-desc">Sharp cheddar folded through tangy sourdough. Melty pockets in every slice.</p>
-                    </div>
-                    <div class="book-item">
-                        <div class="book-item-header">
-                            <span class="book-item-icon">🧄</span>
-                            <span class="book-item-name">Mozzarella and Garlic</span>
-                            <span class="book-item-dots"></span>
-                            <span class="book-item-price">$14</span>
-                        </div>
-                        <p class="book-item-desc">Fresh mozzarella and roasted garlic. Your kitchen will smell incredible.</p>
-                    </div>
-                    <div class="book-item">
-                        <div class="book-item-header">
-                            <span class="book-item-icon">🍫</span>
-                            <span class="book-item-name">Chocolate Chip</span>
-                            <span class="book-item-dots"></span>
-                            <span class="book-item-price">$12</span>
-                        </div>
-                        <p class="book-item-desc">Rich chocolate meets tangy sourdough. Sweet and sour perfection.</p>
-                    </div>
+            {{-- Menu items --}}
+            <div class="menu-item reveal">
+                <div class="menu-item-row">
+                    <span class="menu-item-name">Cheddar</span>
+                    <span class="menu-item-dots"></span>
+                    <span class="menu-item-price">$12</span>
                 </div>
+                <p class="menu-item-desc">Sharp cheddar folded through tangy sourdough. Melty pockets in every slice.</p>
+            </div>
 
-                {{-- Spine --}}
-                <div class="book-spine"></div>
-
-                {{-- Right page --}}
-                <div class="book-page">
-                    <div class="book-page-title">Sweet & Indulgent</div>
-
-                    <div class="book-item">
-                        <div class="book-item-header">
-                            <span class="book-item-icon">✨</span>
-                            <span class="book-item-name">Cinnamon and Sugar</span>
-                            <span class="book-item-dots"></span>
-                            <span class="book-item-price">$14</span>
-                        </div>
-                        <p class="book-item-desc">Warm cinnamon swirls with sweet sugar. Weekend mornings were made for this.</p>
-                    </div>
-                    <div class="book-item">
-                        <div class="book-item-header">
-                            <span class="book-item-icon">🍫</span>
-                            <span class="book-item-name">Chocolate, Chocolate Chip</span>
-                            <span class="book-item-dots"></span>
-                            <span class="book-item-price">$12</span>
-                        </div>
-                        <p class="book-item-desc">Cocoa in the dough, chips throughout. For the true chocolate lovers.</p>
-                    </div>
-                    <div class="book-item">
-                        <div class="book-item-header">
-                            <span class="book-item-icon">🍫</span>
-                            <span class="book-item-name">Chocolate Almond, Chocolate Chip</span>
-                            <span class="book-item-dots"></span>
-                            <span class="book-item-price">$15</span>
-                        </div>
-                        <p class="book-item-desc">Toasted almonds join the chocolate celebration. Crunchy, rich, and indulgent.</p>
-                    </div>
-
-                    <div class="book-special">
-                        <h3>🎁 4 Pack of Mini Loaves</h3>
-                        <p>Can't choose? Pick any 4 flavors in perfectly portioned mini loaves.</p>
-                        <span class="price-badge">$25</span>
-                    </div>
+            <div class="menu-item reveal">
+                <div class="menu-item-row">
+                    <span class="menu-item-name">Mozzarella & Garlic</span>
+                    <span class="menu-item-dots"></span>
+                    <span class="menu-item-price">$14</span>
                 </div>
+                <p class="menu-item-desc">Fresh mozzarella and roasted garlic. Your kitchen will smell incredible.</p>
+            </div>
+
+            {{-- Wheat divider --}}
+            <div class="wheat-divider">
+                <span class="wd-line"></span>
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                    <path d="M14 2C14 2 15 8 14 14C13 8 14 2 14 2Z" fill="var(--golden)" opacity="0.5"/>
+                    <path d="M14 5C14 5 18 9 17 14C15.5 10 14 5 14 5Z" fill="var(--golden)" opacity="0.3"/>
+                    <path d="M14 5C14 5 10 9 11 14C12.5 10 14 5 14 5Z" fill="var(--golden)" opacity="0.3"/>
+                    <line x1="14" y1="14" x2="14" y2="26" stroke="var(--golden)" stroke-width="1" opacity="0.2"/>
+                </svg>
+                <span class="wd-line"></span>
+            </div>
+
+            <div class="menu-item reveal">
+                <div class="menu-item-row">
+                    <span class="menu-item-name">Chocolate Chip</span>
+                    <span class="menu-item-dots"></span>
+                    <span class="menu-item-price">$12</span>
+                </div>
+                <p class="menu-item-desc">Rich chocolate meets tangy sourdough. Sweet and sour perfection.</p>
+            </div>
+
+            <div class="menu-item reveal">
+                <div class="menu-item-row">
+                    <span class="menu-item-name">Cinnamon & Sugar</span>
+                    <span class="menu-item-dots"></span>
+                    <span class="menu-item-price">$14</span>
+                </div>
+                <p class="menu-item-desc">Warm cinnamon swirls with sweet sugar. Weekend mornings were made for this.</p>
+            </div>
+
+            <div class="menu-item reveal">
+                <div class="menu-item-row">
+                    <span class="menu-item-name">Chocolate, Chocolate Chip</span>
+                    <span class="menu-item-dots"></span>
+                    <span class="menu-item-price">$12</span>
+                </div>
+                <p class="menu-item-desc">Cocoa in the dough, chips throughout. For the true chocolate lovers.</p>
+            </div>
+
+            <div class="menu-item reveal">
+                <div class="menu-item-row">
+                    <span class="menu-item-name">Chocolate Almond, Chocolate Chip</span>
+                    <span class="menu-item-dots"></span>
+                    <span class="menu-item-price">$15</span>
+                </div>
+                <p class="menu-item-desc">Toasted almonds join the chocolate celebration. Crunchy, rich, and indulgent.</p>
+            </div>
+
+            {{-- Bundle callout --}}
+            <div class="bundle-callout reveal">
+                <span class="bundle-corners"></span>
+                <h3>4 Pack of Mini Loaves</h3>
+                <p class="desc">Can't choose? Don't. Pick any 4 flavors in perfectly portioned mini loaves.</p>
+                <span class="bundle-price">$25</span>
             </div>
         </div>
 
-        <div x-show="tab === 'other'" x-transition.opacity>
-            <div class="book-spread">
-                <div class="book-page">
-                    <div class="book-page-title">Sandwich & Breakfast</div>
+        {{-- ═══ OTHER BREADS TAB ═══ --}}
+        <div x-show="tab === 'other'" x-transition.opacity.duration.400ms>
 
-                    <div class="book-item">
-                        <div class="book-item-header">
-                            <span class="book-item-icon">🍯</span>
-                            <span class="book-item-name">Sourdough Honey Wheat Sandwich Bread</span>
-                            <span class="book-item-dots"></span>
-                            <span class="book-item-price">$10</span>
-                        </div>
-                        <p class="book-item-desc">Soft, wholesome, and perfect for sandwiches. Honey sweetness with a sourdough twist.</p>
-                    </div>
-
-                    <div class="book-featured-card">
-                        <div class="book-featured-img"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
-                        <div class="book-featured-body">
-                            <h3>Sourdough English Muffins</h3>
-                            <p class="desc">Those perfect nooks and crannies. Griddle-cooked and ready for toasting.</p>
-                            <span class="price-tag">6ct · $8 &nbsp;|&nbsp; 12ct · $15</span>
-                        </div>
-                    </div>
+            <div class="menu-item reveal">
+                <div class="menu-item-row">
+                    <span class="menu-item-name">Sourdough Honey Wheat Sandwich Bread</span>
+                    <span class="menu-item-dots"></span>
+                    <span class="menu-item-price">$10</span>
                 </div>
-
-                <div class="book-spine"></div>
-
-                <div class="book-page">
-                    <div class="book-page-title">Quick Breads</div>
-
-                    <div class="book-item">
-                        <div class="book-item-header">
-                            <span class="book-item-icon">🍌</span>
-                            <span class="book-item-name">Banana Bread</span>
-                            <span class="book-item-dots"></span>
-                            <span class="book-item-price">$12</span>
-                        </div>
-                        <p class="book-item-desc">Moist, sweet, perfectly spiced. Made with bananas so ripe they're basically pudding.</p>
-                    </div>
-                    <div class="book-item">
-                        <div class="book-item-header">
-                            <span class="book-item-icon">🍌</span>
-                            <span class="book-item-name">Banana Walnut Bread</span>
-                            <span class="book-item-dots"></span>
-                            <span class="book-item-price">$15</span>
-                        </div>
-                        <p class="book-item-desc">Our classic banana bread loaded with crunchy toasted walnuts.</p>
-                    </div>
-                    <div class="book-item">
-                        <div class="book-item-header">
-                            <span class="book-item-icon">🎃</span>
-                            <span class="book-item-name">Pumpkin Chocolate Chip Bread</span>
-                            <span class="book-item-dots"></span>
-                            <span class="book-item-price">$12</span>
-                        </div>
-                        <p class="book-item-desc">Warm pumpkin spice studded with chocolate chips. Seasonal magic.</p>
-                    </div>
-                    <div class="book-item">
-                        <div class="book-item-header">
-                            <span class="book-item-icon">🎃</span>
-                            <span class="book-item-name">Pumpkin Almond Chocolate Chip Bread</span>
-                            <span class="book-item-dots"></span>
-                            <span class="book-item-price">$15</span>
-                        </div>
-                        <p class="book-item-desc">Pumpkin spice, toasted almonds, and chocolate chips. The ultimate fall loaf.</p>
-                    </div>
-                </div>
+                <p class="menu-item-desc">Soft, wholesome, and perfect for sandwiches. Honey sweetness with a sourdough twist.</p>
             </div>
-        </div>
-    </section>
 
+            {{-- English muffins with photo --}}
+            <div class="photo-break reveal">
+                <img src="/images/product-english-muffins.jpg" alt="Sourdough English Muffins">
+                <span class="photo-caption">Our famous English muffins, griddle-cooked to perfection</span>
+            </div>
 
-    {{-- Divider --}}
-    <div class="concept-divider">
-        <span></span>
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 2C16 2 17.5 10 16 16C14.5 10 16 2 16 2Z" fill="var(--golden)"/><path d="M16 6C16 6 21 11 19.5 17C18 12 16 6 16 6Z" fill="var(--golden)"/><path d="M16 6C16 6 11 11 12.5 17C14 12 16 6 16 6Z" fill="var(--golden)"/></svg>
-        <span></span>
-    </div>
-
-
-    {{-- ═══════════════════════════════════════
-         CONCEPT 3: Marketplace
-    ═══════════════════════════════════════ --}}
-    <div id="concept-3">
-        <div class="concept-label">
-            <h2>Concept 3: Marketplace</h2>
-            <p>Rich, dark gallery with floating price badges. Modern bakery-meets-boutique. Cards with depth, glow accents, and a premium product showcase feel.</p>
-        </div>
-    </div>
-
-    <section class="menu-market" x-data="{ tab: 'sourdough' }">
-        <div class="section-head">
-            <h2>Our Menu</h2>
-            <div class="accent-line"></div>
-        </div>
-        <p class="market-subtitle">Everything baked fresh to order. Never frozen, never rushed.</p>
-
-        <div class="market-tabs">
-            <button class="market-tab" :class="{ 'active': tab === 'sourdough' }" @click="tab = 'sourdough'">Sourdough Loaves</button>
-            <button class="market-tab" :class="{ 'active': tab === 'other' }" @click="tab = 'other'">Other Breads</button>
-        </div>
-
-        <div x-show="tab === 'sourdough'" x-transition.opacity>
-            <div class="market-grid">
-                {{-- Hero card --}}
-                <div class="market-card hero-card">
-                    <div class="market-card-visual has-photo"><img src="/images/product-sourdough-boule.jpg" alt="Regular Sourdough"></div>
-                    <div class="market-card-content">
-                        <h3>Regular Loaf</h3>
-                        <p>Our signature. Golden crust, airy crumb, perfectly tangy. The one that started it all.</p>
-                        <span class="market-price-badge">$10</span>
-                    </div>
+            <div class="menu-item reveal">
+                <div class="menu-item-row">
+                    <span class="menu-item-name">Sourdough English Muffins</span>
+                    <span class="menu-item-dots"></span>
+                    <span class="menu-item-price">6ct · $8 &nbsp;|&nbsp; 12ct · $15</span>
                 </div>
+                <p class="menu-item-desc">Those perfect nooks and crannies. Griddle-cooked and ready for toasting.</p>
+            </div>
 
-                <div class="market-card">
-                    <div class="market-card-visual">
-                        <span class="emoji-display">🧀</span>
-                        <span class="market-price-badge">$12</span>
-                    </div>
-                    <div class="market-card-content">
-                        <h3>Cheddar</h3>
-                        <p>Sharp cheddar folded through tangy sourdough. Melty pockets in every slice.</p>
-                    </div>
-                </div>
+            <div class="wheat-divider">
+                <span class="wd-line"></span>
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                    <path d="M14 2C14 2 15 8 14 14C13 8 14 2 14 2Z" fill="var(--golden)" opacity="0.5"/>
+                    <path d="M14 5C14 5 18 9 17 14C15.5 10 14 5 14 5Z" fill="var(--golden)" opacity="0.3"/>
+                    <path d="M14 5C14 5 10 9 11 14C12.5 10 14 5 14 5Z" fill="var(--golden)" opacity="0.3"/>
+                    <line x1="14" y1="14" x2="14" y2="26" stroke="var(--golden)" stroke-width="1" opacity="0.2"/>
+                </svg>
+                <span class="wd-line"></span>
+            </div>
 
-                <div class="market-card">
-                    <div class="market-card-visual">
-                        <span class="emoji-display">🧄</span>
-                        <span class="market-price-badge">$14</span>
-                    </div>
-                    <div class="market-card-content">
-                        <h3>Mozzarella and Garlic</h3>
-                        <p>Fresh mozzarella and roasted garlic. Your kitchen will smell incredible.</p>
-                    </div>
+            <div class="menu-item reveal">
+                <div class="menu-item-row">
+                    <span class="menu-item-name">Banana Bread</span>
+                    <span class="menu-item-dots"></span>
+                    <span class="menu-item-price">$12</span>
                 </div>
+                <p class="menu-item-desc">Moist, sweet, perfectly spiced. Made with bananas so ripe they're basically pudding.</p>
+            </div>
 
-                <div class="market-card">
-                    <div class="market-card-visual">
-                        <span class="emoji-display">🍫</span>
-                        <span class="market-price-badge">$12</span>
-                    </div>
-                    <div class="market-card-content">
-                        <h3>Chocolate Chip</h3>
-                        <p>Rich chocolate meets tangy sourdough. Sweet and sour perfection.</p>
-                    </div>
+            <div class="menu-item reveal">
+                <div class="menu-item-row">
+                    <span class="menu-item-name">Banana Walnut Bread</span>
+                    <span class="menu-item-dots"></span>
+                    <span class="menu-item-price">$15</span>
                 </div>
+                <p class="menu-item-desc">Our classic banana bread loaded with crunchy toasted walnuts.</p>
+            </div>
 
-                <div class="market-card">
-                    <div class="market-card-visual">
-                        <span class="emoji-display">✨</span>
-                        <span class="market-price-badge">$14</span>
-                    </div>
-                    <div class="market-card-content">
-                        <h3>Cinnamon and Sugar</h3>
-                        <p>Warm cinnamon swirls with sweet sugar. Weekend mornings were made for this.</p>
-                    </div>
+            <div class="menu-item reveal">
+                <div class="menu-item-row">
+                    <span class="menu-item-name">Pumpkin Chocolate Chip Bread</span>
+                    <span class="menu-item-dots"></span>
+                    <span class="menu-item-price">$12</span>
                 </div>
+                <p class="menu-item-desc">Warm pumpkin spice studded with chocolate chips. Seasonal magic.</p>
+            </div>
 
-                <div class="market-card">
-                    <div class="market-card-visual">
-                        <span class="emoji-display">🍫</span>
-                        <span class="market-price-badge">$12</span>
-                    </div>
-                    <div class="market-card-content">
-                        <h3>Chocolate, Chocolate Chip</h3>
-                        <p>Cocoa in the dough, chips throughout. For the true chocolate lovers.</p>
-                    </div>
+            <div class="menu-item reveal">
+                <div class="menu-item-row">
+                    <span class="menu-item-name">Pumpkin Almond Chocolate Chip Bread</span>
+                    <span class="menu-item-dots"></span>
+                    <span class="menu-item-price">$15</span>
                 </div>
-
-                <div class="market-card">
-                    <div class="market-card-visual">
-                        <span class="emoji-display">🍫</span>
-                        <span class="market-price-badge">$15</span>
-                    </div>
-                    <div class="market-card-content">
-                        <h3>Chocolate Almond, Chocolate Chip</h3>
-                        <p>Toasted almonds join the chocolate celebration. Crunchy, rich, and indulgent.</p>
-                    </div>
-                </div>
-
-                {{-- Bundle card --}}
-                <div class="market-card bundle-card">
-                    <div class="market-card-visual">
-                        <span class="emoji-display">🎁</span>
-                    </div>
-                    <div class="market-card-content">
-                        <h3>4 Pack of Mini Loaves</h3>
-                        <p>Can't choose? Don't. Pick any 4 flavors in perfectly portioned mini loaves.</p>
-                        <span class="market-price-badge">$25</span>
-                    </div>
-                </div>
+                <p class="menu-item-desc">Pumpkin spice, toasted almonds, and chocolate chips. The ultimate fall loaf.</p>
             </div>
         </div>
 
-        <div x-show="tab === 'other'" x-transition.opacity>
-            <div class="market-grid">
-                <div class="market-card">
-                    <div class="market-card-visual">
-                        <span class="emoji-display">🍯</span>
-                        <span class="market-price-badge">$10</span>
-                    </div>
-                    <div class="market-card-content">
-                        <h3>Sourdough Honey Wheat Sandwich Bread</h3>
-                        <p>Soft, wholesome, and perfect for sandwiches. Honey sweetness with a sourdough twist.</p>
-                    </div>
-                </div>
-
-                <div class="market-card hero-card">
-                    <div class="market-card-visual has-photo"><img src="/images/product-english-muffins.jpg" alt="English Muffins"></div>
-                    <div class="market-card-content">
-                        <h3>Sourdough English Muffins</h3>
-                        <p>Those perfect nooks and crannies. Griddle-cooked and ready for toasting.</p>
-                        <span class="market-price-badge">6ct · $8 &nbsp;|&nbsp; 12ct · $15</span>
-                    </div>
-                </div>
-
-                <div class="market-card">
-                    <div class="market-card-visual">
-                        <span class="emoji-display">🍌</span>
-                        <span class="market-price-badge">$12</span>
-                    </div>
-                    <div class="market-card-content">
-                        <h3>Banana Bread</h3>
-                        <p>Moist, sweet, perfectly spiced. Made with bananas so ripe they're basically pudding.</p>
-                    </div>
-                </div>
-
-                <div class="market-card">
-                    <div class="market-card-visual">
-                        <span class="emoji-display">🍌</span>
-                        <span class="market-price-badge">$15</span>
-                    </div>
-                    <div class="market-card-content">
-                        <h3>Banana Walnut Bread</h3>
-                        <p>Our classic banana bread loaded with crunchy toasted walnuts.</p>
-                    </div>
-                </div>
-
-                <div class="market-card">
-                    <div class="market-card-visual">
-                        <span class="emoji-display">🎃</span>
-                        <span class="market-price-badge">$12</span>
-                    </div>
-                    <div class="market-card-content">
-                        <h3>Pumpkin Chocolate Chip Bread</h3>
-                        <p>Warm pumpkin spice studded with chocolate chips. Seasonal magic.</p>
-                    </div>
-                </div>
-
-                <div class="market-card">
-                    <div class="market-card-visual">
-                        <span class="emoji-display">🎃</span>
-                        <span class="market-price-badge">$15</span>
-                    </div>
-                    <div class="market-card-content">
-                        <h3>Pumpkin Almond Chocolate Chip Bread</h3>
-                        <p>Pumpkin spice, toasted almonds, and chocolate chips. The ultimate fall loaf.</p>
-                    </div>
-                </div>
+        {{-- Bottom seal --}}
+        <div class="menu-seal reveal">
+            <div class="seal-circle">
+                <span class="seal-text">Baked<br>with<br>Love</span>
             </div>
+            <p class="seal-tagline">Handcrafted in our cottage kitchen, Davenport FL</p>
         </div>
-    </section>
 
-    <div style="padding: 80px 20px; text-align: center; background: var(--light);">
-        <p style="color: var(--warm); font-family: 'Playfair Display', serif; font-size: 18px;">~ End of concepts ~</p>
-    </div>
+    </div>{{-- /parchment --}}
+
+</div>{{-- /menu-scene --}}
+
+<script>
+// Reveal on scroll
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>
