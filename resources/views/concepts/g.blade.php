@@ -1173,55 +1173,212 @@
         }
 
         /* ═══════════════════════════════════
-           INSTAGRAM GRID
+           FRESH FROM THE OVEN - Kitchen window
         ═══════════════════════════════════ */
-        .insta {
-            padding: 80px 20px;
-            background: var(--cream);
+        .fresh-oven {
+            padding: 100px 20px;
+            position: relative;
+            background: var(--dark);
+            overflow: hidden;
         }
-        .insta-grid {
-            max-width: 900px; margin: 0 auto 40px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-auto-rows: 180px;
-            gap: 8px;
+        .fresh-oven::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(244,200,122,0.08), transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(139,94,60,0.06), transparent 40%),
+                radial-gradient(ellipse at 80% 60%, rgba(193,127,78,0.04), transparent 40%);
+            pointer-events: none;
         }
-        .insta-item:first-child {
-            grid-row: span 2;
+        .fresh-oven .section-head h2 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--cream);
+            font-size: clamp(2.8rem, 6vw, 4rem);
+            font-weight: 700;
         }
-        .insta-item {
-            border-radius: 12px; overflow: hidden;
-            position: relative; cursor: pointer;
-            transition: all 0.4s ease;
+        .fresh-oven .accent-line {
+            background: linear-gradient(90deg, transparent, var(--golden), transparent);
+            width: 120px;
         }
-        .insta-item:hover {
-            transform: scale(1.03);
-            box-shadow: 0 8px 32px rgba(61,35,20,0.15);
-            z-index: 2;
+        .fresh-subtitle {
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 17px;
+            color: rgba(245,230,208,0.4);
+            margin-top: -32px;
+            margin-bottom: 56px;
         }
-        .insta-item img {
+
+        /* Horizontal scroll strip */
+        .oven-strip {
+            max-width: 1100px;
+            margin: 0 auto 48px;
+            display: flex;
+            gap: 24px;
+            position: relative;
+        }
+
+        /* Photo cards with tilt */
+        .oven-card {
+            flex: 0 0 auto;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .oven-card:hover {
+            z-index: 3;
+        }
+        .oven-card-frame {
+            background: rgba(245,230,208,0.06);
+            border: 1px solid rgba(212,165,116,0.12);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .oven-card:hover .oven-card-frame {
+            border-color: rgba(212,165,116,0.3);
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.3),
+                0 0 40px rgba(212,165,116,0.08);
+            transform: translateY(-8px);
+        }
+        .oven-card-img {
+            overflow: hidden;
+            position: relative;
+        }
+        .oven-card-img img {
             width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.6s;
+            display: block;
         }
-        .insta-item.placeholder {
-            background: linear-gradient(135deg, rgba(212,165,116,0.2), rgba(193,127,78,0.12));
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 8px;
+        .oven-card:hover .oven-card-img img {
+            transform: scale(1.08);
         }
-        .insta-item.placeholder .emoji { font-size: 40px; }
-        .insta-item.placeholder .label {
-            font-size: 12px; color: var(--brown); font-weight: 500;
-            letter-spacing: 0.5px;
+        /* Warm overlay on hover */
+        .oven-card-img::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(61,35,20,0.4));
+            opacity: 0;
+            transition: opacity 0.4s;
         }
-        .insta-cta {
+        .oven-card:hover .oven-card-img::after { opacity: 1; }
+
+        .oven-card-caption {
+            padding: 16px 20px;
             text-align: center;
         }
-        .insta-cta a {
-            font-family: 'Inter', sans-serif;
-            font-weight: 600; font-size: 16px;
-            color: var(--accent); text-decoration: none;
+        .oven-card-caption h4 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--cream);
+            margin-bottom: 4px;
         }
-        .insta-cta a:hover { color: var(--dark); }
+        .oven-card-caption p {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 13px;
+            color: rgba(245,230,208,0.4);
+        }
+
+        /* Placeholder cards */
+        .oven-card-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background:
+                radial-gradient(circle at 50% 40%, rgba(212,165,116,0.08), transparent 60%),
+                rgba(245,230,208,0.03);
+        }
+        .oven-card-placeholder .oven-emoji {
+            font-size: 48px;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+        }
+        .oven-card-placeholder .oven-label {
+            font-family: 'Dancing Script', cursive;
+            font-size: 15px;
+            color: rgba(245,230,208,0.3);
+        }
+
+        /* Hero photo - large */
+        .oven-card.hero-photo {
+            flex: 0 0 380px;
+        }
+        .oven-card.hero-photo .oven-card-img {
+            height: 360px;
+        }
+        /* Standard photo */
+        .oven-card.std-photo {
+            flex: 0 0 260px;
+        }
+        .oven-card.std-photo .oven-card-img,
+        .oven-card.std-photo .oven-card-placeholder {
+            height: 260px;
+        }
+        /* Tall photo */
+        .oven-card.tall-photo {
+            flex: 0 0 220px;
+        }
+        .oven-card.tall-photo .oven-card-img,
+        .oven-card.tall-photo .oven-card-placeholder {
+            height: 320px;
+        }
+
+        /* CTA */
+        .fresh-cta {
+            text-align: center;
+            position: relative;
+        }
+        .fresh-cta a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--golden);
+            text-decoration: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 14px 36px;
+            border: 1.5px solid rgba(212,165,116,0.3);
+            border-radius: 100px;
+            transition: all 0.3s;
+        }
+        .fresh-cta a:hover {
+            background: rgba(212,165,116,0.08);
+            border-color: var(--golden);
+            box-shadow: 0 0 30px rgba(212,165,116,0.1);
+        }
+        .fresh-cta a svg {
+            width: 18px; height: 18px;
+            fill: var(--golden);
+        }
+
+        @media (max-width: 768px) {
+            .oven-strip {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+                padding-bottom: 16px;
+                margin-left: -20px;
+                margin-right: -20px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            .oven-card { scroll-snap-align: start; }
+            .oven-card.hero-photo { flex: 0 0 300px; }
+            .oven-card.hero-photo .oven-card-img { height: 280px; }
+            .oven-card.std-photo { flex: 0 0 220px; }
+            .oven-card.std-photo .oven-card-img,
+            .oven-card.std-photo .oven-card-placeholder { height: 220px; }
+            .oven-card.tall-photo { flex: 0 0 200px; }
+            .oven-card.tall-photo .oven-card-img,
+            .oven-card.tall-photo .oven-card-placeholder { height: 260px; }
+        }
 
         /* ═══════════════════════════════════
            ORDER SECTION - Recipe card motif
@@ -2049,24 +2206,99 @@
     </section>
 
 
-    {{-- ═══ INSTAGRAM ═══ --}}
-    <section class="insta">
+    {{-- ═══ FRESH FROM THE OVEN ═══ --}}
+    <section class="fresh-oven">
         <div class="section-head reveal">
             <h2>Fresh from the Oven</h2>
             <div class="accent-line"></div>
         </div>
-        <div class="insta-grid">
-            <div class="insta-item reveal"><img src="/images/product-sourdough-boule.jpg" alt="Sourdough boule"></div>
-            <div class="insta-item reveal" style="transition-delay:0.05s;"><img src="/images/product-english-muffins.jpg" alt="English muffins"></div>
-            <div class="insta-item placeholder reveal" style="transition-delay:0.1s;"><span class="emoji">🍞</span><span class="label">Bake day</span></div>
-            <div class="insta-item placeholder reveal" style="transition-delay:0.15s;"><span class="emoji">🫧</span><span class="label">Biscotto bubbling</span></div>
-            <div class="insta-item placeholder reveal" style="transition-delay:0.2s;"><span class="emoji">🤲</span><span class="label">Shaping dough</span></div>
-            <div class="insta-item placeholder reveal" style="transition-delay:0.25s;"><span class="emoji">📦</span><span class="label">Ready for pickup</span></div>
+        <p class="fresh-subtitle reveal">A peek into our kitchen and what's baking today.</p>
+
+        <div class="oven-strip">
+            <div class="oven-card hero-photo reveal">
+                <div class="oven-card-frame">
+                    <div class="oven-card-img">
+                        <img src="/images/product-sourdough-boule.jpg" alt="Sourdough boule fresh from the oven">
+                    </div>
+                    <div class="oven-card-caption">
+                        <h4>The Signature Boule</h4>
+                        <p>Just out of the oven, crust crackling</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="oven-card tall-photo reveal" style="transition-delay:0.08s;">
+                <div class="oven-card-frame">
+                    <div class="oven-card-img">
+                        <img src="/images/product-english-muffins.jpg" alt="Sourdough English muffins on the griddle">
+                    </div>
+                    <div class="oven-card-caption">
+                        <h4>Griddle Day</h4>
+                        <p>English muffins, nooks and all</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="oven-card std-photo reveal" style="transition-delay:0.16s;">
+                <div class="oven-card-frame">
+                    <div class="oven-card-img">
+                        <img src="/images/product-pumpkin-bread.jpg" alt="Pumpkin almond chocolate chip bread">
+                    </div>
+                    <div class="oven-card-caption">
+                        <h4>Fall Vibes</h4>
+                        <p>Pumpkin almond chocolate chip</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="oven-card std-photo reveal" style="transition-delay:0.24s;">
+                <div class="oven-card-frame">
+                    <div class="oven-card-placeholder oven-card-img">
+                        <span class="oven-emoji">🫧</span>
+                        <span class="oven-label">Biscotto bubbling</span>
+                    </div>
+                    <div class="oven-card-caption">
+                        <h4>The Starter</h4>
+                        <p>Where every loaf begins</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="oven-card tall-photo reveal" style="transition-delay:0.32s;">
+                <div class="oven-card-frame">
+                    <div class="oven-card-placeholder oven-card-img">
+                        <span class="oven-emoji">🤲</span>
+                        <span class="oven-label">Shaping dough</span>
+                    </div>
+                    <div class="oven-card-caption">
+                        <h4>Hands On</h4>
+                        <p>Every loaf shaped by hand</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="oven-card std-photo reveal" style="transition-delay:0.4s;">
+                <div class="oven-card-frame">
+                    <div class="oven-card-placeholder oven-card-img">
+                        <span class="oven-emoji">📦</span>
+                        <span class="oven-label">Ready for pickup</span>
+                    </div>
+                    <div class="oven-card-caption">
+                        <h4>Packed with Care</h4>
+                        <p>From our kitchen to yours</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="insta-cta reveal">
-            <a href="https://instagram.com/bakeryonbiscotto" target="_blank">Follow @bakeryonbiscotto</a>
+
+        <div class="fresh-cta reveal">
+            <a href="https://instagram.com/bakeryonbiscotto" target="_blank">
+                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                Follow @bakeryonbiscotto
+            </a>
         </div>
     </section>
+
 
     {{-- ═══ ORDER ═══ --}}
     <section class="order" id="order">
