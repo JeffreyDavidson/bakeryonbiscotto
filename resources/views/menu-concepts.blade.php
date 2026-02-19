@@ -841,7 +841,7 @@
 
     {{-- ═══ THE PARCHMENT ═══ --}}
     <div class="parchment-wrap">
-    <div class="parchment" x-data="{ tab: 'sourdough' }">
+    <div class="parchment" x-data="{ tab: 'loaves' }">
 
         {{-- Margin notes --}}
         <span class="margin-note" style="top: 380px; left: 8px; transform: rotate(-7deg);">our favorite ♡</span>
@@ -860,12 +860,13 @@
 
         {{-- Tabs --}}
         <div class="scroll-tabs ink-reveal">
-            <button class="scroll-tab" :class="{ 'active': tab === 'sourdough' }" @click="tab = 'sourdough'">Sourdough Loaves</button>
+            <button class="scroll-tab" :class="{ 'active': tab === 'loaves' }" @click="tab = 'loaves'">Sourdough Loaves</button>
+            <button class="scroll-tab" :class="{ 'active': tab === 'breads' }" @click="tab = 'breads'">Sourdough Breads</button>
             <button class="scroll-tab" :class="{ 'active': tab === 'other' }" @click="tab = 'other'">Other Breads</button>
         </div>
 
-        {{-- ═══ SOURDOUGH ═══ --}}
-        <div x-show="tab === 'sourdough'" x-transition.opacity.duration.400ms>
+        {{-- ═══ SOURDOUGH LOAVES ═══ --}}
+        <div x-show="tab === 'loaves'" x-transition.opacity.duration.400ms>
 
             {{-- Signature item with steam --}}
             <div class="signature-item ink-reveal">
@@ -960,8 +961,8 @@
             </div>
         </div>
 
-        {{-- ═══ OTHER BREADS ═══ --}}
-        <div x-show="tab === 'other'" x-transition.opacity.duration.400ms>
+        {{-- ═══ SOURDOUGH BREADS ═══ --}}
+        <div x-show="tab === 'breads'" x-transition.opacity.duration.400ms>
 
             {{-- Signature: English Muffins with steam --}}
             <div class="signature-item ink-reveal">
@@ -993,6 +994,10 @@
                 </div>
                 <p class="menu-item-desc">Soft, wholesome, and perfect for sandwiches. Honey sweetness with a sourdough twist.</p>
             </div>
+        </div>
+
+        {{-- ═══ OTHER BREADS ═══ --}}
+        <div x-show="tab === 'other'" x-transition.opacity.duration.400ms>
 
             <div class="menu-item ink-reveal">
                 <div class="menu-item-row">
