@@ -646,19 +646,24 @@
         }
         .menu-card-body {
             padding: 16px 14px 20px;
+            text-align: left;
         }
         .menu-card-body h3 {
             font-family: 'Dancing Script', cursive;
             font-size: 1.4rem; font-weight: 700;
             color: var(--dark); margin-bottom: 8px;
+            text-align: left;
         }
         .menu-card-body .desc {
             font-family: 'Dancing Script', cursive;
             font-size: 15px; color: var(--warm);
             line-height: 1.5; margin-bottom: 14px;
+            text-align: left;
+            min-height: 45px;
         }
         .menu-card-footer {
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex; justify-content: flex-start; align-items: center;
+            gap: 12px;
             border-top: 1px dashed rgba(139,94,60,0.2);
             padding-top: 12px;
         }
