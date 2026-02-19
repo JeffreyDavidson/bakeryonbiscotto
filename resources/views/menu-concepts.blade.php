@@ -388,7 +388,7 @@
         ═══════════════════════════════════════════ */
         .signature-item {
             position: relative;
-            margin: 20px -34px 0;
+            margin: 0 -34px 0;
             display: grid;
             grid-template-columns: 1fr 1fr;
             overflow: hidden;
@@ -779,9 +779,6 @@
     <div class="parchment-wrap">
     <div class="parchment" x-data="{ tab: 'sourdough' }">
 
-        {{-- Coffee ring stain --}}
-        <div class="coffee-ring"></div>
-
         {{-- Margin notes --}}
         <span class="margin-note" style="top: 380px; left: 8px; transform: rotate(-7deg);">our favorite ♡</span>
         <span class="margin-note" style="top: 780px; right: 12px; transform: rotate(4deg);">so good!</span>
@@ -792,11 +789,6 @@
             <h2>Our Menu<span class="ink-drip"></span></h2>
             <div class="title-flourish">
                 <span class="tf-line"></span>
-                <span class="tf-ornament">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M10 1L12.5 7.5L19 10L12.5 12.5L10 19L7.5 12.5L1 10L7.5 7.5Z" fill="currentColor" opacity="0.5"/>
-                    </svg>
-                </span>
                 <span class="tf-line"></span>
             </div>
         </div>
