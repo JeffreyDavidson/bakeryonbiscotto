@@ -989,66 +989,187 @@
             .scroll-tab { font-size: 14px; letter-spacing: 1px; gap: 16px; }
         }
 
-/* ═══════════════════════════════════
-           REVIEWS - Polaroid style
+        /* ═══════════════════════════════════
+           REVIEWS - Conversation style
         ═══════════════════════════════════ */
         .reviews {
-            padding: 80px 20px;
-            background: var(--light);
-        }
-        .reviews-grid {
-            max-width: 1200px; margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-        }
-        .review-card {
-            background: var(--white);
-            padding: 36px 28px 28px;
-            border-radius: 4px;
-            box-shadow: 0 4px 20px rgba(61,35,20,0.06);
+            padding: 100px 20px;
             position: relative;
-            transition: all 0.4s ease;
+            background: var(--cream);
+            overflow: hidden;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+            background-color: var(--cream);
+        }
+        .reviews::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(212,165,116,0.08), transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(193,127,78,0.06), transparent 50%);
+            pointer-events: none;
+        }
+        .reviews .section-head h2 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--dark);
+            font-size: clamp(2.8rem, 6vw, 4rem);
+            font-weight: 700;
+        }
+        .reviews .accent-line {
+            background: linear-gradient(90deg, transparent, var(--golden), var(--accent), var(--golden), transparent);
+            width: 120px;
+        }
+        .reviews-subtitle {
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 17px;
+            color: var(--warm);
+            margin-top: -32px;
+            margin-bottom: 56px;
+        }
+        .review-featured {
+            max-width: 800px;
+            margin: 0 auto 64px;
+            text-align: center;
+            position: relative;
+            padding: 48px 40px;
+        }
+        .review-featured::before {
+            content: '\201C';
+            position: absolute;
+            top: -20px; left: 50%; transform: translateX(-50%);
+            font-family: 'Playfair Display', serif;
+            font-size: 120px;
+            color: var(--golden);
+            opacity: 0.15;
+            line-height: 1;
+            pointer-events: none;
+        }
+        .review-featured blockquote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.4rem, 3vw, 1.8rem);
+            font-weight: 400;
+            font-style: italic;
+            color: var(--dark);
+            line-height: 1.8;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .review-featured .review-author-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .review-featured .author-line {
+            width: 40px; height: 1px;
+            background: var(--golden);
+        }
+        .review-featured .review-author {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600; font-size: 16px;
+            color: var(--accent); letter-spacing: 1px;
+        }
+        .review-featured .review-location {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 14px; color: var(--warm);
+        }
+        .reviews-conversation {
+            max-width: 700px;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
+            gap: 32px;
         }
-        .review-card:nth-child(1) { transform: rotate(-1.5deg); }
-        .review-card:nth-child(2) { transform: rotate(1deg); }
-        .review-card:nth-child(3) { transform: rotate(-0.5deg); }
-        .review-card:nth-child(4) { transform: rotate(2deg); }
-        .review-card:hover {
-            transform: rotate(0deg) translateY(-6px) !important;
-            box-shadow: 0 16px 48px rgba(61,35,20,0.12);
+        .convo-card {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
         }
-        .review-card::before {
+        .convo-card.from-right {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+        .convo-avatar {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--golden), var(--accent));
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 20px; font-weight: 700;
+            color: var(--dark);
+            box-shadow: 0 4px 12px rgba(61,35,20,0.1);
+            position: relative;
+        }
+        .convo-avatar::after {
             content: '';
-            position: absolute; top: 0; left: 0; right: 0; height: 4px;
-            background: linear-gradient(90deg, var(--golden), var(--accent));
-            border-radius: 4px 4px 0 0;
+            position: absolute; inset: -3px;
+            border: 2px solid var(--golden);
+            border-radius: 50%; opacity: 0.3;
         }
-        .review-stars {
-            color: var(--golden); font-size: 14px;
-            margin-bottom: 16px; letter-spacing: 2px;
+        .convo-bubble {
+            background: var(--white);
+            padding: 24px 28px;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(61,35,20,0.06), 0 1px 3px rgba(61,35,20,0.04);
+            flex: 1;
+            transition: all 0.3s;
         }
-        .review-card blockquote {
-            font-size: 15px; line-height: 1.7;
-            color: rgba(61,35,20,0.75); font-style: italic;
-            margin-bottom: 20px;
+        .convo-bubble:hover {
+            box-shadow: 0 8px 30px rgba(61,35,20,0.1), 0 1px 3px rgba(61,35,20,0.04);
+            transform: translateY(-2px);
         }
-        .review-author {
-            font-weight: 600; font-size: 14px; color: var(--brown);
-            margin-top: auto;
+        .convo-card:not(.from-right) .convo-bubble::before {
+            content: '';
+            position: absolute;
+            left: -8px; top: 20px;
+            width: 16px; height: 16px;
+            background: var(--white);
+            transform: rotate(45deg);
+            box-shadow: -2px 2px 4px rgba(61,35,20,0.04);
         }
-        .review-location {
-            font-size: 13px; color: rgba(61,35,20,0.4);
+        .convo-card.from-right .convo-bubble::before {
+            content: '';
+            position: absolute;
+            right: -8px; top: 20px;
+            width: 16px; height: 16px;
+            background: var(--white);
+            transform: rotate(45deg);
+            box-shadow: 2px -2px 4px rgba(61,35,20,0.04);
         }
-        /* Tape effect */
-        .tape {
-            position: absolute; top: -8px; left: 50%;
-            transform: translateX(-50%) rotate(-2deg);
-            width: 80px; height: 24px;
-            background: rgba(212,165,116,0.35);
-            border-radius: 2px;
+        .convo-bubble .review-stars {
+            color: var(--golden); font-size: 12px;
+            letter-spacing: 2px; margin-bottom: 10px;
+        }
+        .convo-bubble blockquote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px; font-style: italic;
+            line-height: 1.7; color: var(--dark);
+            margin-bottom: 12px;
+        }
+        .convo-meta {
+            display: flex; align-items: center; gap: 8px;
+        }
+        .convo-card.from-right .convo-meta { justify-content: flex-end; }
+        .convo-meta .review-author {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600; font-size: 13px; color: var(--accent);
+        }
+        .convo-meta .dot {
+            width: 3px; height: 3px;
+            background: var(--golden); border-radius: 50%;
+        }
+        .convo-meta .review-location {
+            font-size: 12px; color: var(--warm);
+        }
+        @media (max-width: 600px) {
+            .review-featured { padding: 32px 16px; }
+            .convo-card, .convo-card.from-right { flex-direction: column; text-align: left; }
+            .convo-card.from-right .convo-meta { justify-content: flex-start; }
+            .convo-bubble::before { display: none !important; }
+            .convo-avatar { width: 44px; height: 44px; font-size: 16px; }
         }
 
         /* ═══════════════════════════════════
@@ -1867,42 +1988,66 @@
     </div>
 
     {{-- ═══ REVIEWS ═══ --}}
-    <section class="reviews">
+    <section class="reviews" id="reviews">
         <div class="section-head reveal">
             <h2>What Our Neighbors Say</h2>
             <div class="accent-line"></div>
         </div>
-        <div class="reviews-grid">
-            <div class="review-card reveal">
-                <div class="tape"></div>
-                <div class="review-stars">★★★★★</div>
-                <blockquote>The best sourdough I've ever had. The crust is perfectly crispy and the inside is so soft. We order every single week now and my kids fight over the last piece.</blockquote>
-                <div class="review-author">Sarah M.</div>
-                <div class="review-location">Davenport, FL</div>
+        <p class="reviews-subtitle reveal">Real words from real people who keep coming back.</p>
+
+        <div class="review-featured reveal">
+            <blockquote>The best sourdough I've ever had. The crust is perfectly crispy and the inside is so soft. We order every single week now and my kids fight over the last piece.</blockquote>
+            <div class="review-author-wrap">
+                <span class="author-line"></span>
+                <span class="review-author">Sarah M.</span>
+                <span class="dot" style="width:4px;height:4px;background:var(--golden);border-radius:50%;display:inline-block;"></span>
+                <span class="review-location">Davenport, FL</span>
+                <span class="author-line"></span>
             </div>
-            <div class="review-card reveal" style="transition-delay: 0.1s;">
-                <div class="tape"></div>
-                <div class="review-stars">★★★★★</div>
-                <blockquote>Cassie's chocolate chip sourdough changed my life. I'm not being dramatic. My family goes through a loaf in a single day and then immediately orders another.</blockquote>
-                <div class="review-author">Mike T.</div>
-                <div class="review-location">Haines City, FL</div>
+        </div>
+
+        <div class="reviews-conversation">
+            <div class="convo-card reveal">
+                <div class="convo-avatar">M</div>
+                <div class="convo-bubble">
+                    <div class="review-stars">★★★★★</div>
+                    <blockquote>Cassie's chocolate chip sourdough changed my life. I'm not being dramatic. My family goes through a loaf in a single day and then immediately orders another.</blockquote>
+                    <div class="convo-meta">
+                        <span class="review-author">Mike T.</span>
+                        <span class="dot"></span>
+                        <span class="review-location">Haines City, FL</span>
+                    </div>
+                </div>
             </div>
-            <div class="review-card reveal" style="transition-delay: 0.2s;">
-                <div class="tape"></div>
-                <div class="review-stars">★★★★★</div>
-                <blockquote>Finally, real bread from someone who actually cares. You can taste the difference in every bite. The English muffins are out of this world!</blockquote>
-                <div class="review-author">Jessica R.</div>
-                <div class="review-location">Clermont, FL</div>
+
+            <div class="convo-card from-right reveal">
+                <div class="convo-avatar">J</div>
+                <div class="convo-bubble">
+                    <div class="review-stars">★★★★★</div>
+                    <blockquote>Finally, real bread from someone who actually cares. You can taste the difference in every bite. The English muffins are out of this world!</blockquote>
+                    <div class="convo-meta">
+                        <span class="review-author">Jessica R.</span>
+                        <span class="dot"></span>
+                        <span class="review-location">Clermont, FL</span>
+                    </div>
+                </div>
             </div>
-            <div class="review-card reveal" style="transition-delay: 0.3s;">
-                <div class="tape"></div>
-                <div class="review-stars">★★★★★</div>
-                <blockquote>I ordered the mini loaf variety pack and now I can't pick a favorite. The chocolate chip and cinnamon sugar are tied for first place.</blockquote>
-                <div class="review-author">David L.</div>
-                <div class="review-location">Kissimmee, FL</div>
+
+            <div class="convo-card reveal">
+                <div class="convo-avatar">D</div>
+                <div class="convo-bubble">
+                    <div class="review-stars">★★★★★</div>
+                    <blockquote>I ordered the mini loaf variety pack and now I can't pick a favorite. The chocolate chip and cinnamon sugar are tied for first place.</blockquote>
+                    <div class="convo-meta">
+                        <span class="review-author">David L.</span>
+                        <span class="dot"></span>
+                        <span class="review-location">Kissimmee, FL</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+
 
     {{-- ═══ INSTAGRAM ═══ --}}
     <section class="insta">
