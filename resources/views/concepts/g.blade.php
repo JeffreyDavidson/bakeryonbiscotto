@@ -1969,15 +1969,6 @@
         <div class="torn-bottom"></div>
     </section>
 
-    {{-- ═══ FLOUR BURST TRANSITION ═══ --}}
-    <section class="flour-burst-section" id="flourBurst">
-        <div class="burst-container" id="burstContainer"></div>
-        <div class="burst-text">
-            <h3>Every Loaf, a Little Different</h3>
-            <p>That's the beauty of sourdough. Same love, same care, same starter — but each one is uniquely yours.</p>
-        </div>
-    </section>
-
     {{-- ═══ MENU ═══ --}}
     <section class="menu-scene" id="menu">
         {{-- Flour particles --}}
@@ -2320,6 +2311,15 @@
         </div>
     </section>
 
+
+    {{-- ═══ FLOUR BURST TRANSITION ═══ --}}
+    <section class="flour-burst-section" id="flourBurst">
+        <div class="burst-container" id="burstContainer"></div>
+        <div class="burst-text">
+            <h3>Every Loaf, a Little Different</h3>
+            <p>That's the beauty of sourdough. Same love, same care, same starter — but each one is uniquely yours.</p>
+        </div>
+    </section>
 
     {{-- ═══ FRESH FROM THE OVEN ═══ --}}
     <section class="fresh-oven">
