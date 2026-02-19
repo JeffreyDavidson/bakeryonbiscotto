@@ -1596,9 +1596,10 @@
             font-style: italic;
         }
         .marquee-dot {
-            width: 4px; height: 4px; border-radius: 50%;
-            background: var(--golden); opacity: 0.4;
+            color: var(--golden); opacity: 0.5;
             flex-shrink: 0;
+            font-size: 10px;
+            line-height: 1;
         }
         @keyframes marquee-scroll {
             0% { transform: translateX(0); }
@@ -1790,76 +1791,76 @@
     <div class="marquee-section">
         <div class="marquee-track">
             <div class="marquee-content">
-                <span class="marquee-item">flour</span><span class="marquee-dot"></span>
-                <span class="marquee-item">water</span><span class="marquee-dot"></span>
-                <span class="marquee-item">salt</span><span class="marquee-dot"></span>
-                <span class="marquee-item">time</span><span class="marquee-dot"></span>
-                <span class="marquee-item">love</span><span class="marquee-dot"></span>
-                <span class="marquee-item">cheddar</span><span class="marquee-dot"></span>
-                <span class="marquee-item">cinnamon</span><span class="marquee-dot"></span>
-                <span class="marquee-item">chocolate</span><span class="marquee-dot"></span>
-                <span class="marquee-item">garlic</span><span class="marquee-dot"></span>
-                <span class="marquee-item">mozzarella</span><span class="marquee-dot"></span>
-                <span class="marquee-item">pumpkin</span><span class="marquee-dot"></span>
-                <span class="marquee-item">walnuts</span><span class="marquee-dot"></span>
-                <span class="marquee-item">honey</span><span class="marquee-dot"></span>
-                <span class="marquee-item">banana</span><span class="marquee-dot"></span>
-                <span class="marquee-item">almonds</span><span class="marquee-dot"></span>
-                <span class="marquee-item">patience</span><span class="marquee-dot"></span>
+                <span class="marquee-item">flour</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">water</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">salt</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">time</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">love</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">cheddar</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">cinnamon</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">chocolate</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">garlic</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">mozzarella</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">pumpkin</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">walnuts</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">honey</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">banana</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">almonds</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">patience</span><span class="marquee-dot">✦</span>
             </div>
             <div class="marquee-content" aria-hidden="true">
-                <span class="marquee-item">flour</span><span class="marquee-dot"></span>
-                <span class="marquee-item">water</span><span class="marquee-dot"></span>
-                <span class="marquee-item">salt</span><span class="marquee-dot"></span>
-                <span class="marquee-item">time</span><span class="marquee-dot"></span>
-                <span class="marquee-item">love</span><span class="marquee-dot"></span>
-                <span class="marquee-item">cheddar</span><span class="marquee-dot"></span>
-                <span class="marquee-item">cinnamon</span><span class="marquee-dot"></span>
-                <span class="marquee-item">chocolate</span><span class="marquee-dot"></span>
-                <span class="marquee-item">garlic</span><span class="marquee-dot"></span>
-                <span class="marquee-item">mozzarella</span><span class="marquee-dot"></span>
-                <span class="marquee-item">pumpkin</span><span class="marquee-dot"></span>
-                <span class="marquee-item">walnuts</span><span class="marquee-dot"></span>
-                <span class="marquee-item">honey</span><span class="marquee-dot"></span>
-                <span class="marquee-item">banana</span><span class="marquee-dot"></span>
-                <span class="marquee-item">almonds</span><span class="marquee-dot"></span>
-                <span class="marquee-item">patience</span><span class="marquee-dot"></span>
+                <span class="marquee-item">flour</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">water</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">salt</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">time</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">love</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">cheddar</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">cinnamon</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">chocolate</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">garlic</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">mozzarella</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">pumpkin</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">walnuts</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">honey</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">banana</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">almonds</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">patience</span><span class="marquee-dot">✦</span>
             </div>
             <div class="marquee-content" aria-hidden="true">
-                <span class="marquee-item">flour</span><span class="marquee-dot"></span>
-                <span class="marquee-item">water</span><span class="marquee-dot"></span>
-                <span class="marquee-item">salt</span><span class="marquee-dot"></span>
-                <span class="marquee-item">time</span><span class="marquee-dot"></span>
-                <span class="marquee-item">love</span><span class="marquee-dot"></span>
-                <span class="marquee-item">cheddar</span><span class="marquee-dot"></span>
-                <span class="marquee-item">cinnamon</span><span class="marquee-dot"></span>
-                <span class="marquee-item">chocolate</span><span class="marquee-dot"></span>
-                <span class="marquee-item">garlic</span><span class="marquee-dot"></span>
-                <span class="marquee-item">mozzarella</span><span class="marquee-dot"></span>
-                <span class="marquee-item">pumpkin</span><span class="marquee-dot"></span>
-                <span class="marquee-item">walnuts</span><span class="marquee-dot"></span>
-                <span class="marquee-item">honey</span><span class="marquee-dot"></span>
-                <span class="marquee-item">banana</span><span class="marquee-dot"></span>
-                <span class="marquee-item">almonds</span><span class="marquee-dot"></span>
-                <span class="marquee-item">patience</span><span class="marquee-dot"></span>
+                <span class="marquee-item">flour</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">water</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">salt</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">time</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">love</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">cheddar</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">cinnamon</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">chocolate</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">garlic</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">mozzarella</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">pumpkin</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">walnuts</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">honey</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">banana</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">almonds</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">patience</span><span class="marquee-dot">✦</span>
             </div>
             <div class="marquee-content" aria-hidden="true">
-                <span class="marquee-item">flour</span><span class="marquee-dot"></span>
-                <span class="marquee-item">water</span><span class="marquee-dot"></span>
-                <span class="marquee-item">salt</span><span class="marquee-dot"></span>
-                <span class="marquee-item">time</span><span class="marquee-dot"></span>
-                <span class="marquee-item">love</span><span class="marquee-dot"></span>
-                <span class="marquee-item">cheddar</span><span class="marquee-dot"></span>
-                <span class="marquee-item">cinnamon</span><span class="marquee-dot"></span>
-                <span class="marquee-item">chocolate</span><span class="marquee-dot"></span>
-                <span class="marquee-item">garlic</span><span class="marquee-dot"></span>
-                <span class="marquee-item">mozzarella</span><span class="marquee-dot"></span>
-                <span class="marquee-item">pumpkin</span><span class="marquee-dot"></span>
-                <span class="marquee-item">walnuts</span><span class="marquee-dot"></span>
-                <span class="marquee-item">honey</span><span class="marquee-dot"></span>
-                <span class="marquee-item">banana</span><span class="marquee-dot"></span>
-                <span class="marquee-item">almonds</span><span class="marquee-dot"></span>
-                <span class="marquee-item">patience</span><span class="marquee-dot"></span>
+                <span class="marquee-item">flour</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">water</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">salt</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">time</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">love</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">cheddar</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">cinnamon</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">chocolate</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">garlic</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">mozzarella</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">pumpkin</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">walnuts</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">honey</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">banana</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">almonds</span><span class="marquee-dot">✦</span>
+                <span class="marquee-item">patience</span><span class="marquee-dot">✦</span>
             </div>
         </div>
     </div>
