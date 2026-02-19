@@ -1173,10 +1173,10 @@
         }
 
         /* ═══════════════════════════════════
-           FRESH FROM THE OVEN - Kitchen window
+           FRESH FROM THE OVEN - Clothesline
         ═══════════════════════════════════ */
         .fresh-oven {
-            padding: 100px 20px;
+            padding: 100px 20px 80px;
             position: relative;
             background: var(--dark);
             overflow: hidden;
@@ -1185,9 +1185,8 @@
             content: '';
             position: absolute; inset: 0;
             background:
-                radial-gradient(ellipse at 50% 0%, rgba(244,200,122,0.08), transparent 50%),
-                radial-gradient(ellipse at 20% 80%, rgba(139,94,60,0.06), transparent 40%),
-                radial-gradient(ellipse at 80% 60%, rgba(193,127,78,0.04), transparent 40%);
+                radial-gradient(ellipse at 30% 20%, rgba(244,200,122,0.06), transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(139,94,60,0.05), transparent 40%);
             pointer-events: none;
         }
         .fresh-oven .section-head h2 {
@@ -1207,125 +1206,158 @@
             font-size: 17px;
             color: rgba(245,230,208,0.4);
             margin-top: -32px;
-            margin-bottom: 56px;
+            margin-bottom: 64px;
         }
 
-        /* Horizontal scroll strip */
-        .oven-strip {
-            max-width: 1100px;
-            margin: 0 auto 48px;
+        /* The clothesline */
+        .clothesline-wrap {
+            max-width: 1000px;
+            margin: 0 auto 56px;
+            position: relative;
+        }
+        /* The string */
+        .clothesline-string {
+            position: absolute;
+            top: 20px;
+            left: -20px; right: -20px;
+            height: 2px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(212,165,116,0.25) 10%,
+                rgba(212,165,116,0.35) 50%,
+                rgba(212,165,116,0.25) 90%,
+                transparent
+            );
+            z-index: 1;
+        }
+        /* Slight sag with SVG */
+        .clothesline-string::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 40px;
+            background: radial-gradient(ellipse at 50% 0%, rgba(212,165,116,0.03), transparent 70%);
+        }
+
+        .clothesline-photos {
             display: flex;
+            justify-content: center;
             gap: 24px;
+            padding-top: 32px;
             position: relative;
+            z-index: 2;
         }
 
-        /* Photo cards with tilt */
-        .oven-card {
-            flex: 0 0 auto;
+        /* Each hanging photo */
+        .hanging-photo {
             position: relative;
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: top center;
         }
-        .oven-card:hover {
+        .hanging-photo:hover {
+            z-index: 10;
+        }
+
+        /* The pin/clip at top */
+        .photo-clip {
+            position: absolute;
+            top: -14px; left: 50%; transform: translateX(-50%);
             z-index: 3;
+            width: 20px; height: 28px;
         }
-        .oven-card-frame {
-            background: rgba(245,230,208,0.06);
-            border: 1px solid rgba(212,165,116,0.12);
-            border-radius: 8px;
-            overflow: hidden;
+        .photo-clip::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%; transform: translateX(-50%);
+            width: 12px; height: 20px;
+            background: linear-gradient(180deg, #c9a87c, #a88654);
+            border-radius: 3px 3px 1px 1px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .photo-clip::after {
+            content: '';
+            position: absolute;
+            top: 14px; left: 50%; transform: translateX(-50%);
+            width: 16px; height: 8px;
+            background: linear-gradient(180deg, #a88654, #8b6d3f);
+            border-radius: 0 0 2px 2px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Polaroid frame */
+        .photo-frame {
+            background: white;
+            padding: 10px 10px 40px;
+            box-shadow:
+                0 8px 30px rgba(0,0,0,0.25),
+                2px 2px 0 rgba(139,94,60,0.03);
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .oven-card:hover .oven-card-frame {
-            border-color: rgba(212,165,116,0.3);
+        .hanging-photo:hover .photo-frame {
             box-shadow:
-                0 20px 60px rgba(0,0,0,0.3),
-                0 0 40px rgba(212,165,116,0.08);
-            transform: translateY(-8px);
+                0 16px 50px rgba(0,0,0,0.35),
+                0 0 30px rgba(212,165,116,0.08);
+            transform: scale(1.08) rotate(0deg) !important;
         }
-        .oven-card-img {
-            overflow: hidden;
-            position: relative;
-        }
-        .oven-card-img img {
+        .photo-frame img {
             width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.6s;
             display: block;
         }
-        .oven-card:hover .oven-card-img img {
-            transform: scale(1.08);
-        }
-        /* Warm overlay on hover */
-        .oven-card-img::after {
-            content: '';
-            position: absolute; inset: 0;
-            background: linear-gradient(180deg, transparent 50%, rgba(61,35,20,0.4));
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-        .oven-card:hover .oven-card-img::after { opacity: 1; }
-
-        .oven-card-caption {
-            padding: 16px 20px;
-            text-align: center;
-        }
-        .oven-card-caption h4 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--cream);
-            margin-bottom: 4px;
-        }
-        .oven-card-caption p {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 13px;
-            color: rgba(245,230,208,0.4);
-        }
-
-        /* Placeholder cards */
-        .oven-card-placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+        .photo-frame .placeholder-slot {
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 8px;
             background:
-                radial-gradient(circle at 50% 40%, rgba(212,165,116,0.08), transparent 60%),
-                rgba(245,230,208,0.03);
+                radial-gradient(circle at 50% 40%, rgba(212,165,116,0.06), transparent 60%),
+                #f8f0e4;
         }
-        .oven-card-placeholder .oven-emoji {
-            font-size: 48px;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+        .photo-frame .placeholder-slot .ph-emoji {
+            font-size: 40px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
-        .oven-card-placeholder .oven-label {
+        .photo-frame .placeholder-slot .ph-text {
             font-family: 'Dancing Script', cursive;
-            font-size: 15px;
-            color: rgba(245,230,208,0.3);
+            font-size: 13px;
+            color: var(--brown);
+            opacity: 0.5;
         }
 
-        /* Hero photo - large */
-        .oven-card.hero-photo {
-            flex: 0 0 380px;
+        /* Handwritten caption below photo */
+        .photo-caption {
+            position: absolute;
+            bottom: 8px; left: 10px; right: 10px;
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 13px;
+            color: var(--warm);
         }
-        .oven-card.hero-photo .oven-card-img {
-            height: 360px;
-        }
-        /* Standard photo */
-        .oven-card.std-photo {
-            flex: 0 0 260px;
-        }
-        .oven-card.std-photo .oven-card-img,
-        .oven-card.std-photo .oven-card-placeholder {
-            height: 260px;
-        }
-        /* Tall photo */
-        .oven-card.tall-photo {
-            flex: 0 0 220px;
-        }
-        .oven-card.tall-photo .oven-card-img,
-        .oven-card.tall-photo .oven-card-placeholder {
-            height: 320px;
-        }
+
+        /* Individual photo sizes and rotations */
+        .hanging-photo:nth-child(1) { margin-top: 12px; }
+        .hanging-photo:nth-child(1) .photo-frame { transform: rotate(-3deg); width: 200px; }
+        .hanging-photo:nth-child(1) .photo-frame img,
+        .hanging-photo:nth-child(1) .photo-frame .placeholder-slot { height: 200px; }
+
+        .hanging-photo:nth-child(2) { margin-top: 0; }
+        .hanging-photo:nth-child(2) .photo-frame { transform: rotate(2deg); width: 220px; }
+        .hanging-photo:nth-child(2) .photo-frame img,
+        .hanging-photo:nth-child(2) .photo-frame .placeholder-slot { height: 260px; }
+
+        .hanging-photo:nth-child(3) { margin-top: 8px; }
+        .hanging-photo:nth-child(3) .photo-frame { transform: rotate(-1.5deg); width: 200px; }
+        .hanging-photo:nth-child(3) .photo-frame img,
+        .hanging-photo:nth-child(3) .photo-frame .placeholder-slot { height: 220px; }
+
+        .hanging-photo:nth-child(4) { margin-top: 16px; }
+        .hanging-photo:nth-child(4) .photo-frame { transform: rotate(3.5deg); width: 180px; }
+        .hanging-photo:nth-child(4) .photo-frame img,
+        .hanging-photo:nth-child(4) .photo-frame .placeholder-slot { height: 180px; }
+
+        .hanging-photo:nth-child(5) { margin-top: 4px; }
+        .hanging-photo:nth-child(5) .photo-frame { transform: rotate(-2.5deg); width: 200px; }
+        .hanging-photo:nth-child(5) .photo-frame img,
+        .hanging-photo:nth-child(5) .photo-frame .placeholder-slot { height: 240px; }
 
         /* CTA */
         .fresh-cta {
@@ -1359,25 +1391,27 @@
         }
 
         @media (max-width: 768px) {
-            .oven-strip {
+            .clothesline-photos {
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
-                scroll-snap-type: x mandatory;
-                padding-bottom: 16px;
-                margin-left: -20px;
-                margin-right: -20px;
+                justify-content: flex-start;
                 padding-left: 20px;
                 padding-right: 20px;
+                margin-left: -20px;
+                margin-right: -20px;
+                scroll-snap-type: x mandatory;
             }
-            .oven-card { scroll-snap-align: start; }
-            .oven-card.hero-photo { flex: 0 0 300px; }
-            .oven-card.hero-photo .oven-card-img { height: 280px; }
-            .oven-card.std-photo { flex: 0 0 220px; }
-            .oven-card.std-photo .oven-card-img,
-            .oven-card.std-photo .oven-card-placeholder { height: 220px; }
-            .oven-card.tall-photo { flex: 0 0 200px; }
-            .oven-card.tall-photo .oven-card-img,
-            .oven-card.tall-photo .oven-card-placeholder { height: 260px; }
+            .hanging-photo { scroll-snap-align: center; flex-shrink: 0; }
+            .hanging-photo:nth-child(1) .photo-frame,
+            .hanging-photo:nth-child(2) .photo-frame,
+            .hanging-photo:nth-child(3) .photo-frame,
+            .hanging-photo:nth-child(4) .photo-frame,
+            .hanging-photo:nth-child(5) .photo-frame { width: 180px; }
+            .hanging-photo:nth-child(1) .photo-frame img, .hanging-photo:nth-child(1) .photo-frame .placeholder-slot,
+            .hanging-photo:nth-child(2) .photo-frame img, .hanging-photo:nth-child(2) .photo-frame .placeholder-slot,
+            .hanging-photo:nth-child(3) .photo-frame img, .hanging-photo:nth-child(3) .photo-frame .placeholder-slot,
+            .hanging-photo:nth-child(4) .photo-frame img, .hanging-photo:nth-child(4) .photo-frame .placeholder-slot,
+            .hanging-photo:nth-child(5) .photo-frame img, .hanging-photo:nth-child(5) .photo-frame .placeholder-slot { height: 200px; }
         }
 
         /* ═══════════════════════════════════
@@ -2214,78 +2248,52 @@
         </div>
         <p class="fresh-subtitle reveal">A peek into our kitchen and what's baking today.</p>
 
-        <div class="oven-strip">
-            <div class="oven-card hero-photo reveal">
-                <div class="oven-card-frame">
-                    <div class="oven-card-img">
-                        <img src="/images/product-sourdough-boule.jpg" alt="Sourdough boule fresh from the oven">
-                    </div>
-                    <div class="oven-card-caption">
-                        <h4>The Signature Boule</h4>
-                        <p>Just out of the oven, crust crackling</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="oven-card tall-photo reveal" style="transition-delay:0.08s;">
-                <div class="oven-card-frame">
-                    <div class="oven-card-img">
-                        <img src="/images/product-english-muffins.jpg" alt="Sourdough English muffins on the griddle">
-                    </div>
-                    <div class="oven-card-caption">
-                        <h4>Griddle Day</h4>
-                        <p>English muffins, nooks and all</p>
+        <div class="clothesline-wrap reveal">
+            <div class="clothesline-string"></div>
+            <div class="clothesline-photos">
+                <div class="hanging-photo">
+                    <div class="photo-clip"></div>
+                    <div class="photo-frame">
+                        <img src="/images/product-sourdough-boule.jpg" alt="Sourdough boule">
+                        <span class="photo-caption">The signature boule</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="oven-card std-photo reveal" style="transition-delay:0.16s;">
-                <div class="oven-card-frame">
-                    <div class="oven-card-img">
-                        <img src="/images/product-pumpkin-bread.jpg" alt="Pumpkin almond chocolate chip bread">
-                    </div>
-                    <div class="oven-card-caption">
-                        <h4>Fall Vibes</h4>
-                        <p>Pumpkin almond chocolate chip</p>
+                <div class="hanging-photo">
+                    <div class="photo-clip"></div>
+                    <div class="photo-frame">
+                        <img src="/images/product-english-muffins.jpg" alt="English muffins">
+                        <span class="photo-caption">Griddle day!</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="oven-card std-photo reveal" style="transition-delay:0.24s;">
-                <div class="oven-card-frame">
-                    <div class="oven-card-placeholder oven-card-img">
-                        <span class="oven-emoji">🫧</span>
-                        <span class="oven-label">Biscotto bubbling</span>
-                    </div>
-                    <div class="oven-card-caption">
-                        <h4>The Starter</h4>
-                        <p>Where every loaf begins</p>
+                <div class="hanging-photo">
+                    <div class="photo-clip"></div>
+                    <div class="photo-frame">
+                        <img src="/images/product-pumpkin-bread.jpg" alt="Pumpkin bread">
+                        <span class="photo-caption">Fall vibes 🎃</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="oven-card tall-photo reveal" style="transition-delay:0.32s;">
-                <div class="oven-card-frame">
-                    <div class="oven-card-placeholder oven-card-img">
-                        <span class="oven-emoji">🤲</span>
-                        <span class="oven-label">Shaping dough</span>
-                    </div>
-                    <div class="oven-card-caption">
-                        <h4>Hands On</h4>
-                        <p>Every loaf shaped by hand</p>
+                <div class="hanging-photo">
+                    <div class="photo-clip"></div>
+                    <div class="photo-frame">
+                        <div class="placeholder-slot">
+                            <span class="ph-emoji">🫧</span>
+                            <span class="ph-text">Biscotto bubbling</span>
+                        </div>
+                        <span class="photo-caption">The starter</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="oven-card std-photo reveal" style="transition-delay:0.4s;">
-                <div class="oven-card-frame">
-                    <div class="oven-card-placeholder oven-card-img">
-                        <span class="oven-emoji">📦</span>
-                        <span class="oven-label">Ready for pickup</span>
-                    </div>
-                    <div class="oven-card-caption">
-                        <h4>Packed with Care</h4>
-                        <p>From our kitchen to yours</p>
+                <div class="hanging-photo">
+                    <div class="photo-clip"></div>
+                    <div class="photo-frame">
+                        <div class="placeholder-slot">
+                            <span class="ph-emoji">📦</span>
+                            <span class="ph-text">Ready for pickup</span>
+                        </div>
+                        <span class="photo-caption">Packed with care</span>
                     </div>
                 </div>
             </div>
