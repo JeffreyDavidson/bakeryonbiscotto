@@ -276,21 +276,20 @@
             justify-self: center;
         }
         .about-photo {
-            width: 300px; height: 300px;
-            border-radius: 50%;
-            background: url('/images/cassie-portrait.jpg') center 20%/cover no-repeat;
-            display: flex; align-items: center; justify-content: center;
+            width: 100%; max-width: 380px; aspect-ratio: 3/4;
+            border-radius: 12px;
+            background: url('/images/cassie-portrait.jpg') center 15%/cover no-repeat;
             box-shadow:
-                0 0 0 6px var(--cream),
-                0 0 0 8px var(--golden),
-                0 20px 60px rgba(61,35,20,0.2);
+                0 0 0 4px var(--cream),
+                0 0 0 6px var(--golden),
+                0 20px 60px rgba(61,35,20,0.25);
             position: relative;
             overflow: hidden;
         }
         .about-photo::after {
             content: '';
             position: absolute; inset: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), transparent 60%);
+            background: linear-gradient(180deg, transparent 70%, rgba(61,35,20,0.15) 100%);
         }
         /* Handwritten annotation arrow */
         .annotation {
@@ -1840,7 +1839,7 @@
             .order-step::after { display: none; }
             .insta-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 150px; }
             .insta-item:first-child { grid-row: span 1; }
-            .about-photo { width: 220px; height: 220px; font-size: 64px; }
+            .about-photo { max-width: 300px; }
         }
         @media (max-width: 480px) {
             .timeline { grid-template-columns: 1fr; }
