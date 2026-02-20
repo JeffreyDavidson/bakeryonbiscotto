@@ -278,9 +278,8 @@
         .about-photo {
             width: 300px; height: 300px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--golden), var(--accent));
+            background: url('/images/cassie-portrait.jpg') center 20%/cover no-repeat;
             display: flex; align-items: center; justify-content: center;
-            font-size: 90px;
             box-shadow:
                 0 0 0 6px var(--cream),
                 0 0 0 8px var(--golden),
@@ -291,7 +290,7 @@
         .about-photo::after {
             content: '';
             position: absolute; inset: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), transparent 60%);
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), transparent 60%);
         }
         /* Handwritten annotation arrow */
         .annotation {
@@ -1982,7 +1981,7 @@
         <div class="about-bg"></div>
         <div class="about-inner">
             <div class="about-photo-wrap reveal">
-                <div class="about-photo">👩‍🍳</div>
+                <div class="about-photo"></div>
                 <div class="annotation annotation-1">That's me! ↑</div>
             </div>
             <div class="about-text reveal" style="transition-delay: 0.15s;">
