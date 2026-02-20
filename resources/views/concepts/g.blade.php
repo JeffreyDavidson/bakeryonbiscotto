@@ -68,7 +68,7 @@
         }
         .hero-bg {
             position: absolute; inset: 0;
-            background: url('/images/hero-banner.jpg') center/cover no-repeat;
+            background: url('/images/hero-banner.jpg?v=2') center/cover no-repeat;
             transform: scale(1.1);
             will-change: transform;
         }
