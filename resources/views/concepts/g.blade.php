@@ -2296,12 +2296,12 @@
         <p class="reviews-subtitle reveal">Real words from real people who keep coming back.</p>
 
         <div class="review-featured reveal">
-            <blockquote>The best sourdough I've ever had. The crust is perfectly crispy and the inside is so soft. We order every single week now and my kids fight over the last piece.</blockquote>
+            <blockquote>Bought some amazing goodies from Bakery on Biscotto! My dear friend Cassie sure knows how to bake amazing sourdough! I got the chocolate, chocolate chip loaf &amp; the English muffins. They are going to be the perfect thank you gift for my parents who are watching our kids for us this week. Highly recommend her shop.</blockquote>
             <div class="review-author-wrap">
                 <span class="author-line"></span>
-                <span class="review-author">Sarah M.</span>
+                <span class="review-author">Kristen S.</span>
                 <span class="dot" style="width:4px;height:4px;background:var(--golden);border-radius:50%;display:inline-block;"></span>
-                <span class="review-location">Davenport, FL</span>
+                <span class="review-location">Facebook</span>
                 <span class="author-line"></span>
             </div>
         </div>
