@@ -276,9 +276,8 @@
             justify-self: center;
         }
         .about-photo {
-            width: 100%; max-width: 380px; aspect-ratio: 3/4;
+            width: 100%; max-width: 380px;
             border-radius: 12px;
-            background: url('/images/cassie-portrait.jpg') center 15%/cover no-repeat;
             box-shadow:
                 0 0 0 4px var(--cream),
                 0 0 0 6px var(--golden),
@@ -286,10 +285,14 @@
             position: relative;
             overflow: hidden;
         }
+        .about-photo img {
+            width: 100%; height: auto; display: block;
+        }
         .about-photo::after {
             content: '';
             position: absolute; inset: 0;
             background: linear-gradient(180deg, transparent 70%, rgba(61,35,20,0.15) 100%);
+            pointer-events: none;
         }
         /* Handwritten annotation arrow */
         .annotation {
@@ -1980,7 +1983,9 @@
         <div class="about-bg"></div>
         <div class="about-inner">
             <div class="about-photo-wrap reveal">
-                <div class="about-photo"></div>
+                <div class="about-photo">
+                    <img src="/images/cassie-portrait.jpg" alt="Cassie, baker and owner of Bakery on Biscotto">
+                </div>
                 <div class="annotation annotation-1">That's me! ↑</div>
             </div>
             <div class="about-text reveal" style="transition-delay: 0.15s;">
