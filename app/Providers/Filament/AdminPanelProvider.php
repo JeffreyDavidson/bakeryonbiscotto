@@ -9,7 +9,6 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Support\Enums\MaxWidth;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -31,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('images/logo.jpg'))
             ->brandLogoHeight('60px')
             ->darkMode(false)
-            ->maxContentWidth(MaxWidth::Full)
+            ->maxContentWidth('full')
             ->colors([
                 'primary' => [
                     50 => '253, 248, 242',
