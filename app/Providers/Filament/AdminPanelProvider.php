@@ -27,8 +27,8 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('Bakery on Biscotto')
-            ->brandLogo(asset('images/logo.jpg'))
-            ->brandLogoHeight('60px')
+            ->brandLogo(asset('images/logo-admin.png'))
+            ->brandLogoHeight('80px')
             ->darkMode(false)
             ->maxContentWidth('full')
             ->colors([
