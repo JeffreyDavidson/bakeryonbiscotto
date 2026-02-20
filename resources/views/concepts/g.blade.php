@@ -2517,7 +2517,7 @@
                     <div class="convo-meta">
                         <span class="review-author">Joe M.</span>
                         <span class="dot"></span>
-                        <span class="review-location">Indiana</span>
+                        <span class="review-location">Gary, IN</span>
                     </div>
                 </div>
             </div>
