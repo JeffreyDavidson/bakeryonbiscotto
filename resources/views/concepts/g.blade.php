@@ -2471,32 +2471,6 @@
             </div>
 
             <div class="convo-card from-right reveal">
-                <div class="convo-avatar">J</div>
-                <div class="convo-bubble">
-                    <div class="review-stars">★★★★★</div>
-                    <blockquote>Finally, real bread from someone who actually cares. You can taste the difference in every bite. The English muffins are out of this world!</blockquote>
-                    <div class="convo-meta">
-                        <span class="review-author">Jessica R.</span>
-                        <span class="dot"></span>
-                        <span class="review-location">Clermont, FL</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="convo-card reveal">
-                <div class="convo-avatar">D</div>
-                <div class="convo-bubble">
-                    <div class="review-stars">★★★★★</div>
-                    <blockquote>I ordered the mini loaf variety pack and now I can't pick a favorite. The chocolate chip and cinnamon sugar are tied for first place.</blockquote>
-                    <div class="convo-meta">
-                        <span class="review-author">David L.</span>
-                        <span class="dot"></span>
-                        <span class="review-location">Kissimmee, FL</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="convo-card from-right reveal">
                 <div class="convo-avatar">K</div>
                 <div class="convo-bubble">
                     <div class="review-stars">★★★★★</div>
