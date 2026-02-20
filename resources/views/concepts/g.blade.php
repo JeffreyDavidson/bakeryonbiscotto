@@ -2059,7 +2059,7 @@
             <div x-show="tab === 'loaves'" x-transition.opacity.duration.400ms>
                 <div class="signature-item reveal">
                     <div class="signature-photo">
-                        <img src="/images/product-sourdough-boule-2.jpg" alt="Regular Sourdough Loaf">
+                        <img src="/images/product-sourdough-boule.jpg" alt="Regular Sourdough Loaf">
                         <div class="steam-wrap">
                             <div class="steam"></div><div class="steam"></div><div class="steam"></div><div class="steam"></div>
                         </div>
@@ -2376,12 +2376,12 @@
 
             <div class="ft-grid">
                 <div class="ft-item ft-hero">
-                    <img src="/images/product-chocolate-sourdough.jpg" alt="Chocolate Sourdough Loaf">
-                    <div class="ft-overlay"><span class="ft-caption">Dark chocolate sourdough</span></div>
+                    <img src="/images/product-sourdough-boule-2.jpg" alt="Sourdough Boule">
+                    <div class="ft-overlay"><span class="ft-caption">The signature boule</span></div>
                 </div>
                 <div class="ft-item">
-                    <img src="/images/product-cheddar-cheese-loaf.jpg" alt="Cheddar Cheese Loaf">
-                    <div class="ft-overlay"><span class="ft-caption">Cheddar cheese loaf</span></div>
+                    <img src="/images/product-chocolate-sourdough.jpg" alt="Chocolate Sourdough Loaf">
+                    <div class="ft-overlay"><span class="ft-caption">Dark chocolate sourdough</span></div>
                 </div>
                 <div class="ft-item">
                     <img src="/images/product-chocolate-chip.jpg" alt="Chocolate Chip Sourdough">
@@ -2398,6 +2398,10 @@
                 <div class="ft-item">
                     <img src="/images/product-4pack-sourdough-loaves.jpg" alt="4-Pack Sourdough Loaves">
                     <div class="ft-overlay"><span class="ft-caption">The 4-pack</span></div>
+                </div>
+                <div class="ft-item">
+                    <img src="/images/product-cheddar-cheese-loaf.jpg" alt="Cheddar Cheese Loaf">
+                    <div class="ft-overlay"><span class="ft-caption">Cheddar cheese loaf</span></div>
                 </div>
                 <div class="ft-item">
                     <img src="/images/product-banana-bread.jpg" alt="Banana Bread">
