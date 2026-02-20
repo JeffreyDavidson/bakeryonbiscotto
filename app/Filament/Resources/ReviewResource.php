@@ -4,12 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReviewResource\Pages;
 use App\Models\Review;
-use Filament\Forms;
-use Filament\Forms\Form;
 use BackedEnum;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Schemas\Components\Component;
 
 class ReviewResource extends Resource
 {
@@ -32,17 +32,17 @@ class ReviewResource extends Resource
         return Review::pending()->count() > 0 ? 'warning' : null;
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form->schema([
-            Forms\Components\TextInput::make('name')->required()->maxLength(100),
-            Forms\Components\TextInput::make('email')->email()->maxLength(255),
-            Forms\Components\Select::make('rating')
+        return $schema->components([
+            \Filament\Forms\Components\TextInput::make('name')->required()->maxLength(100),
+            \Filament\Forms\Components\TextInput::make('email')->email()->maxLength(255),
+            \Filament\Forms\Components\Select::make('rating')
                 ->options([5 => '5 Stars', 4 => '4 Stars', 3 => '3 Stars', 2 => '2 Stars', 1 => '1 Star'])
                 ->required(),
-            Forms\Components\Textarea::make('body')->required()->maxLength(1000)->columnSpanFull(),
-            Forms\Components\TextInput::make('favorite_bread')->maxLength(100),
-            Forms\Components\Select::make('status')
+            \Filament\Forms\Components\Textarea::make('body')->required()->maxLength(1000)->columnSpanFull(),
+            \Filament\Forms\Components\TextInput::make('favorite_bread')->maxLength(100),
+            \Filament\Forms\Components\Select::make('status')
                 ->options(['pending' => 'Pending', 'approved' => 'Approved', 'rejected' => 'Rejected'])
                 ->required(),
         ]);
