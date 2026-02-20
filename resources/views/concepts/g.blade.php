@@ -2495,6 +2495,32 @@
                     </div>
                 </div>
             </div>
+
+            <div class="convo-card from-right reveal">
+                <div class="convo-avatar">K</div>
+                <div class="convo-bubble">
+                    <div class="review-stars">★★★★★</div>
+                    <blockquote>This bread!! Oh. My. Gosh! Amazing!! Def recommend the Parmesan rosemary sourdough! Amazing!</blockquote>
+                    <div class="convo-meta">
+                        <span class="review-author">Kinsey M.</span>
+                        <span class="dot"></span>
+                        <span class="review-location">Winter Park, FL</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="convo-card reveal">
+                <div class="convo-avatar">J</div>
+                <div class="convo-bubble">
+                    <div class="review-stars">★★★★★</div>
+                    <blockquote>I fly to Florida every year just to have some of this lady's cooking! It doesn't get any better ☺️</blockquote>
+                    <div class="convo-meta">
+                        <span class="review-author">Joe M.</span>
+                        <span class="dot"></span>
+                        <span class="review-location">Indiana</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         {{-- Review Form --}}
