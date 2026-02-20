@@ -1250,32 +1250,33 @@
         .fresh-oven {
             padding: 80px 20px 100px;
             position: relative; overflow: hidden;
-            background: #1c1410;
+            background: var(--cream);
         }
         .fresh-oven::before {
             content: '';
             position: absolute; inset: 0;
             background:
-                repeating-linear-gradient(85deg, transparent, rgba(80,55,35,0.06) 1px, transparent 3px),
-                repeating-linear-gradient(88deg, transparent, rgba(60,40,25,0.04) 2px, transparent 5px),
-                radial-gradient(ellipse at 50% 50%, rgba(244,200,122,0.04), transparent 50%);
+                repeating-linear-gradient(85deg, transparent, rgba(139,94,60,0.03) 1px, transparent 3px),
+                repeating-linear-gradient(88deg, transparent, rgba(139,94,60,0.02) 2px, transparent 5px),
+                radial-gradient(ellipse at 50% 50%, rgba(212,165,116,0.06), transparent 50%);
             pointer-events: none;
         }
         .fresh-oven .section-head h2 {
             font-family: 'Dancing Script', cursive;
-            color: var(--cream);
+            color: var(--dark-brown);
             font-size: clamp(2.8rem, 6vw, 4rem);
             font-weight: 700;
         }
         .fresh-oven .accent-line {
-            background: linear-gradient(90deg, transparent, var(--golden), transparent);
+            background: linear-gradient(90deg, transparent, var(--warm-brown), transparent);
             width: 120px;
         }
         .fresh-subtitle {
             text-align: center;
             font-family: 'Cormorant Garamond', serif;
             font-style: italic; font-size: 17px;
-            color: rgba(245,230,208,0.35);
+            color: var(--warm-brown);
+            opacity: 0.6;
             margin-top: -32px; margin-bottom: 56px;
         }
 
@@ -1296,10 +1297,10 @@
             position: absolute; inset: 0;
             border-radius: 50%;
             background: radial-gradient(circle,
-                rgba(245,235,220,0.35) 0%,
-                rgba(245,235,220,0.18) 30%,
-                rgba(245,235,220,0.06) 55%,
-                transparent 75%
+                rgba(255,250,240,0.7) 0%,
+                rgba(255,250,240,0.4) 25%,
+                rgba(255,250,240,0.15) 50%,
+                transparent 72%
             );
         }
         .flour-patch::after {
@@ -1308,18 +1309,18 @@
             width: 250%; height: 250%;
             top: -75%; left: -75%;
             background-image:
-                radial-gradient(circle at 18% 28%, rgba(245,235,220,0.6) 1.5px, transparent 1.5px),
-                radial-gradient(circle at 55% 12%, rgba(245,235,220,0.5) 2px, transparent 2px),
-                radial-gradient(circle at 82% 55%, rgba(245,235,220,0.55) 1.5px, transparent 1.5px),
-                radial-gradient(circle at 38% 68%, rgba(245,235,220,0.45) 2.5px, transparent 2.5px),
-                radial-gradient(circle at 12% 78%, rgba(245,235,220,0.5) 1.5px, transparent 1.5px),
-                radial-gradient(circle at 72% 38%, rgba(245,235,220,0.55) 2px, transparent 2px),
-                radial-gradient(circle at 28% 48%, rgba(245,235,220,0.4) 3px, transparent 3px),
-                radial-gradient(circle at 88% 22%, rgba(245,235,220,0.45) 2px, transparent 2px),
-                radial-gradient(circle at 48% 88%, rgba(245,235,220,0.5) 2px, transparent 2px),
-                radial-gradient(circle at 65% 75%, rgba(245,235,220,0.35) 2.5px, transparent 2.5px),
-                radial-gradient(circle at 8% 45%, rgba(245,235,220,0.55) 1.5px, transparent 1.5px),
-                radial-gradient(circle at 42% 15%, rgba(245,235,220,0.4) 2px, transparent 2px);
+                radial-gradient(circle at 18% 28%, rgba(255,252,245,0.85) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 55% 12%, rgba(255,252,245,0.75) 2px, transparent 2px),
+                radial-gradient(circle at 82% 55%, rgba(255,252,245,0.8) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 38% 68%, rgba(255,252,245,0.7) 2.5px, transparent 2.5px),
+                radial-gradient(circle at 12% 78%, rgba(255,252,245,0.75) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 72% 38%, rgba(255,252,245,0.8) 2px, transparent 2px),
+                radial-gradient(circle at 28% 48%, rgba(255,252,245,0.65) 3px, transparent 3px),
+                radial-gradient(circle at 88% 22%, rgba(255,252,245,0.7) 2px, transparent 2px),
+                radial-gradient(circle at 48% 88%, rgba(255,252,245,0.75) 2px, transparent 2px),
+                radial-gradient(circle at 65% 75%, rgba(255,252,245,0.6) 2.5px, transparent 2.5px),
+                radial-gradient(circle at 8% 45%, rgba(255,252,245,0.8) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 42% 15%, rgba(255,252,245,0.65) 2px, transparent 2px);
             pointer-events: none;
         }
 
@@ -1343,7 +1344,7 @@
             bottom: 0; left: 10px;
             width: 50px; height: 45px;
             border-radius: 50% 50% 45% 45%;
-            background: radial-gradient(circle, rgba(245,235,220,0.22), rgba(245,235,220,0.08) 60%, transparent 80%);
+            background: radial-gradient(circle, rgba(255,252,245,0.5), rgba(255,252,245,0.2) 60%, transparent 80%);
         }
         .flour-handprint::after {
             content: '';
@@ -1351,11 +1352,11 @@
             top: 0; left: 5px;
             width: 60px; height: 40px;
             background:
-                radial-gradient(ellipse at 15% 60%, rgba(245,235,220,0.18) 4px, transparent 4px),
-                radial-gradient(ellipse at 35% 40%, rgba(245,235,220,0.2) 4px, transparent 4px),
-                radial-gradient(ellipse at 55% 30%, rgba(245,235,220,0.18) 4px, transparent 4px),
-                radial-gradient(ellipse at 75% 45%, rgba(245,235,220,0.16) 4px, transparent 4px),
-                radial-gradient(ellipse at 90% 65%, rgba(245,235,220,0.14) 3px, transparent 3px);
+                radial-gradient(ellipse at 15% 60%, rgba(255,252,245,0.4) 4px, transparent 4px),
+                radial-gradient(ellipse at 35% 40%, rgba(255,252,245,0.45) 4px, transparent 4px),
+                radial-gradient(ellipse at 55% 30%, rgba(255,252,245,0.4) 4px, transparent 4px),
+                radial-gradient(ellipse at 75% 45%, rgba(255,252,245,0.35) 4px, transparent 4px),
+                radial-gradient(ellipse at 90% 65%, rgba(255,252,245,0.3) 3px, transparent 3px);
         }
 
         /* Rolling pin flour trail */
@@ -1372,10 +1373,10 @@
             top: 10px; left: 0; right: 0;
             height: 30px;
             background: linear-gradient(90deg,
-                rgba(245,235,220,0.3),
-                rgba(245,235,220,0.2) 30%,
-                rgba(245,235,220,0.12) 60%,
-                rgba(245,235,220,0.04) 85%,
+                rgba(255,252,245,0.6),
+                rgba(255,252,245,0.4) 30%,
+                rgba(255,252,245,0.25) 60%,
+                rgba(255,252,245,0.08) 85%,
                 transparent
             );
             border-radius: 20px;
@@ -1384,13 +1385,13 @@
             content: '';
             position: absolute; inset: 0;
             background-image:
-                radial-gradient(circle at 5% 20%, rgba(245,235,220,0.4) 2px, transparent 2px),
-                radial-gradient(circle at 15% 80%, rgba(245,235,220,0.3) 2.5px, transparent 2.5px),
-                radial-gradient(circle at 25% 10%, rgba(245,235,220,0.35) 1.5px, transparent 1.5px),
-                radial-gradient(circle at 35% 70%, rgba(245,235,220,0.25) 2px, transparent 2px),
-                radial-gradient(circle at 45% 30%, rgba(245,235,220,0.3) 2px, transparent 2px),
-                radial-gradient(circle at 55% 60%, rgba(245,235,220,0.2) 1.5px, transparent 1.5px),
-                radial-gradient(circle at 65% 15%, rgba(245,235,220,0.15) 2px, transparent 2px);
+                radial-gradient(circle at 5% 20%, rgba(255,252,245,0.7) 2px, transparent 2px),
+                radial-gradient(circle at 15% 80%, rgba(255,252,245,0.6) 2.5px, transparent 2.5px),
+                radial-gradient(circle at 25% 10%, rgba(255,252,245,0.65) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 35% 70%, rgba(255,252,245,0.5) 2px, transparent 2px),
+                radial-gradient(circle at 45% 30%, rgba(255,252,245,0.6) 2px, transparent 2px),
+                radial-gradient(circle at 55% 60%, rgba(255,252,245,0.4) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 65% 15%, rgba(255,252,245,0.35) 2px, transparent 2px);
         }
 
         /* Scattered flour specks */
@@ -1400,8 +1401,9 @@
         }
         .flour-specks span {
             position: absolute;
-            background: rgba(245,235,220,0.5);
+            background: rgba(255,252,245,0.8);
             border-radius: 50%;
+            box-shadow: 0 0 2px rgba(255,252,245,0.4);
         }
         .flour-specks span:nth-child(1) { width: 3px; height: 3px; top: 12%; left: 8%; }
         .flour-specks span:nth-child(2) { width: 2px; height: 2px; top: 25%; left: 32%; }
@@ -1432,10 +1434,8 @@
             position: absolute; inset: 0;
             background: linear-gradient(90deg,
                 transparent,
-                rgba(28,20,16,0.6) 10%,
-                rgba(28,20,16,0.8) 30%,
-                rgba(28,20,16,0.8) 70%,
-                rgba(28,20,16,0.6) 90%,
+                var(--cream) 10%,
+                var(--cream) 90%,
                 transparent
             );
             border-radius: 6px;
@@ -1443,21 +1443,23 @@
         .flour-swipe::after {
             content: '';
             position: absolute;
-            top: -4px; left: 0; right: 0; bottom: -4px;
+            top: -5px; left: 0; right: 0; bottom: -5px;
             background:
                 linear-gradient(90deg,
                     transparent 5%,
-                    rgba(245,235,220,0.25) 10%,
-                    transparent 15%,
-                    transparent 85%,
-                    rgba(245,235,220,0.2) 90%,
+                    rgba(255,252,245,0.6) 8%,
+                    rgba(255,252,245,0.3) 14%,
+                    transparent 18%,
+                    transparent 82%,
+                    rgba(255,252,245,0.3) 86%,
+                    rgba(255,252,245,0.6) 92%,
                     transparent 95%
                 ),
                 linear-gradient(180deg,
-                    rgba(245,235,220,0.2),
-                    transparent 30%,
-                    transparent 70%,
-                    rgba(245,235,220,0.2)
+                    rgba(255,252,245,0.5),
+                    transparent 25%,
+                    transparent 75%,
+                    rgba(255,252,245,0.5)
                 );
             border-radius: 6px;
         }
@@ -1487,12 +1489,13 @@
             width: 100%; height: 100%; min-height: 180px;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center; gap: 6px;
-            background: radial-gradient(circle, rgba(212,165,116,0.04), transparent 60%), #1a1208;
+            background: radial-gradient(circle, rgba(212,165,116,0.08), transparent 60%), rgba(255,252,245,0.5);
+            border: 1px solid rgba(139,94,60,0.1);
         }
         .ft-item .ft-ph .ph-emoji { font-size: 40px; }
         .ft-item .ft-ph .ph-text {
             font-family: 'Caveat', cursive; font-size: 14px;
-            color: rgba(245,230,208,0.25);
+            color: var(--warm-brown); opacity: 0.5;
         }
         .ft-item .ft-overlay {
             position: absolute; bottom: 0; left: 0; right: 0;
@@ -1500,7 +1503,7 @@
             background: linear-gradient(transparent, rgba(26,15,8,0.7));
         }
         .ft-item .ft-caption {
-            font-family: 'Caveat', cursive; font-size: 18px; color: var(--cream);
+            font-family: 'Caveat', cursive; font-size: 18px; color: white;
         }
         .ft-item.ft-hero { grid-row: span 2; }
 
