@@ -1243,21 +1243,22 @@
             .convo-avatar { width: 44px; height: 44px; font-size: 16px; }
         }
 
+
         /* ═══════════════════════════════════
-           FRESH FROM THE OVEN - Clothesline
+           FRESH FROM THE OVEN - Flour Dusted Table
         ═══════════════════════════════════ */
         .fresh-oven {
-            padding: 100px 20px 80px;
-            position: relative;
-            background: var(--dark);
-            overflow: hidden;
+            padding: 80px 20px 100px;
+            position: relative; overflow: hidden;
+            background: #1c1410;
         }
         .fresh-oven::before {
             content: '';
             position: absolute; inset: 0;
             background:
-                radial-gradient(ellipse at 30% 20%, rgba(244,200,122,0.06), transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(139,94,60,0.05), transparent 40%);
+                repeating-linear-gradient(85deg, transparent, rgba(80,55,35,0.06) 1px, transparent 3px),
+                repeating-linear-gradient(88deg, transparent, rgba(60,40,25,0.04) 2px, transparent 5px),
+                radial-gradient(ellipse at 50% 50%, rgba(244,200,122,0.04), transparent 50%);
             pointer-events: none;
         }
         .fresh-oven .section-head h2 {
@@ -1273,216 +1274,243 @@
         .fresh-subtitle {
             text-align: center;
             font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 17px;
-            color: rgba(245,230,208,0.4);
-            margin-top: -32px;
-            margin-bottom: 64px;
+            font-style: italic; font-size: 17px;
+            color: rgba(245,230,208,0.35);
+            margin-top: -32px; margin-bottom: 56px;
         }
 
-        /* The clothesline */
-        .clothesline-wrap {
-            max-width: 1000px;
-            margin: 0 auto 56px;
+        .ft-container {
+            max-width: 900px; margin: 0 auto;
             position: relative;
         }
-        /* The string */
-        .clothesline-string {
+
+        /* Flour dust patches */
+        .flour-patch {
             position: absolute;
-            top: 20px;
-            left: -20px; right: -20px;
-            height: 2px;
-            background: linear-gradient(90deg,
-                transparent,
-                rgba(212,165,116,0.25) 10%,
-                rgba(212,165,116,0.35) 50%,
-                rgba(212,165,116,0.25) 90%,
-                transparent
-            );
+            border-radius: 50%;
+            pointer-events: none;
             z-index: 1;
         }
-        /* Slight sag with SVG */
-        .clothesline-string::after {
+        .flour-patch::before {
+            content: '';
+            position: absolute; inset: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                rgba(245,235,220,0.35) 0%,
+                rgba(245,235,220,0.18) 30%,
+                rgba(245,235,220,0.06) 55%,
+                transparent 75%
+            );
+        }
+        .flour-patch::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 40px;
-            background: radial-gradient(ellipse at 50% 0%, rgba(212,165,116,0.03), transparent 70%);
+            width: 250%; height: 250%;
+            top: -75%; left: -75%;
+            background-image:
+                radial-gradient(circle at 18% 28%, rgba(245,235,220,0.6) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 55% 12%, rgba(245,235,220,0.5) 2px, transparent 2px),
+                radial-gradient(circle at 82% 55%, rgba(245,235,220,0.55) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 38% 68%, rgba(245,235,220,0.45) 2.5px, transparent 2.5px),
+                radial-gradient(circle at 12% 78%, rgba(245,235,220,0.5) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 72% 38%, rgba(245,235,220,0.55) 2px, transparent 2px),
+                radial-gradient(circle at 28% 48%, rgba(245,235,220,0.4) 3px, transparent 3px),
+                radial-gradient(circle at 88% 22%, rgba(245,235,220,0.45) 2px, transparent 2px),
+                radial-gradient(circle at 48% 88%, rgba(245,235,220,0.5) 2px, transparent 2px),
+                radial-gradient(circle at 65% 75%, rgba(245,235,220,0.35) 2.5px, transparent 2.5px),
+                radial-gradient(circle at 8% 45%, rgba(245,235,220,0.55) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 42% 15%, rgba(245,235,220,0.4) 2px, transparent 2px);
+            pointer-events: none;
         }
 
-        .clothesline-photos {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            padding-top: 32px;
-            position: relative;
-            z-index: 2;
-        }
+        .flour-patch.fp1 { width: 320px; height: 300px; top: -40px; left: -30px; }
+        .flour-patch.fp2 { width: 280px; height: 250px; bottom: -30px; right: -10px; }
+        .flour-patch.fp3 { width: 200px; height: 180px; top: 35%; left: 50%; }
+        .flour-patch.fp4 { width: 150px; height: 140px; top: 15%; right: 10%; }
+        .flour-patch.fp5 { width: 160px; height: 150px; bottom: 30%; left: 20%; }
 
-        /* Each hanging photo */
-        .hanging-photo {
-            position: relative;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            transform-origin: top center;
-        }
-        .hanging-photo:hover {
-            z-index: 10;
-        }
-
-        /* The pin/clip at top */
-        .photo-clip {
+        /* Flour handprint */
+        .flour-handprint {
             position: absolute;
-            top: -14px; left: 50%; transform: translateX(-50%);
-            z-index: 3;
-            width: 20px; height: 28px;
+            bottom: 30px; left: 50px;
+            width: 70px; height: 80px;
+            z-index: 1; pointer-events: none;
+            transform: rotate(-15deg);
         }
-        .photo-clip::before {
+        .flour-handprint::before {
             content: '';
             position: absolute;
-            top: 0; left: 50%; transform: translateX(-50%);
-            width: 12px; height: 20px;
-            background: linear-gradient(180deg, #c9a87c, #a88654);
-            border-radius: 3px 3px 1px 1px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            bottom: 0; left: 10px;
+            width: 50px; height: 45px;
+            border-radius: 50% 50% 45% 45%;
+            background: radial-gradient(circle, rgba(245,235,220,0.22), rgba(245,235,220,0.08) 60%, transparent 80%);
         }
-        .photo-clip::after {
+        .flour-handprint::after {
             content: '';
             position: absolute;
-            top: 14px; left: 50%; transform: translateX(-50%);
-            width: 16px; height: 8px;
-            background: linear-gradient(180deg, #a88654, #8b6d3f);
-            border-radius: 0 0 2px 2px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        /* Polaroid frame */
-        .photo-frame {
-            background: white;
-            padding: 10px 10px 40px;
-            box-shadow:
-                0 8px 30px rgba(0,0,0,0.25),
-                2px 2px 0 rgba(139,94,60,0.03);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .hanging-photo:hover .photo-frame {
-            box-shadow:
-                0 16px 50px rgba(0,0,0,0.35),
-                0 0 30px rgba(212,165,116,0.08);
-            transform: scale(1.08) rotate(0deg) !important;
-        }
-        .photo-frame img {
-            width: 100%; height: 100%; object-fit: cover;
-            display: block;
-        }
-        .photo-frame .placeholder-slot {
-            width: 100%; height: 100%;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 8px;
+            top: 0; left: 5px;
+            width: 60px; height: 40px;
             background:
-                radial-gradient(circle at 50% 40%, rgba(212,165,116,0.06), transparent 60%),
-                #f8f0e4;
-        }
-        .photo-frame .placeholder-slot .ph-emoji {
-            font-size: 40px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-        }
-        .photo-frame .placeholder-slot .ph-text {
-            font-family: 'Dancing Script', cursive;
-            font-size: 13px;
-            color: var(--brown);
-            opacity: 0.5;
+                radial-gradient(ellipse at 15% 60%, rgba(245,235,220,0.18) 4px, transparent 4px),
+                radial-gradient(ellipse at 35% 40%, rgba(245,235,220,0.2) 4px, transparent 4px),
+                radial-gradient(ellipse at 55% 30%, rgba(245,235,220,0.18) 4px, transparent 4px),
+                radial-gradient(ellipse at 75% 45%, rgba(245,235,220,0.16) 4px, transparent 4px),
+                radial-gradient(ellipse at 90% 65%, rgba(245,235,220,0.14) 3px, transparent 3px);
         }
 
-        /* Handwritten caption below photo */
-        .photo-caption {
+        /* Rolling pin flour trail */
+        .flour-trail {
             position: absolute;
-            bottom: 8px; left: 10px; right: 10px;
-            text-align: center;
-            font-family: 'Dancing Script', cursive;
-            font-size: 13px;
-            color: var(--warm);
+            top: 45%; right: -20px;
+            width: 220px; height: 60px;
+            transform: rotate(-5deg);
+            z-index: 1; pointer-events: none;
+        }
+        .flour-trail::before {
+            content: '';
+            position: absolute;
+            top: 10px; left: 0; right: 0;
+            height: 30px;
+            background: linear-gradient(90deg,
+                rgba(245,235,220,0.3),
+                rgba(245,235,220,0.2) 30%,
+                rgba(245,235,220,0.12) 60%,
+                rgba(245,235,220,0.04) 85%,
+                transparent
+            );
+            border-radius: 20px;
+        }
+        .flour-trail::after {
+            content: '';
+            position: absolute; inset: 0;
+            background-image:
+                radial-gradient(circle at 5% 20%, rgba(245,235,220,0.4) 2px, transparent 2px),
+                radial-gradient(circle at 15% 80%, rgba(245,235,220,0.3) 2.5px, transparent 2.5px),
+                radial-gradient(circle at 25% 10%, rgba(245,235,220,0.35) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 35% 70%, rgba(245,235,220,0.25) 2px, transparent 2px),
+                radial-gradient(circle at 45% 30%, rgba(245,235,220,0.3) 2px, transparent 2px),
+                radial-gradient(circle at 55% 60%, rgba(245,235,220,0.2) 1.5px, transparent 1.5px),
+                radial-gradient(circle at 65% 15%, rgba(245,235,220,0.15) 2px, transparent 2px);
         }
 
-        /* Individual photo sizes and rotations */
-        .hanging-photo:nth-child(1) { margin-top: 12px; }
-        .hanging-photo:nth-child(1) .photo-frame { transform: rotate(-3deg); width: 200px; }
-        .hanging-photo:nth-child(1) .photo-frame img,
-        .hanging-photo:nth-child(1) .photo-frame .placeholder-slot { height: 200px; }
+        /* Scattered flour specks */
+        .flour-specks {
+            position: absolute; inset: 0;
+            pointer-events: none; z-index: 1;
+        }
+        .flour-specks span {
+            position: absolute;
+            background: rgba(245,235,220,0.5);
+            border-radius: 50%;
+        }
+        .flour-specks span:nth-child(1) { width: 3px; height: 3px; top: 12%; left: 8%; }
+        .flour-specks span:nth-child(2) { width: 2px; height: 2px; top: 25%; left: 32%; }
+        .flour-specks span:nth-child(3) { width: 4px; height: 4px; top: 8%; left: 65%; opacity: 0.4; }
+        .flour-specks span:nth-child(4) { width: 2px; height: 2px; top: 55%; left: 12%; }
+        .flour-specks span:nth-child(5) { width: 3px; height: 3px; top: 70%; left: 45%; opacity: 0.35; }
+        .flour-specks span:nth-child(6) { width: 2px; height: 2px; top: 40%; left: 88%; }
+        .flour-specks span:nth-child(7) { width: 4px; height: 3px; top: 85%; left: 25%; opacity: 0.3; }
+        .flour-specks span:nth-child(8) { width: 2px; height: 2px; top: 18%; left: 78%; }
+        .flour-specks span:nth-child(9) { width: 3px; height: 3px; top: 62%; left: 72%; opacity: 0.4; }
+        .flour-specks span:nth-child(10) { width: 2px; height: 2px; top: 35%; left: 55%; }
+        .flour-specks span:nth-child(11) { width: 3px; height: 2px; top: 78%; left: 82%; opacity: 0.35; }
+        .flour-specks span:nth-child(12) { width: 2px; height: 3px; top: 48%; left: 5%; }
+        .flour-specks span:nth-child(13) { width: 4px; height: 4px; top: 22%; left: 42%; opacity: 0.25; }
+        .flour-specks span:nth-child(14) { width: 2px; height: 2px; top: 90%; left: 58%; }
+        .flour-specks span:nth-child(15) { width: 3px; height: 3px; top: 5%; left: 92%; opacity: 0.3; }
 
-        .hanging-photo:nth-child(2) { margin-top: 0; }
-        .hanging-photo:nth-child(2) .photo-frame { transform: rotate(2deg); width: 220px; }
-        .hanging-photo:nth-child(2) .photo-frame img,
-        .hanging-photo:nth-child(2) .photo-frame .placeholder-slot { height: 260px; }
+        /* Finger swipe through flour */
+        .flour-swipe {
+            position: absolute;
+            top: 75%; left: 15%;
+            width: 180px; height: 12px;
+            z-index: 1; pointer-events: none;
+            transform: rotate(3deg);
+        }
+        .flour-swipe::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(28,20,16,0.6) 10%,
+                rgba(28,20,16,0.8) 30%,
+                rgba(28,20,16,0.8) 70%,
+                rgba(28,20,16,0.6) 90%,
+                transparent
+            );
+            border-radius: 6px;
+        }
+        .flour-swipe::after {
+            content: '';
+            position: absolute;
+            top: -4px; left: 0; right: 0; bottom: -4px;
+            background:
+                linear-gradient(90deg,
+                    transparent 5%,
+                    rgba(245,235,220,0.25) 10%,
+                    transparent 15%,
+                    transparent 85%,
+                    rgba(245,235,220,0.2) 90%,
+                    transparent 95%
+                ),
+                linear-gradient(180deg,
+                    rgba(245,235,220,0.2),
+                    transparent 30%,
+                    transparent 70%,
+                    rgba(245,235,220,0.2)
+                );
+            border-radius: 6px;
+        }
 
-        .hanging-photo:nth-child(3) { margin-top: 8px; }
-        .hanging-photo:nth-child(3) .photo-frame { transform: rotate(-1.5deg); width: 200px; }
-        .hanging-photo:nth-child(3) .photo-frame img,
-        .hanging-photo:nth-child(3) .photo-frame .placeholder-slot { height: 220px; }
+        .ft-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 16px;
+            position: relative; z-index: 2;
+        }
 
-        .hanging-photo:nth-child(4) { margin-top: 16px; }
-        .hanging-photo:nth-child(4) .photo-frame { transform: rotate(3.5deg); width: 180px; }
-        .hanging-photo:nth-child(4) .photo-frame img,
-        .hanging-photo:nth-child(4) .photo-frame .placeholder-slot { height: 180px; }
-
-        .hanging-photo:nth-child(5) { margin-top: 4px; }
-        .hanging-photo:nth-child(5) .photo-frame { transform: rotate(-2.5deg); width: 200px; }
-        .hanging-photo:nth-child(5) .photo-frame img,
-        .hanging-photo:nth-child(5) .photo-frame .placeholder-slot { height: 240px; }
-
-        /* CTA */
-        .fresh-cta {
-            text-align: center;
+        .ft-item {
+            border-radius: 8px;
+            overflow: hidden;
             position: relative;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .fresh-cta a {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 17px;
-            font-weight: 600;
-            color: var(--golden);
-            text-decoration: none;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            padding: 14px 36px;
-            border: 1.5px solid rgba(212,165,116,0.3);
-            border-radius: 100px;
-            transition: all 0.3s;
+        .ft-item:hover {
+            transform: scale(1.03); z-index: 5;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
         }
-        .fresh-cta a:hover {
-            background: rgba(212,165,116,0.08);
-            border-color: var(--golden);
-            box-shadow: 0 0 30px rgba(212,165,116,0.1);
+        .ft-item img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
         }
-        .fresh-cta a svg {
-            width: 18px; height: 18px;
-            fill: var(--golden);
+        .ft-item .ft-ph {
+            width: 100%; height: 100%; min-height: 180px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 6px;
+            background: radial-gradient(circle, rgba(212,165,116,0.04), transparent 60%), #1a1208;
         }
+        .ft-item .ft-ph .ph-emoji { font-size: 40px; }
+        .ft-item .ft-ph .ph-text {
+            font-family: 'Caveat', cursive; font-size: 14px;
+            color: rgba(245,230,208,0.25);
+        }
+        .ft-item .ft-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 32px 14px 12px;
+            background: linear-gradient(transparent, rgba(26,15,8,0.7));
+        }
+        .ft-item .ft-caption {
+            font-family: 'Caveat', cursive; font-size: 18px; color: var(--cream);
+        }
+        .ft-item.ft-hero { grid-row: span 2; }
 
         @media (max-width: 768px) {
-            .clothesline-photos {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                justify-content: flex-start;
-                padding-left: 20px;
-                padding-right: 20px;
-                margin-left: -20px;
-                margin-right: -20px;
-                scroll-snap-type: x mandatory;
-            }
-            .hanging-photo { scroll-snap-align: center; flex-shrink: 0; }
-            .hanging-photo:nth-child(1) .photo-frame,
-            .hanging-photo:nth-child(2) .photo-frame,
-            .hanging-photo:nth-child(3) .photo-frame,
-            .hanging-photo:nth-child(4) .photo-frame,
-            .hanging-photo:nth-child(5) .photo-frame { width: 180px; }
-            .hanging-photo:nth-child(1) .photo-frame img, .hanging-photo:nth-child(1) .photo-frame .placeholder-slot,
-            .hanging-photo:nth-child(2) .photo-frame img, .hanging-photo:nth-child(2) .photo-frame .placeholder-slot,
-            .hanging-photo:nth-child(3) .photo-frame img, .hanging-photo:nth-child(3) .photo-frame .placeholder-slot,
-            .hanging-photo:nth-child(4) .photo-frame img, .hanging-photo:nth-child(4) .photo-frame .placeholder-slot,
-            .hanging-photo:nth-child(5) .photo-frame img, .hanging-photo:nth-child(5) .photo-frame .placeholder-slot { height: 200px; }
+            .ft-grid { grid-template-columns: 1fr 1fr; }
+            .ft-item.ft-hero { grid-row: span 1; }
+            .ft-item.ft-hero img { height: 220px; }
+            .ft-item img, .ft-item .ft-ph { min-height: 160px; }
+            .flour-patch.fp3, .flour-patch.fp4, .flour-patch.fp5 { display: none; }
+            .flour-swipe { display: none; }
         }
 
         /* ═══════════════════════════════════
@@ -2329,65 +2357,51 @@
         </div>
         <p class="fresh-subtitle reveal">A peek into our kitchen and what's baking today.</p>
 
-        <div class="clothesline-wrap reveal">
-            <div class="clothesline-string"></div>
-            <div class="clothesline-photos">
-                <div class="hanging-photo">
-                    <div class="photo-clip"></div>
-                    <div class="photo-frame">
-                        <img src="/images/product-sourdough-boule.jpg" alt="Sourdough boule">
-                        <span class="photo-caption">The signature boule</span>
+        <div class="ft-container reveal">
+            <div class="flour-patch fp1"></div>
+            <div class="flour-patch fp2"></div>
+            <div class="flour-patch fp3"></div>
+            <div class="flour-patch fp4"></div>
+            <div class="flour-patch fp5"></div>
+
+            <div class="flour-specks">
+                <span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span>
+            </div>
+
+            <div class="flour-trail"></div>
+            <div class="flour-swipe"></div>
+            <div class="flour-handprint"></div>
+
+            <div class="ft-grid">
+                <div class="ft-item ft-hero">
+                    <img src="/images/product-sourdough-boule.jpg" alt="Sourdough boule">
+                    <div class="ft-overlay"><span class="ft-caption">The signature boule</span></div>
+                </div>
+                <div class="ft-item">
+                    <img src="/images/product-english-muffins.jpg" alt="English muffins">
+                    <div class="ft-overlay"><span class="ft-caption">Griddle day!</span></div>
+                </div>
+                <div class="ft-item">
+                    <img src="/images/product-pumpkin-bread.jpg" alt="Pumpkin bread">
+                    <div class="ft-overlay"><span class="ft-caption">Fall vibes</span></div>
+                </div>
+                <div class="ft-item">
+                    <div class="ft-ph">
+                        <span class="ph-emoji">🫧</span>
+                        <span class="ph-text">Biscotto bubbling</span>
                     </div>
                 </div>
-
-                <div class="hanging-photo">
-                    <div class="photo-clip"></div>
-                    <div class="photo-frame">
-                        <img src="/images/product-english-muffins.jpg" alt="English muffins">
-                        <span class="photo-caption">Griddle day!</span>
-                    </div>
-                </div>
-
-                <div class="hanging-photo">
-                    <div class="photo-clip"></div>
-                    <div class="photo-frame">
-                        <img src="/images/product-pumpkin-bread.jpg" alt="Pumpkin bread">
-                        <span class="photo-caption">Fall vibes 🎃</span>
-                    </div>
-                </div>
-
-                <div class="hanging-photo">
-                    <div class="photo-clip"></div>
-                    <div class="photo-frame">
-                        <div class="placeholder-slot">
-                            <span class="ph-emoji">🫧</span>
-                            <span class="ph-text">Biscotto bubbling</span>
-                        </div>
-                        <span class="photo-caption">The starter</span>
-                    </div>
-                </div>
-
-                <div class="hanging-photo">
-                    <div class="photo-clip"></div>
-                    <div class="photo-frame">
-                        <div class="placeholder-slot">
-                            <span class="ph-emoji">📦</span>
-                            <span class="ph-text">Ready for pickup</span>
-                        </div>
-                        <span class="photo-caption">Packed with care</span>
+                <div class="ft-item">
+                    <div class="ft-ph">
+                        <span class="ph-emoji">📦</span>
+                        <span class="ph-text">Packed with care</span>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="fresh-cta reveal">
-            <a href="https://instagram.com/bakeryonbiscotto" target="_blank">
-                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                Follow @bakeryonbiscotto
-            </a>
-        </div>
     </section>
-
 
     {{-- ═══ ORDER ═══ --}}
     <section class="order" id="order">
