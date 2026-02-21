@@ -938,7 +938,6 @@
                 </form>
             </div>
         </div>
-    </div>
 
     {{-- BUNDLE PICKER MODAL --}}
     <div x-show="bundleModal" x-transition.opacity class="bundle-overlay" @click.self="bundleModal = false" x-cloak>
@@ -970,6 +969,7 @@
                 Add to Order
             </button>
         </div>
+    </div>
     </div>
 
     {{-- FOOTER --}}
