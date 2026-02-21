@@ -17,6 +17,4 @@ This review is pending your approval.
 View Reviews
 </x-mail::button>
 
-Thanks,<br>
-Cassie
 </x-mail::message>

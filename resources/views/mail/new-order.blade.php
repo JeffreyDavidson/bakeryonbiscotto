@@ -36,5 +36,4 @@
 View Orders
 </x-mail::button>
 
-Cassie
 </x-mail::message>
