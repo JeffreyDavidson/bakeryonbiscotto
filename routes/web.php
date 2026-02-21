@@ -4,8 +4,14 @@ use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function() {
-    $approvedReviews = \App\Models\Review::approved()->inRandomOrder()->get();
-    $featuredReview = $approvedReviews->shift();
+    $featuredReview = \App\Models\Review::approved()->where('is_featured', true)->first();
+    $approvedReviews = \App\Models\Review::approved()
+        ->when($featuredReview, fn($q) => $q->where('id', '!=', $featuredReview->id))
+        ->inRandomOrder()
+        ->get();
+    if (!$featuredReview && $approvedReviews->count()) {
+        $featuredReview = $approvedReviews->shift();
+    }
     return view('concepts.g', compact('featuredReview', 'approvedReviews'));
 });
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');

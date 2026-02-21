@@ -55,6 +55,13 @@ class ReviewResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\IconColumn::make('is_featured')
+                    ->label('')
+                    ->boolean()
+                    ->trueIcon('heroicon-s-star')
+                    ->trueColor('warning')
+                    ->falseIcon('')
+                    ->width('1rem'),
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('rating')
                     ->formatStateUsing(fn ($state) => str_repeat('⭐', $state))
@@ -77,6 +84,21 @@ class ReviewResource extends Resource
                     ->options(['pending' => 'Pending', 'approved' => 'Approved', 'rejected' => 'Rejected']),
             ])
             ->actions([
+                Action::make('feature')
+                    ->icon('heroicon-o-star')
+                    ->color('warning')
+                    ->label('Highlight')
+                    ->visible(fn (Review $record) => $record->status === 'approved' && !$record->is_featured)
+                    ->action(function (Review $record) {
+                        Review::where('is_featured', true)->update(['is_featured' => false]);
+                        $record->update(['is_featured' => true]);
+                    }),
+                Action::make('unfeature')
+                    ->icon('heroicon-s-star')
+                    ->color('gray')
+                    ->label('Remove Highlight')
+                    ->visible(fn (Review $record) => $record->is_featured)
+                    ->action(fn (Review $record) => $record->update(['is_featured' => false])),
                 Action::make('approve')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')

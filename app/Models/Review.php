@@ -13,7 +13,15 @@ class Review extends Model
         'body',
         'favorite_bread',
         'status',
+        'is_featured',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_featured' => 'boolean',
+        ];
+    }
 
     public function scopeApproved($query)
     {
