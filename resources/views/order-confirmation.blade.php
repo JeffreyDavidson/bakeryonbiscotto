@@ -177,7 +177,12 @@
                 <h3 class="items-title">Items</h3>
                 @foreach($order->items as $item)
                 <div class="item-row">
-                    <span class="item-name">{{ $item->product_name }} &times; {{ $item->quantity }}</span>
+                    <span class="item-name">
+                        {{ $item->product_name }} &times; {{ $item->quantity }}
+                        @if($item->selections)
+                            <br><em style="font-size: 0.82rem; color: var(--warm);">({{ implode(', ', $item->selections) }})</em>
+                        @endif
+                    </span>
                     <span class="item-price">${{ number_format($item->line_total, 2) }}</span>
                 </div>
                 @endforeach

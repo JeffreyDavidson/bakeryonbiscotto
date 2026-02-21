@@ -541,6 +541,102 @@
         }
         [x-cloak] { display: none !important; }
 
+        /* ═══ BUNDLE PICKER ═══ */
+        .bundle-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(42,26,14,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .bundle-modal {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 480px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(61,35,20,0.25);
+        }
+        .bundle-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        .bundle-modal-header h3 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6rem;
+            color: var(--dark);
+        }
+        .bundle-close {
+            width: 32px; height: 32px;
+            border: none;
+            background: var(--light);
+            border-radius: 8px;
+            font-size: 1.3rem;
+            color: var(--warm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .bundle-close:hover { background: var(--cream); }
+        .bundle-modal-sub {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            color: var(--warm);
+            margin-bottom: 20px;
+        }
+        .bundle-progress {
+            height: 6px;
+            background: var(--light);
+            border-radius: 100px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+        .bundle-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--golden), var(--accent));
+            border-radius: 100px;
+            transition: width 0.3s ease;
+        }
+        .bundle-progress-text {
+            font-size: 0.8rem;
+            color: var(--warm);
+            margin-bottom: 20px;
+        }
+        .bundle-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .bundle-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--light);
+            border-radius: 12px;
+            border: 1.5px solid transparent;
+            transition: all 0.2s;
+        }
+        .bundle-option.has-qty {
+            background: rgba(212,165,116,0.1);
+            border-color: var(--golden);
+        }
+        .bundle-option-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
         /* ═══ FOOTER ═══ */
         .order-footer {
             text-align: center;
@@ -635,6 +731,11 @@
                                 @endif
                                 <div class="product-bottom">
                                     <span class="product-price">${{ number_format($product->price, 0) }}</span>
+                                    @if($product->is_bundle)
+                                    <button class="add-btn" @click="openBundlePicker({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->price }})">
+                                        Choose Flavors
+                                    </button>
+                                    @else
                                     <div x-show="getQty({{ $product->id }}) === 0">
                                         <button class="add-btn" @click="addItem({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->price }})">
                                             Add
@@ -645,6 +746,7 @@
                                         <span class="qty-value has-items" x-text="getQty({{ $product->id }})"></span>
                                         <button class="qty-btn" @click="addItem({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->price }})" :disabled="getQty({{ $product->id }}) >= {{ $product->max_per_order ?? 20 }}">+</button>
                                     </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -677,6 +779,9 @@
                             <div class="cart-item-info">
                                 <div class="cart-item-name" x-text="item.name"></div>
                                 <div class="cart-item-qty" x-text="'Qty: ' + item.qty"></div>
+                                <template x-if="item.selections && item.selections.length">
+                                    <div class="cart-item-selections" x-text="item.selections.join(', ')" style="font-size: 0.78rem; color: var(--warm); margin-top: 2px; font-style: italic;"></div>
+                                </template>
                             </div>
                             <span class="cart-item-price" x-text="'$' + (item.price * item.qty).toFixed(2)"></span>
                             <button class="cart-item-remove" @click="removeItem(item.id)" title="Remove">✕</button>
@@ -802,6 +907,11 @@
                         <div>
                             <input type="hidden" :name="'items[' + index + '][product_id]'" :value="item.id">
                             <input type="hidden" :name="'items[' + index + '][quantity]'" :value="item.qty">
+                            <template x-if="item.selections && item.selections.length">
+                                <template x-for="(sel, si) in item.selections" :key="'sel-' + index + '-' + si">
+                                    <input type="hidden" :name="'items[' + index + '][selections][' + si + ']'" :value="sel">
+                                </template>
+                            </template>
                         </div>
                     </template>
                     <input type="hidden" name="customer_name" :value="form.customer_name">
@@ -830,12 +940,46 @@
         </div>
     </div>
 
+    {{-- BUNDLE PICKER MODAL --}}
+    <div x-show="bundleModal" x-transition.opacity class="bundle-overlay" @click.self="bundleModal = false" x-cloak>
+        <div class="bundle-modal" @click.stop>
+            <div class="bundle-modal-header">
+                <h3 x-text="'Choose ' + bundlePickCount + ' Flavors'"></h3>
+                <button @click="bundleModal = false" class="bundle-close">&times;</button>
+            </div>
+            <p class="bundle-modal-sub">Pick your favorites for the <span x-text="bundleName"></span></p>
+            <div class="bundle-progress">
+                <div class="bundle-progress-bar" :style="'width: ' + (bundleSelected() / bundlePickCount * 100) + '%'"></div>
+            </div>
+            <p class="bundle-progress-text"><span x-text="bundleSelected()"></span> of <span x-text="bundlePickCount"></span> selected</p>
+
+            <div class="bundle-options">
+                <template x-for="opt in bundleOptions" :key="opt.id">
+                    <div class="bundle-option" :class="{ 'has-qty': getBundleQty(opt.id) > 0 }">
+                        <span class="bundle-option-name" x-text="opt.name"></span>
+                        <div class="qty-control">
+                            <button class="qty-btn" @click="decBundleQty(opt.id)" :disabled="getBundleQty(opt.id) === 0">−</button>
+                            <span class="qty-value" :class="{ 'has-items': getBundleQty(opt.id) > 0 }" x-text="getBundleQty(opt.id)"></span>
+                            <button class="qty-btn" @click="incBundleQty(opt.id)" :disabled="bundleSelected() >= bundlePickCount">+</button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <button class="submit-btn" :disabled="bundleSelected() !== bundlePickCount" @click="confirmBundle()" style="margin-top: 20px;">
+                Add to Order
+            </button>
+        </div>
+    </div>
+
     {{-- FOOTER --}}
     <footer class="order-footer">
         <p>&copy; {{ date('Y') }} Bakery on Biscotto. <a href="/">Back to Home</a></p>
     </footer>
 
     <script>
+        const bundleConfig = @json($bundles);
+
         function datePicker() {
             return {
                 open: false,
@@ -929,6 +1073,13 @@
                 fulfillment: 'pickup',
                 mobileCollapsed: window.innerWidth <= 900,
                 submitting: false,
+                bundleModal: false,
+                bundleProductId: null,
+                bundleName: '',
+                bundlePrice: 0,
+                bundlePickCount: 4,
+                bundleOptions: [],
+                bundlePicks: {},
                 form: {
                     customer_name: '',
                     customer_email: '',
@@ -984,6 +1135,69 @@
 
                 total() {
                     return this.subtotal() + (this.fulfillment === 'delivery' ? 5 : 0);
+                },
+
+                openBundlePicker(id, name, price) {
+                    const config = bundleConfig[id];
+                    if (!config) return;
+                    this.bundleProductId = id;
+                    this.bundleName = name;
+                    this.bundlePrice = price;
+                    this.bundlePickCount = config.pick_count;
+                    this.bundleOptions = config.options;
+                    this.bundlePicks = {};
+                    this.bundleModal = true;
+                },
+
+                getBundleQty(optId) {
+                    return this.bundlePicks[optId] || 0;
+                },
+
+                bundleSelected() {
+                    return Object.values(this.bundlePicks).reduce((s, v) => s + v, 0);
+                },
+
+                incBundleQty(optId) {
+                    if (this.bundleSelected() >= this.bundlePickCount) return;
+                    this.bundlePicks[optId] = (this.bundlePicks[optId] || 0) + 1;
+                },
+
+                decBundleQty(optId) {
+                    if (!this.bundlePicks[optId]) return;
+                    this.bundlePicks[optId]--;
+                    if (this.bundlePicks[optId] <= 0) delete this.bundlePicks[optId];
+                },
+
+                confirmBundle() {
+                    if (this.bundleSelected() !== this.bundlePickCount) return;
+                    const selections = [];
+                    for (const [optId, qty] of Object.entries(this.bundlePicks)) {
+                        const opt = this.bundleOptions.find(o => o.id == optId);
+                        if (opt) {
+                            for (let i = 0; i < qty; i++) {
+                                selections.push(opt.name);
+                            }
+                        }
+                    }
+                    const existing = this.cart.find(i => i.id === this.bundleProductId);
+                    if (existing) {
+                        existing.qty++;
+                        existing.allSelections = existing.allSelections || [existing.selections];
+                        existing.allSelections.push(selections);
+                        existing.selections = existing.allSelections.flat();
+                    } else {
+                        this.cart.push({
+                            id: this.bundleProductId,
+                            name: this.bundleName,
+                            price: this.bundlePrice,
+                            qty: 1,
+                            isBundle: true,
+                            selections: selections,
+                            allSelections: [selections],
+                        });
+                    }
+                    this.bundleModal = false;
+                    this.mobileCollapsed = false;
                 },
 
                 formatPhone(e) {
