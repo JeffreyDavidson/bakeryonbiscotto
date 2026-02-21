@@ -532,6 +532,14 @@
                     </div>
                 </div>
 
+                {{-- MAP --}}
+                <div style="margin-top: 28px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(212,165,116,0.15); box-shadow: 0 2px 8px rgba(61,35,20,0.06);">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d112284.7!2d-81.65!3d28.16!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88dd7d5a0b6f3b55%3A0x82a8b8a0f7e7a0c0!2sDavenport%2C%20FL!5e0!3m2!1sen!2sus!4v1"
+                        width="100%" height="180" style="border:0; display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+
                 <div class="handwritten-note">
                     <p>Every loaf is made with care, from feeding the starter to pulling it out of the oven. I love what I do, and I'd love to bake for you.</p>
                     <div class="sig">- Cassie</div>

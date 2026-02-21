@@ -2630,5 +2630,46 @@
         burstObserver.observe(burstSection);
     </script>
 
+    {{-- Floating Contact CTA --}}
+    <a href="/contact" class="floating-contact" aria-label="Contact us">
+        <span class="fc-icon">💬</span>
+        <span class="fc-text">Questions?</span>
+    </a>
+    <style>
+        .floating-contact {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 22px;
+            background: var(--dark);
+            color: var(--cream);
+            text-decoration: none;
+            border-radius: 100px;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            box-shadow: 0 6px 24px rgba(61,35,20,0.25);
+            border: 1px solid rgba(212,165,116,0.15);
+            transition: all 0.3s ease;
+        }
+        .floating-contact:hover {
+            background: var(--brown);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 32px rgba(61,35,20,0.3);
+        }
+        .fc-icon { font-size: 1.2rem; }
+        .fc-text { letter-spacing: 0.3px; }
+        @media (max-width: 600px) {
+            .floating-contact {
+                bottom: 20px; right: 20px;
+                padding: 12px 18px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
 </body>
 </html>
