@@ -75,17 +75,26 @@ class AdminPanelProvider extends PanelProvider
                         border-bottom: 1px solid rgba(212,165,116,0.1) !important;
                     }
                     .fi-sidebar-nav-groups .fi-sidebar-group-label,
-                    .fi-sidebar-item-label {
-                        color: #F5E6D0 !important;
+                    .fi-sidebar-item-label,
+                    .fi-sidebar-item span,
+                    .fi-sidebar a,
+                    .fi-sidebar-nav a span {
+                        color: #FFFFFF !important;
                     }
-                    .fi-sidebar-item-icon {
-                        color: #D4A574 !important;
+                    .fi-sidebar-item-icon,
+                    .fi-sidebar svg {
+                        color: #F5D5A8 !important;
                     }
                     .fi-sidebar-item.fi-active {
-                        background: rgba(212,165,116,0.15) !important;
+                        background: rgba(245,213,168,0.2) !important;
+                    }
+                    .fi-sidebar-item.fi-active .fi-sidebar-item-label,
+                    .fi-sidebar-item.fi-active span {
+                        color: #FFFFFF !important;
+                        font-weight: 600 !important;
                     }
                     .fi-sidebar-item:hover {
-                        background: rgba(212,165,116,0.08) !important;
+                        background: rgba(245,213,168,0.12) !important;
                     }
 
                     /* Topbar */
@@ -160,10 +169,19 @@ class AdminPanelProvider extends PanelProvider
                     }
 
                     /* Navigation badge */
-                    .fi-sidebar-item-badge {
-                        background: #D4A574 !important;
+                    .fi-sidebar-item-badge,
+                    .fi-sidebar-item-badge span,
+                    .fi-sidebar .fi-badge,
+                    .fi-sidebar .fi-badge span {
+                        background: #F5D5A8 !important;
                         color: #3D2314 !important;
                         font-weight: 700 !important;
+                    }
+
+                    /* Brand logo area */
+                    .fi-sidebar-header a,
+                    .fi-sidebar-header span {
+                        color: #FFFFFF !important;
                     }
 
                     /* Stat widgets */
