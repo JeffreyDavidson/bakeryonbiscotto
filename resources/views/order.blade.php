@@ -228,7 +228,7 @@
             border-radius: 20px;
             border: 1px solid rgba(139,94,60,0.1);
             box-shadow: 0 4px 24px rgba(61,35,20,0.08);
-            overflow: hidden;
+            overflow: visible;
         }
         .cart-header {
             background: var(--dark);
@@ -236,6 +236,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-radius: 20px 20px 0 0;
         }
         .cart-header h2 {
             font-family: 'Dancing Script', cursive;
