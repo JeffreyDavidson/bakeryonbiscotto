@@ -177,7 +177,7 @@
             padding: 12px 16px;
             border: 1.5px solid rgba(139,94,60,0.12);
             border-radius: 12px;
-            background: var(--light);
+            background-color: var(--light);
             font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
             color: var(--dark);
@@ -187,6 +187,7 @@
         .form-input:focus {
             border-color: var(--golden);
             box-shadow: 0 0 0 3px rgba(212,165,116,0.12);
+            background-color: var(--white);
             background: var(--white);
         }
         .form-input::placeholder { color: #c0a890; }
@@ -194,11 +195,15 @@
         select.form-input {
             appearance: none;
             -webkit-appearance: none;
+            background-color: var(--light);
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238B5E3C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 14px center;
             padding-right: 40px;
             cursor: pointer;
+        }
+        select.form-input:focus {
+            background-color: var(--white);
         }
 
         .form-row {
