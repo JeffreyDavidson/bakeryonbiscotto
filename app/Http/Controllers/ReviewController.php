@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewReviewSubmitted;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ReviewController extends Controller
 {
@@ -19,7 +21,14 @@ class ReviewController extends Controller
 
         $validated['status'] = 'pending';
 
-        Review::create($validated);
+        $review = Review::create($validated);
+
+        try {
+            Mail::to(config('mail.review_notify'))->send(new NewReviewSubmitted($review));
+        } catch (\Exception $e) {
+            // Don't fail the review submission if email fails
+            report($e);
+        }
 
         return redirect(url()->previous() . '#review-form')->with('review_submitted', true);
     }
