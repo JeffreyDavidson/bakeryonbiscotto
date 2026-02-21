@@ -826,7 +826,7 @@
 
                 {{-- ORDER FORM --}}
                 <form method="POST" action="{{ route('order.store') }}" x-show="cart.length > 0" class="order-form"
-                      @submit.prevent="submitOrder">
+                      @submit.prevent>
                     @csrf
 
                     <div class="notice">
@@ -938,10 +938,16 @@
                     <input type="hidden" name="requested_date" :value="form.requested_date">
                     <input type="hidden" name="notes" :value="form.notes">
 
-                    <button type="submit" class="submit-btn" :disabled="submitting">
-                        <span x-show="!submitting">Place Order</span>
-                        <span x-show="submitting">Placing Order...</span>
-                    </button>
+                    <div x-show="formValid()" x-transition style="margin-top: 16px;">
+                        <p style="font-size: 0.85rem; color: var(--warm); text-align: center; margin-bottom: 12px;">Pay securely with PayPal to complete your order</p>
+                        <div id="paypal-button-container"></div>
+                    </div>
+
+                    <div x-show="!formValid()" style="margin-top: 16px;">
+                        <button type="button" class="submit-btn" disabled>Complete all fields to pay</button>
+                    </div>
+
+                    <div x-show="paymentError" class="error-msg" style="margin-top: 12px; text-align: center;" x-text="paymentError"></div>
 
                     @if($errors->any())
                         <div style="margin-top: 12px;">
@@ -1088,6 +1094,7 @@
                 fulfillment: 'pickup',
                 mobileCollapsed: window.innerWidth <= 900,
                 submitting: false,
+                paymentError: '',
                 bundleModal: false,
                 bundleProductId: null,
                 bundleName: '',
@@ -1225,11 +1232,130 @@
                     this.form.customer_phone = formatted;
                 },
 
-                submitOrder() {
-                    this.submitting = true;
-                    this.$el.closest('form').submit();
+                formValid() {
+                    return this.cart.length > 0
+                        && this.form.customer_name.trim() !== ''
+                        && this.form.customer_email.trim() !== ''
+                        && this.form.customer_phone.trim() !== ''
+                        && this.form.requested_date !== '';
+                },
+
+                getOrderData() {
+                    return {
+                        customer_name: this.form.customer_name,
+                        customer_email: this.form.customer_email,
+                        customer_phone: this.form.customer_phone,
+                        fulfillment_type: this.fulfillment,
+                        delivery_address: this.form.delivery_address,
+                        delivery_zip: this.form.delivery_zip,
+                        requested_date: this.form.requested_date,
+                        notes: this.form.notes,
+                        items: this.cart.map(item => ({
+                            product_id: item.id,
+                            quantity: item.qty,
+                            selections: item.selections || null,
+                        })),
+                    };
                 }
             }
+        }
+    </script>
+
+    <script src="https://www.paypal.com/sdk/js?client-id={{ config('services.paypal.client_id') }}&currency=USD"></script>
+    <script>
+        // Wait for both Alpine and PayPal to be ready
+        document.addEventListener('alpine:init', () => {
+            // Small delay to ensure DOM is ready
+            setTimeout(initPayPalButtons, 500);
+        });
+
+        function initPayPalButtons() {
+            const container = document.getElementById('paypal-button-container');
+            if (!container) {
+                setTimeout(initPayPalButtons, 500);
+                return;
+            }
+
+            paypal.Buttons({
+                style: {
+                    color: 'gold',
+                    shape: 'pill',
+                    label: 'pay',
+                    height: 45,
+                },
+
+                createOrder: async function() {
+                    const alpineEl = document.querySelector('.order-layout');
+                    const data = Alpine.$data(alpineEl);
+
+                    if (!data.formValid()) {
+                        data.paymentError = 'Please fill in all required fields.';
+                        throw new Error('Form not valid');
+                    }
+
+                    data.paymentError = '';
+                    const orderData = data.getOrderData();
+
+                    const response = await fetch('{{ route("order.paypal.create") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        },
+                        body: JSON.stringify(orderData),
+                    });
+
+                    const result = await response.json();
+
+                    if (result.error) {
+                        data.paymentError = result.error;
+                        throw new Error(result.error);
+                    }
+
+                    return result.id;
+                },
+
+                onApprove: async function(paypalData) {
+                    const alpineEl = document.querySelector('.order-layout');
+                    const data = Alpine.$data(alpineEl);
+                    data.submitting = true;
+
+                    const response = await fetch('{{ route("order.paypal.capture") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        },
+                        body: JSON.stringify({
+                            paypal_order_id: paypalData.orderID,
+                        }),
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success && result.redirect) {
+                        window.location.href = result.redirect;
+                    } else {
+                        data.paymentError = result.error || 'Payment failed. Please try again.';
+                        data.submitting = false;
+                    }
+                },
+
+                onError: function(err) {
+                    const alpineEl = document.querySelector('.order-layout');
+                    const data = Alpine.$data(alpineEl);
+                    data.paymentError = 'Something went wrong with PayPal. Please try again.';
+                    data.submitting = false;
+                    console.error('PayPal error:', err);
+                },
+
+                onCancel: function() {
+                    const alpineEl = document.querySelector('.order-layout');
+                    const data = Alpine.$data(alpineEl);
+                    data.paymentError = '';
+                    data.submitting = false;
+                }
+            }).render('#paypal-button-container');
         }
     </script>
 </body>
