@@ -90,10 +90,8 @@
             overflow-y: auto;
             padding: 40px 0 80px;
         }
-        .products-col::-webkit-scrollbar { width: 6px; }
-        .products-col::-webkit-scrollbar-track { background: transparent; }
-        .products-col::-webkit-scrollbar-thumb { background: var(--golden); border-radius: 3px; }
-        .products-col::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+        .products-col::-webkit-scrollbar { display: none; }
+        .products-col { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* ═══ PRODUCT GRID ═══ */
         .category-section { margin-bottom: 40px; }
@@ -235,10 +233,8 @@
             overflow-y: auto;
             padding: 40px 0 80px;
         }
-        .cart-sidebar::-webkit-scrollbar { width: 6px; }
-        .cart-sidebar::-webkit-scrollbar-track { background: transparent; }
-        .cart-sidebar::-webkit-scrollbar-thumb { background: var(--golden); border-radius: 3px; }
-        .cart-sidebar::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+        .cart-sidebar::-webkit-scrollbar { display: none; }
+        .cart-sidebar { -ms-overflow-style: none; scrollbar-width: none; }
         .cart-card {
             background: var(--white);
             border-radius: 20px;
