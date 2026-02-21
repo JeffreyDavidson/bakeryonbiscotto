@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\NewReviewSubmitted;
+use App\Mail\NewReviewNotification;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -24,9 +24,8 @@ class ReviewController extends Controller
         $review = Review::create($validated);
 
         try {
-            Mail::to(config('mail.review_notify'))->send(new NewReviewSubmitted($review));
+            Mail::to(config('mail.notify_address'))->send(new NewReviewNotification($review));
         } catch (\Exception $e) {
-            // Don't fail the review submission if email fails
             report($e);
         }
 

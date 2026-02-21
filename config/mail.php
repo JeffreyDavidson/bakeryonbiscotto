@@ -115,6 +115,6 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
-    'review_notify' => env('REVIEW_NOTIFY_EMAIL', 'bakeryonbiscotto@gmail.com'),
+    'notify_address' => env('MAIL_NOTIFY_ADDRESS', 'bakeryonbiscotto@gmail.com'),
 
 ];
