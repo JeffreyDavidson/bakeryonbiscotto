@@ -2181,7 +2181,7 @@
         <div class="menu-candle-glow" id="menuCandleGlow"></div>
 
         <div class="parchment-wrap">
-        <div class="parchment" x-data="{ tab: 'loaves' }">
+        <div class="parchment" x-data="{ tab: '{{ $categories->first()?->slug ?? 'sourdough-loaves' }}' }">
 
             {{-- Margin notes --}}
             <span class="margin-note" style="top: 380px; left: 8px; transform: rotate(-7deg);">our favorite ♡</span>
@@ -2199,172 +2199,78 @@
             <p class="menu-epigraph reveal">Everything baked fresh to order. Never frozen, never rushed.</p>
 
             {{-- Tabs --}}
+            @if($categories->count() > 1)
             <div class="scroll-tabs reveal">
-                <button class="scroll-tab" :class="{ 'active': tab === 'loaves' }" @click="tab = 'loaves'">Sourdough Loaves</button>
-                <button class="scroll-tab" :class="{ 'active': tab === 'breads' }" @click="tab = 'breads'">Sourdough Breads</button>
-                <button class="scroll-tab" :class="{ 'active': tab === 'other' }" @click="tab = 'other'">Other Breads</button>
+                @foreach($categories as $cat)
+                    @if($cat->products->count())
+                    <button class="scroll-tab" :class="{ 'active': tab === '{{ $cat->slug }}' }" @click="tab = '{{ $cat->slug }}'">{{ $cat->name }}</button>
+                    @endif
+                @endforeach
             </div>
+            @endif
 
-            {{-- ═══ SOURDOUGH LOAVES ═══ --}}
-            <div x-show="tab === 'loaves'" x-transition.opacity.duration.400ms>
-                <div class="signature-item reveal">
-                    <div class="signature-photo">
-                        <img src="/images/product-sourdough-boule.jpg" alt="Regular Sourdough Loaf">
-                        <div class="steam-wrap">
-                            <div class="steam"></div><div class="steam"></div><div class="steam"></div><div class="steam"></div>
-                        </div>
-                    </div>
-                    <div class="signature-body">
-                        <span class="signature-label">✦ Our Signature</span>
-                        <h3>Regular Loaf</h3>
-                        <p class="desc">Golden crust, airy crumb, perfectly tangy. The one that started it all.</p>
-                        <div class="signature-price-wrap">
-                            <span class="signature-price">$10</span>
-                            <span class="signature-price-line"></span>
-                        </div>
-                    </div>
+            @foreach($categories as $cat)
+                @if($cat->products->count())
+                <div x-show="tab === '{{ $cat->slug }}'" x-transition.opacity.duration.400ms>
+                    @foreach($cat->products as $product)
+                        @if($product->is_featured)
+                            {{-- Featured/Signature item with photo --}}
+                            <div class="signature-item reveal">
+                                @if($product->image)
+                                <div class="signature-photo">
+                                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}">
+                                    <div class="steam-wrap">
+                                        <div class="steam"></div><div class="steam"></div><div class="steam"></div><div class="steam"></div>
+                                    </div>
+                                </div>
+                                @endif
+                                <div class="signature-body">
+                                    <span class="signature-label">✦ Featured</span>
+                                    <h3>{{ $product->name }}</h3>
+                                    @if($product->description)
+                                        <p class="desc">{{ $product->description }}</p>
+                                    @endif
+                                    <div class="signature-price-wrap">
+                                        <span class="signature-price">${{ number_format($product->price, 0) }}</span>
+                                        <span class="signature-price-line"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        @elseif($cat->slug === 'bundles')
+                            {{-- Bundle callout style --}}
+                            <div class="bundle-callout reveal">
+                                <span class="bundle-ribbon">Best Deal</span>
+                                <div class="bundle-inner">
+                                    <span class="bundle-emoji">🎁</span>
+                                    <div class="bundle-text">
+                                        <h3>{{ $product->name }}</h3>
+                                        @if($product->description)
+                                            <p class="desc">{{ $product->description }}</p>
+                                        @endif
+                                    </div>
+                                    <div class="bundle-price-tag">
+                                        <span class="amount">${{ number_format($product->price, 0) }}</span>
+                                        <span class="label">bundle</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            {{-- Regular menu item --}}
+                            <div class="menu-item reveal">
+                                <div class="menu-item-row">
+                                    <span class="menu-item-name">{{ $product->name }}</span>
+                                    <span class="menu-item-dots"></span>
+                                    <span class="menu-item-price">${{ number_format($product->price, 0) }}</span>
+                                </div>
+                                @if($product->description)
+                                    <p class="menu-item-desc">{{ $product->description }}</p>
+                                @endif
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
-
-                <div class="menu-item reveal">
-                    <div class="menu-item-row">
-                        <span class="menu-item-name">Cheddar</span>
-                        <span class="menu-item-dots"></span>
-                        <span class="menu-item-price">$12</span>
-                    </div>
-                    <p class="menu-item-desc">Sharp cheddar folded through tangy sourdough. Melty pockets in every slice.</p>
-                </div>
-                <div class="menu-item reveal">
-                    <div class="menu-item-row">
-                        <span class="menu-item-name">Mozzarella & Garlic</span>
-                        <span class="menu-item-dots"></span>
-                        <span class="menu-item-price">$14</span>
-                    </div>
-                    <p class="menu-item-desc">Fresh mozzarella and roasted garlic. Your kitchen will smell incredible.</p>
-                </div>
-                <div class="menu-item reveal">
-                    <div class="menu-item-row">
-                        <span class="menu-item-name">Chocolate Chip</span>
-                        <span class="menu-item-dots"></span>
-                        <span class="menu-item-price">$12</span>
-                    </div>
-                    <p class="menu-item-desc">Rich chocolate meets tangy sourdough. Sweet and sour perfection.</p>
-                </div>
-                <div class="menu-item reveal">
-                    <div class="menu-item-row">
-                        <span class="menu-item-name">Cinnamon & Sugar</span>
-                        <span class="menu-item-dots"></span>
-                        <span class="menu-item-price">$14</span>
-                    </div>
-                    <p class="menu-item-desc">Warm cinnamon swirls with sweet sugar. Weekend mornings were made for this.</p>
-                </div>
-                <div class="menu-item reveal">
-                    <div class="menu-item-row">
-                        <span class="menu-item-name">Chocolate, Chocolate Chip</span>
-                        <span class="menu-item-dots"></span>
-                        <span class="menu-item-price">$12</span>
-                    </div>
-                    <p class="menu-item-desc">Cocoa in the dough, chips throughout. For the true chocolate lovers.</p>
-                </div>
-                <div class="menu-item reveal">
-                    <div class="menu-item-row">
-                        <span class="menu-item-name">Chocolate Almond, Chocolate Chip</span>
-                        <span class="menu-item-dots"></span>
-                        <span class="menu-item-price">$15</span>
-                    </div>
-                    <p class="menu-item-desc">Toasted almonds join the chocolate celebration. Crunchy, rich, and indulgent.</p>
-                </div>
-
-                <div class="bundle-callout reveal">
-                    <span class="bundle-ribbon">Best Deal</span>
-                    <div class="bundle-inner">
-                        <span class="bundle-emoji">🎁</span>
-                        <div class="bundle-text">
-                            <h3>4 Pack of Mini Loaves</h3>
-                            <p class="desc">Can't choose? Don't. Pick any 4 flavors in perfectly portioned mini loaves.</p>
-                        </div>
-                        <div class="bundle-price-tag">
-                            <span class="amount">$25</span>
-                            <span class="label">bundle</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- ═══ SOURDOUGH BREADS ═══ --}}
-            <div x-show="tab === 'breads'" x-transition.opacity.duration.400ms>
-                <div class="signature-item reveal">
-                    <div class="signature-photo">
-                        <img src="/images/product-english-muffins.jpg" alt="Sourdough English Muffins">
-                        <div class="steam-wrap">
-                            <div class="steam"></div><div class="steam"></div><div class="steam"></div><div class="steam"></div>
-                        </div>
-                    </div>
-                    <div class="signature-body">
-                        <span class="signature-label">✦ Fan Favorite</span>
-                        <h3>Sourdough English Muffins</h3>
-                        <p class="desc">Those perfect nooks and crannies. Griddle-cooked and ready for toasting.</p>
-                        <div class="signature-price-wrap">
-                            <span class="signature-price">6ct · $8 | 12ct · $15</span>
-                            <span class="signature-price-line"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-item reveal">
-                    <div class="menu-item-row">
-                        <span class="menu-item-name">Sourdough Honey Wheat Sandwich Bread</span>
-                        <span class="menu-item-dots"></span>
-                        <span class="menu-item-price">$10</span>
-                    </div>
-                    <p class="menu-item-desc">Soft, wholesome, and perfect for sandwiches. Honey sweetness with a sourdough twist.</p>
-                </div>
-            </div>
-
-            {{-- ═══ OTHER BREADS ═══ --}}
-            <div x-show="tab === 'other'" x-transition.opacity.duration.400ms>
-                <div class="signature-item reveal">
-                    <div class="signature-photo">
-                        <img src="/images/product-pumpkin-bread.jpg" alt="Pumpkin Almond Chocolate Chip Bread">
-                        <div class="steam-wrap">
-                            <div class="steam"></div><div class="steam"></div><div class="steam"></div><div class="steam"></div>
-                        </div>
-                    </div>
-                    <div class="signature-body">
-                        <span class="signature-label">✦ Fall Favorite</span>
-                        <h3>Pumpkin Almond Chocolate Chip</h3>
-                        <p class="desc">Pumpkin spice, toasted almonds, and chocolate chips. The ultimate fall loaf.</p>
-                        <div class="signature-price-wrap">
-                            <span class="signature-price">$15</span>
-                            <span class="signature-price-line"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-item reveal">
-                    <div class="menu-item-row">
-                        <span class="menu-item-name">Banana Bread</span>
-                        <span class="menu-item-dots"></span>
-                        <span class="menu-item-price">$12</span>
-                    </div>
-                    <p class="menu-item-desc">Moist, sweet, perfectly spiced. Made with bananas so ripe they're basically pudding.</p>
-                </div>
-                <div class="menu-item reveal">
-                    <div class="menu-item-row">
-                        <span class="menu-item-name">Banana Walnut Bread</span>
-                        <span class="menu-item-dots"></span>
-                        <span class="menu-item-price">$15</span>
-                    </div>
-                    <p class="menu-item-desc">Our classic banana bread loaded with crunchy toasted walnuts.</p>
-                </div>
-                <div class="menu-item reveal">
-                    <div class="menu-item-row">
-                        <span class="menu-item-name">Pumpkin Chocolate Chip Bread</span>
-                        <span class="menu-item-dots"></span>
-                        <span class="menu-item-price">$12</span>
-                    </div>
-                    <p class="menu-item-desc">Warm pumpkin spice studded with chocolate chips. Seasonal magic.</p>
-                </div>
-            </div>
+                @endif
+            @endforeach
 
         </div>{{-- /parchment --}}
         </div>{{-- /parchment-wrap --}}

@@ -12,7 +12,12 @@ Route::get('/', function() {
     if (!$featuredReview && $approvedReviews->count()) {
         $featuredReview = $approvedReviews->shift();
     }
-    return view('concepts.g', compact('featuredReview', 'approvedReviews'));
+
+    $categories = \App\Models\Category::with(['products' => function($q) {
+        $q->where('is_available', true)->orderBy('sort_order');
+    }])->orderBy('sort_order')->get();
+
+    return view('concepts.g', compact('featuredReview', 'approvedReviews', 'categories'));
 });
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 Route::get('/menu-concepts', fn() => view('menu-concepts'));
