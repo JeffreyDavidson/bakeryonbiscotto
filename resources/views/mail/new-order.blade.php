@@ -36,5 +36,5 @@
 View Orders
 </x-mail::button>
 
-{{ config('app.name') }}
+Cassie
 </x-mail::message>
