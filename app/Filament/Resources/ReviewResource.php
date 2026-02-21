@@ -7,7 +7,7 @@ use App\Models\Review;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Actions\Action;
+use Filament\Tables\Actions\Action;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Schemas\Components\Component;
@@ -87,10 +87,10 @@ class ReviewResource extends Resource
                     ->requiresConfirmation()
                     ->visible(fn (Review $record) => $record->status !== 'rejected')
                     ->action(fn (Review $record) => $record->update(['status' => 'rejected'])),
-                \Filament\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                \Filament\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
