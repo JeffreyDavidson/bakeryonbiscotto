@@ -2498,7 +2498,7 @@
         </div>
 
         {{-- Review Form --}}
-        <div class="review-form-wrap reveal">
+        <div class="review-form-wrap reveal" id="review-form">
             <div class="review-form-card">
                 @if(session('review_submitted'))
                     <div class="review-success">

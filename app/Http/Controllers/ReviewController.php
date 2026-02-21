@@ -21,6 +21,6 @@ class ReviewController extends Controller
 
         Review::create($validated);
 
-        return back()->with('review_submitted', true);
+        return redirect(url()->previous() . '#review-form')->with('review_submitted', true);
     }
 }
