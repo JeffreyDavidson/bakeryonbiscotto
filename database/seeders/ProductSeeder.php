@@ -51,7 +51,7 @@ class ProductSeeder extends Seeder
         // Sourdough Breads
         $breads = [
             ['name' => 'Sourdough English Muffins (6-pack)', 'price' => 8.00, 'sort_order' => 1, 'is_featured' => true, 'image' => 'images/product-english-muffins.jpg', 'description' => 'Those perfect nooks and crannies. Griddle-cooked and ready for toasting.'],
-            ['name' => 'Sourdough Sandwich Bread', 'price' => 8.00, 'sort_order' => 2, 'image' => 'images/product-honey-wheat-sandwich.jpg', 'description' => 'Soft sliced sourdough perfect for sandwiches and toast.'],
+            ['name' => 'Honey Wheat Sourdough Sandwich Bread', 'price' => 8.00, 'sort_order' => 2, 'image' => 'images/product-honey-wheat-sandwich.jpg', 'description' => 'Soft, wholesome, and perfect for sandwiches. Honey sweetness with a sourdough twist.'],
         ];
 
         foreach ($breads as $bread) {
@@ -65,7 +65,6 @@ class ProductSeeder extends Seeder
         $others = [
             ['name' => 'Pumpkin Almond Chocolate Chip Bread', 'price' => 10.00, 'sort_order' => 1, 'is_featured' => true, 'image' => 'images/product-pumpkin-bread.jpg', 'description' => 'Pumpkin spice, toasted almonds, and chocolate chips. The ultimate fall loaf.'],
             ['name' => 'Banana Bread', 'price' => 8.00, 'sort_order' => 2, 'image' => 'images/product-banana-bread.jpg', 'description' => 'Classic homemade banana bread, moist and delicious.'],
-            ['name' => 'Honey Wheat Sandwich Bread', 'price' => 8.00, 'sort_order' => 3, 'description' => 'Lightly sweet honey wheat, great for everyday sandwiches.'],
         ];
 
         foreach ($others as $other) {
