@@ -6,8 +6,8 @@ use App\Mail\NewOrderNotification;
 use App\Mail\OrderConfirmation;
 use App\Models\Category;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Product;
+use App\Services\PayPalService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -19,7 +19,6 @@ class OrderController extends Controller
             $q->where('is_available', true)->orderBy('sort_order');
         }])->orderBy('sort_order')->get();
 
-        // Build bundle config: product_id => { pick_count, options: [{id, name}] }
         $bundles = [];
         foreach ($categories as $cat) {
             foreach ($cat->products as $product) {
@@ -41,9 +40,100 @@ class OrderController extends Controller
         return view('order', compact('categories', 'bundles'));
     }
 
-    public function store(Request $request)
+    /**
+     * Create a PayPal order (called via AJAX before PayPal popup).
+     */
+    public function createPayPalOrder(Request $request, PayPalService $paypal)
     {
-        $validated = $request->validate([
+        $validated = $this->validateOrder($request);
+        $calculated = $this->calculateOrder($validated);
+
+        if (empty($calculated['items'])) {
+            return response()->json(['error' => 'No valid items in order.'], 422);
+        }
+
+        // Store pending order data in session
+        session(['pending_order' => [
+            'validated' => $validated,
+            'calculated' => $calculated,
+        ]]);
+
+        $result = $paypal->createOrder($calculated['total'], 'Bakery on Biscotto Order');
+
+        return response()->json(['id' => $result['id']]);
+    }
+
+    /**
+     * Capture PayPal payment and create the order (called after PayPal approval).
+     */
+    public function capturePayPalOrder(Request $request, PayPalService $paypal)
+    {
+        $paypalOrderId = $request->input('paypal_order_id');
+        $pendingOrder = session('pending_order');
+
+        if (!$pendingOrder || !$paypalOrderId) {
+            return response()->json(['error' => 'Invalid order session.'], 422);
+        }
+
+        $result = $paypal->captureOrder($paypalOrderId);
+
+        if (($result['status'] ?? '') !== 'COMPLETED') {
+            return response()->json(['error' => 'Payment not completed.'], 422);
+        }
+
+        $validated = $pendingOrder['validated'];
+        $calculated = $pendingOrder['calculated'];
+
+        $captureId = $result['purchase_units'][0]['payments']['captures'][0]['id'] ?? null;
+
+        $order = Order::create([
+            'customer_name' => $validated['customer_name'],
+            'customer_email' => $validated['customer_email'],
+            'customer_phone' => $validated['customer_phone'],
+            'fulfillment_type' => $validated['fulfillment_type'],
+            'delivery_address' => $validated['delivery_address'] ?? null,
+            'delivery_zip' => $validated['delivery_zip'] ?? null,
+            'requested_date' => $validated['requested_date'],
+            'notes' => $validated['notes'] ?? null,
+            'subtotal' => $calculated['subtotal'],
+            'delivery_fee' => $calculated['delivery_fee'],
+            'total' => $calculated['total'],
+            'status' => 'pending',
+            'payment_status' => 'paid',
+            'stripe_payment_intent' => $captureId, // Reusing column for PayPal capture ID
+            'paid_at' => now(),
+        ]);
+
+        foreach ($calculated['items'] as $item) {
+            $order->items()->create($item);
+        }
+
+        // Send emails
+        try {
+            Mail::to($order->customer_email)->send(new OrderConfirmation($order->load('items')));
+            Mail::to(config('mail.notify_address'))->send(new NewOrderNotification($order->load('items')));
+        } catch (\Exception $e) {
+            report($e);
+        }
+
+        session()->forget('pending_order');
+
+        return response()->json([
+            'success' => true,
+            'redirect' => route('order.confirmation', $order->order_number),
+        ]);
+    }
+
+    public function confirmation(string $orderNumber)
+    {
+        $order = Order::where('order_number', $orderNumber)->with('items')->firstOrFail();
+
+        return view('order-confirmation', compact('order'));
+    }
+
+    protected function validateOrder(Request $request): array
+    {
+        return $request->validate([
             'customer_name' => 'required|string|max:100',
             'customer_email' => 'required|email|max:255',
             'customer_phone' => 'required|string|max:20',
@@ -57,8 +147,10 @@ class OrderController extends Controller
             'items.*.quantity' => 'required|integer|min:1|max:20',
             'items.*.selections' => 'nullable|array',
         ]);
+    }
 
-        // Calculate totals
+    protected function calculateOrder(array $validated): array
+    {
         $subtotal = 0;
         $orderItems = [];
 
@@ -79,52 +171,16 @@ class OrderController extends Controller
             ];
         }
 
-        if (empty($orderItems)) {
-            return back()->withErrors(['items' => 'Please add at least one item to your order.']);
-        }
-
         $deliveryFee = 0;
         if ($validated['fulfillment_type'] === 'delivery') {
-            $deliveryFee = 5.00; // Base delivery fee
+            $deliveryFee = 5.00;
         }
 
-        $total = $subtotal + $deliveryFee;
-
-        $order = Order::create([
-            'customer_name' => $validated['customer_name'],
-            'customer_email' => $validated['customer_email'],
-            'customer_phone' => $validated['customer_phone'],
-            'fulfillment_type' => $validated['fulfillment_type'],
-            'delivery_address' => $validated['delivery_address'] ?? null,
-            'delivery_zip' => $validated['delivery_zip'] ?? null,
-            'requested_date' => $validated['requested_date'],
-            'notes' => $validated['notes'] ?? null,
+        return [
+            'items' => $orderItems,
             'subtotal' => $subtotal,
             'delivery_fee' => $deliveryFee,
-            'total' => $total,
-            'status' => 'pending',
-            'payment_status' => 'unpaid',
-        ]);
-
-        foreach ($orderItems as $item) {
-            $order->items()->create($item);
-        }
-
-        // Send emails
-        try {
-            Mail::to($order->customer_email)->send(new OrderConfirmation($order->load('items')));
-            Mail::to(config('mail.notify_address'))->send(new NewOrderNotification($order->load('items')));
-        } catch (\Exception $e) {
-            report($e);
-        }
-
-        return redirect()->route('order.confirmation', $order->order_number);
-    }
-
-    public function confirmation(string $orderNumber)
-    {
-        $order = Order::where('order_number', $orderNumber)->with('items')->firstOrFail();
-
-        return view('order-confirmation', compact('order'));
+            'total' => $subtotal + $deliveryFee,
+        ];
     }
 }

@@ -149,7 +149,7 @@
     <div class="confirmation">
         <div class="check-circle">✓</div>
         <h1>Order Received!</h1>
-        <p class="subtitle">We've got your order and we're excited to start baking for you.</p>
+        <p class="subtitle">Payment received! We've got your order and we're excited to start baking for you.</p>
 
         <div class="order-card">
             <div class="order-number">Order {{ $order->order_number }}</div>

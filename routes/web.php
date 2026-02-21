@@ -22,7 +22,8 @@ Route::get('/', function() {
 });
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 Route::get('/order', [OrderController::class, 'index'])->name('order');
-Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+Route::post('/order/paypal/create', [OrderController::class, 'createPayPalOrder'])->name('order.paypal.create');
+Route::post('/order/paypal/capture', [OrderController::class, 'capturePayPalOrder'])->name('order.paypal.capture');
 Route::get('/order/confirmation/{orderNumber}', [OrderController::class, 'confirmation'])->name('order.confirmation');
 Route::get('/menu-concepts', fn() => view('menu-concepts'));
 Route::get('/gallery-concepts', fn() => view('gallery-concepts'));
