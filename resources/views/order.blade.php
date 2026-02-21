@@ -80,12 +80,20 @@
         .order-layout {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 24px 80px;
+            padding: 0 24px;
             display: grid;
             grid-template-columns: 1fr 380px;
             gap: 40px;
-            align-items: start;
+            height: calc(100vh - 140px);
         }
+        .products-col {
+            overflow-y: auto;
+            padding: 40px 0 80px;
+        }
+        .products-col::-webkit-scrollbar { width: 6px; }
+        .products-col::-webkit-scrollbar-track { background: transparent; }
+        .products-col::-webkit-scrollbar-thumb { background: var(--golden); border-radius: 3px; }
+        .products-col::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
         /* ═══ PRODUCT GRID ═══ */
         .category-section { margin-bottom: 40px; }
@@ -224,9 +232,13 @@
 
         /* ═══ CART SIDEBAR ═══ */
         .cart-sidebar {
-            position: sticky;
-            top: 80px;
+            overflow-y: auto;
+            padding: 40px 0 80px;
         }
+        .cart-sidebar::-webkit-scrollbar { width: 6px; }
+        .cart-sidebar::-webkit-scrollbar-track { background: transparent; }
+        .cart-sidebar::-webkit-scrollbar-thumb { background: var(--golden); border-radius: 3px; }
+        .cart-sidebar::-webkit-scrollbar-thumb:hover { background: var(--accent); }
         .cart-card {
             background: var(--white);
             border-radius: 20px;
@@ -656,6 +668,11 @@
         @media (max-width: 900px) {
             .order-layout {
                 grid-template-columns: 1fr;
+                height: auto;
+            }
+            .products-col {
+                overflow-y: visible;
+                padding: 24px 0;
             }
             .cart-sidebar {
                 position: fixed;
@@ -664,6 +681,8 @@
                 right: 0;
                 top: auto;
                 z-index: 999;
+                overflow-y: auto;
+                padding: 0;
             }
             .cart-card {
                 border-radius: 20px 20px 0 0;
