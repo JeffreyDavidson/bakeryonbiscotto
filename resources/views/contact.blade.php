@@ -18,6 +18,8 @@
             --light: #FDF8F2;
             --white: #FFFFFF;
             --warm: #6B4C3B;
+            --parchment: #f0e0c8;
+            --ink: #2a1a0e;
         }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -54,125 +56,116 @@
         .main-nav a:hover { background: rgba(212,165,116,0.2); color: var(--golden); }
         .main-nav a.active { background: var(--golden); color: var(--dark); font-weight: 600; }
 
-        /* ═══ HERO ═══ */
+        /* ═══ HERO — Full-width parchment banner ═══ */
         .hero {
-            padding: 140px 24px 60px;
+            padding: 160px 24px 80px;
             text-align: center;
-            background: linear-gradient(180deg, var(--cream) 0%, var(--light) 100%);
+            background: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 600px 400px at 20% 50%, rgba(212,165,116,0.12), transparent),
+                radial-gradient(ellipse 500px 350px at 80% 50%, rgba(193,127,78,0.08), transparent);
+            pointer-events: none;
+        }
+        .hero-flour {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .flour-dot {
+            position: absolute;
+            width: 3px; height: 3px;
+            background: rgba(245,230,208,0.15);
+            border-radius: 50%;
         }
         .hero h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            color: var(--dark);
-            margin-bottom: 12px;
+            font-size: clamp(3rem, 7vw, 4.5rem);
+            color: var(--cream);
+            margin-bottom: 16px;
+            position: relative;
         }
         .hero p {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2rem;
-            color: var(--warm);
-            max-width: 500px;
+            font-size: 1.3rem;
+            color: var(--golden);
+            max-width: 480px;
             margin: 0 auto;
+            position: relative;
+            opacity: 0.85;
         }
-
-        /* ═══ CONTENT ═══ */
-        .contact-layout {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 60px 24px 80px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: start;
-        }
-
-        /* ═══ INFO SIDE ═══ */
-        .info-card {
-            background: var(--white);
-            border-radius: 20px;
-            padding: 40px;
-            border: 1px solid rgba(139,94,60,0.1);
-            box-shadow: 0 4px 24px rgba(61,35,20,0.06);
-        }
-        .info-card h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            color: var(--dark);
-            margin-bottom: 24px;
-        }
-        .info-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-        .info-item:last-child { margin-bottom: 0; }
-        .info-icon {
-            width: 44px; height: 44px;
-            background: var(--cream);
-            border-radius: 12px;
+        .hero-flourish {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
+            gap: 16px;
+            margin-top: 24px;
+            position: relative;
         }
-        .info-label {
-            font-size: 0.78rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--warm);
-            margin-bottom: 4px;
+        .hf-line {
+            width: 60px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--golden));
         }
-        .info-value {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
-            color: var(--dark);
-            line-height: 1.4;
+        .hf-line:last-child {
+            background: linear-gradient(90deg, var(--golden), transparent);
         }
-        .info-value a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-        .info-value a:hover { text-decoration: underline; }
+        .hf-star { color: var(--golden); font-size: 0.9rem; }
 
-        .info-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--golden), transparent);
-            margin: 28px 0;
+        /* ═══ MAIN ═══ */
+        .contact-wrap {
+            max-width: 1100px;
+            margin: -40px auto 0;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 2;
         }
 
-        .hours-grid {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 8px 20px;
-            font-size: 0.95rem;
-        }
-        .hours-day { color: var(--warm); font-weight: 500; }
-        .hours-time {
-            font-family: 'Cormorant Garamond', serif;
-            color: var(--dark);
-            text-align: right;
-        }
-
-        /* ═══ FORM SIDE ═══ */
-        .form-card {
+        /* ═══ FORM CARD — Parchment envelope style ═══ */
+        .envelope {
             background: var(--white);
-            border-radius: 20px;
-            padding: 40px;
-            border: 1px solid rgba(139,94,60,0.1);
-            box-shadow: 0 4px 24px rgba(61,35,20,0.06);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 12px 48px rgba(61,35,20,0.12);
+            border: 1px solid rgba(212,165,116,0.15);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
         }
-        .form-card h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
+
+        /* Left: Form */
+        .envelope-form {
+            padding: 48px;
+            position: relative;
+        }
+        .envelope-form::after {
+            content: '';
+            position: absolute;
+            top: 48px; bottom: 48px; right: 0;
+            width: 1px;
+            background: linear-gradient(180deg, transparent, var(--golden), transparent);
+        }
+        .form-heading {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
             color: var(--dark);
-            margin-bottom: 24px;
+            margin-bottom: 8px;
+        }
+        .form-sub {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.05rem;
+            color: var(--warm);
+            margin-bottom: 32px;
         }
         .form-group { margin-bottom: 20px; }
         .form-label {
             display: block;
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             font-weight: 600;
             color: var(--warm);
             text-transform: uppercase;
@@ -182,21 +175,22 @@
         .form-input {
             width: 100%;
             padding: 12px 16px;
-            border: 1.5px solid rgba(139,94,60,0.15);
+            border: 1.5px solid rgba(139,94,60,0.12);
             border-radius: 12px;
             background: var(--light);
             font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
             color: var(--dark);
-            transition: border-color 0.3s, box-shadow 0.3s;
+            transition: all 0.3s ease;
             outline: none;
         }
         .form-input:focus {
             border-color: var(--golden);
-            box-shadow: 0 0 0 3px rgba(212,165,116,0.15);
+            box-shadow: 0 0 0 3px rgba(212,165,116,0.12);
+            background: var(--white);
         }
-        .form-input::placeholder { color: #b8a090; }
-        textarea.form-input { resize: vertical; min-height: 120px; }
+        .form-input::placeholder { color: #c0a890; }
+        textarea.form-input { resize: vertical; min-height: 130px; }
 
         .form-row {
             display: grid;
@@ -204,9 +198,10 @@
             gap: 16px;
         }
 
+        .submit-wrap { margin-top: 8px; }
         .submit-btn {
             width: 100%;
-            padding: 14px 24px;
+            padding: 15px 24px;
             background: var(--dark);
             color: var(--cream);
             border: none;
@@ -216,26 +211,159 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212,165,116,0.15), transparent);
+            transition: left 0.5s;
         }
         .submit-btn:hover { background: var(--brown); }
+        .submit-btn:hover::before { left: 100%; }
 
         .success-msg {
-            background: rgba(34,197,94,0.08);
-            border: 1.5px solid rgba(34,197,94,0.2);
-            border-radius: 12px;
-            padding: 16px 20px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, rgba(34,197,94,0.06), rgba(34,197,94,0.02));
+            border: 1.5px solid rgba(34,197,94,0.15);
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin-bottom: 24px;
             color: #166534;
             font-size: 0.95rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            line-height: 1.4;
+        }
+        .success-icon {
+            width: 36px; height: 36px;
+            background: rgba(34,197,94,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
         }
 
         .error-msg {
             color: #c0392b;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             margin-top: 4px;
+        }
+
+        /* Right: Info panel */
+        .envelope-info {
+            padding: 48px;
+            background: linear-gradient(165deg, var(--light) 0%, rgba(245,230,208,0.3) 100%);
+            position: relative;
+        }
+
+        .info-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .info-heading::before {
+            content: '✦';
+            color: var(--golden);
+            font-size: 0.8rem;
+        }
+
+        .info-block {
+            margin-bottom: 28px;
+        }
+        .info-block:last-child { margin-bottom: 0; }
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .info-item:last-child { margin-bottom: 0; }
+        .info-icon {
+            width: 42px; height: 42px;
+            background: var(--white);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(61,35,20,0.06);
+            border: 1px solid rgba(212,165,116,0.1);
+        }
+        .info-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--golden);
+            margin-bottom: 3px;
+        }
+        .info-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.05rem;
+            color: var(--dark);
+            line-height: 1.4;
+        }
+        .info-value a {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(193,127,78,0.3);
+            transition: border-color 0.3s;
+        }
+        .info-value a:hover { border-color: var(--accent); }
+
+        .info-divider {
+            height: 1px;
+            background: linear-gradient(90deg, var(--golden), transparent);
+            margin: 28px 0;
+            opacity: 0.4;
+        }
+
+        /* Handwritten note at bottom */
+        .handwritten-note {
+            margin-top: 32px;
+            padding: 20px 24px;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid rgba(212,165,116,0.15);
+            position: relative;
+            box-shadow: 0 2px 8px rgba(61,35,20,0.04);
+        }
+        .handwritten-note::before {
+            content: '"';
+            position: absolute;
+            top: 8px; left: 16px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: var(--golden);
+            opacity: 0.3;
+            line-height: 1;
+        }
+        .handwritten-note p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.05rem;
+            color: var(--warm);
+            font-style: italic;
+            line-height: 1.5;
+            padding-left: 8px;
+        }
+        .handwritten-note .sig {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-top: 10px;
+            font-style: normal;
+            padding-left: 8px;
         }
 
         /* ═══ FOOTER ═══ */
@@ -254,16 +382,16 @@
         .footer a:hover { text-decoration: underline; }
 
         /* ═══ RESPONSIVE ═══ */
-        @media (max-width: 768px) {
-            .contact-layout {
+        @media (max-width: 800px) {
+            .envelope {
                 grid-template-columns: 1fr;
-                gap: 32px;
-                padding: 40px 24px 60px;
             }
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
+            .envelope-form::after { display: none; }
+            .envelope-form { padding: 32px 24px; }
+            .envelope-info { padding: 32px 24px; }
+            .form-row { grid-template-columns: 1fr; gap: 0; }
+            .hero { padding: 130px 24px 60px; }
+            .contact-wrap { margin-top: -24px; }
         }
     </style>
 </head>
@@ -274,115 +402,141 @@
         <a href="/contact" class="active">Contact</a>
     </nav>
 
+    {{-- HERO --}}
     <section class="hero">
-        <h1>Get in Touch</h1>
-        <p>Have a question, special request, or just want to say hello? We'd love to hear from you.</p>
+        <div class="hero-flour">
+            @for($i = 0; $i < 40; $i++)
+            <div class="flour-dot" style="top: {{ rand(5,95) }}%; left: {{ rand(2,98) }}%; width: {{ rand(2,5) }}px; height: {{ rand(2,5) }}px; opacity: {{ rand(8,25) / 100 }};"></div>
+            @endfor
+        </div>
+        <h1>Let's Talk</h1>
+        <p>Questions, custom orders, or just want to chat about bread? We're all ears.</p>
+        <div class="hero-flourish">
+            <span class="hf-line"></span>
+            <span class="hf-star">✦</span>
+            <span class="hf-line"></span>
+        </div>
     </section>
 
-    <div class="contact-layout">
-        {{-- INFO --}}
-        <div class="info-card">
-            <h2>Bakery Info</h2>
+    {{-- MAIN --}}
+    <div class="contact-wrap">
+        <div class="envelope">
+            {{-- FORM SIDE --}}
+            <div class="envelope-form">
+                <h2 class="form-heading">Send a Message</h2>
+                <p class="form-sub">We'll get back to you as soon as we can.</p>
 
-            <div class="info-item">
-                <div class="info-icon">📍</div>
-                <div>
-                    <div class="info-label">Location</div>
-                    <div class="info-value">Davenport, FL<br>Four Corners & Greater Orlando Area</div>
-                </div>
-            </div>
-
-            <div class="info-item">
-                <div class="info-icon">📧</div>
-                <div>
-                    <div class="info-label">Email</div>
-                    <div class="info-value"><a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a></div>
-                </div>
-            </div>
-
-            <div class="info-item">
-                <div class="info-icon">📱</div>
-                <div>
-                    <div class="info-label">Social</div>
-                    <div class="info-value"><a href="https://www.facebook.com/bakeryonbiscotto" target="_blank">Facebook</a></div>
-                </div>
-            </div>
-
-            <div class="info-divider"></div>
-
-            <h2>Order Info</h2>
-
-            <div class="info-item">
-                <div class="info-icon">🕐</div>
-                <div>
-                    <div class="info-label">Lead Time</div>
-                    <div class="info-value">Please order at least 2 days in advance. Sourdough takes love and time!</div>
-                </div>
-            </div>
-
-            <div class="info-item">
-                <div class="info-icon">🚗</div>
-                <div>
-                    <div class="info-label">Pickup & Delivery</div>
-                    <div class="info-value">Pickup available in Davenport. Delivery available in the greater Orlando area.</div>
-                </div>
-            </div>
-
-            <div class="info-item">
-                <div class="info-icon">🍞</div>
-                <div>
-                    <div class="info-label">Custom Orders</div>
-                    <div class="info-value">Have something special in mind? Send us a message and we'll do our best!</div>
-                </div>
-            </div>
-        </div>
-
-        {{-- FORM --}}
-        <div class="form-card">
-            <h2>Send a Message</h2>
-
-            @if(session('success'))
-                <div class="success-msg">
-                    <span>✅</span> Thanks for reaching out! We'll get back to you as soon as we can.
-                </div>
-            @endif
-
-            <form method="POST" action="{{ route('contact.store') }}">
-                @csrf
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Name</label>
-                        <input type="text" name="name" class="form-input" placeholder="Your name" value="{{ old('name') }}" required>
-                        @error('name') <p class="error-msg">{{ $message }}</p> @enderror
+                @if(session('success'))
+                    <div class="success-msg">
+                        <div class="success-icon">✓</div>
+                        <span>Thanks for reaching out! We'll get back to you soon.</span>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Email</label>
-                        <input type="email" name="email" class="form-input" placeholder="you@email.com" value="{{ old('email') }}" required>
-                        @error('email') <p class="error-msg">{{ $message }}</p> @enderror
-                    </div>
-                </div>
+                @endif
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Phone <span style="font-weight: 400; text-transform: none; opacity: 0.6;">(optional)</span></label>
-                        <input type="tel" name="phone" class="form-input" placeholder="(555) 123-4567" value="{{ old('phone') }}">
+                <form method="POST" action="{{ route('contact.store') }}">
+                    @csrf
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <input type="text" name="name" class="form-input" placeholder="Your name" value="{{ old('name') }}" required>
+                            @error('name') <p class="error-msg">{{ $message }}</p> @enderror
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-input" placeholder="you@email.com" value="{{ old('email') }}" required>
+                            @error('email') <p class="error-msg">{{ $message }}</p> @enderror
+                        </div>
                     </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Phone <span style="font-weight: 400; text-transform: none; opacity: 0.5;">(optional)</span></label>
+                            <input type="tel" name="phone" class="form-input" placeholder="(555) 123-4567" value="{{ old('phone') }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Subject</label>
+                            <select name="subject" class="form-input" required>
+                                <option value="" disabled {{ old('subject') ? '' : 'selected' }}>Choose a topic...</option>
+                                <option value="Custom Order" {{ old('subject') === 'Custom Order' ? 'selected' : '' }}>Custom Order</option>
+                                <option value="General Question" {{ old('subject') === 'General Question' ? 'selected' : '' }}>General Question</option>
+                                <option value="Catering / Events" {{ old('subject') === 'Catering / Events' ? 'selected' : '' }}>Catering / Events</option>
+                                <option value="Feedback" {{ old('subject') === 'Feedback' ? 'selected' : '' }}>Feedback</option>
+                                <option value="Other" {{ old('subject') === 'Other' ? 'selected' : '' }}>Other</option>
+                            </select>
+                            @error('subject') <p class="error-msg">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <label class="form-label">Subject</label>
-                        <input type="text" name="subject" class="form-input" placeholder="What's this about?" value="{{ old('subject') }}" required>
-                        @error('subject') <p class="error-msg">{{ $message }}</p> @enderror
+                        <label class="form-label">Message</label>
+                        <textarea name="message" class="form-input" placeholder="What's on your mind..." required>{{ old('message') }}</textarea>
+                        @error('message') <p class="error-msg">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div class="submit-wrap">
+                        <button type="submit" class="submit-btn">Send Message ✦</button>
+                    </div>
+                </form>
+            </div>
+
+            {{-- INFO SIDE --}}
+            <div class="envelope-info">
+                <h3 class="info-heading">Get in Touch</h3>
+
+                <div class="info-block">
+                    <div class="info-item">
+                        <div class="info-icon">📍</div>
+                        <div>
+                            <div class="info-label">Location</div>
+                            <div class="info-value">Davenport, FL<br>Four Corners & Greater Orlando</div>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">📧</div>
+                        <div>
+                            <div class="info-label">Email</div>
+                            <div class="info-value"><a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a></div>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">📱</div>
+                        <div>
+                            <div class="info-label">Social</div>
+                            <div class="info-value"><a href="https://www.facebook.com/bakeryonbiscotto" target="_blank">Facebook</a></div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Message</label>
-                    <textarea name="message" class="form-input" placeholder="Tell us what's on your mind..." required>{{ old('message') }}</textarea>
-                    @error('message') <p class="error-msg">{{ $message }}</p> @enderror
+                <div class="info-divider"></div>
+
+                <h3 class="info-heading">Before You Order</h3>
+
+                <div class="info-block">
+                    <div class="info-item">
+                        <div class="info-icon">⏰</div>
+                        <div>
+                            <div class="info-label">Lead Time</div>
+                            <div class="info-value">2+ days in advance. Great sourdough can't be rushed!</div>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">🚗</div>
+                        <div>
+                            <div class="info-label">Pickup & Delivery</div>
+                            <div class="info-value">Pickup in Davenport. Delivery in greater Orlando area.</div>
+                        </div>
+                    </div>
                 </div>
 
-                <button type="submit" class="submit-btn">Send Message</button>
-            </form>
+                <div class="handwritten-note">
+                    <p>Every loaf is made with care, from feeding the starter to pulling it out of the oven. I love what I do, and I'd love to bake for you.</p>
+                    <div class="sig">- Cassie</div>
+                </div>
+            </div>
         </div>
     </div>
 
