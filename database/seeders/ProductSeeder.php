@@ -41,7 +41,7 @@ class ProductSeeder extends Seeder
             ['name' => 'Chocolate Almond Chip Sourdough', 'price' => 10.00, 'sort_order' => 4, 'image' => 'images/product-chocolate-almond-chip.jpg', 'description' => 'Chocolate chips and crunchy almonds in every bite.'],
             ['name' => 'Cheddar Cheese Sourdough', 'price' => 10.00, 'sort_order' => 5, 'image' => 'images/product-cheddar-cheese-loaf.jpg', 'description' => 'Sharp cheddar baked right into the dough.'],
             ['name' => 'Parmesan Rosemary Sourdough', 'price' => 10.00, 'sort_order' => 6, 'description' => 'Savory parmesan and fresh rosemary in a rustic loaf.'],
-            ['name' => 'Banana Walnut Bread', 'price' => 10.00, 'sort_order' => 7, 'description' => 'Our classic banana bread loaded with crunchy toasted walnuts.'],
+            ['name' => 'Banana Walnut Bread', 'price' => 15.00, 'sort_order' => 7, 'description' => 'Our classic banana bread loaded with crunchy toasted walnuts.'],
         ];
 
         foreach ($loaves as $loaf) {
