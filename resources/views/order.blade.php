@@ -825,7 +825,7 @@
                 </div>
 
                 {{-- ORDER FORM --}}
-                <form method="POST" action="{{ route('order.store') }}" x-show="cart.length > 0" class="order-form"
+                <form x-show="cart.length > 0" class="order-form"
                       @submit.prevent>
                     @csrf
 
