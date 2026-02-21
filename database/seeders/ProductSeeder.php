@@ -10,6 +10,9 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
+        Product::query()->delete();
+        Category::query()->delete();
+
         $sourdoughLoaves = Category::updateOrCreate(
             ['slug' => 'sourdough-loaves'],
             ['name' => 'Sourdough Loaves', 'sort_order' => 1]
