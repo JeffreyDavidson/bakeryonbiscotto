@@ -17,7 +17,7 @@ Route::get('/', function() {
         $q->where('is_available', true)->orderBy('sort_order');
     }])->orderBy('sort_order')->get();
 
-    return view('concepts.g', compact('featuredReview', 'approvedReviews', 'categories'));
+    return view('home', compact('featuredReview', 'approvedReviews', 'categories'));
 });
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 Route::get('/menu-concepts', fn() => view('menu-concepts'));
