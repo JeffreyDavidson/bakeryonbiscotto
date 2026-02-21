@@ -117,4 +117,11 @@ return [
 
     'notify_address' => env('MAIL_NOTIFY_ADDRESS', 'bakeryonbiscotto@gmail.com'),
 
+    'markdown' => [
+        'theme' => 'bakery',
+        'paths' => [
+            resource_path('views/vendor/mail'),
+        ],
+    ],
+
 ];
