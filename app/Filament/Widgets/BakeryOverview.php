@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\ContactMessage;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Review;
@@ -36,6 +37,10 @@ class BakeryOverview extends StatsOverviewWidget
                 ->description($pendingReviews > 0 ? 'Awaiting approval' : 'All caught up!')
                 ->icon('heroicon-o-star')
                 ->color($pendingReviews > 0 ? 'warning' : 'gray'),
+            Stat::make('New Messages', ContactMessage::new()->count())
+                ->description('Unread contact messages')
+                ->icon('heroicon-o-envelope')
+                ->color(ContactMessage::new()->count() > 0 ? 'warning' : 'gray'),
         ];
     }
 }
