@@ -2580,7 +2580,7 @@
 
             <div class="ft-grid">
                 <div class="ft-item ft-hero">
-                    <img src="/images/product-sourdough-boule-2.jpg" alt="Sourdough Boule">
+                    <img src="/images/product-sourdough-boule.jpg" alt="Sourdough Boule">
                     <div class="ft-overlay"><span class="ft-caption">The signature boule</span></div>
                 </div>
                 <div class="ft-item">
