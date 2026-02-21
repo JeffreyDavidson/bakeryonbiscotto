@@ -621,7 +621,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Phone</label>
-                        <input type="tel" class="form-input" x-model="form.customer_phone" placeholder="(555) 123-4567" required>
+                        <input type="tel" class="form-input" x-model="form.customer_phone" @input="formatPhone" placeholder="(555) 123-4567" required>
                     </div>
 
                     <h3 class="form-section-title" style="margin-top: 24px;">Fulfillment</h3>
@@ -756,6 +756,16 @@
 
                 total() {
                     return this.subtotal() + (this.fulfillment === 'delivery' ? 5 : 0);
+                },
+
+                formatPhone(e) {
+                    let digits = e.target.value.replace(/\D/g, '').substring(0, 10);
+                    let formatted = '';
+                    if (digits.length > 0) formatted = '(' + digits.substring(0, 3);
+                    if (digits.length >= 3) formatted += ') ';
+                    if (digits.length > 3) formatted += digits.substring(3, 6);
+                    if (digits.length >= 6) formatted += '-' + digits.substring(6);
+                    this.form.customer_phone = formatted;
                 },
 
                 submitOrder() {
