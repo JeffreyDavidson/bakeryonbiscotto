@@ -289,16 +289,22 @@
         }
         .info-item:last-child { margin-bottom: 0; }
         .info-icon {
-            width: 42px; height: 42px;
-            background: var(--white);
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, var(--dark), var(--brown));
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.15rem;
             flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(61,35,20,0.06);
-            border: 1px solid rgba(212,165,116,0.1);
+            box-shadow: 0 4px 12px rgba(61,35,20,0.15);
+        }
+        .info-icon svg {
+            width: 20px; height: 20px;
+            stroke: var(--golden);
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
         .info-label {
             font-size: 0.72rem;
@@ -486,7 +492,7 @@
 
                 <div class="info-block">
                     <div class="info-item">
-                        <div class="info-icon">📍</div>
+                        <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
                         <div>
                             <div class="info-label">Location</div>
                             <div class="info-value">Davenport, FL<br>Four Corners & Greater Orlando</div>
@@ -494,7 +500,7 @@
                     </div>
 
                     <div class="info-item">
-                        <div class="info-icon">📧</div>
+                        <div class="info-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,7 12,13 2,7"/></svg></div>
                         <div>
                             <div class="info-label">Email</div>
                             <div class="info-value"><a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a></div>
@@ -502,7 +508,7 @@
                     </div>
 
                     <div class="info-item">
-                        <div class="info-icon">📱</div>
+                        <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M18 2H15C13.3431 2 12 3.34315 12 5V8H9V12H12V22H16V12H19L20 8H16V5.5C16 5.22386 16.2239 5 16.5 5H18V2Z"/></svg></div>
                         <div>
                             <div class="info-label">Social</div>
                             <div class="info-value"><a href="https://www.facebook.com/bakeryonbiscotto" target="_blank">Facebook</a></div>
@@ -516,7 +522,7 @@
 
                 <div class="info-block">
                     <div class="info-item">
-                        <div class="info-icon">⏰</div>
+                        <div class="info-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
                         <div>
                             <div class="info-label">Lead Time</div>
                             <div class="info-value">2+ days in advance. Great sourdough can't be rushed!</div>
@@ -524,7 +530,7 @@
                     </div>
 
                     <div class="info-item">
-                        <div class="info-icon">🚗</div>
+                        <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M3 9l4-4 4 4"/><path d="M7 5v14"/><path d="M21 15l-4 4-4-4"/><path d="M17 19V5"/></svg></div>
                         <div>
                             <div class="info-label">Pickup & Delivery</div>
                             <div class="info-value">Pickup in Davenport. Delivery in greater Orlando area.</div>
