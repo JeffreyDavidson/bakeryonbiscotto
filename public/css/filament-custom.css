@@ -101,12 +101,16 @@ h1, .fi-header-heading {
     text-transform: uppercase !important;
     font-size: 0.7rem !important;
     letter-spacing: 0.06em !important;
-    border-bottom: 2px solid #D4A574 !important;
+    border-bottom: none !important;
 }
 /* Also target th directly */
 table thead th {
     background: #F5E6D0 !important;
     color: #3D2314 !important;
+}
+/* Full-width border under entire header row */
+table thead tr {
+    border-bottom: 2px solid #D4A574 !important;
 }
 
 /* Table rows */
