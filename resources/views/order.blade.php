@@ -178,6 +178,7 @@
             border-radius: 100px;
             overflow: hidden;
             height: 36px;
+            background: var(--cream);
         }
         .qty-btn {
             width: 36px;
