@@ -2445,57 +2445,41 @@
         </div>
         <p class="reviews-subtitle reveal">Real words from real people who keep coming back.</p>
 
+        @if($featuredReview)
         <div class="review-featured reveal">
-            <blockquote>Bought some amazing goodies from Bakery on Biscotto! My dear friend Cassie sure knows how to bake amazing sourdough! I got the chocolate, chocolate chip loaf &amp; the English muffins. They are going to be the perfect thank you gift for my parents who are watching our kids for us this week. Highly recommend her shop.</blockquote>
+            <blockquote>{{ $featuredReview->body }}</blockquote>
             <div class="review-author-wrap">
                 <span class="author-line"></span>
-                <span class="review-author">Kristen S.</span>
-                <span class="dot" style="width:4px;height:4px;background:var(--golden);border-radius:50%;display:inline-block;"></span>
-                <span class="review-location">Facebook</span>
+                <span class="review-author">{{ $featuredReview->name }}</span>
+                @if($featuredReview->favorite_bread)
+                    <span class="dot" style="width:4px;height:4px;background:var(--golden);border-radius:50%;display:inline-block;"></span>
+                    <span class="review-location">Loves the {{ $featuredReview->favorite_bread }}</span>
+                @endif
                 <span class="author-line"></span>
             </div>
         </div>
+        @endif
 
+        @if($approvedReviews->count())
         <div class="reviews-conversation">
-            <div class="convo-card reveal">
-                <div class="convo-avatar">M</div>
+            @foreach($approvedReviews as $review)
+            <div class="convo-card {{ $loop->iteration % 2 === 0 ? 'from-right' : '' }} reveal">
+                <div class="convo-avatar">{{ strtoupper(substr($review->name, 0, 1)) }}</div>
                 <div class="convo-bubble">
-                    <div class="review-stars">★★★★★</div>
-                    <blockquote>Cassie's chocolate chip sourdough changed my life. I'm not being dramatic. My family goes through a loaf in a single day and then immediately orders another.</blockquote>
+                    <div class="review-stars">{!! str_repeat('★', $review->rating) !!}</div>
+                    <blockquote>{{ $review->body }}</blockquote>
                     <div class="convo-meta">
-                        <span class="review-author">Mike T.</span>
-                        <span class="dot"></span>
-                        <span class="review-location">Haines City, FL</span>
+                        <span class="review-author">{{ $review->name }}</span>
+                        @if($review->favorite_bread)
+                            <span class="dot"></span>
+                            <span class="review-location">Fav: {{ $review->favorite_bread }}</span>
+                        @endif
                     </div>
                 </div>
             </div>
-
-            <div class="convo-card from-right reveal">
-                <div class="convo-avatar">K</div>
-                <div class="convo-bubble">
-                    <div class="review-stars">★★★★★</div>
-                    <blockquote>This bread!! Oh. My. Gosh! Amazing!! Def recommend the Parmesan rosemary sourdough! Amazing!</blockquote>
-                    <div class="convo-meta">
-                        <span class="review-author">Kinsey M.</span>
-                        <span class="dot"></span>
-                        <span class="review-location">Winter Park, FL</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="convo-card reveal">
-                <div class="convo-avatar">J</div>
-                <div class="convo-bubble">
-                    <div class="review-stars">★★★★★</div>
-                    <blockquote>I fly to Florida every year just to have some of this lady's cooking! It doesn't get any better ☺️</blockquote>
-                    <div class="convo-meta">
-                        <span class="review-author">Joe M.</span>
-                        <span class="dot"></span>
-                        <span class="review-location">Gary, IN</span>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
+        @endif
 
         {{-- Review Form --}}
         <div class="review-form-wrap reveal" id="review-form">
