@@ -473,9 +473,7 @@
                             <label class="form-label">Subject</label>
                             <select name="subject" class="form-input" required>
                                 <option value="" disabled {{ old('subject') ? '' : 'selected' }}>Choose a topic...</option>
-                                <option value="Custom Order" {{ old('subject') === 'Custom Order' ? 'selected' : '' }}>Custom Order</option>
                                 <option value="General Question" {{ old('subject') === 'General Question' ? 'selected' : '' }}>General Question</option>
-                                <option value="Catering / Events" {{ old('subject') === 'Catering / Events' ? 'selected' : '' }}>Catering / Events</option>
                                 <option value="Feedback" {{ old('subject') === 'Feedback' ? 'selected' : '' }}>Feedback</option>
                                 <option value="Other" {{ old('subject') === 'Other' ? 'selected' : '' }}>Other</option>
                             </select>
