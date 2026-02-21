@@ -41,7 +41,6 @@ class ProductSeeder extends Seeder
             ['name' => 'Chocolate Almond Chip Sourdough', 'price' => 10.00, 'sort_order' => 4, 'image' => 'images/product-chocolate-almond-chip.jpg', 'description' => 'Chocolate chips and crunchy almonds in every bite.'],
             ['name' => 'Cheddar Cheese Sourdough', 'price' => 10.00, 'sort_order' => 5, 'image' => 'images/product-cheddar-cheese-loaf.jpg', 'description' => 'Sharp cheddar baked right into the dough.'],
             ['name' => 'Parmesan Rosemary Sourdough', 'price' => 10.00, 'sort_order' => 6, 'description' => 'Savory parmesan and fresh rosemary in a rustic loaf.'],
-            ['name' => 'Banana Walnut Bread', 'price' => 15.00, 'sort_order' => 7, 'description' => 'Our classic banana bread loaded with crunchy toasted walnuts.'],
         ];
 
         foreach ($loaves as $loaf) {
@@ -68,6 +67,7 @@ class ProductSeeder extends Seeder
         $others = [
             ['name' => 'Pumpkin Almond Chocolate Chip Bread', 'price' => 10.00, 'sort_order' => 1, 'is_featured' => true, 'image' => 'images/product-pumpkin-bread.jpg', 'description' => 'Pumpkin spice, toasted almonds, and chocolate chips. The ultimate fall loaf.'],
             ['name' => 'Banana Bread', 'price' => 8.00, 'sort_order' => 2, 'image' => 'images/product-banana-bread.jpg', 'description' => 'Classic homemade banana bread, moist and delicious.'],
+            ['name' => 'Banana Walnut Bread', 'price' => 15.00, 'sort_order' => 3, 'description' => 'Our classic banana bread loaded with crunchy toasted walnuts.'],
         ];
 
         foreach ($others as $other) {
