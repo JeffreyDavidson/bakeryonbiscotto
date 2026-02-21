@@ -19,7 +19,26 @@ class OrderController extends Controller
             $q->where('is_available', true)->orderBy('sort_order');
         }])->orderBy('sort_order')->get();
 
-        return view('order', compact('categories'));
+        // Build bundle config: product_id => { pick_count, options: [{id, name}] }
+        $bundles = [];
+        foreach ($categories as $cat) {
+            foreach ($cat->products as $product) {
+                if ($product->is_bundle && $product->bundle_category_id && $product->bundle_pick_count) {
+                    $options = Product::where('category_id', $product->bundle_category_id)
+                        ->where('id', '!=', $product->id)
+                        ->where('is_available', true)
+                        ->where('is_bundle', false)
+                        ->orderBy('sort_order')
+                        ->get(['id', 'name']);
+                    $bundles[$product->id] = [
+                        'pick_count' => $product->bundle_pick_count,
+                        'options' => $options->map(fn($p) => ['id' => $p->id, 'name' => $p->name])->values(),
+                    ];
+                }
+            }
+        }
+
+        return view('order', compact('categories', 'bundles'));
     }
 
     public function store(Request $request)
@@ -36,6 +55,7 @@ class OrderController extends Controller
             'items' => 'required|array|min:1',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1|max:20',
+            'items.*.selections' => 'nullable|array',
         ]);
 
         // Calculate totals
@@ -55,6 +75,7 @@ class OrderController extends Controller
                 'unit_price' => $product->price,
                 'quantity' => $item['quantity'],
                 'line_total' => $lineTotal,
+                'selections' => $item['selections'] ?? null,
             ];
         }
 

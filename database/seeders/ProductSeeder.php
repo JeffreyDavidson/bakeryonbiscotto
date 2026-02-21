@@ -26,10 +26,13 @@ class ProductSeeder extends Seeder
             ['name' => 'Cinnamon and Sugar Loaf', 'price' => 14.00, 'sort_order' => 5, 'description' => 'Warm cinnamon swirls with sweet sugar. Weekend mornings were made for this.'],
             ['name' => 'Chocolate Chocolate Chip Loaf', 'price' => 12.00, 'sort_order' => 6, 'image' => 'images/product-chocolate-sourdough.jpg', 'description' => 'Cocoa in the dough, chips throughout. For the true chocolate lovers.'],
             ['name' => 'Chocolate Almond Chocolate Chip', 'price' => 15.00, 'sort_order' => 7, 'image' => 'images/product-chocolate-almond-chip.jpg', 'description' => 'Toasted almonds join the chocolate celebration. Crunchy, rich, and indulgent.'],
-            ['name' => '4-Pack of Mini Loaves', 'price' => 25.00, 'sort_order' => 8, 'is_featured' => true, 'image' => 'images/product-4pack-sourdough-loaves.jpg', 'description' => "Can't choose? Don't. Pick any 4 flavors in perfectly portioned mini loaves."],
+            ['name' => '4-Pack of Mini Loaves', 'price' => 25.00, 'sort_order' => 8, 'is_featured' => true, 'is_bundle' => true, 'bundle_pick_count' => 4, 'bundle_category_id' => '__LOAVES__', 'image' => 'images/product-4pack-sourdough-loaves.jpg', 'description' => "Can't choose? Don't. Pick any 4 flavors in perfectly portioned mini loaves."],
         ];
 
         foreach ($loaves as $loaf) {
+            if (isset($loaf['bundle_category_id']) && $loaf['bundle_category_id'] === '__LOAVES__') {
+                $loaf['bundle_category_id'] = $sourdoughLoaves->id;
+            }
             Product::create(array_merge([
                 'category_id' => $sourdoughLoaves->id,
                 'slug' => \Illuminate\Support\Str::slug($loaf['name']),
