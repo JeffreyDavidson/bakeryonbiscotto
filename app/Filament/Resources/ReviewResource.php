@@ -87,10 +87,10 @@ class ReviewResource extends Resource
                     ->requiresConfirmation()
                     ->visible(fn (Review $record) => $record->status !== 'rejected')
                     ->action(fn (Review $record) => $record->update(['status' => 'rejected'])),
-                Tables\Actions\EditAction::make(),
+                \Filament\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                \Filament\Actions\DeleteAction::make(),
             ]);
     }
 
