@@ -181,7 +181,7 @@
         .qty-btn {
             width: 34px; height: 34px;
             border: none;
-            background: transparent;
+            background: var(--cream);
             color: var(--dark);
             font-size: 1.1rem;
             font-weight: 600;
@@ -191,7 +191,7 @@
             justify-content: center;
             transition: background 0.2s;
         }
-        .qty-btn:hover { background: var(--cream); }
+        .qty-btn:hover { background: var(--golden); }
         .qty-btn:disabled { opacity: 0.3; cursor: default; }
         .qty-btn:disabled:hover { background: transparent; }
         .qty-value {
