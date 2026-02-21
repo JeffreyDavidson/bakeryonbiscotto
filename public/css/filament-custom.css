@@ -217,6 +217,72 @@ table thead tr {
     color: #FFFFFF !important;
 }
 
+/* ===== MODALS ===== */
+.fi-modal-window {
+    border: 1px solid rgba(212,165,116,0.2) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 25px 60px rgba(61,35,20,0.15) !important;
+    overflow: hidden !important;
+}
+.fi-modal-header {
+    background: rgba(245,230,208,0.4) !important;
+    border-bottom: 1px solid rgba(212,165,116,0.15) !important;
+    padding: 1.25rem 1.5rem !important;
+}
+.fi-modal-heading {
+    font-family: "Playfair Display", serif !important;
+    color: #3D2314 !important;
+}
+.fi-modal-description {
+    color: #6B4A2E !important;
+}
+.fi-modal-footer {
+    background: rgba(245,230,208,0.25) !important;
+    border-top: 1px solid rgba(212,165,116,0.1) !important;
+    padding: 1rem 1.5rem !important;
+}
+/* Modal icon */
+.fi-modal-icon-ctn {
+    background: rgba(245,230,208,0.5) !important;
+    border: 1px solid rgba(212,165,116,0.2) !important;
+}
+/* Confirm button (Approve = success) */
+.fi-modal .fi-btn.fi-color-success {
+    background: #2D7A3A !important;
+    border: none !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+}
+.fi-modal .fi-btn.fi-color-success:hover {
+    background: #236B2E !important;
+}
+/* Confirm button (Reject = danger) */
+.fi-modal .fi-btn.fi-color-danger {
+    background: #B91C1C !important;
+    border: none !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+}
+.fi-modal .fi-btn.fi-color-danger:hover {
+    background: #991B1B !important;
+}
+/* Cancel button */
+.fi-modal .fi-btn.fi-color-gray {
+    background: #FFFFFF !important;
+    border: 1px solid rgba(212,165,116,0.3) !important;
+    color: #3D2314 !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+}
+.fi-modal .fi-btn.fi-color-gray:hover {
+    background: #FDF8F2 !important;
+}
+/* Modal backdrop */
+.fi-modal-close-overlay {
+    background: rgba(61,35,20,0.4) !important;
+    backdrop-filter: blur(2px) !important;
+}
+
 /* ===== EMPTY STATE ===== */
 .fi-ta-empty-state-heading {
     color: #3D2314 !important;
