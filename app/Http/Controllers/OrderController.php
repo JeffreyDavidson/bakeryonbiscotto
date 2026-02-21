@@ -77,8 +77,13 @@ class OrderController extends Controller
 
         $result = $paypal->captureOrder($paypalOrderId);
 
+        \Log::info('PayPal capture result', ['result' => $result]);
+
         if (($result['status'] ?? '') !== 'COMPLETED') {
-            return response()->json(['error' => 'Payment not completed.'], 422);
+            return response()->json([
+                'error' => 'Payment not completed. Status: ' . ($result['status'] ?? 'unknown'),
+                'details' => $result['details'] ?? null,
+            ], 422);
         }
 
         $validated = $pendingOrder['validated'];
