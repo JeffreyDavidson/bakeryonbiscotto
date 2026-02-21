@@ -17,13 +17,19 @@ class ContactMessageResource extends Resource
 {
     protected static ?string $model = ContactMessage::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-envelope';
-
     protected static ?string $navigationLabel = 'Messages';
 
-    protected static ?string $navigationGroup = 'Communication';
-
     protected static ?int $navigationSort = 1;
+
+    public static function getNavigationIcon(): string|\BackedEnum|null
+    {
+        return 'heroicon-o-envelope';
+    }
+
+    public static function getNavigationGroup(): string|\UnitEnum|null
+    {
+        return 'Communication';
+    }
 
     public static function getNavigationBadge(): ?string
     {
