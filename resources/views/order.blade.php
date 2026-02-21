@@ -183,20 +183,18 @@
         .qty-btn {
             width: 36px;
             border: none;
-            background: var(--cream);
+            background: transparent;
             color: var(--dark);
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.2s;
             line-height: 1;
+            padding: 0;
         }
-        .qty-btn:hover { background: var(--golden); }
         .qty-btn:disabled { opacity: 0.3; cursor: default; }
-        .qty-btn:disabled:hover { background: var(--cream); }
         .qty-value {
             width: 32px;
             display: flex;
