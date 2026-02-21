@@ -171,15 +171,16 @@
         }
 
         .qty-control {
-            display: flex;
-            align-items: center;
+            display: inline-flex;
+            align-items: stretch;
             gap: 0;
             border: 1.5px solid var(--golden);
             border-radius: 100px;
             overflow: hidden;
+            height: 36px;
         }
         .qty-btn {
-            width: 34px; height: 34px;
+            width: 36px;
             border: none;
             background: var(--cream);
             color: var(--dark);
@@ -190,17 +191,21 @@
             align-items: center;
             justify-content: center;
             transition: background 0.2s;
+            line-height: 1;
         }
         .qty-btn:hover { background: var(--golden); }
         .qty-btn:disabled { opacity: 0.3; cursor: default; }
-        .qty-btn:disabled:hover { background: transparent; }
+        .qty-btn:disabled:hover { background: var(--cream); }
         .qty-value {
             width: 32px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
             font-weight: 600;
             color: var(--dark);
+            line-height: 1;
         }
         .qty-value.has-items { color: var(--accent); }
 
