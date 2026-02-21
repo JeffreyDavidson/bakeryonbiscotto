@@ -2009,7 +2009,7 @@
         <a href="#menu">Menu</a>
         <a href="#about">About</a>
         <a href="#order">Order</a>
-        <a href="#contact">Contact</a>
+        <a href="/contact">Contact</a>
     </nav>
 
     {{-- ═══ HERO ═══ --}}
