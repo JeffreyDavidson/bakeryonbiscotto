@@ -436,6 +436,106 @@
             margin-top: 4px;
         }
 
+        /* ═══ DATE PICKER ═══ */
+        .date-picker-wrap { position: relative; }
+        .date-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0; right: 0;
+            background: var(--white);
+            border-radius: 16px;
+            border: 1.5px solid rgba(139,94,60,0.12);
+            box-shadow: 0 12px 40px rgba(61,35,20,0.15);
+            padding: 20px;
+            z-index: 50;
+        }
+        .cal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .cal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        .cal-nav {
+            width: 32px; height: 32px;
+            border: none;
+            background: var(--light);
+            border-radius: 8px;
+            font-size: 1.2rem;
+            color: var(--warm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .cal-nav:hover { background: var(--cream); color: var(--dark); }
+        .cal-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            margin-bottom: 6px;
+        }
+        .cal-wd {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--warm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 0;
+        }
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+        .cal-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--dark);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .cal-day:hover:not(.disabled):not(.empty) {
+            background: var(--cream);
+        }
+        .cal-day.empty { cursor: default; }
+        .cal-day.disabled {
+            color: #d0c4b8;
+            cursor: not-allowed;
+        }
+        .cal-day.disabled:hover { background: transparent; }
+        .cal-day.selected {
+            background: var(--golden);
+            color: var(--dark);
+            font-weight: 700;
+        }
+        .cal-day.today:not(.selected) {
+            border: 1.5px solid var(--golden);
+        }
+        .cal-footer {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(139,94,60,0.08);
+            font-size: 0.78rem;
+            color: var(--warm);
+            text-align: center;
+        }
+        [x-cloak] { display: none !important; }
+
         /* ═══ FOOTER ═══ */
         .order-footer {
             text-align: center;
@@ -646,9 +746,45 @@
                         </div>
                     </template>
 
-                    <div class="form-group">
+                    <div class="form-group" x-data="datePicker()" x-init="init()">
                         <label class="form-label">Requested Date</label>
-                        <input type="date" class="form-input" x-model="form.requested_date" :min="minDate" required>
+                        <div class="date-picker-wrap">
+                            <button type="button" class="form-input date-trigger" @click="open = !open" style="text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                                <span x-text="selectedLabel || 'Choose a date'" :style="selectedLabel ? '' : 'color: #b8a090'"></span>
+                                <span style="font-size: 1.1rem;">📅</span>
+                            </button>
+                            <div class="date-dropdown" x-show="open" x-transition.opacity @click.outside="open = false" x-cloak>
+                                <div class="cal-header">
+                                    <button type="button" class="cal-nav" @click="prevMonth">‹</button>
+                                    <span class="cal-title" x-text="monthYear"></span>
+                                    <button type="button" class="cal-nav" @click="nextMonth">›</button>
+                                </div>
+                                <div class="cal-weekdays">
+                                    <template x-for="d in ['Su','Mo','Tu','We','Th','Fr','Sa']">
+                                        <span class="cal-wd" x-text="d"></span>
+                                    </template>
+                                </div>
+                                <div class="cal-grid">
+                                    <template x-for="blank in blanks"><span class="cal-day empty"></span></template>
+                                    <template x-for="day in days">
+                                        <button type="button"
+                                            class="cal-day"
+                                            :class="{
+                                                'disabled': !isSelectable(day),
+                                                'selected': isSelected(day),
+                                                'today': isToday(day)
+                                            }"
+                                            :disabled="!isSelectable(day)"
+                                            @click="selectDay(day)">
+                                            <span x-text="day"></span>
+                                        </button>
+                                    </template>
+                                </div>
+                                <div class="cal-footer">
+                                    <span>📌 Orders require 2 days advance notice</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -695,6 +831,93 @@
     </footer>
 
     <script>
+        function datePicker() {
+            return {
+                open: false,
+                month: null,
+                year: null,
+                selectedLabel: '',
+                days: [],
+                blanks: [],
+
+                init() {
+                    const d = new Date();
+                    d.setDate(d.getDate() + 2);
+                    this.month = d.getMonth();
+                    this.year = d.getFullYear();
+                    this.buildCalendar();
+                },
+
+                get monthYear() {
+                    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+                    return months[this.month] + ' ' + this.year;
+                },
+
+                get minDate() {
+                    const d = new Date();
+                    d.setDate(d.getDate() + 2);
+                    d.setHours(0,0,0,0);
+                    return d;
+                },
+
+                buildCalendar() {
+                    const firstDay = new Date(this.year, this.month, 1).getDay();
+                    const daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
+                    this.blanks = Array(firstDay).fill(0);
+                    this.days = Array.from({length: daysInMonth}, (_, i) => i + 1);
+                },
+
+                prevMonth() {
+                    if (this.month === 0) { this.month = 11; this.year--; }
+                    else { this.month--; }
+                    this.buildCalendar();
+                },
+
+                nextMonth() {
+                    if (this.month === 11) { this.month = 0; this.year++; }
+                    else { this.month++; }
+                    this.buildCalendar();
+                },
+
+                isSelectable(day) {
+                    const date = new Date(this.year, this.month, day);
+                    date.setHours(0,0,0,0);
+                    return date >= this.minDate;
+                },
+
+                isSelected(day) {
+                    const parent = this.$el.closest('[x-data]');
+                    const form = Alpine.$data(parent.closest('.order-layout'));
+                    if (!form || !form.form.requested_date) return false;
+                    const sel = new Date(form.form.requested_date + 'T00:00:00');
+                    return sel.getFullYear() === this.year && sel.getMonth() === this.month && sel.getDate() === day;
+                },
+
+                isToday(day) {
+                    const now = new Date();
+                    return now.getFullYear() === this.year && now.getMonth() === this.month && now.getDate() === day;
+                },
+
+                selectDay(day) {
+                    const date = new Date(this.year, this.month, day);
+                    const y = date.getFullYear();
+                    const m = String(date.getMonth() + 1).padStart(2, '0');
+                    const d = String(date.getDate()).padStart(2, '0');
+                    const iso = y + '-' + m + '-' + d;
+
+                    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+                    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                    this.selectedLabel = days[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + y;
+
+                    const parent = this.$el.closest('.order-layout');
+                    const form = Alpine.$data(parent);
+                    form.form.requested_date = iso;
+
+                    this.open = false;
+                }
+            }
+        }
+
         function orderPage() {
             return {
                 cart: [],
