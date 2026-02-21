@@ -50,7 +50,9 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
             ])
             ->font('Inter')
-            ->css([asset('css/filament-custom.css')])
+            ->renderHook('panels::head.end', fn () => new \Illuminate\Support\HtmlString(
+                '<link rel="stylesheet" href="' . asset('css/filament-custom.css') . '">'
+            ))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->middleware([
