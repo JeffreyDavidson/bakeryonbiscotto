@@ -206,9 +206,9 @@
 
         .add-btn {
             padding: 8px 20px;
-            background: var(--golden);
-            color: var(--dark);
-            border: none;
+            background: transparent;
+            color: var(--golden);
+            border: 1.5px solid var(--golden);
             border-radius: 100px;
             font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
@@ -216,7 +216,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .add-btn:hover { background: var(--accent); color: var(--white); }
+        .add-btn:hover { background: var(--golden); color: var(--white); }
 
         /* ═══ CART SIDEBAR ═══ */
         .cart-sidebar {
