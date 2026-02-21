@@ -18,5 +18,5 @@ View Reviews
 </x-mail::button>
 
 Thanks,<br>
-{{ config('app.name') }}
+Cassie
 </x-mail::message>

@@ -29,5 +29,5 @@ We've received your order and we're getting started on your fresh-baked goodies!
 We'll reach out if we have any questions. Remember, sourdough takes love and time, so please allow at least 2 days for your order!
 
 Thanks for supporting a small local bakery,<br>
-{{ config('app.name') }}
+Cassie
 </x-mail::message>
