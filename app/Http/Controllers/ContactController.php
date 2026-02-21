@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactConfirmation;
+use App\Mail\ContactMessage;
+use App\Models\ContactMessage as ContactMessageModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -22,8 +25,19 @@ class ContactController extends Controller
             'message' => 'required|string|max:2000',
         ]);
 
+        // Save to database
+        ContactMessageModel::create($validated);
+
+        // Email to Cassie
         try {
-            Mail::to(config('mail.notify_address'))->send(new \App\Mail\ContactMessage($validated));
+            Mail::to(config('mail.notify_address'))->send(new ContactMessage($validated));
+        } catch (\Exception $e) {
+            report($e);
+        }
+
+        // Confirmation email to user
+        try {
+            Mail::to($validated['email'])->send(new ContactConfirmation($validated));
         } catch (\Exception $e) {
             report($e);
         }
