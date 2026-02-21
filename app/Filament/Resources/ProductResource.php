@@ -82,7 +82,7 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')
+                Tables\Columns\ImageColumn::make('image_url')
                     ->label('')
                     ->circular()
                     ->width(40)
