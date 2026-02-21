@@ -44,6 +44,13 @@ class Product extends Model
 
     public function getImageUrlAttribute(): ?string
     {
-        return $this->image ? asset('storage/' . $this->image) : null;
+        if (!$this->image) return null;
+
+        // Support both storage uploads and direct public paths
+        if (str_starts_with($this->image, 'images/') || str_starts_with($this->image, '/images/')) {
+            return asset(ltrim($this->image, '/'));
+        }
+
+        return asset('storage/' . $this->image);
     }
 }
