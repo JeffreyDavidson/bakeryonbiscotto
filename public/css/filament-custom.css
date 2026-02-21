@@ -25,61 +25,55 @@
     border-bottom: 1px solid rgba(212,165,116,0.15) !important;
 }
 
-/* Sidebar text - maximum specificity */
-.fi-sidebar .fi-sidebar-nav .fi-sidebar-item a,
-.fi-sidebar .fi-sidebar-nav .fi-sidebar-item a span,
-.fi-sidebar .fi-sidebar-nav .fi-sidebar-item button,
-.fi-sidebar .fi-sidebar-nav .fi-sidebar-item button span,
-.fi-sidebar .fi-sidebar-nav .fi-sidebar-group-label,
-.fi-sidebar .fi-sidebar-nav .fi-sidebar-group-label span,
-.fi-sidebar nav a,
-.fi-sidebar nav a span,
-.fi-sidebar nav button,
-.fi-sidebar nav button span,
-[class*="fi-sidebar"] [class*="fi-sidebar-item"] span {
+/* ===== SIDEBAR TEXT FIX ===== */
+/* Label text: Filament compiles as text-gray-700 which is invisible on dark bg */
+.fi-sidebar-item-label {
     color: #FFFFFF !important;
+}
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn > .fi-sidebar-item-label {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
 }
 
 /* Sidebar icons */
-.fi-sidebar .fi-sidebar-item svg,
-.fi-sidebar .fi-sidebar-item-icon,
-.fi-sidebar svg,
-[class*="fi-sidebar"] svg {
+.fi-sidebar-item-btn > .fi-icon,
+.fi-sidebar-item-icon {
     color: #F5D5A8 !important;
 }
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn > .fi-icon {
+    color: #FFFFFF !important;
+}
 
-/* Sidebar active state */
-.fi-sidebar .fi-sidebar-item.fi-active,
-.fi-sidebar [class*="fi-active"] {
+/* Sidebar active/hover */
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
     background: rgba(245,213,168,0.2) !important;
-    border-radius: 8px !important;
 }
-
-/* Sidebar hover */
-.fi-sidebar .fi-sidebar-item:hover,
-.fi-sidebar nav a:hover,
-.fi-sidebar nav button:hover {
+.fi-sidebar-item.fi-sidebar-item-has-url > .fi-sidebar-item-btn:hover {
     background: rgba(245,213,168,0.12) !important;
-    border-radius: 8px !important;
 }
 
-/* Sidebar badge (review count) */
-.fi-sidebar .fi-badge,
-.fi-sidebar .fi-badge *,
-.fi-sidebar [class*="badge"],
-.fi-sidebar [class*="badge"] * {
+/* Sidebar badge */
+.fi-sidebar-item-badge-ctn .fi-badge {
     background: #F5D5A8 !important;
+    border-color: #F5D5A8 !important;
+}
+.fi-sidebar-item-badge-ctn .fi-badge span {
     color: #3D2314 !important;
     font-weight: 700 !important;
 }
 
-/* Topbar */
+/* Sidebar group labels */
+.fi-sidebar-group-label {
+    color: #D4A574 !important;
+}
+
+/* ===== TOPBAR ===== */
 .fi-topbar, .fi-topbar nav {
     background: #FDF8F2 !important;
     border-bottom: 1px solid rgba(212,165,116,0.15) !important;
 }
 
-/* Page headings */
+/* ===== PAGE HEADINGS ===== */
 h1, .fi-header-heading {
     font-family: "Playfair Display", serif !important;
     color: #3D2314 !important;
@@ -89,39 +83,140 @@ h1, .fi-header-heading {
     color: #8B5E3C !important;
 }
 
-/* Table */
-table thead, table thead th,
+/* ===== TABLE ===== */
+/* Table container */
+.fi-ta-ctn {
+    border: 1px solid rgba(212,165,116,0.25) !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 24px rgba(61,35,20,0.06) !important;
+    background: #FFFFFF !important;
+}
+
+/* Table header */
 .fi-ta-header-cell {
     background: #F5E6D0 !important;
     color: #3D2314 !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     text-transform: uppercase !important;
     font-size: 0.7rem !important;
-    letter-spacing: 0.05em !important;
+    letter-spacing: 0.06em !important;
+    border-bottom: 2px solid #D4A574 !important;
 }
-table tbody tr:hover,
+/* Also target th directly */
+table thead th {
+    background: #F5E6D0 !important;
+    color: #3D2314 !important;
+}
+
+/* Table rows */
+.fi-ta-row {
+    border-bottom: 1px solid rgba(212,165,116,0.1) !important;
+    transition: background 0.15s ease !important;
+}
 .fi-ta-row:hover {
-    background: rgba(245,230,208,0.4) !important;
+    background: rgba(245,230,208,0.5) !important;
 }
-.fi-ta-ctn {
-    border: 1px solid rgba(212,165,116,0.2) !important;
-    border-radius: 12px !important;
-    overflow: hidden !important;
-    box-shadow: 0 4px 20px rgba(61,35,20,0.04) !important;
+
+/* Table cell text */
+.fi-ta-text {
+    color: #3D2314 !important;
+}
+
+/* Status badges in table */
+.fi-ta-row .fi-badge {
+    font-weight: 600 !important;
+    border-radius: 9999px !important;
+    padding: 0.15rem 0.75rem !important;
+}
+
+/* Action links */
+.fi-ta-actions .fi-link {
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+}
+
+/* Toolbar area (search + filters) */
+.fi-ta-header-toolbar {
+    background: rgba(245,230,208,0.3) !important;
+    border-bottom: 1px solid rgba(212,165,116,0.1) !important;
+    padding: 0.75rem 1rem !important;
 }
 
 /* Search input */
 .fi-ta-search-field input {
-    border: 1px solid rgba(212,165,116,0.25) !important;
+    border: 1px solid rgba(212,165,116,0.3) !important;
     border-radius: 8px !important;
+    background: #FFFFFF !important;
 }
 .fi-ta-search-field input:focus {
     border-color: #D4A574 !important;
-    box-shadow: 0 0 0 2px rgba(212,165,116,0.15) !important;
+    box-shadow: 0 0 0 3px rgba(212,165,116,0.15) !important;
 }
 
-/* Stat widgets */
+/* Pagination footer */
+.fi-ta-footer {
+    background: rgba(245,230,208,0.2) !important;
+    border-top: 1px solid rgba(212,165,116,0.1) !important;
+}
+
+/* ===== FORMS ===== */
+.fi-fo-field-wrp label {
+    color: #3D2314 !important;
+    font-weight: 600 !important;
+}
+.fi-input {
+    border: 1px solid rgba(212,165,116,0.3) !important;
+    border-radius: 8px !important;
+}
+.fi-input:focus-within {
+    border-color: #D4A574 !important;
+    box-shadow: 0 0 0 3px rgba(212,165,116,0.15) !important;
+}
+
+/* ===== BUTTONS ===== */
+.fi-btn-primary {
+    background: #8B5E3C !important;
+}
+.fi-btn-primary:hover {
+    background: #6B4A2E !important;
+}
+
+/* ===== STAT WIDGETS ===== */
 .fi-wi-stats-overview-stat {
+    border: 1px solid rgba(212,165,116,0.2) !important;
+    border-radius: 12px !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 2px 12px rgba(61,35,20,0.04) !important;
+}
+.fi-wi-stats-overview-stat-label {
+    color: #8B5E3C !important;
+    text-transform: uppercase !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.05em !important;
+}
+.fi-wi-stats-overview-stat-value {
+    color: #3D2314 !important;
+    font-family: "Playfair Display", serif !important;
+}
+
+/* ===== CARDS & SECTIONS ===== */
+.fi-section {
     border: 1px solid rgba(212,165,116,0.15) !important;
     border-radius: 12px !important;
+    box-shadow: 0 2px 12px rgba(61,35,20,0.04) !important;
+}
+
+/* ===== PAGINATION ===== */
+.fi-pagination-item-btn.fi-active {
+    background: #8B5E3C !important;
+    color: #FFFFFF !important;
+}
+
+/* ===== EMPTY STATE ===== */
+.fi-ta-empty-state-heading {
+    color: #3D2314 !important;
+}
+.fi-ta-empty-state-description {
+    color: #8B5E3C !important;
 }
