@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,9 @@ Route::get('/', function() {
     return view('home', compact('featuredReview', 'approvedReviews', 'categories'));
 });
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::get('/order', [OrderController::class, 'index'])->name('order');
+Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+Route::get('/order/confirmation/{orderNumber}', [OrderController::class, 'confirmation'])->name('order.confirmation');
 Route::get('/menu-concepts', fn() => view('menu-concepts'));
 Route::get('/gallery-concepts', fn() => view('gallery-concepts'));
 Route::get('/gallery-concepts-2', fn() => view('gallery-concepts-2'));
