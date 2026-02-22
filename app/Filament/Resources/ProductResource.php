@@ -52,12 +52,18 @@ class ProductResource extends Resource
                         ->numeric()
                         ->prefix('$')
                         ->step('0.01'),
+                    \Filament\Forms\Components\Placeholder::make('current_image')
+                        ->label('Current Image')
+                        ->visible(fn ($record) => $record?->image)
+                        ->content(fn ($record) => new \Illuminate\Support\HtmlString(
+                            '<img src="' . asset($record->image) . '" style="max-height:150px;border-radius:0.5rem;border:1px solid #e8d0b0;" />'
+                        )),
                     \Filament\Forms\Components\FileUpload::make('image')
                         ->image()
                         ->disk('public')
                         ->directory('products')
                         ->visibility('public')
-                        ->imagePreviewHeight('200'),
+                        ->helperText('Upload a new image to replace the current one'),
                 ]),
 
             \Filament\Schemas\Components\Section::make('Settings')
