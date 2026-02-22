@@ -80,61 +80,96 @@ class OrderResource extends Resource
                             ->hiddenLabel()
                             ->content(function (Order $record): \Illuminate\Support\HtmlString {
                                 $colors = [
-                                    'pending' => 'bg-yellow-100 text-yellow-800',
-                                    'confirmed' => 'bg-blue-100 text-blue-800',
-                                    'baking' => 'bg-purple-100 text-purple-800',
-                                    'ready' => 'bg-green-100 text-green-800',
-                                    'delivered' => 'bg-gray-100 text-gray-800',
-                                    'cancelled' => 'bg-red-100 text-red-800',
+                                    'pending' => 'background:#fef9c3;color:#a16207;',
+                                    'confirmed' => 'background:#dbeafe;color:#1e40af;',
+                                    'baking' => 'background:#ede9fe;color:#6d28d9;',
+                                    'ready' => 'background:#d1fae5;color:#065f46;',
+                                    'delivered' => 'background:#f3f4f6;color:#374151;',
+                                    'cancelled' => 'background:#fee2e2;color:#991b1b;',
                                 ];
-                                $color = $colors[$record->status] ?? 'bg-gray-100 text-gray-800';
+                                $style = $colors[$record->status] ?? 'background:#f3f4f6;color:#374151;';
                                 $label = ucfirst($record->status);
-                                $badge = "<span class=\"inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {$color}\">{$label}</span>";
+                                $html = "<div style=\"text-align:center;\">
+                                    <span style=\"display:inline-flex;align-items:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:1rem;font-weight:700;{$style}\">{$label}</span>";
 
                                 if ($record->status === 'cancelled' && $record->payment_status) {
                                     $psLabel = ucfirst($record->payment_status);
-                                    $psColor = $record->payment_status === 'refunded'
-                                        ? 'bg-green-100 text-green-800'
-                                        : 'bg-yellow-100 text-yellow-800';
-                                    $badge .= " <span class=\"inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {$psColor} ml-2\">{$psLabel}</span>";
+                                    $psStyle = $record->payment_status === 'refunded'
+                                        ? 'background:#d1fae5;color:#065f46;'
+                                        : 'background:#fef9c3;color:#a16207;';
+                                    $html .= "<br><span style=\"display:inline-flex;align-items:center;padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.75rem;font-weight:600;margin-top:0.5rem;{$psStyle}\">{$psLabel}</span>";
                                 }
 
-                                return new \Illuminate\Support\HtmlString($badge);
+                                $html .= "</div>";
+                                return new \Illuminate\Support\HtmlString($html);
                             }),
                     ]),
 
                     Section::make('Order Summary')->components([
-                        \Filament\Forms\Components\Placeholder::make('order_number_display')
-                            ->label('Order #')
-                            ->content(fn (Order $record): string => $record->order_number),
-                        \Filament\Forms\Components\Placeholder::make('subtotal_display')
-                            ->label('Subtotal')
-                            ->content(fn (Order $record): string => '$' . number_format($record->subtotal, 2)),
-                        \Filament\Forms\Components\Placeholder::make('delivery_fee_display')
-                            ->label('Delivery Fee')
-                            ->content(fn (Order $record): string => '$' . number_format($record->delivery_fee, 2))
-                            ->visible(fn (Order $record): bool => $record->fulfillment_type === 'delivery'),
-                        \Filament\Forms\Components\Placeholder::make('total_display')
-                            ->label('Total')
-                            ->content(fn (Order $record): string => '$' . number_format($record->total, 2)),
-                        \Filament\Forms\Components\Placeholder::make('paid_at_display')
-                            ->label('Paid At')
-                            ->content(fn (Order $record): string => $record->paid_at?->format('M j, Y g:i A') ?? 'Not paid'),
+                        \Filament\Forms\Components\Placeholder::make('summary_display')
+                            ->hiddenLabel()
+                            ->content(function (Order $record): \Illuminate\Support\HtmlString {
+                                $rows = [];
+
+                                $rows[] = "<div style=\"display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #f3f4f6;\">
+                                    <span style=\"font-size:0.75rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;\">Order #</span>
+                                    <span style=\"font-family:monospace;font-weight:700;color:#111827;\">{$record->order_number}</span>
+                                </div>";
+
+                                $rows[] = "<div style=\"display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #f3f4f6;\">
+                                    <span style=\"font-size:0.75rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;\">Subtotal</span>
+                                    <span style=\"color:#374151;\">\$" . number_format($record->subtotal, 2) . "</span>
+                                </div>";
+
+                                if ($record->fulfillment_type === 'delivery') {
+                                    $rows[] = "<div style=\"display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #f3f4f6;\">
+                                        <span style=\"font-size:0.75rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;\">Delivery Fee</span>
+                                        <span style=\"color:#374151;\">\$" . number_format($record->delivery_fee, 2) . "</span>
+                                    </div>";
+                                }
+
+                                $rows[] = "<div style=\"display:flex;justify-content:space-between;padding:0.75rem 0;border-bottom:1px solid #e5e7eb;\">
+                                    <span style=\"font-size:0.875rem;font-weight:700;color:#111827;\">Total</span>
+                                    <span style=\"font-size:1.25rem;font-weight:800;color:#059669;\">\$" . number_format($record->total, 2) . "</span>
+                                </div>";
+
+                                $paidAt = $record->paid_at?->format('M j, Y g:i A') ?? 'Not paid';
+                                $paidColor = $record->paid_at ? '#059669' : '#dc2626';
+                                $rows[] = "<div style=\"display:flex;justify-content:space-between;padding:0.5rem 0;\">
+                                    <span style=\"font-size:0.75rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;\">Paid</span>
+                                    <span style=\"font-size:0.8rem;color:{$paidColor};font-weight:500;\">{$paidAt}</span>
+                                </div>";
+
+                                return new \Illuminate\Support\HtmlString(implode('', $rows));
+                            }),
                     ]),
 
                     Section::make('Items')->components([
                         \Filament\Forms\Components\Placeholder::make('items_list')
                             ->hiddenLabel()
                             ->content(function (Order $record): \Illuminate\Support\HtmlString {
+                                if ($record->items->isEmpty()) {
+                                    return new \Illuminate\Support\HtmlString('<div style="text-align:center;color:#9ca3af;padding:1rem;">No items</div>');
+                                }
+
                                 $items = $record->items->map(function ($item) {
-                                    return "<div class=\"flex justify-between py-1\">
-                                        <span>{$item->quantity}× {$item->product_name}</span>
-                                        <span class=\"font-medium\">\${$item->line_total}</span>
+                                    return "<div style=\"display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0.75rem;border-bottom:1px solid #f3f4f6;\">
+                                        <div style=\"display:flex;align-items:center;gap:0.5rem;\">
+                                            <span style=\"display:inline-flex;align-items:center;justify-content:center;min-width:1.75rem;height:1.75rem;border-radius:0.375rem;background:#fef3c7;font-size:0.8rem;font-weight:700;color:#92400e;\">{$item->quantity}</span>
+                                            <span style=\"font-weight:500;color:#111827;font-size:0.875rem;\">{$item->product_name}</span>
+                                        </div>
+                                        <span style=\"font-weight:600;color:#374151;font-size:0.875rem;\">\$" . number_format($item->line_total, 2) . "</span>
                                     </div>";
                                 })->join('');
 
+                                $total = $record->items->sum('quantity');
+                                $footer = "<div style=\"display:flex;justify-content:space-between;padding:0.625rem 0.75rem;background:#f9fafb;border-radius:0 0 0.5rem 0.5rem;\">
+                                    <span style=\"font-size:0.8rem;color:#6b7280;\">{$total} " . ($total === 1 ? 'item' : 'items') . "</span>
+                                    <span style=\"font-weight:700;color:#111827;\">\$" . number_format($record->subtotal, 2) . "</span>
+                                </div>";
+
                                 return new \Illuminate\Support\HtmlString(
-                                    $items ?: '<span class="text-gray-400">No items</span>'
+                                    "<div style=\"border:1px solid #e5e7eb;border-radius:0.5rem;overflow:hidden;\">{$items}{$footer}</div>"
                                 );
                             }),
                     ]),
