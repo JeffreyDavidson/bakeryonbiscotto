@@ -603,6 +603,28 @@
             color: var(--warm);
             text-align: center;
         }
+        .time-slot-btn {
+            padding: 8px 14px;
+            border: 1.5px solid rgba(139,94,60,0.15);
+            border-radius: 100px;
+            background: var(--light);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--warm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .time-slot-btn:hover {
+            border-color: var(--golden);
+            background: rgba(212,165,116,0.08);
+        }
+        .time-slot-btn.selected {
+            background: var(--golden);
+            border-color: var(--golden);
+            color: var(--dark);
+            font-weight: 600;
+        }
         [x-cloak] { display: none !important; }
 
         /* ═══ BUNDLE PICKER ═══ */
@@ -947,13 +969,13 @@
                     </template>
 
                     <div class="form-group" x-data="datePicker()" x-init="init()">
-                        <label class="form-label">Requested Date</label>
+                        <label class="form-label">Requested Date &amp; Time</label>
                         <div class="date-picker-wrap">
                             <button type="button" class="form-input date-trigger" @click="open = !open" style="text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-                                <span x-text="selectedLabel || 'Choose a date'" :style="selectedLabel ? '' : 'color: #b8a090'"></span>
+                                <span x-text="selectedLabel || 'Choose a date & time'" :style="selectedLabel ? '' : 'color: #b8a090'"></span>
                                 <span style="font-size: 1.1rem;">📅</span>
                             </button>
-                            <div class="date-dropdown" x-show="open" x-transition.opacity @click.outside="open = false" @keydown.escape.window="open = false" role="dialog" aria-label="Date picker" x-cloak>
+                            <div class="date-dropdown" x-show="open" x-transition.opacity @click.outside="open = false" @keydown.escape.window="open = false" role="dialog" aria-label="Date and time picker" x-cloak>
                                 <div class="cal-header">
                                     <button type="button" class="cal-nav" @click="prevMonth">‹</button>
                                     <span class="cal-title" x-text="monthYear"></span>
@@ -971,12 +993,12 @@
                                             class="cal-day"
                                             :class="{
                                                 'disabled': !isSelectable(day),
-                                                'selected': isSelected(day),
+                                                'selected': isSelectedDay(day),
                                                 'today': isToday(day)
                                             }"
                                             :disabled="!isSelectable(day)"
                                             :aria-label="getDayLabel(day)"
-                                            :aria-selected="isSelected(day) ? 'true' : 'false'"
+                                            :aria-selected="isSelectedDay(day) ? 'true' : 'false'"
                                             @click="selectDay(day)"
                                             @keydown.arrow-right.prevent="$event.target.nextElementSibling?.focus()"
                                             @keydown.arrow-left.prevent="$event.target.previousElementSibling?.focus()">
@@ -984,6 +1006,26 @@
                                         </button>
                                     </template>
                                 </div>
+
+                                {{-- Time Slots --}}
+                                <template x-if="pendingDate">
+                                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(139,94,60,0.1);">
+                                        <p style="font-size: 0.82rem; font-weight: 600; color: var(--warm); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">
+                                            🕐 Pick a time for <span x-text="pendingDayLabel" style="color: var(--dark);"></span>
+                                        </p>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                                            <template x-for="slot in availableSlots" :key="slot">
+                                                <button type="button"
+                                                    class="time-slot-btn"
+                                                    :class="{ 'selected': selectedTime === slot }"
+                                                    @click="selectTime(slot)"
+                                                    x-text="slot">
+                                                </button>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+
                                 <div class="cal-footer">
                                     <span>📌 Orders require 2 days advance notice</span>
                                 </div>
@@ -1015,6 +1057,7 @@
                     <input type="hidden" name="delivery_address" :value="form.delivery_address">
                     <input type="hidden" name="delivery_zip" :value="form.delivery_zip">
                     <input type="hidden" name="requested_date" :value="form.requested_date">
+                    <input type="hidden" name="requested_time" :value="form.requested_time">
                     <input type="hidden" name="notes" :value="form.notes">
 
                     <div x-show="formValid()" x-transition style="margin-top: 16px;">
@@ -1082,6 +1125,33 @@
         const bundleConfig = @json($bundles);
 
         function datePicker() {
+            // Hours by day of week: 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat
+            const scheduleByDay = {
+                0: { start: 10, end: 19 }, // Sunday 10am-7pm
+                1: { start: 12, end: 19 }, // Monday 12pm-7pm
+                2: { start: 12, end: 19 }, // Tuesday 12pm-7pm
+                3: { start: 10, end: 19 }, // Wednesday 10am-7pm
+                4: { start: 10, end: 16 }, // Thursday 10am-4pm
+                5: { start: 10, end: 19 }, // Friday 10am-7pm
+                6: { start: 14, end: 19 }, // Saturday 2pm-7pm
+            };
+
+            function formatHour(h) {
+                if (h === 12) return '12:00 PM';
+                if (h > 12) return (h - 12) + ':00 PM';
+                return h + ':00 AM';
+            }
+
+            function getSlotsForDay(dayOfWeek) {
+                const sched = scheduleByDay[dayOfWeek];
+                if (!sched) return [];
+                const slots = [];
+                for (let h = sched.start; h <= sched.end; h++) {
+                    slots.push(formatHour(h));
+                }
+                return slots;
+            }
+
             return {
                 open: false,
                 month: null,
@@ -1089,6 +1159,10 @@
                 selectedLabel: '',
                 days: [],
                 blanks: [],
+                pendingDate: null,
+                pendingDayLabel: '',
+                availableSlots: [],
+                selectedTime: null,
 
                 init() {
                     const d = new Date();
@@ -1135,12 +1209,10 @@
                     return date >= this.minDate;
                 },
 
-                isSelected(day) {
-                    const parent = this.$el.closest('[x-data]');
-                    const form = Alpine.$data(parent.closest('.order-layout'));
-                    if (!form || !form.form.requested_date) return false;
-                    const sel = new Date(form.form.requested_date + 'T00:00:00');
-                    return sel.getFullYear() === this.year && sel.getMonth() === this.month && sel.getDate() === day;
+                isSelectedDay(day) {
+                    if (!this.pendingDate) return false;
+                    const pd = new Date(this.pendingDate + 'T00:00:00');
+                    return pd.getFullYear() === this.year && pd.getMonth() === this.month && pd.getDate() === day;
                 },
 
                 isToday(day) {
@@ -1160,15 +1232,29 @@
                     const y = date.getFullYear();
                     const m = String(date.getMonth() + 1).padStart(2, '0');
                     const d = String(date.getDate()).padStart(2, '0');
-                    const iso = y + '-' + m + '-' + d;
+
+                    this.pendingDate = y + '-' + m + '-' + d;
+                    this.selectedTime = null;
 
                     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-                    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-                    this.selectedLabel = days[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + y;
+                    const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                    this.pendingDayLabel = dayNames[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate();
+
+                    this.availableSlots = getSlotsForDay(date.getDay());
+                },
+
+                selectTime(slot) {
+                    this.selectedTime = slot;
 
                     const parent = this.$el.closest('.order-layout');
                     const form = Alpine.$data(parent);
-                    form.form.requested_date = iso;
+                    form.form.requested_date = this.pendingDate;
+                    form.form.requested_time = slot;
+
+                    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+                    const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                    const date = new Date(this.pendingDate + 'T00:00:00');
+                    this.selectedLabel = dayNames[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ' at ' + slot;
 
                     this.open = false;
                 }
@@ -1196,6 +1282,7 @@
                     delivery_address: '',
                     delivery_zip: '',
                     requested_date: '',
+                    requested_time: '',
                     notes: '',
                 },
 
@@ -1324,7 +1411,8 @@
                         && this.form.customer_name.trim() !== ''
                         && this.form.customer_email.trim() !== ''
                         && this.form.customer_phone.trim() !== ''
-                        && this.form.requested_date !== '';
+                        && this.form.requested_date !== ''
+                        && this.form.requested_time !== '';
                 },
 
                 getOrderData() {
@@ -1336,6 +1424,7 @@
                         delivery_address: this.form.delivery_address,
                         delivery_zip: this.form.delivery_zip,
                         requested_date: this.form.requested_date,
+                        requested_time: this.form.requested_time,
                         notes: this.form.notes,
                         items: this.cart.map(item => ({
                             product_id: item.id,
