@@ -185,7 +185,7 @@ class ContactMessageResource extends Resource
 
                                 if ($orders->isEmpty()) {
                                     return new \Illuminate\Support\HtmlString(
-                                        '<span class="text-gray-400 text-sm italic">No previous orders</span>'
+                                        '<span style="color:#a08060;font-size:0.85rem;font-style:italic;">No previous orders</span>'
                                     );
                                 }
 
@@ -193,20 +193,20 @@ class ContactMessageResource extends Resource
                                     $date = $order->created_at->format('M j');
                                     $status = ucfirst($order->status);
                                     $statusColors = [
-                                        'pending' => 'text-yellow-600',
-                                        'confirmed' => 'text-blue-600',
-                                        'baking' => 'text-purple-600',
-                                        'ready' => 'text-green-600',
-                                        'delivered' => 'text-gray-600',
-                                        'cancelled' => 'text-red-600',
+                                        'pending' => '#ca8a04',
+                                        'confirmed' => '#2563eb',
+                                        'baking' => '#9333ea',
+                                        'ready' => '#16a34a',
+                                        'delivered' => '#a08060',
+                                        'cancelled' => '#dc2626',
                                     ];
-                                    $color = $statusColors[$order->status] ?? 'text-gray-600';
+                                    $color = $statusColors[$order->status] ?? '#a08060';
 
-                                    return "<div class=\"py-1.5 border-b border-gray-100 last:border-0\">
-                                        <div class=\"font-medium text-sm\">{$order->order_number}</div>
-                                        <div class=\"flex justify-between text-xs text-gray-500 mt-0.5\">
+                                    return "<div style=\"padding:0.375rem 0;border-bottom:1px solid #f3ebe0;\">
+                                        <div style=\"font-weight:600;font-size:0.85rem;color:#3d2314;\">{$order->order_number}</div>
+                                        <div style=\"display:flex;justify-content:space-between;font-size:0.75rem;color:#a08060;margin-top:0.125rem;\">
                                             <span>\${$order->total}</span>
-                                            <span class=\"{$color}\">{$status}</span>
+                                            <span style=\"color:{$color};\">{$status}</span>
                                             <span>{$date}</span>
                                         </div>
                                     </div>";
@@ -216,7 +216,7 @@ class ContactMessageResource extends Resource
                                 $totalSpent = '$' . number_format($orders->sum('total'), 2);
 
                                 return new \Illuminate\Support\HtmlString(
-                                    "<div class=\"text-xs text-gray-500 mb-2\">{$count} orders · {$totalSpent} total</div>{$html}"
+                                    "<div style=\"font-size:0.75rem;color:#a08060;margin-bottom:0.5rem;\">{$count} orders · {$totalSpent} total</div>{$html}"
                                 );
                             })
                             ->html(),
