@@ -45,8 +45,8 @@ class OrderResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            \Filament\Forms\Components\Grid::make(3)->schema([
-                \Filament\Forms\Components\Grid::make(1)->schema([
+            \Filament\Schemas\Components\Grid::make(3)->schema([
+                \Filament\Schemas\Components\Grid::make(1)->schema([
                     Section::make('Customer Info')->components([
                         \Filament\Forms\Components\TextInput::make('customer_name')->required(),
                         \Filament\Forms\Components\TextInput::make('customer_email')->email()->required(),
@@ -74,7 +74,7 @@ class OrderResource extends Resource
                     ])->collapsible(),
                 ])->columnSpan(2),
 
-                \Filament\Forms\Components\Grid::make(1)->schema([
+                \Filament\Schemas\Components\Grid::make(1)->schema([
                     Section::make('Status')->components([
                         \Filament\Forms\Components\Placeholder::make('status_badge')
                             ->hiddenLabel()
