@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Models\Order;
-use App\Models\OrderItem;
 use Filament\Actions\Action;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\EmbeddedTable;
@@ -92,18 +91,6 @@ class CustomerDirectory extends Page implements HasTable
                     ->sortable(query: function (Builder $query, string $direction): Builder {
                         return $query->orderBy('last_order_date', $direction);
                     }),
-                TextColumn::make('favorite_item')
-                    ->label('Favorite Item')
-                    ->getStateUsing(function ($record) {
-                        return OrderItem::query()
-                            ->join('orders', 'orders.id', '=', 'order_items.order_id')
-                            ->where('orders.customer_email', $record->customer_email)
-                            ->select('order_items.product_name', DB::raw('SUM(order_items.quantity) as total_qty'))
-                            ->groupBy('order_items.product_name')
-                            ->orderByDesc('total_qty')
-                            ->value('product_name');
-                    })
-                    ->placeholder('—'),
             ])
             ->defaultSort('last_order_date', 'desc')
             ->actions([
@@ -124,7 +111,7 @@ class CustomerDirectory extends Page implements HasTable
                             ])
                             ->first(),
                     ]))
-                    ->modalWidth('4xl')
+                    ->modalWidth('2xl')
                     ->slideOver()
                     ->modalSubmitAction(false)
                     ->modalCancelAction(false),
