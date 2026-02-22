@@ -28,6 +28,8 @@ We've received your order and we're getting started on your fresh-baked goodies!
 
 We'll reach out if we have any questions. Remember, sourdough takes love and time, so please allow at least 2 days for your order!
 
+**A quick note on pickup & delivery:** If you can't make your scheduled time, please contact us as soon as possible to reschedule. Orders not picked up or rescheduled within 24 hours will be considered cancelled with no refund.
+
 Thanks for supporting a small local bakery,<br>
 Cassie
 </x-mail::message>

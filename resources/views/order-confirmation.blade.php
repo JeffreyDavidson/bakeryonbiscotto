@@ -240,6 +240,10 @@
             <div class="note-box">
                 📧 A confirmation email has been sent to <strong>{{ $order->customer_email }}</strong>. Cassie will reach out if she has any questions about your order!
             </div>
+
+            <div class="note-box" style="background: rgba(61,35,20,0.05); margin-top: 12px; font-size: 0.82rem;">
+                ⏰ <strong>Pickup & delivery reminder:</strong> If you can't make your scheduled time, please contact us as soon as possible to reschedule. Orders not picked up or rescheduled within 24 hours will be considered cancelled with no refund.
+            </div>
         </div>
 
         <a href="/" class="back-link">← Back to Home</a>

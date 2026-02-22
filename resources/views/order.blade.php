@@ -704,19 +704,33 @@
         }
 
         /* ═══ FOOTER ═══ */
-        .order-footer {
+        .footer {
             text-align: center;
             padding: 40px 24px;
             background: var(--dark);
             color: var(--cream);
         }
-        .order-footer p {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1rem;
-            opacity: 0.7;
+        .footer h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-bottom: 4px; }
+        .tagline { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; opacity: 0.5; margin-bottom: 12px; }
+        .footer-badge { font-size: 0.85rem; opacity: 0.5; margin-bottom: 16px; }
+        .footer-info { font-size: 0.9rem; opacity: 0.6; }
+        .footer-info a { color: var(--golden); text-decoration: none; }
+        .footer a { color: var(--golden); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        .footer-allergen {
+            margin-top: 24px;
+            font-size: 11px;
+            color: rgba(245,230,208,0.35);
+            max-width: 600px;
+            margin-left: auto; margin-right: auto;
+            line-height: 1.5;
+            font-style: italic;
         }
-        .order-footer a { color: var(--golden); text-decoration: none; }
-        .order-footer a:hover { text-decoration: underline; }
+        .footer-bottom {
+            margin-top: 20px; padding-top: 20px;
+            border-top: 1px solid rgba(245,230,208,0.06);
+            font-size: 12px; color: rgba(245,230,208,0.2);
+        }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 900px) {
@@ -1063,9 +1077,7 @@
     </main>
 
     {{-- FOOTER --}}
-    <footer class="order-footer">
-        <p>&copy; {{ date('Y') }} Bakery on Biscotto. <a href="/">Back to Home</a></p>
-    </footer>
+    <x-site-footer />
 
     <script>
         const bundleConfig = @json($bundles);

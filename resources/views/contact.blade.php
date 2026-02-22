@@ -459,6 +459,24 @@
         }
         .footer a { color: var(--golden); text-decoration: none; }
         .footer a:hover { text-decoration: underline; }
+        .footer-allergen {
+            margin-top: 24px;
+            font-size: 11px;
+            color: rgba(245,230,208,0.35);
+            max-width: 600px;
+            margin-left: auto; margin-right: auto;
+            line-height: 1.5;
+            font-style: italic;
+        }
+        .footer-badge { font-size: 0.85rem; opacity: 0.5; margin-bottom: 16px; }
+        .footer-info { font-size: 0.9rem; opacity: 0.6; }
+        .footer-info a { color: var(--golden); text-decoration: none; }
+        .footer-bottom {
+            margin-top: 20px; padding-top: 20px;
+            border-top: 1px solid rgba(245,230,208,0.06);
+            font-size: 12px; color: rgba(245,230,208,0.2);
+        }
+        .tagline { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; opacity: 0.5; margin-bottom: 12px; }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 800px) {
@@ -640,8 +658,6 @@
 
     </main>
 
-    <footer class="footer">
-        <p>&copy; {{ date('Y') }} Bakery on Biscotto. <a href="/">Back to Home</a></p>
-    </footer>
+    <x-site-footer />
 </body>
 </html>
