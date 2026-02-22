@@ -10,5 +10,6 @@
             @bakeryonbiscotto
         </div>
         <div class="footer-allergen">* While certain items may not contain allergens, they are produced in an environment where allergens could be present. Please proceed with caution. Bakery on Biscotto is not responsible for any ill effects.</div>
+        <div class="footer-allergen">Made in a cottage food operation that is not subject to Florida's food safety regulations.</div>
         <div class="footer-bottom">&copy; {{ date('Y') }} Bakery on Biscotto. All rights reserved.</div>
     </footer>
