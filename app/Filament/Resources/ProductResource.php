@@ -42,9 +42,12 @@ class ProductResource extends Resource
                         ->preload(),
                     \Filament\Forms\Components\TextInput::make('name')
                         ->required()
-                        ->maxLength(255),
+                        ->maxLength(255)
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(fn ($set, $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
                     \Filament\Forms\Components\TextInput::make('slug')
-                        ->maxLength(255),
+                        ->maxLength(255)
+                        ->helperText('Auto-generated from name. Edit to override.'),
                     \Filament\Forms\Components\Textarea::make('description')
                         ->rows(3),
                     \Filament\Forms\Components\TextInput::make('price')

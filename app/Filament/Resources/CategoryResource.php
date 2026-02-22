@@ -35,9 +35,12 @@ class CategoryResource extends Resource
         return $schema->components([
             \Filament\Forms\Components\TextInput::make('name')
                 ->required()
-                ->maxLength(100),
+                ->maxLength(100)
+                ->live(onBlur: true)
+                ->afterStateUpdated(fn ($set, $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
             \Filament\Forms\Components\TextInput::make('slug')
-                ->maxLength(100),
+                ->maxLength(100)
+                ->helperText('Auto-generated from name. Edit to override.'),
             \Filament\Forms\Components\TextInput::make('sort_order')
                 ->numeric()
                 ->default(0),
