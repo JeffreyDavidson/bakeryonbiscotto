@@ -9,15 +9,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->timestamp('completed_at')->nullable()->after('status');
-            $table->boolean('follow_up_sent')->default(false)->after('completed_at');
+            $table->timestamp('delivered_at')->nullable()->after('status');
+            $table->boolean('follow_up_sent')->default(false)->after('delivered_at');
         });
     }
 
     public function down(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn(['completed_at', 'follow_up_sent']);
+            $table->dropColumn(['delivered_at', 'follow_up_sent']);
         });
     }
 };

@@ -17,8 +17,8 @@ class SendFollowUpReviews extends Command
     {
         $orders = Order::where('status', 'completed')
             ->where('follow_up_sent', false)
-            ->whereNotNull('completed_at')
-            ->where('completed_at', '<=', now()->subHours(24))
+            ->whereNotNull('delivered_at')
+            ->where('delivered_at', '<=', now()->subHours(24))
             ->whereNotNull('customer_email')
             ->get();
 
