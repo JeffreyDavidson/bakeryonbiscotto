@@ -77,7 +77,7 @@ class ContactMessageResource extends Resource
             ])
             ->actions([
                 Actions\ViewAction::make()
-                    ->modalWidth('3xl'),
+                    ->modalWidth('5xl'),
                 Actions\Action::make('markRead')
                     ->label('Mark Read')
                     ->icon('heroicon-o-eye')
@@ -98,30 +98,58 @@ class ContactMessageResource extends Resource
 
     public static function infolist(Schema $schema): Schema
     {
-        return $schema->columns(3)->components([
-            \Filament\Infolists\Components\TextEntry::make('name'),
-            \Filament\Infolists\Components\TextEntry::make('email')
-                ->copyable(),
-            \Filament\Infolists\Components\TextEntry::make('phone')
-                ->copyable()
-                ->default('—'),
-            \Filament\Infolists\Components\TextEntry::make('subject')
-                ->weight('bold')
-                ->columnSpan(2),
-            \Filament\Infolists\Components\TextEntry::make('status')
-                ->badge()
-                ->color(fn (string $state): string => match ($state) {
-                    'new' => 'warning',
-                    'read' => 'info',
-                    'replied' => 'success',
-                    default => 'gray',
-                }),
-            \Filament\Infolists\Components\TextEntry::make('message')
-                ->prose()
-                ->columnSpanFull(),
-            \Filament\Infolists\Components\TextEntry::make('created_at')
-                ->label('Received')
-                ->dateTime('M j, Y \a\t g:i A'),
+        return $schema->columns(2)->components([
+            \Filament\Schemas\Components\Grid::make(1)->schema([
+                \Filament\Schemas\Components\Grid::make(3)->schema([
+                    \Filament\Infolists\Components\TextEntry::make('name'),
+                    \Filament\Infolists\Components\TextEntry::make('email')
+                        ->copyable(),
+                    \Filament\Infolists\Components\TextEntry::make('phone')
+                        ->copyable()
+                        ->default('—'),
+                ]),
+                \Filament\Schemas\Components\Grid::make(2)->schema([
+                    \Filament\Infolists\Components\TextEntry::make('subject')
+                        ->weight('bold'),
+                    \Filament\Infolists\Components\TextEntry::make('status')
+                        ->badge()
+                        ->color(fn (string $state): string => match ($state) {
+                            'new' => 'warning',
+                            'read' => 'info',
+                            'replied' => 'success',
+                            default => 'gray',
+                        }),
+                ]),
+                \Filament\Infolists\Components\TextEntry::make('message')
+                    ->prose(),
+                \Filament\Infolists\Components\TextEntry::make('created_at')
+                    ->label('Received')
+                    ->dateTime('M j, Y \a\t g:i A'),
+            ])->columnSpan(1),
+
+            \Filament\Schemas\Components\Grid::make(1)->schema([
+                Section::make('Order History')->schema([
+                    \Filament\Infolists\Components\TextEntry::make('order_history')
+                        ->hiddenLabel()
+                        ->state(function (ContactMessage $record): string {
+                            $orders = \App\Models\Order::where('customer_email', $record->email)
+                                ->orderByDesc('created_at')
+                                ->limit(10)
+                                ->get();
+
+                            if ($orders->isEmpty()) {
+                                return 'No previous orders found.';
+                            }
+
+                            return $orders->map(function ($order) {
+                                $date = $order->created_at->format('M j, Y');
+                                $status = ucfirst($order->status);
+                                return "{$order->order_number} — \${$order->total} — {$status} — {$date}";
+                            })->join("\n");
+                        })
+                        ->listWithLineBreaks(),
+                ]),
+            ])->columnSpan(1),
         ]);
     }
 
