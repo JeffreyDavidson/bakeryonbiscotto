@@ -95,16 +95,16 @@ class ContactMessageResource extends Resource
             ]);
     }
 
-    public static function infolist(\Filament\Infolists\Infolist $infolist): \Filament\Infolists\Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
-            \Filament\Infolists\Components\Section::make()->schema([
-                \Filament\Infolists\Components\Grid::make(2)->schema([
+        return $schema->components([
+            Section::make()->schema([
+                \Filament\Schemas\Components\Grid::make(2)->schema([
                     \Filament\Infolists\Components\TextEntry::make('name'),
                     \Filament\Infolists\Components\TextEntry::make('email')
                         ->copyable(),
                 ]),
-                \Filament\Infolists\Components\Grid::make(2)->schema([
+                \Filament\Schemas\Components\Grid::make(2)->schema([
                     \Filament\Infolists\Components\TextEntry::make('phone')
                         ->copyable()
                         ->default('—'),
