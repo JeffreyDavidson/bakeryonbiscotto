@@ -1,76 +1,97 @@
 <style>
-    .cd-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
-    .cd-avatar { width: 2.75rem; height: 2.75rem; border-radius: 9999px; background: linear-gradient(135deg, #92400e, #b45309); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1rem; flex-shrink: 0; }
-    .cd-info-line { font-size: 0.85rem; color: #6b7280; }
+    .cd-header { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: #f9fafb; border-radius: 0.75rem; margin-bottom: 1rem; }
+    .cd-avatar { width: 3rem; height: 3rem; border-radius: 9999px; background: linear-gradient(135deg, #92400e, #b45309); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.125rem; flex-shrink: 0; }
+    .cd-name { font-weight: 700; font-size: 1rem; color: #111827; margin-bottom: 0.125rem; }
+    .cd-info-line { font-size: 0.825rem; color: #6b7280; line-height: 1.4; }
     .cd-info-line a { color: #2563eb; text-decoration: none; }
+    .cd-info-line a:hover { text-decoration: underline; }
+    .cd-since { font-size: 0.75rem; color: #9ca3af; margin-top: 0.25rem; }
+    .cd-actions { display: flex; gap: 0.5rem; margin-left: auto; }
+    .cd-btn { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; text-decoration: none; border: 1px solid #d1d5db; color: #374151; background: white; cursor: pointer; }
+    .cd-btn:hover { background: #f3f4f6; }
 
-    .cd-stats { display: flex; gap: 1rem; margin-bottom: 1.25rem; }
-    .cd-stat { flex: 1; text-align: center; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 0.5rem; }
-    .cd-stat-val { font-size: 1.25rem; font-weight: 800; color: #111827; }
+    .cd-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.25rem; }
+    .cd-stat { text-align: center; padding: 0.875rem 0.5rem; border: 1px solid #e5e7eb; border-radius: 0.625rem; background: white; }
+    .cd-stat-val { font-size: 1.5rem; font-weight: 800; color: #111827; line-height: 1; }
     .cd-stat-val.green { color: #059669; }
-    .cd-stat-lbl { font-size: 0.65rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.125rem; }
+    .cd-stat-val.amber { color: #d97706; }
+    .cd-stat-lbl { font-size: 0.65rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.375rem; }
 
-    .cd-orders-title { font-size: 0.8rem; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
-    .cd-order-row { display: flex; align-items: center; justify-content: space-between; padding: 0.625rem 0; border-bottom: 1px solid #f3f4f6; font-size: 0.85rem; }
-    .cd-order-row:last-child { border-bottom: none; }
-    .cd-order-num { font-family: monospace; font-weight: 600; color: #111827; }
-    .cd-order-date { color: #9ca3af; font-size: 0.8rem; }
-    .cd-badge { display: inline-flex; padding: 0.15rem 0.4rem; border-radius: 0.25rem; font-size: 0.6rem; font-weight: 600; text-transform: uppercase; }
+    .cd-table { width: 100%; border-collapse: collapse; }
+    .cd-table th { text-align: left; font-size: 0.7rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.625rem 0.5rem; border-bottom: 2px solid #e5e7eb; }
+    .cd-table th:last-child { text-align: right; }
+    .cd-table td { padding: 0.75rem 0.5rem; border-bottom: 1px solid #f3f4f6; font-size: 0.85rem; color: #374151; vertical-align: middle; }
+    .cd-table tr:hover { background: #fafafa; }
+    .cd-table .order-num { font-family: monospace; font-weight: 700; color: #111827; }
+    .cd-table .total { font-weight: 700; color: #111827; text-align: right; }
+
+    .cd-badge { display: inline-flex; padding: 0.2rem 0.5rem; border-radius: 9999px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.025em; }
     .cd-badge-pending { background: #fef9c3; color: #a16207; }
     .cd-badge-confirmed { background: #dbeafe; color: #1e40af; }
     .cd-badge-baking { background: #ede9fe; color: #6d28d9; }
     .cd-badge-ready { background: #d1fae5; color: #065f46; }
     .cd-badge-delivered { background: #f3f4f6; color: #374151; }
     .cd-badge-cancelled { background: #fee2e2; color: #991b1b; }
-    .cd-order-total { font-weight: 700; color: #111827; }
+
+    .cd-view-btn { display: inline-flex; align-items: center; padding: 0.3rem 0.625rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #2563eb; background: #eff6ff; text-decoration: none; border: 1px solid #bfdbfe; }
+    .cd-view-btn:hover { background: #dbeafe; }
+
+    .cd-section-title { font-size: 0.8rem; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.625rem; display: flex; align-items: center; gap: 0.5rem; }
+    .cd-count { font-size: 0.7rem; font-weight: 600; color: white; background: #6b7280; padding: 0.1rem 0.4rem; border-radius: 9999px; }
 </style>
 
 <div>
+    {{-- Contact card --}}
     <div class="cd-header">
         <div class="cd-avatar">{{ strtoupper(substr($customer->customer_name, 0, 1)) }}</div>
-        <div>
+        <div style="flex:1;">
             <div class="cd-info-line"><a href="mailto:{{ $customer->customer_email }}">{{ $customer->customer_email }}</a></div>
             @if($customer->customer_phone)
-                <div class="cd-info-line">{{ $customer->customer_phone }}</div>
+                <div class="cd-info-line"><a href="tel:{{ $customer->customer_phone }}">{{ $customer->customer_phone }}</a></div>
             @endif
-            <div class="cd-info-line" style="font-size:0.75rem;color:#9ca3af;">
-                Since {{ \Carbon\Carbon::parse($stats->first_order_date)->format('M j, Y') }}
-            </div>
+            <div class="cd-since">Customer since {{ \Carbon\Carbon::parse($stats->first_order_date)->format('M j, Y') }}</div>
+        </div>
+        <div class="cd-actions">
+            <a href="mailto:{{ $customer->customer_email }}" class="cd-btn">✉️ Email</a>
         </div>
     </div>
 
+    {{-- Stats --}}
     <div class="cd-stats">
         <div class="cd-stat">
             <div class="cd-stat-val">{{ $customer->orders_count }}</div>
-            <div class="cd-stat-lbl">Orders</div>
+            <div class="cd-stat-lbl">{{ Str::plural('Order', $customer->orders_count) }}</div>
         </div>
         <div class="cd-stat">
             <div class="cd-stat-val green">${{ number_format($customer->total_spent, 2) }}</div>
             <div class="cd-stat-lbl">Total Spent</div>
         </div>
+        <div class="cd-stat">
+            <div class="cd-stat-val amber">${{ number_format($stats->avg_order_value, 2) }}</div>
+            <div class="cd-stat-lbl">Avg Order</div>
+        </div>
     </div>
 
-    <div class="cd-orders-title">Orders</div>
-    <table style="width:100%;border-collapse:collapse;">
+    {{-- Orders table --}}
+    <div class="cd-section-title">Order History <span class="cd-count">{{ $orders->count() }}</span></div>
+    <table class="cd-table">
         <thead>
             <tr>
-                <th style="text-align:left;font-size:0.7rem;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;padding:0.5rem 0;border-bottom:1px solid #e5e7eb;">Order</th>
-                <th style="text-align:left;font-size:0.7rem;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;padding:0.5rem 0;border-bottom:1px solid #e5e7eb;">Status</th>
-                <th style="text-align:left;font-size:0.7rem;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;padding:0.5rem 0;border-bottom:1px solid #e5e7eb;">Date</th>
-                <th style="text-align:right;font-size:0.7rem;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;padding:0.5rem 0;border-bottom:1px solid #e5e7eb;">Total</th>
-                <th style="width:3rem;border-bottom:1px solid #e5e7eb;"></th>
+                <th>Order</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th style="text-align:right;">Total</th>
+                <th style="width:4rem;"></th>
             </tr>
         </thead>
         <tbody>
             @foreach($orders as $order)
                 <tr>
-                    <td style="padding:0.625rem 0;border-bottom:1px solid #f3f4f6;font-family:monospace;font-weight:600;font-size:0.85rem;color:#111827;">{{ $order->order_number }}</td>
-                    <td style="padding:0.625rem 0;border-bottom:1px solid #f3f4f6;"><span class="cd-badge cd-badge-{{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
-                    <td style="padding:0.625rem 0;border-bottom:1px solid #f3f4f6;font-size:0.8rem;color:#9ca3af;">{{ $order->created_at->format('M j, Y') }}</td>
-                    <td style="padding:0.625rem 0;border-bottom:1px solid #f3f4f6;text-align:right;font-weight:700;font-size:0.85rem;color:#111827;">${{ number_format($order->total, 2) }}</td>
-                    <td style="padding:0.625rem 0;border-bottom:1px solid #f3f4f6;text-align:right;">
-                        <a href="/admin/orders/{{ $order->id }}" style="color:#2563eb;font-size:0.8rem;font-weight:500;text-decoration:none;">View</a>
-                    </td>
+                    <td class="order-num">{{ $order->order_number }}</td>
+                    <td><span class="cd-badge cd-badge-{{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
+                    <td style="color:#9ca3af;">{{ $order->created_at->format('M j, Y') }}</td>
+                    <td class="total">${{ number_format($order->total, 2) }}</td>
+                    <td style="text-align:right;"><a href="/admin/orders/{{ $order->id }}" class="cd-view-btn">View</a></td>
                 </tr>
             @endforeach
         </tbody>
