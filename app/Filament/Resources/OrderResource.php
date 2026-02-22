@@ -5,14 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
 use BackedEnum;
-use Filament\Actions\Action;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions\Action as TableAction;
-use Filament\Infolists;
 
 class OrderResource extends Resource
 {
@@ -77,6 +75,7 @@ class OrderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->recordUrl(fn (Order $record) => static::getUrl('view', ['record' => $record]))
             ->columns([
                 Tables\Columns\TextColumn::make('order_number')
                     ->searchable()
