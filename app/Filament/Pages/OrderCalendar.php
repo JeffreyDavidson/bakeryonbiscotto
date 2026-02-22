@@ -10,7 +10,7 @@ use Livewire\Attributes\Url;
 
 class OrderCalendar extends Page
 {
-    protected static string $view = 'filament.pages.order-calendar';
+    protected string $view = 'filament.pages.order-calendar';
 
     protected static ?string $title = 'Order Calendar';
 
