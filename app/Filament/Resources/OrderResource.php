@@ -73,7 +73,7 @@ class OrderResource extends Resource
                         'confirmed' => 'Confirmed',
                         'baking' => 'Baking',
                         'ready' => 'Ready',
-                        'completed' => 'Delivered',
+                        'delivered' => 'Delivered',
                         'cancelled' => 'Cancelled',
                     ])->required(),
                 \Filament\Forms\Components\Select::make('payment_status')
@@ -127,7 +127,7 @@ class OrderResource extends Resource
                         'confirmed' => 'info',
                         'baking' => 'primary',
                         'ready' => 'success',
-                        'completed' => 'gray',
+                        'delivered' => 'gray',
                         'cancelled' => 'danger',
                         default => 'gray',
                     }),
@@ -162,7 +162,7 @@ class OrderResource extends Resource
                     ->color('gray')
                     ->visible(fn (Order $record) => $record->status === 'ready')
                     ->action(fn (Order $record) => $record->update([
-                        'status' => 'completed',
+                        'status' => 'delivered',
                         'delivered_at' => now(),
                     ])),
                 \Filament\Actions\EditAction::make(),
