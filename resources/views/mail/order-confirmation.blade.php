@@ -19,7 +19,8 @@ We've received your order and we're getting started on your fresh-baked goodies!
 </x-mail::table>
 
 @if($order->requested_date)
-**Requested Date:** {{ $order->requested_date->format('l, F j, Y') }}
+**Requested Date:** {{ $order->requested_date->format('l, F j, Y') }}@if($order->requested_time) at {{ $order->requested_time }}@endif
+
 @endif
 
 @if($order->notes)

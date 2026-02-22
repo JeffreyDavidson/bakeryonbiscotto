@@ -56,6 +56,7 @@ class OrderResource extends Resource
                     ->options(['pickup' => 'Pickup', 'delivery' => 'Delivery'])
                     ->required(),
                 \Filament\Forms\Components\DatePicker::make('requested_date')->required(),
+                \Filament\Forms\Components\TextInput::make('requested_time')->label('Requested Time'),
                 \Filament\Forms\Components\Textarea::make('delivery_address')
                     ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
                 \Filament\Forms\Components\TextInput::make('delivery_zip')

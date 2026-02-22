@@ -11,7 +11,7 @@ class Order extends Model
     protected $fillable = [
         'order_number', 'customer_name', 'customer_email', 'customer_phone',
         'fulfillment_type', 'delivery_address', 'delivery_zip', 'delivery_fee',
-        'requested_date', 'notes', 'subtotal', 'total',
+        'requested_date', 'requested_time', 'notes', 'subtotal', 'total',
         'status', 'payment_status',
         'stripe_session_id', 'stripe_payment_intent', 'paid_at',
         'delivered_at', 'follow_up_sent',

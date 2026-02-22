@@ -603,6 +603,28 @@
             color: var(--warm);
             text-align: center;
         }
+        .time-slot-btn {
+            padding: 8px 14px;
+            border: 1.5px solid rgba(139,94,60,0.15);
+            border-radius: 100px;
+            background: var(--light);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--warm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .time-slot-btn:hover {
+            border-color: var(--golden);
+            background: rgba(212,165,116,0.08);
+        }
+        .time-slot-btn.selected {
+            background: var(--golden);
+            border-color: var(--golden);
+            color: var(--dark);
+            font-weight: 600;
+        }
         [x-cloak] { display: none !important; }
 
         /* ═══ BUNDLE PICKER ═══ */
@@ -878,9 +900,9 @@
                                     <span>Subtotal</span>
                                     <span x-text="'$' + subtotal().toFixed(2)"></span>
                                 </div>
-                                <div class="cart-row" x-show="fulfillment === 'delivery'">
+                                <div class="cart-row" x-show="fulfillment === 'delivery' && deliveryTier">
                                     <span>Delivery Fee</span>
-                                    <span>$5.00</span>
+                                    <span x-text="deliveryFee() === 0 ? 'Free' : '$' + deliveryFee().toFixed(2)"></span>
                                 </div>
                                 <div class="cart-row total">
                                     <span>Total</span>
@@ -928,7 +950,7 @@
                             <button type="button" class="toggle-option" :class="{ active: fulfillment === 'delivery' }" @click="fulfillment = 'delivery'">
                                 <span class="toggle-icon">🚗</span>
                                 <span>Delivery</span>
-                                <span class="toggle-label">+$5 fee</span>
+                                <span class="toggle-label">Fee varies by distance</span>
                             </button>
                         </div>
                     </div>
@@ -937,23 +959,37 @@
                         <div>
                             <div class="form-group">
                                 <label class="form-label" for="order-address">Delivery Address</label>
-                                <input type="text" id="order-address" class="form-input" x-model="form.delivery_address" placeholder="123 Main St, Davenport FL" required>
+                                <input type="text" id="order-address" class="form-input" x-model="form.delivery_address" placeholder="123 Main St, Davenport FL" @input.debounce.800ms="calcDeliveryFee()" required>
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="order-zip">ZIP Code</label>
-                                <input type="text" id="order-zip" class="form-input" x-model="form.delivery_zip" placeholder="33837" required>
+                                <input type="text" id="order-zip" class="form-input" x-model="form.delivery_zip" placeholder="33837" @input.debounce.800ms="calcDeliveryFee()" required>
+                            </div>
+                            <div x-show="deliveryCalcing" class="notice" style="justify-content: center;">
+                                <span>Calculating delivery fee...</span>
+                            </div>
+                            <div x-show="deliveryError" class="notice" style="background: rgba(192,57,43,0.1);">
+                                <span class="notice-icon">⚠️</span>
+                                <span x-text="deliveryError" style="color: #c0392b;"></span>
+                            </div>
+                            <div x-show="deliveryTier && !deliveryCalcing && !deliveryError" class="notice">
+                                <span class="notice-icon">🚗</span>
+                                <span>
+                                    <strong x-text="deliveryDistance"></strong> miles away —
+                                    Delivery fee: <strong x-text="deliveryFee() === 0 ? 'Free!' : '$' + deliveryFee().toFixed(2)"></strong>
+                                </span>
                             </div>
                         </div>
                     </template>
 
                     <div class="form-group" x-data="datePicker()" x-init="init()">
-                        <label class="form-label">Requested Date</label>
+                        <label class="form-label">Requested Date &amp; Time</label>
                         <div class="date-picker-wrap">
                             <button type="button" class="form-input date-trigger" @click="open = !open" style="text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-                                <span x-text="selectedLabel || 'Choose a date'" :style="selectedLabel ? '' : 'color: #b8a090'"></span>
+                                <span x-text="selectedLabel || 'Choose a date & time'" :style="selectedLabel ? '' : 'color: #b8a090'"></span>
                                 <span style="font-size: 1.1rem;">📅</span>
                             </button>
-                            <div class="date-dropdown" x-show="open" x-transition.opacity @click.outside="open = false" @keydown.escape.window="open = false" role="dialog" aria-label="Date picker" x-cloak>
+                            <div class="date-dropdown" x-show="open" x-transition.opacity @click.outside="open = false" @keydown.escape.window="open = false" role="dialog" aria-label="Date and time picker" x-cloak>
                                 <div class="cal-header">
                                     <button type="button" class="cal-nav" @click="prevMonth">‹</button>
                                     <span class="cal-title" x-text="monthYear"></span>
@@ -971,12 +1007,12 @@
                                             class="cal-day"
                                             :class="{
                                                 'disabled': !isSelectable(day),
-                                                'selected': isSelected(day),
+                                                'selected': isSelectedDay(day),
                                                 'today': isToday(day)
                                             }"
                                             :disabled="!isSelectable(day)"
                                             :aria-label="getDayLabel(day)"
-                                            :aria-selected="isSelected(day) ? 'true' : 'false'"
+                                            :aria-selected="isSelectedDay(day) ? 'true' : 'false'"
                                             @click="selectDay(day)"
                                             @keydown.arrow-right.prevent="$event.target.nextElementSibling?.focus()"
                                             @keydown.arrow-left.prevent="$event.target.previousElementSibling?.focus()">
@@ -984,6 +1020,26 @@
                                         </button>
                                     </template>
                                 </div>
+
+                                {{-- Time Slots --}}
+                                <template x-if="pendingDate">
+                                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(139,94,60,0.1);">
+                                        <p style="font-size: 0.82rem; font-weight: 600; color: var(--warm); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">
+                                            🕐 Pick a time for <span x-text="pendingDayLabel" style="color: var(--dark);"></span>
+                                        </p>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                                            <template x-for="slot in availableSlots" :key="slot">
+                                                <button type="button"
+                                                    class="time-slot-btn"
+                                                    :class="{ 'selected': selectedTime === slot }"
+                                                    @click="selectTime(slot)"
+                                                    x-text="slot">
+                                                </button>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+
                                 <div class="cal-footer">
                                     <span>📌 Orders require 2 days advance notice</span>
                                 </div>
@@ -1015,6 +1071,7 @@
                     <input type="hidden" name="delivery_address" :value="form.delivery_address">
                     <input type="hidden" name="delivery_zip" :value="form.delivery_zip">
                     <input type="hidden" name="requested_date" :value="form.requested_date">
+                    <input type="hidden" name="requested_time" :value="form.requested_time">
                     <input type="hidden" name="notes" :value="form.notes">
 
                     <div x-show="formValid()" x-transition style="margin-top: 16px;">
@@ -1082,6 +1139,33 @@
         const bundleConfig = @json($bundles);
 
         function datePicker() {
+            // Hours by day of week: 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat
+            const scheduleByDay = {
+                0: { start: 10, end: 19 }, // Sunday 10am-7pm
+                1: { start: 12, end: 19 }, // Monday 12pm-7pm
+                2: { start: 12, end: 19 }, // Tuesday 12pm-7pm
+                3: { start: 10, end: 19 }, // Wednesday 10am-7pm
+                4: { start: 10, end: 16 }, // Thursday 10am-4pm
+                5: { start: 10, end: 19 }, // Friday 10am-7pm
+                6: { start: 14, end: 19 }, // Saturday 2pm-7pm
+            };
+
+            function formatHour(h) {
+                if (h === 12) return '12:00 PM';
+                if (h > 12) return (h - 12) + ':00 PM';
+                return h + ':00 AM';
+            }
+
+            function getSlotsForDay(dayOfWeek) {
+                const sched = scheduleByDay[dayOfWeek];
+                if (!sched) return [];
+                const slots = [];
+                for (let h = sched.start; h <= sched.end; h++) {
+                    slots.push(formatHour(h));
+                }
+                return slots;
+            }
+
             return {
                 open: false,
                 month: null,
@@ -1089,6 +1173,10 @@
                 selectedLabel: '',
                 days: [],
                 blanks: [],
+                pendingDate: null,
+                pendingDayLabel: '',
+                availableSlots: [],
+                selectedTime: null,
 
                 init() {
                     const d = new Date();
@@ -1135,12 +1223,10 @@
                     return date >= this.minDate;
                 },
 
-                isSelected(day) {
-                    const parent = this.$el.closest('[x-data]');
-                    const form = Alpine.$data(parent.closest('.order-layout'));
-                    if (!form || !form.form.requested_date) return false;
-                    const sel = new Date(form.form.requested_date + 'T00:00:00');
-                    return sel.getFullYear() === this.year && sel.getMonth() === this.month && sel.getDate() === day;
+                isSelectedDay(day) {
+                    if (!this.pendingDate) return false;
+                    const pd = new Date(this.pendingDate + 'T00:00:00');
+                    return pd.getFullYear() === this.year && pd.getMonth() === this.month && pd.getDate() === day;
                 },
 
                 isToday(day) {
@@ -1160,15 +1246,29 @@
                     const y = date.getFullYear();
                     const m = String(date.getMonth() + 1).padStart(2, '0');
                     const d = String(date.getDate()).padStart(2, '0');
-                    const iso = y + '-' + m + '-' + d;
+
+                    this.pendingDate = y + '-' + m + '-' + d;
+                    this.selectedTime = null;
 
                     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-                    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-                    this.selectedLabel = days[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + y;
+                    const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                    this.pendingDayLabel = dayNames[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate();
+
+                    this.availableSlots = getSlotsForDay(date.getDay());
+                },
+
+                selectTime(slot) {
+                    this.selectedTime = slot;
 
                     const parent = this.$el.closest('.order-layout');
                     const form = Alpine.$data(parent);
-                    form.form.requested_date = iso;
+                    form.form.requested_date = this.pendingDate;
+                    form.form.requested_time = slot;
+
+                    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+                    const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                    const date = new Date(this.pendingDate + 'T00:00:00');
+                    this.selectedLabel = dayNames[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ' at ' + slot;
 
                     this.open = false;
                 }
@@ -1179,6 +1279,10 @@
             return {
                 cart: [],
                 fulfillment: 'pickup',
+                deliveryTier: null,
+                deliveryDistance: null,
+                deliveryCalcing: false,
+                deliveryError: '',
                 mobileCollapsed: window.innerWidth <= 900,
                 submitting: false,
                 paymentError: '',
@@ -1196,6 +1300,7 @@
                     delivery_address: '',
                     delivery_zip: '',
                     requested_date: '',
+                    requested_time: '',
                     notes: '',
                 },
 
@@ -1242,8 +1347,79 @@
                     return this.cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
                 },
 
+                deliveryFee() {
+                    if (this.fulfillment !== 'delivery') return 0;
+                    if (this.deliveryTier === 'under5') return 0;
+                    if (this.deliveryTier === '5to10') return 5;
+                    if (this.deliveryTier === 'over10') return 10;
+                    return 0;
+                },
+
+                async calcDeliveryFee() {
+                    const addr = this.form.delivery_address.trim();
+                    const zip = this.form.delivery_zip.trim();
+                    if (!addr || !zip) {
+                        this.deliveryTier = null;
+                        this.deliveryDistance = null;
+                        this.deliveryError = '';
+                        return;
+                    }
+
+                    this.deliveryCalcing = true;
+                    this.deliveryError = '';
+                    this.deliveryTier = null;
+                    this.deliveryDistance = null;
+
+                    try {
+                        // Step 1: Geocode the customer address
+                        const query = encodeURIComponent(addr + ', ' + zip + ', FL');
+                        const geoResp = await fetch('https://nominatim.openstreetmap.org/search?q=' + query + '&format=json&limit=1&countrycodes=us', {
+                            headers: { 'Accept': 'application/json' }
+                        });
+                        const geoData = await geoResp.json();
+
+                        if (!geoData.length) {
+                            this.deliveryError = "We couldn't find that address. Please double-check and try again.";
+                            this.deliveryCalcing = false;
+                            return;
+                        }
+
+                        const custLat = geoData[0].lat;
+                        const custLon = geoData[0].lon;
+
+                        // Step 2: Get driving distance via OSRM
+                        const baseLon = -81.65249;
+                        const baseLat = 28.31716;
+                        const routeResp = await fetch('https://router.project-osrm.org/route/v1/driving/' + baseLon + ',' + baseLat + ';' + custLon + ',' + custLat + '?overview=false');
+                        const routeData = await routeResp.json();
+
+                        if (routeData.code !== 'Ok' || !routeData.routes.length) {
+                            this.deliveryError = "Couldn't calculate driving distance. Please verify your address.";
+                            this.deliveryCalcing = false;
+                            return;
+                        }
+
+                        const meters = routeData.routes[0].legs[0].distance;
+                        const miles = meters / 1609.34;
+
+                        this.deliveryDistance = miles.toFixed(1);
+
+                        if (miles < 5) {
+                            this.deliveryTier = 'under5';
+                        } else if (miles <= 10) {
+                            this.deliveryTier = '5to10';
+                        } else {
+                            this.deliveryTier = 'over10';
+                        }
+                    } catch (e) {
+                        this.deliveryError = "Couldn't calculate distance. Please try again.";
+                    }
+
+                    this.deliveryCalcing = false;
+                },
+
                 total() {
-                    return this.subtotal() + (this.fulfillment === 'delivery' ? 5 : 0);
+                    return this.subtotal() + this.deliveryFee();
                 },
 
                 openBundlePicker(id, name, price) {
@@ -1320,11 +1496,16 @@
                 },
 
                 formValid() {
-                    return this.cart.length > 0
+                    const base = this.cart.length > 0
                         && this.form.customer_name.trim() !== ''
                         && this.form.customer_email.trim() !== ''
                         && this.form.customer_phone.trim() !== ''
-                        && this.form.requested_date !== '';
+                        && this.form.requested_date !== ''
+                        && this.form.requested_time !== '';
+                    if (this.fulfillment === 'delivery') {
+                        return base && this.deliveryTier !== null;
+                    }
+                    return base;
                 },
 
                 getOrderData() {
@@ -1335,7 +1516,9 @@
                         fulfillment_type: this.fulfillment,
                         delivery_address: this.form.delivery_address,
                         delivery_zip: this.form.delivery_zip,
+                        delivery_tier: this.deliveryTier,
                         requested_date: this.form.requested_date,
+                        requested_time: this.form.requested_time,
                         notes: this.form.notes,
                         items: this.cart.map(item => ({
                             product_id: item.id,
