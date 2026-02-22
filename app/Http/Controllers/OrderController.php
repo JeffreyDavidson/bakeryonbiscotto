@@ -148,6 +148,7 @@ class OrderController extends Controller
             'delivery_zip' => 'required_if:fulfillment_type,delivery|nullable|string|max:10',
             'requested_date' => 'required|date|after_or_equal:' . now()->addDays(2)->toDateString(),
             'requested_time' => 'required|string|max:20',
+            'delivery_tier' => 'required_if:fulfillment_type,delivery|nullable|in:under5,5to10,over10',
             'notes' => 'nullable|string|max:500',
             'items' => 'required|array|min:1',
             'items.*.product_id' => 'required|exists:products,id',
@@ -180,7 +181,12 @@ class OrderController extends Controller
 
         $deliveryFee = 0;
         if ($validated['fulfillment_type'] === 'delivery') {
-            $deliveryFee = 5.00;
+            $deliveryFee = match ($validated['delivery_tier'] ?? null) {
+                'under5' => 0,
+                '5to10' => 5.00,
+                'over10' => 10.00,
+                default => 0,
+            };
         }
 
         return [
