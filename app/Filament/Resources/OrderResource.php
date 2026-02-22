@@ -108,9 +108,9 @@ class OrderResource extends Resource
                     ->color(fn (string $state) => $state === 'delivery' ? 'info' : 'gray')
                     ->formatStateUsing(fn (string $state) => ucfirst($state)),
                 Tables\Columns\TextColumn::make('requested_date')
-                    ->date()
-                    ->sortable()
-                    ->description(fn ($record) => $record->requested_time),
+                    ->label('Requested Date & Time')
+                    ->formatStateUsing(fn ($record) => $record->requested_date->format('M j, Y') . ($record->requested_time ? ' at ' . $record->requested_time : ''))
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state) => match ($state) {
