@@ -99,12 +99,12 @@ class ContactMessageResource extends Resource
     {
         return $schema->components([
             Section::make('Message Details')->components([
-                \Filament\Schemas\Components\TextInput::make('name')->disabled(),
-                \Filament\Schemas\Components\TextInput::make('email')->disabled(),
-                \Filament\Schemas\Components\TextInput::make('phone')->disabled(),
-                \Filament\Schemas\Components\TextInput::make('subject')->disabled(),
-                \Filament\Schemas\Components\Textarea::make('message')->disabled()->rows(6),
-                \Filament\Schemas\Components\TextInput::make('status')->disabled(),
+                \Filament\Forms\Components\TextInput::make('name')->disabled(),
+                \Filament\Forms\Components\TextInput::make('email')->disabled(),
+                \Filament\Forms\Components\TextInput::make('phone')->disabled(),
+                \Filament\Forms\Components\TextInput::make('subject')->disabled(),
+                \Filament\Forms\Components\Textarea::make('message')->disabled()->rows(6),
+                \Filament\Forms\Components\TextInput::make('status')->disabled(),
             ]),
         ]);
     }
