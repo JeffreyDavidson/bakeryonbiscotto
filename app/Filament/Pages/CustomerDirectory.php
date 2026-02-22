@@ -100,6 +100,7 @@ class CustomerDirectory extends Page implements HasTable
                     })
                     ->placeholder('—'),
             ])
+            ->recordKey('customer_email')
             ->defaultSort('last_order_date', 'desc')
             ->actions([
                 Tables\Actions\Action::make('view')
