@@ -73,7 +73,7 @@ class OrderResource extends Resource
                         'confirmed' => 'Confirmed',
                         'baking' => 'Baking',
                         'ready' => 'Ready',
-                        'completed' => 'Completed',
+                        'completed' => 'Delivered',
                         'cancelled' => 'Cancelled',
                     ])->required(),
                 \Filament\Forms\Components\Select::make('payment_status')
@@ -157,6 +157,7 @@ class OrderResource extends Resource
                     ->visible(fn (Order $record) => $record->status === 'baking')
                     ->action(fn (Order $record) => $record->update(['status' => 'ready'])),
                 TableAction::make('complete')
+                    ->label('Mark Delivered')
                     ->icon('heroicon-o-check-badge')
                     ->color('gray')
                     ->visible(fn (Order $record) => $record->status === 'ready')

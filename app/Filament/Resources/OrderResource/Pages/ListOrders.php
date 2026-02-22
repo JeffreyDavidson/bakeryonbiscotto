@@ -41,7 +41,7 @@ class ListOrders extends ListRecords
                 ->badge(fn () => \App\Models\Order::where('status', 'ready')->count() ?: null)
                 ->badgeColor('success'),
 
-            'completed' => Tab::make('Completed')
+            'completed' => Tab::make('Delivered')
                 ->icon('heroicon-o-check-badge')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'completed')),
 
