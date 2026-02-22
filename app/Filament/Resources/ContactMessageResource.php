@@ -77,7 +77,7 @@ class ContactMessageResource extends Resource
             ])
             ->actions([
                 Actions\ViewAction::make()
-                    ->modalWidth('md'),
+                    ->modalWidth('2xl'),
                 Actions\Action::make('markRead')
                     ->label('Mark Read')
                     ->icon('heroicon-o-eye')
@@ -99,27 +99,24 @@ class ContactMessageResource extends Resource
     public static function infolist(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make()->schema([
-                \Filament\Schemas\Components\Grid::make(2)->schema([
-                    \Filament\Infolists\Components\TextEntry::make('name'),
-                    \Filament\Infolists\Components\TextEntry::make('email')
-                        ->copyable(),
-                ]),
-                \Filament\Schemas\Components\Grid::make(2)->schema([
-                    \Filament\Infolists\Components\TextEntry::make('phone')
-                        ->copyable()
-                        ->default('—'),
-                    \Filament\Infolists\Components\TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => match ($state) {
-                            'new' => 'warning',
-                            'read' => 'info',
-                            'replied' => 'success',
-                            default => 'gray',
-                        }),
-                ]),
+            Section::make()->columns(3)->schema([
+                \Filament\Infolists\Components\TextEntry::make('name'),
+                \Filament\Infolists\Components\TextEntry::make('email')
+                    ->copyable(),
+                \Filament\Infolists\Components\TextEntry::make('phone')
+                    ->copyable()
+                    ->default('—'),
                 \Filament\Infolists\Components\TextEntry::make('subject')
-                    ->weight('bold'),
+                    ->weight('bold')
+                    ->columnSpan(2),
+                \Filament\Infolists\Components\TextEntry::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'new' => 'warning',
+                        'read' => 'info',
+                        'replied' => 'success',
+                        default => 'gray',
+                    }),
                 \Filament\Infolists\Components\TextEntry::make('message')
                     ->prose()
                     ->columnSpanFull(),
