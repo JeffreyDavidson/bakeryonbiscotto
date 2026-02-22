@@ -137,17 +137,7 @@ class OrderResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
-            ->filters([
-                Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'pending' => 'Pending',
-                        'confirmed' => 'Confirmed',
-                        'baking' => 'Baking',
-                        'ready' => 'Ready',
-                        'completed' => 'Completed',
-                        'cancelled' => 'Cancelled',
-                    ]),
-            ])
+            ->filters([])
             ->actions([
                 TableAction::make('confirm')
                     ->icon('heroicon-o-check')

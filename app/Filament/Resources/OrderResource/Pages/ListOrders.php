@@ -14,28 +14,45 @@ class ListOrders extends ListRecords
     public function getTabs(): array
     {
         return [
-            'active' => Tab::make('Active Orders')
-                ->icon('heroicon-o-fire')
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereNotIn('status', ['completed', 'cancelled']))
-                ->badge(fn () => \App\Models\Order::active()->count() ?: null),
+            'all' => Tab::make('All')
+                ->icon('heroicon-o-list-bullet'),
 
             'pending' => Tab::make('Pending')
                 ->icon('heroicon-o-clock')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'pending'))
-                ->badge(fn () => \App\Models\Order::pending()->count() ?: null)
+                ->badge(fn () => \App\Models\Order::where('status', 'pending')->count() ?: null)
                 ->badgeColor('warning'),
+
+            'confirmed' => Tab::make('Confirmed')
+                ->icon('heroicon-o-check')
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'confirmed'))
+                ->badge(fn () => \App\Models\Order::where('status', 'confirmed')->count() ?: null)
+                ->badgeColor('info'),
+
+            'baking' => Tab::make('Baking')
+                ->icon('heroicon-o-fire')
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'baking'))
+                ->badge(fn () => \App\Models\Order::where('status', 'baking')->count() ?: null)
+                ->badgeColor('primary'),
+
+            'ready' => Tab::make('Ready')
+                ->icon('heroicon-o-check-circle')
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'ready'))
+                ->badge(fn () => \App\Models\Order::where('status', 'ready')->count() ?: null)
+                ->badgeColor('success'),
 
             'completed' => Tab::make('Completed')
                 ->icon('heroicon-o-check-badge')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'completed')),
 
-            'all' => Tab::make('All Orders')
-                ->icon('heroicon-o-list-bullet'),
+            'cancelled' => Tab::make('Cancelled')
+                ->icon('heroicon-o-x-circle')
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'cancelled')),
         ];
     }
 
     public function getDefaultActiveTab(): string|int|null
     {
-        return 'active';
+        return 'pending';
     }
 }
