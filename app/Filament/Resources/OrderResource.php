@@ -89,6 +89,7 @@ class OrderResource extends Resource
                         \Filament\Forms\Components\Select::make('payment_status')
                             ->options([
                                 'paid' => 'Paid',
+                                'cancelled' => 'Cancelled',
                                 'refunded' => 'Refunded',
                             ])->required()
                             ->visible(fn ($get) => $get('status') === 'cancelled'),

@@ -42,7 +42,7 @@ class OrderFactory extends Factory
             'subtotal' => $subtotal,
             'total' => $subtotal + $deliveryFee,
             'status' => $status,
-            'payment_status' => $status === 'cancelled' ? fake()->randomElement(['unpaid', 'refunded']) : 'paid',
+            'payment_status' => $status === 'cancelled' ? fake()->randomElement(['cancelled', 'refunded']) : 'paid',
             'paid_at' => $status !== 'cancelled' ? $createdAt : null,
             'delivered_at' => $status === 'delivered' ? fake()->dateTimeBetween($createdAt, 'now') : null,
             'follow_up_sent' => $status === 'delivered' ? fake()->boolean(40) : false,
