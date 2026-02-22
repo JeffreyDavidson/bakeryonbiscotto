@@ -3,44 +3,59 @@
     .order-header {
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 1.25rem;
         margin-bottom: 1.5rem;
+        padding: 1.25rem 1.5rem;
+        background: linear-gradient(135deg, #3d2314, #6b4c3b);
+        border-radius: 0.75rem;
         flex-wrap: wrap;
     }
-    .order-header h2 {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: #111827;
-        margin: 0;
+    .order-header .order-id {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    .order-header .order-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: rgba(255,255,255,0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
     }
     .order-header .order-number {
         font-family: monospace;
-        font-size: 0.875rem;
-        color: #6b7280;
-        background: #f3f4f6;
-        padding: 0.25rem 0.75rem;
-        border-radius: 0.375rem;
+        font-size: 1.375rem;
+        font-weight: 800;
+        color: white;
+        letter-spacing: 0.05em;
+    }
+    .order-header .order-meta {
+        margin-left: auto;
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.375rem;
     }
     .order-header .order-date {
-        font-size: 0.875rem;
-        color: #9ca3af;
-        margin-left: auto;
+        font-size: 0.8rem;
+        color: rgba(255,255,255,0.6);
     }
     .status-badge {
         display: inline-flex;
         align-items: center;
         padding: 0.375rem 1rem;
         border-radius: 9999px;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.05em;
     }
-    .status-pending { background: #fef9c3; color: #a16207; }
-    .status-confirmed { background: #dbeafe; color: #1e40af; }
-    .status-baking { background: #ede9fe; color: #6d28d9; }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-confirmed { background: #e8d0b0; color: #3d2314; }
+    .status-baking { background: #fde68a; color: #78350f; }
     .status-ready { background: #d1fae5; color: #065f46; }
-    .status-delivered { background: #f3f4f6; color: #374151; }
+    .status-delivered { background: #f3ebe0; color: #6b4c3b; }
     .status-cancelled { background: #fee2e2; color: #991b1b; }
 
     .order-layout {
@@ -55,7 +70,7 @@
 
     .card {
         background: white;
-        border: 1px solid #e5e7eb;
+        border: 1px solid #e8d0b0;
         border-radius: 0.75rem;
         overflow: hidden;
         margin-bottom: 1rem;
@@ -65,13 +80,13 @@
         justify-content: space-between;
         align-items: center;
         padding: 1rem 1.25rem;
-        border-bottom: 1px solid #f3f4f6;
-        background: #fafafa;
+        border-bottom: 1px solid #f3ebe0;
+        background: #fdf8f2;
     }
     .card-header h3 {
         font-size: 0.875rem;
         font-weight: 700;
-        color: #374151;
+        color: #4a3225;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         margin: 0;
@@ -128,11 +143,11 @@
     .summary-row .value { font-weight: 600; color: #374151; }
     .summary-row.total {
         padding: 0.75rem 1rem;
-        border-top: 2px solid #e5e7eb;
-        background: #fafafa;
+        border-top: 2px solid #e8d0b0;
+        background: #fdf8f2;
     }
-    .summary-row.total .label { font-weight: 700; color: #111827; font-size: 1rem; }
-    .summary-row.total .value { font-weight: 800; color: #059669; font-size: 1.25rem; }
+    .summary-row.total .label { font-weight: 700; color: #3d2314; font-size: 1rem; }
+    .summary-row.total .value { font-weight: 800; color: #8b5e3c; font-size: 1.25rem; }
 
     /* Sidebar info rows */
     .info-row {
@@ -140,7 +155,7 @@
         justify-content: space-between;
         align-items: flex-start;
         padding: 0.625rem 0;
-        border-bottom: 1px solid #f3f4f6;
+        border-bottom: 1px solid #f3ebe0;
     }
     .info-row:last-child { border-bottom: none; }
     .info-row .label {
@@ -214,14 +229,19 @@
 <div class="order-detail">
     {{-- Header --}}
     <div class="order-header">
-        <span class="order-number">{{ $record->order_number }}</span>
-        <span class="status-badge status-{{ $record->status }}">{{ ucfirst($record->status) }}</span>
-        @if($record->status === 'cancelled' && $record->payment_status)
-            <span class="payment-badge payment-{{ $record->payment_status }}">{{ ucfirst($record->payment_status) }}</span>
-        @endif
-        <span class="order-date">
-            Placed {{ $record->created_at->format('M j, Y \a\t g:i A') }}
-        </span>
+        <div class="order-id">
+            <span class="order-label">Order</span>
+            <span class="order-number">{{ $record->order_number }}</span>
+        </div>
+        <div class="order-meta">
+            <span class="status-badge status-{{ $record->status }}">{{ ucfirst($record->status) }}</span>
+            @if($record->status === 'cancelled' && $record->payment_status)
+                <span class="payment-badge payment-{{ $record->payment_status }}">{{ ucfirst($record->payment_status) }}</span>
+            @endif
+            <span class="order-date">
+                Placed {{ $record->created_at->format('M j, Y \a\t g:i A') }}
+            </span>
+        </div>
     </div>
 
     <div class="order-layout">
@@ -323,7 +343,7 @@
                 </div>
                 <div class="card-body">
                     <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
-                        <div style="width:2.5rem;height:2.5rem;border-radius:9999px;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-weight:700;color:#92400e;font-size:1rem;flex-shrink:0;">
+                        <div style="width:2.5rem;height:2.5rem;border-radius:9999px;background:linear-gradient(135deg,#8b5e3c,#6b4c3b);display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:1rem;flex-shrink:0;">
                             {{ strtoupper(substr($record->customer_name, 0, 1)) }}
                         </div>
                         <div>
