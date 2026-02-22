@@ -1059,12 +1059,12 @@
                                             🕐 Pick a time for <span x-text="pendingDayLabel" style="color: var(--dark);"></span>
                                         </p>
                                         <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                                            <template x-for="slot in availableSlots" :key="slot">
+                                            <template x-for="slot in availableSlots" :key="slot.value">
                                                 <button type="button"
                                                     class="time-slot-btn"
-                                                    :class="{ 'selected': selectedTime === slot }"
+                                                    :class="{ 'selected': selectedTime === slot.value }"
                                                     @click="selectTime(slot)"
-                                                    x-text="slot">
+                                                    x-text="slot.label">
                                                 </button>
                                             </template>
                                         </div>
@@ -1181,10 +1181,14 @@
                 6: { start: 14, end: 19 }, // Saturday 2pm-7pm
             };
 
-            function formatHour(h) {
+            function formatHour12(h) {
                 if (h === 12) return '12:00 PM';
                 if (h > 12) return (h - 12) + ':00 PM';
                 return h + ':00 AM';
+            }
+
+            function formatHour24(h) {
+                return String(h).padStart(2, '0') + ':00';
             }
 
             function getSlotsForDay(dayOfWeek) {
@@ -1192,7 +1196,7 @@
                 if (!sched) return [];
                 const slots = [];
                 for (let h = sched.start; h <= sched.end; h++) {
-                    slots.push(formatHour(h));
+                    slots.push({ label: formatHour12(h), value: formatHour24(h) });
                 }
                 return slots;
             }
@@ -1289,17 +1293,17 @@
                 },
 
                 selectTime(slot) {
-                    this.selectedTime = slot;
+                    this.selectedTime = slot.value;
 
                     const parent = this.$el.closest('.order-layout');
                     const form = Alpine.$data(parent);
                     form.form.requested_date = this.pendingDate;
-                    form.form.requested_time = slot;
+                    form.form.requested_time = slot.value;
 
                     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
                     const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
                     const date = new Date(this.pendingDate + 'T00:00:00');
-                    this.selectedLabel = dayNames[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ' at ' + slot;
+                    this.selectedLabel = dayNames[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ' at ' + slot.label;
 
                     this.open = false;
                 }
