@@ -4,6 +4,7 @@
         display: flex;
         align-items: center;
         gap: 1.25rem;
+        margin-top: 1rem;
         margin-bottom: 1.5rem;
         padding: 1.25rem 1.5rem;
         background: linear-gradient(135deg, #3d2314, #6b4c3b);
