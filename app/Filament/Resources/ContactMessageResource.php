@@ -95,18 +95,43 @@ class ContactMessageResource extends Resource
             ]);
     }
 
-    public static function form(Schema $schema): Schema
+    public static function infolist(\Filament\Infolists\Infolist $infolist): \Filament\Infolists\Infolist
     {
-        return $schema->components([
-            Section::make('Message Details')->components([
-                \Filament\Forms\Components\TextInput::make('name')->disabled(),
-                \Filament\Forms\Components\TextInput::make('email')->disabled(),
-                \Filament\Forms\Components\TextInput::make('phone')->disabled(),
-                \Filament\Forms\Components\TextInput::make('subject')->disabled(),
-                \Filament\Forms\Components\Textarea::make('message')->disabled()->rows(6),
-                \Filament\Forms\Components\TextInput::make('status')->disabled(),
+        return $infolist->schema([
+            \Filament\Infolists\Components\Section::make()->schema([
+                \Filament\Infolists\Components\Grid::make(2)->schema([
+                    \Filament\Infolists\Components\TextEntry::make('name'),
+                    \Filament\Infolists\Components\TextEntry::make('email')
+                        ->copyable(),
+                ]),
+                \Filament\Infolists\Components\Grid::make(2)->schema([
+                    \Filament\Infolists\Components\TextEntry::make('phone')
+                        ->copyable()
+                        ->default('—'),
+                    \Filament\Infolists\Components\TextEntry::make('status')
+                        ->badge()
+                        ->color(fn (string $state): string => match ($state) {
+                            'new' => 'warning',
+                            'read' => 'info',
+                            'replied' => 'success',
+                            default => 'gray',
+                        }),
+                ]),
+                \Filament\Infolists\Components\TextEntry::make('subject')
+                    ->weight('bold'),
+                \Filament\Infolists\Components\TextEntry::make('message')
+                    ->prose()
+                    ->columnSpanFull(),
+                \Filament\Infolists\Components\TextEntry::make('created_at')
+                    ->label('Received')
+                    ->dateTime('M j, Y \a\t g:i A'),
             ]),
         ]);
+    }
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema->components([]);
     }
 
     public static function getPages(): array
