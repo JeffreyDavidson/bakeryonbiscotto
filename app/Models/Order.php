@@ -51,7 +51,7 @@ class Order extends Model
 
     public function scopeActive($query)
     {
-        return $query->whereNotIn('status', ['completed', 'cancelled']);
+        return $query->whereNotIn('status', ['delivered', 'cancelled']);
     }
 
     public function getIsDeliveryAttribute(): bool
@@ -66,7 +66,7 @@ class Order extends Model
             'confirmed' => 'info',
             'baking' => 'primary',
             'ready' => 'success',
-            'completed' => 'gray',
+            'delivered' => 'gray',
             'cancelled' => 'danger',
             default => 'gray',
         };
