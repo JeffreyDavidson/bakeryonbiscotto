@@ -77,7 +77,32 @@ class ContactMessageResource extends Resource
             ])
             ->actions([
                 Actions\ViewAction::make()
-                    ->modalWidth('5xl'),
+                    ->modalWidth('5xl')
+                    ->beforeFormFilled(function (ContactMessage $record) {
+                        if ($record->status === 'new') {
+                            $record->update(['status' => 'read']);
+                        }
+                    })
+                    ->modalFooterActions(fn (ContactMessage $record) => [
+                        Actions\Action::make('replyViaEmail')
+                            ->label('Reply via Email')
+                            ->icon('heroicon-o-paper-airplane')
+                            ->color('primary')
+                            ->url(fn () => 'mailto:' . $record->email . '?subject=Re: ' . urlencode($record->subject))
+                            ->openUrlInNewTab()
+                            ->after(function () use ($record) {
+                                if ($record->status !== 'replied') {
+                                    $record->update([
+                                        'status' => 'replied',
+                                        'replied_at' => now(),
+                                    ]);
+                                }
+                            }),
+                        Actions\Action::make('close')
+                            ->label('Close')
+                            ->color('gray')
+                            ->close(),
+                    ]),
                 Actions\Action::make('markRead')
                     ->label('Mark Read')
                     ->icon('heroicon-o-eye')
@@ -121,6 +146,20 @@ class ContactMessageResource extends Resource
                 \Filament\Infolists\Components\TextEntry::make('created_at')
                     ->label('Received')
                     ->since(),
+                \Filament\Infolists\Components\TextEntry::make('previous_messages')
+                    ->label('Contact History')
+                    ->state(function (ContactMessage $record): string {
+                        $count = ContactMessage::where('email', $record->email)
+                            ->where('id', '!=', $record->id)
+                            ->count();
+
+                        if ($count === 0) {
+                            return 'First message';
+                        }
+
+                        return ($count + 1) . ' total messages';
+                    })
+                    ->icon('heroicon-o-chat-bubble-left-right'),
             ])->columnSpan(1),
 
             \Filament\Schemas\Components\Grid::make(1)->schema([
