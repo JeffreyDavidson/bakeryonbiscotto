@@ -51,14 +51,28 @@
     </div>
 
     <div class="cd-orders-title">Orders</div>
-    @foreach($orders as $order)
-        <div class="cd-order-row">
-            <div style="display:flex;align-items:center;gap:0.5rem;">
-                <span class="cd-order-num">{{ $order->order_number }}</span>
-                <span class="cd-badge cd-badge-{{ $order->status }}">{{ ucfirst($order->status) }}</span>
-                <span class="cd-order-date">{{ $order->created_at->format('M j, Y') }}</span>
-            </div>
-            <span class="cd-order-total">${{ number_format($order->total, 2) }}</span>
-        </div>
-    @endforeach
+    <table style="width:100%;border-collapse:collapse;">
+        <thead>
+            <tr>
+                <th style="text-align:left;font-size:0.7rem;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;padding:0.5rem 0;border-bottom:1px solid #e5e7eb;">Order</th>
+                <th style="text-align:left;font-size:0.7rem;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;padding:0.5rem 0;border-bottom:1px solid #e5e7eb;">Status</th>
+                <th style="text-align:left;font-size:0.7rem;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;padding:0.5rem 0;border-bottom:1px solid #e5e7eb;">Date</th>
+                <th style="text-align:right;font-size:0.7rem;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;padding:0.5rem 0;border-bottom:1px solid #e5e7eb;">Total</th>
+                <th style="width:3rem;border-bottom:1px solid #e5e7eb;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($orders as $order)
+                <tr>
+                    <td style="padding:0.625rem 0;border-bottom:1px solid #f3f4f6;font-family:monospace;font-weight:600;font-size:0.85rem;color:#111827;">{{ $order->order_number }}</td>
+                    <td style="padding:0.625rem 0;border-bottom:1px solid #f3f4f6;"><span class="cd-badge cd-badge-{{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
+                    <td style="padding:0.625rem 0;border-bottom:1px solid #f3f4f6;font-size:0.8rem;color:#9ca3af;">{{ $order->created_at->format('M j, Y') }}</td>
+                    <td style="padding:0.625rem 0;border-bottom:1px solid #f3f4f6;text-align:right;font-weight:700;font-size:0.85rem;color:#111827;">${{ number_format($order->total, 2) }}</td>
+                    <td style="padding:0.625rem 0;border-bottom:1px solid #f3f4f6;text-align:right;">
+                        <a href="/admin/orders/{{ $order->id }}" style="color:#2563eb;font-size:0.8rem;font-weight:500;text-decoration:none;">View</a>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
