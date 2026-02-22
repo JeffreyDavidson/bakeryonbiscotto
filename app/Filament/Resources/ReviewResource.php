@@ -111,7 +111,7 @@ class ReviewResource extends Resource
                     ->requiresConfirmation()
                     ->visible(fn (Review $record) => $record->status !== 'rejected')
                     ->action(fn (Review $record) => $record->update(['status' => 'rejected'])),
-                EditAction::make(),
+                EditAction::make()->slideOver()->modalWidth('2xl'),
             ])
             ->bulkActions([]);
     }
@@ -120,7 +120,6 @@ class ReviewResource extends Resource
     {
         return [
             'index' => Pages\ListReviews::route('/'),
-            'edit' => Pages\EditReview::route('/{record}/edit'),
         ];
     }
 }
