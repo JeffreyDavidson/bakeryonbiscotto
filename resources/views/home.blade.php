@@ -2327,7 +2327,7 @@
             <div class="faq-item" :class="{ 'open': open === 3 }">
                 <button class="faq-question" :aria-expanded="open === 3 ? 'true' : 'false'" aria-controls="faq-answer-3" @click="open = open === 3 ? null : 3" @keydown.enter.prevent="open = open === 3 ? null : 3" @keydown.space.prevent="open = open === 3 ? null : 3">Do you deliver?</button>
                 <div class="faq-answer" id="faq-answer-3" role="region"><div class="faq-answer-inner">
-                    <p>Yes! Pickup is available in Davenport, FL and we deliver throughout the Four Corners and greater Orlando area for a $5 delivery fee.</p>
+                    <p>Yes! Pickup is in Davenport, FL and we deliver throughout the Four Corners and greater Orlando area for a fee based on mileage.</p>
                 </div></div>
             </div>
             <div class="faq-item" :class="{ 'open': open === 4 }">
