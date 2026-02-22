@@ -1,201 +1,204 @@
 <x-filament-panels::page>
     <style>
+        .bs-controls { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+        .bs-nav-btn { display: inline-flex; align-items: center; justify-content: center; border-radius: 0.5rem; border: 1px solid #d1d5db; background: white; padding: 0.5rem; color: #374151; cursor: pointer; }
+        .bs-nav-btn:hover { background: #f9fafb; }
+        .bs-print-btn { display: inline-flex; align-items: center; gap: 0.375rem; border-radius: 0.5rem; background: #dc8a29; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 600; color: white; border: none; cursor: pointer; margin-left: auto; }
+        .bs-print-btn:hover { background: #c77b24; }
+        .bs-date-label { font-size: 1.125rem; font-weight: 600; color: #111827; }
+        .bs-today-btn { display: inline-flex; align-items: center; border-radius: 0.5rem; border: 1px solid #d1d5db; background: white; padding: 0.5rem 0.75rem; font-size: 0.875rem; font-weight: 500; color: #374151; cursor: pointer; }
+
+        .bs-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .bs-stat { border-radius: 0.75rem; border: 1px solid #e5e7eb; background: white; padding: 1rem 1.25rem; }
+        .bs-stat-label { font-size: 0.7rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
+        .bs-stat-value { margin-top: 0.25rem; font-size: 1.75rem; font-weight: 700; color: #111827; }
+        .bs-stat-value.blue { color: #2563eb; }
+        .bs-stat-value.amber { color: #d97706; }
+
+        .bs-card { border-radius: 0.75rem; border: 1px solid #e5e7eb; background: white; overflow: hidden; margin-bottom: 1.5rem; }
+        .bs-card-header { padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb; }
+        .bs-card-header.warm { background: linear-gradient(to right, #fffbeb, #fff7ed); }
+        .bs-card-header.cool { background: linear-gradient(to right, #eff6ff, #eef2ff); }
+        .bs-card-title { font-size: 1.125rem; font-weight: 700; color: #111827; }
+        .bs-card-subtitle { font-size: 0.875rem; font-weight: 400; color: #6b7280; }
+
+        .bs-table { width: 100%; border-collapse: collapse; }
+        .bs-table thead th { padding: 0.75rem 1.5rem; text-align: left; font-size: 0.7rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #f3f4f6; }
+        .bs-table thead th.center { text-align: center; }
+        .bs-table tbody td { padding: 1rem 1.5rem; }
+        .bs-table tbody tr { border-bottom: 1px solid #f3f4f6; }
+        .bs-table tbody tr:hover { background: #f9fafb; }
+        .bs-product-name { font-weight: 600; color: #111827; font-size: 1rem; }
+        .bs-qty-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 3rem; border-radius: 9999px; background: #fef3c7; padding: 0.375rem 0.75rem; font-size: 1.125rem; font-weight: 700; color: #92400e; }
+        .bs-qty-total { background: #292524; color: white; }
+        .bs-order-tag { display: inline-flex; align-items: center; border-radius: 0.375rem; background: #f3f4f6; padding: 0.25rem 0.5rem; font-size: 0.75rem; font-weight: 500; color: #4b5563; margin: 0.125rem; }
+        .bs-table tfoot td { padding: 1rem 1.5rem; border-top: 2px solid #e5e7eb; font-weight: 700; color: #111827; }
+        .bs-table tfoot td.center { text-align: center; }
+
+        .bs-order { padding: 1rem 1.5rem; border-bottom: 1px solid #f3f4f6; }
+        .bs-order:last-child { border-bottom: none; }
+        .bs-order:hover { background: #f9fafb; }
+        .bs-order-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 0.5rem; }
+        .bs-order-badges { display: flex; align-items: center; gap: 0.5rem; }
+        .bs-order-num { font-weight: 700; color: #111827; }
+        .bs-badge { display: inline-flex; align-items: center; border-radius: 0.375rem; padding: 0.25rem 0.5rem; font-size: 0.75rem; font-weight: 500; }
+        .bs-badge-pickup { background: #eff6ff; color: #1d4ed8; }
+        .bs-badge-delivery { background: #fffbeb; color: #b45309; }
+        .bs-badge-pending { background: #fefce8; color: #a16207; }
+        .bs-badge-confirmed { background: #eff6ff; color: #1d4ed8; }
+        .bs-badge-baking { background: #faf5ff; color: #7c3aed; }
+        .bs-badge-ready { background: #f0fdf4; color: #15803d; }
+        .bs-badge-delivered { background: #f3f4f6; color: #374151; }
+        .bs-order-time { font-size: 0.875rem; font-weight: 600; color: #374151; }
+        .bs-order-customer { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem; }
+        .bs-order-items { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .bs-item-pill { display: inline-flex; align-items: center; gap: 0.25rem; border-radius: 0.5rem; background: #f3f4f6; padding: 0.375rem 0.625rem; font-size: 0.875rem; }
+        .bs-item-qty { font-weight: 700; color: #92400e; }
+        .bs-item-name { color: #374151; }
+
+        .bs-empty { border-radius: 0.75rem; border: 2px dashed #d1d5db; background: white; padding: 3rem; text-align: center; }
+        .bs-empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .bs-empty-title { font-size: 1.125rem; font-weight: 500; color: #111827; }
+        .bs-empty-subtitle { font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem; }
+
         @media print {
             .fi-sidebar, .fi-topbar, .fi-header, nav,
             [class*="fi-sidebar"], [class*="fi-topbar"],
             .no-print, .fi-header-heading, .fi-breadcrumbs,
-            .fi-page-header { display: none !important; }
+            .fi-page-header, .bs-controls, .bs-stats { display: none !important; }
             .fi-main { margin: 0 !important; padding: 0 !important; width: 100% !important; }
             .fi-page { padding: 0 !important; }
             .print-header { display: flex !important; }
-            .print-only { display: block !important; }
+            .print-check { display: table-cell !important; }
             body { background: white !important; }
-            .baking-card { break-inside: avoid; }
-            .checkbox-col { width: 40px; }
-            .checkbox-col input { width: 18px; height: 18px; }
+            .bs-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
         }
     </style>
 
     {{-- Print header --}}
-    <div class="print-header items-center justify-between mb-6 pb-4 border-b-2 border-gray-800" style="display: none;">
+    <div class="print-header" style="display: none; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #333;">
         <div>
-            <h1 class="text-2xl font-bold">🧁 Baking Sheet</h1>
-            <p class="text-gray-600">{{ $this->formattedDate }}</p>
+            <div style="font-size: 1.5rem; font-weight: 700;">🧁 Baking Sheet</div>
+            <div style="color: #666;">{{ $this->formattedDate }}</div>
         </div>
-        <div class="text-right text-sm text-gray-500">
-            <p>{{ $this->stats->total_orders }} orders · {{ $this->stats->total_items }} items</p>
-            <p>{{ $this->stats->pickup_count }} pickup · {{ $this->stats->delivery_count }} delivery</p>
+        <div style="text-align: right; font-size: 0.875rem; color: #666;">
+            <div>{{ $this->stats->total_orders }} orders · {{ $this->stats->total_items }} items</div>
+            <div>{{ $this->stats->pickup_count }} pickup · {{ $this->stats->delivery_count }} delivery</div>
         </div>
     </div>
 
     {{-- Controls --}}
-    <div class="no-print mb-6">
-        <div class="flex items-center gap-3 mb-4">
-            <button wire:click="previousDay" class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white p-2 text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-                <x-heroicon-m-chevron-left class="h-5 w-5" />
-            </button>
-
-            <input type="date" wire:model.live="date"
-                class="rounded-lg border-gray-300 shadow-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm" />
-
-            <button wire:click="nextDay" class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white p-2 text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-                <x-heroicon-m-chevron-right class="h-5 w-5" />
-            </button>
-
-            @unless($this->isToday)
-                <button wire:click="goToToday" class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300">
-                    Today
-                </button>
-            @endunless
-
-            <div class="ml-auto">
-                <button onclick="window.print()" class="inline-flex items-center gap-1.5 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500">
-                    <x-heroicon-m-printer class="h-4 w-4" />
-                    Print
-                </button>
-            </div>
-        </div>
-
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{{ $this->formattedDate }}</h2>
+    <div class="bs-controls no-print">
+        <button wire:click="previousDay" class="bs-nav-btn">◀</button>
+        <input type="date" wire:model.live="date" style="border-radius: 0.5rem; border: 1px solid #d1d5db; padding: 0.5rem; font-size: 0.875rem;" />
+        <button wire:click="nextDay" class="bs-nav-btn">▶</button>
+        @unless($this->isToday)
+            <button wire:click="goToToday" class="bs-today-btn">Today</button>
+        @endunless
+        <span class="bs-date-label">{{ $this->formattedDate }}</span>
+        <button onclick="window.print()" class="bs-print-btn">🖨️ Print</button>
     </div>
 
     @if($this->bakingItems->isEmpty())
-        <div class="rounded-xl border-2 border-dashed border-gray-300 bg-white p-12 text-center dark:border-gray-600 dark:bg-gray-800">
-            <x-heroicon-o-cake class="mx-auto h-12 w-12 text-gray-400" />
-            <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white">No orders for this day</h3>
-            <p class="mt-1 text-sm text-gray-500">Enjoy the day off! 🎉</p>
+        <div class="bs-empty">
+            <div class="bs-empty-icon">🧁</div>
+            <div class="bs-empty-title">No orders for this day</div>
+            <div class="bs-empty-subtitle">Enjoy the day off! 🎉</div>
         </div>
     @else
-        {{-- Stats bar --}}
-        <div class="no-print grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-            <div class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
-                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Orders</p>
-                <p class="mt-1 text-2xl font-bold text-gray-900 dark:text-white">{{ $this->stats->total_orders }}</p>
+        {{-- Stats --}}
+        <div class="bs-stats no-print">
+            <div class="bs-stat">
+                <div class="bs-stat-label">Orders</div>
+                <div class="bs-stat-value">{{ $this->stats->total_orders }}</div>
             </div>
-            <div class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
-                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Total Items</p>
-                <p class="mt-1 text-2xl font-bold text-gray-900 dark:text-white">{{ $this->stats->total_items }}</p>
+            <div class="bs-stat">
+                <div class="bs-stat-label">Total Items</div>
+                <div class="bs-stat-value">{{ $this->stats->total_items }}</div>
             </div>
-            <div class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
-                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Pickups</p>
-                <p class="mt-1 text-2xl font-bold text-blue-600 dark:text-blue-400">{{ $this->stats->pickup_count }}</p>
+            <div class="bs-stat">
+                <div class="bs-stat-label">Pickups</div>
+                <div class="bs-stat-value blue">{{ $this->stats->pickup_count }}</div>
             </div>
-            <div class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
-                <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Deliveries</p>
-                <p class="mt-1 text-2xl font-bold text-amber-600 dark:text-amber-400">{{ $this->stats->delivery_count }}</p>
+            <div class="bs-stat">
+                <div class="bs-stat-label">Deliveries</div>
+                <div class="bs-stat-value amber">{{ $this->stats->delivery_count }}</div>
             </div>
         </div>
 
         {{-- Baking checklist --}}
-        <div class="baking-card rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 overflow-hidden mb-6">
-            <div class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                    🧁 What to Bake
-                    <span class="text-sm font-normal text-gray-500">({{ $this->bakingItems->count() }} products)</span>
-                </h3>
+        <div class="bs-card">
+            <div class="bs-card-header warm">
+                <span class="bs-card-title">🧁 What to Bake</span>
+                <span class="bs-card-subtitle">({{ $this->bakingItems->count() }} products)</span>
             </div>
-            <table class="w-full">
+            <table class="bs-table">
                 <thead>
-                    <tr class="border-b border-gray-100 dark:border-gray-700">
-                        <th class="checkbox-col px-4 py-3 print-only" style="display: none;"></th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Product</th>
-                        <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-28">Quantity</th>
-                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Orders</th>
+                    <tr>
+                        <th class="print-check" style="display: none; width: 40px;"></th>
+                        <th>Product</th>
+                        <th class="center" style="width: 7rem;">Quantity</th>
+                        <th>Orders</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                <tbody>
                     @foreach($this->bakingItems as $item)
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                            <td class="checkbox-col px-4 py-4 print-only" style="display: none;">
-                                <input type="checkbox" class="rounded border-gray-400" />
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="font-semibold text-gray-900 dark:text-white text-base">{{ $item->product_name }}</span>
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                <span class="inline-flex items-center justify-center min-w-[3rem] rounded-full bg-primary-100 px-3 py-1.5 text-lg font-bold text-primary-700 dark:bg-primary-900/30 dark:text-primary-400">
-                                    {{ $item->total_quantity }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="flex flex-wrap gap-1.5">
-                                    @foreach($item->order_numbers as $num)
-                                        <span class="inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:ring-gray-600">
-                                            {{ $num }}
-                                        </span>
-                                    @endforeach
-                                </div>
+                        <tr>
+                            <td class="print-check" style="display: none;"><input type="checkbox" style="width: 18px; height: 18px;" /></td>
+                            <td><span class="bs-product-name">{{ $item->product_name }}</span></td>
+                            <td style="text-align: center;"><span class="bs-qty-badge">{{ $item->total_quantity }}</span></td>
+                            <td>
+                                @foreach($item->order_numbers as $num)
+                                    <span class="bs-order-tag">{{ $num }}</span>
+                                @endforeach
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
-                <tfoot class="border-t-2 border-gray-200 dark:border-gray-600">
+                <tfoot>
                     <tr>
-                        <td class="checkbox-col print-only" style="display: none;"></td>
-                        <td class="px-6 py-4 font-bold text-gray-900 dark:text-white">Total</td>
-                        <td class="px-6 py-4 text-center">
-                            <span class="inline-flex items-center justify-center min-w-[3rem] rounded-full bg-gray-800 px-3 py-1.5 text-lg font-bold text-white dark:bg-white dark:text-gray-900">
-                                {{ $this->bakingItems->sum('total_quantity') }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-500">{{ $this->stats->total_orders }} orders</td>
+                        <td class="print-check" style="display: none;"></td>
+                        <td>Total</td>
+                        <td class="center"><span class="bs-qty-badge bs-qty-total">{{ $this->bakingItems->sum('total_quantity') }}</span></td>
+                        <td style="font-weight: 400; color: #6b7280;">{{ $this->stats->total_orders }} orders</td>
                     </tr>
                 </tfoot>
             </table>
         </div>
 
-        {{-- Order timeline --}}
-        <div class="baking-card rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800 overflow-hidden">
-            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                    📋 Order Details
-                    <span class="text-sm font-normal text-gray-500">(by pickup/delivery time)</span>
-                </h3>
+        {{-- Order details --}}
+        <div class="bs-card">
+            <div class="bs-card-header cool">
+                <span class="bs-card-title">📋 Order Details</span>
+                <span class="bs-card-subtitle">(by pickup/delivery time)</span>
             </div>
-            <div class="divide-y divide-gray-100 dark:divide-gray-700">
-                @foreach($this->orders as $order)
-                    <div class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                        <div class="flex items-start justify-between mb-2">
-                            <div class="flex items-center gap-3">
-                                <span class="font-bold text-gray-900 dark:text-white">{{ $order->order_number }}</span>
-                                <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset
-                                    {{ $order->fulfillment_type === 'delivery'
-                                        ? 'bg-amber-50 text-amber-700 ring-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:ring-amber-800'
-                                        : 'bg-blue-50 text-blue-700 ring-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:ring-blue-800' }}">
-                                    {{ ucfirst($order->fulfillment_type) }}
-                                </span>
-                                @php
-                                    $statusColors = [
-                                        'pending' => 'bg-yellow-50 text-yellow-700 ring-yellow-200',
-                                        'confirmed' => 'bg-blue-50 text-blue-700 ring-blue-200',
-                                        'baking' => 'bg-purple-50 text-purple-700 ring-purple-200',
-                                        'ready' => 'bg-green-50 text-green-700 ring-green-200',
-                                        'delivered' => 'bg-gray-50 text-gray-700 ring-gray-200',
-                                    ];
-                                @endphp
-                                <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset {{ $statusColors[$order->status] ?? 'bg-gray-50 text-gray-700 ring-gray-200' }}">
-                                    {{ ucfirst($order->status) }}
-                                </span>
-                            </div>
-                            <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                                {{ $order->requested_time ?? 'No time set' }}
+            @foreach($this->orders as $order)
+                <div class="bs-order">
+                    <div class="bs-order-header">
+                        <div class="bs-order-badges">
+                            <span class="bs-order-num">{{ $order->order_number }}</span>
+                            <span class="bs-badge {{ $order->fulfillment_type === 'delivery' ? 'bs-badge-delivery' : 'bs-badge-pickup' }}">
+                                {{ ucfirst($order->fulfillment_type) }}
+                            </span>
+                            <span class="bs-badge bs-badge-{{ $order->status }}">
+                                {{ ucfirst($order->status) }}
                             </span>
                         </div>
-                        <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-2">
-                            <x-heroicon-m-user class="h-4 w-4" />
-                            {{ $order->customer_name }}
-                        </div>
-                        <div class="flex flex-wrap gap-2">
-                            @foreach($order->items as $item)
-                                <span class="inline-flex items-center gap-1 rounded-lg bg-gray-100 px-2.5 py-1 text-sm dark:bg-gray-700">
-                                    <span class="font-semibold text-primary-600 dark:text-primary-400">{{ $item->quantity }}×</span>
-                                    <span class="text-gray-700 dark:text-gray-300">{{ $item->product_name }}</span>
-                                </span>
-                            @endforeach
-                        </div>
+                        <span class="bs-order-time">{{ $order->requested_time ?? 'No time set' }}</span>
                     </div>
-                @endforeach
-            </div>
+                    <div class="bs-order-customer">
+                        👤 {{ $order->customer_name }}
+                    </div>
+                    <div class="bs-order-items">
+                        @foreach($order->items as $item)
+                            <span class="bs-item-pill">
+                                <span class="bs-item-qty">{{ $item->quantity }}×</span>
+                                <span class="bs-item-name">{{ $item->product_name }}</span>
+                            </span>
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
         </div>
     @endif
 </x-filament-panels::page>
