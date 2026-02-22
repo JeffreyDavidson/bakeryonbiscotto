@@ -192,12 +192,44 @@
         }
         .form-input::placeholder { color: #c0a890; }
         textarea.form-input { resize: vertical; min-height: 130px; }
-        .form-group {
-            position: relative;
-        }
         .custom-select {
             user-select: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-right: 14px;
         }
+        .subject-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 4px;
+            background: var(--cream);
+            border: 1.5px solid var(--golden);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(61,35,20,0.18);
+        }
+        .subject-option {
+            padding: 11px 16px;
+            cursor: pointer;
+            font-family: 'Lora', serif;
+            font-size: 0.95rem;
+            color: var(--dark);
+            transition: background 0.15s;
+            border-bottom: 1px solid rgba(212,165,116,0.15);
+        }
+        .subject-option:last-child { border-bottom: none; }
+        .subject-option:hover { background: rgba(212,165,116,0.2); }
+        .subject-option.active { background: rgba(212,165,116,0.35); font-weight: 600; }
+        .dropdown-enter { transition: opacity 0.15s ease, transform 0.15s ease; }
+        .dropdown-enter-start { opacity: 0; transform: translateY(-4px); }
+        .dropdown-enter-end { opacity: 1; transform: translateY(0); }
+        .dropdown-leave { transition: opacity 0.1s ease; }
+        .dropdown-leave-start { opacity: 1; }
+        .dropdown-leave-end { opacity: 0; }
 
         .form-row {
             display: grid;
@@ -467,21 +499,16 @@
                             <label class="form-label">Phone <span style="font-weight: 400; text-transform: none; opacity: 0.5;">(optional)</span></label>
                             <input type="tel" name="phone" class="form-input" placeholder="(555) 123-4567" value="{{ old('phone') }}">
                         </div>
-                        <div class="form-group" x-data="{ open: false, selected: '{{ old('subject', '') }}', options: ['General Question', 'Feedback', 'Other'] }" @click.away="open = false">
+                        <div class="form-group" style="position: relative; z-index: 10;" x-data="{ open: false, selected: '{{ old('subject', '') }}', options: ['General Question', 'Feedback', 'Other'] }" @click.away="open = false">
                             <label class="form-label">Subject</label>
                             <input type="hidden" name="subject" :value="selected" required>
-                            <div class="form-input custom-select" @click="open = !open" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding-right: 14px;">
+                            <div class="form-input custom-select" @click="open = !open">
                                 <span :style="selected ? '' : 'opacity: 0.5'" x-text="selected || 'Choose a topic...'"></span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8B5E3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" :style="open ? 'transform: rotate(180deg)' : ''" style="transition: transform 0.2s"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" :style="open ? 'transform: rotate(180deg)' : ''" style="transition: transform 0.2s; flex-shrink: 0;"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </div>
-                            <div x-show="open" x-transition.opacity style="position: absolute; z-index: 50; width: 100%; margin-top: 4px; background: var(--light); border: 1px solid var(--golden); border-radius: 8px; overflow: hidden; box-shadow: 0 8px 24px rgba(61,35,20,0.15);">
+                            <div x-show="open" x-transition:enter="dropdown-enter" x-transition:enter-start="dropdown-enter-start" x-transition:enter-end="dropdown-enter-end" x-transition:leave="dropdown-leave" x-transition:leave-start="dropdown-leave-start" x-transition:leave-end="dropdown-leave-end" class="subject-dropdown">
                                 <template x-for="opt in options" :key="opt">
-                                    <div @click="selected = opt; open = false" x-text="opt"
-                                         style="padding: 10px 14px; cursor: pointer; font-family: 'Lora', serif; font-size: 0.95rem; color: var(--dark); transition: background 0.15s;"
-                                         :style="selected === opt ? 'background: rgba(212,165,116,0.3)' : ''"
-                                         onmouseover="this.style.background='rgba(212,165,116,0.2)'"
-                                         onmouseout="this.style.background=this.getAttribute('x-bind:style')?.includes('0.3') ? 'rgba(212,165,116,0.3)' : ''">
-                                    </div>
+                                    <div @click="selected = opt; open = false" x-text="opt" class="subject-option" :class="selected === opt ? 'active' : ''"></div>
                                 </template>
                             </div>
                             @error('subject') <p class="error-msg">{{ $message }}</p> @enderror
