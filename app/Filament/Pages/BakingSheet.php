@@ -81,7 +81,37 @@ class BakingSheet extends Page
             'pickup_count' => $orders->where('fulfillment_type', 'pickup')->count(),
             'delivery_count' => $orders->where('fulfillment_type', 'delivery')->count(),
             'total_revenue' => $orders->sum('total'),
+            'pending_count' => $orders->where('status', 'pending')->count(),
+            'confirmed_count' => $orders->where('status', 'confirmed')->count(),
+            'baking_count' => $orders->where('status', 'baking')->count(),
+            'ready_count' => $orders->where('status', 'ready')->count(),
+            'delivered_count' => $orders->where('status', 'delivered')->count(),
         ];
+    }
+
+    public function getTimelineProperty(): Collection
+    {
+        return $this->orders->groupBy(function ($order) {
+            if (!$order->requested_time) return 'No Time Set';
+            return $order->requested_time;
+        })->sortKeys();
+    }
+
+    public function getUpcomingDaysProperty(): Collection
+    {
+        $start = Carbon::parse($this->date)->addDay();
+        $end = $start->copy()->addDays(6);
+
+        return Order::whereBetween('requested_date', [$start, $end])
+            ->where('status', '!=', 'cancelled')
+            ->selectRaw('DATE(requested_date) as date, COUNT(*) as order_count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get()
+            ->map(fn ($row) => (object) [
+                'date' => Carbon::parse($row->date),
+                'order_count' => $row->order_count,
+            ]);
     }
 
     public function getFormattedDateProperty(): string
