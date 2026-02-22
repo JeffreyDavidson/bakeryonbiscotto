@@ -58,7 +58,7 @@ class CategoryResource extends Resource
             ->defaultSort('sort_order')
             ->reorderable('sort_order')
             ->actions([
-                EditAction::make(),
+                EditAction::make()->slideOver()->modalWidth('xl'),
             ])
             ->bulkActions([]);
     }
@@ -67,8 +67,6 @@ class CategoryResource extends Resource
     {
         return [
             'index' => Pages\ListCategories::route('/'),
-            'create' => Pages\CreateCategory::route('/create'),
-            'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
     }
 }
