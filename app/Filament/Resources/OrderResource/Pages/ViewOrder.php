@@ -4,6 +4,7 @@ namespace App\Filament\Resources\OrderResource\Pages;
 
 use App\Filament\Resources\OrderResource;
 use App\Models\Order;
+use BackedEnum;
 use Filament\Actions;
 use Filament\Resources\Pages\Page;
 
@@ -13,7 +14,7 @@ class ViewOrder extends Page
 
     protected static ?string $navigationLabel = 'View';
 
-    protected static ?string $navigationIcon = 'heroicon-o-eye';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-eye';
 
     protected string $view = 'filament.pages.order-detail';
 
