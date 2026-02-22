@@ -54,8 +54,8 @@ class PayPalService
         $token = $this->getAccessToken();
 
         $response = Http::withToken($token)
-            ->withHeaders(['Content-Type' => 'application/json'])
-            ->post("{$this->baseUrl}/v2/checkout/orders/{$paypalOrderId}/capture", []);
+            ->contentType('application/json')
+            ->send('POST', "{$this->baseUrl}/v2/checkout/orders/{$paypalOrderId}/capture");
 
         \Log::info('PayPal capture response', [
             'status' => $response->status(),
