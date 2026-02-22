@@ -265,7 +265,7 @@
         {{-- Order timeline grouped by time --}}
         <div class="bs-card">
             <div class="bs-card-header cool">
-                <span class="bs-card-title">📋 Order Timeline</span>
+                <span class="bs-card-title">🕐 Today's Schedule</span>
                 <span class="bs-card-subtitle">{{ $this->stats->total_orders }} orders by time slot</span>
             </div>
             @foreach($this->timeline as $timeSlot => $orders)
