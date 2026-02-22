@@ -76,9 +76,20 @@ class ContactMessageResource extends Resource
                     ]),
             ])
             ->actions([
-                Actions\ViewAction::make()
-                    ->modalWidth('5xl')
-                    ->beforeFormFilled(function (ContactMessage $record) {
+                Actions\Action::make('view')
+                    ->label('View')
+                    ->icon('heroicon-o-eye')
+                    ->modalHeading(fn (ContactMessage $record) => '')
+                    ->modalWidth('3xl')
+                    ->slideOver()
+                    ->modalContent(fn (ContactMessage $record) => view('filament.pages.contact-message-detail', [
+                        'message' => $record,
+                        'orders' => \App\Models\Order::where('customer_email', $record->email)
+                            ->orderByDesc('created_at')
+                            ->limit(10)
+                            ->get(),
+                    ]))
+                    ->mountUsing(function (ContactMessage $record) {
                         if ($record->status === 'new') {
                             $record->update(['status' => 'read']);
                         }
