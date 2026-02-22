@@ -441,13 +441,7 @@
     </style>
 </head>
 <body>
-    <nav class="main-nav">
-        <a href="/">Home</a>
-        <a href="/#about">About</a>
-        <a href="/#menu">Menu</a>
-        <a href="/order">Order</a>
-        <a href="/contact" class="active">Contact</a>
-    </nav>
+    <x-main-nav active="contact" />
 
     {{-- HERO --}}
     <section class="hero">

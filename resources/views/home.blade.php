@@ -2004,13 +2004,7 @@
 <body>
 
     {{-- Main Nav --}}
-    <nav class="main-nav">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#menu">Menu</a>
-        <a href="#order">Order</a>
-        <a href="/contact">Contact</a>
-    </nav>
+    <x-main-nav active="home" />
 
     {{-- ═══ HERO ═══ --}}
     <section class="hero" id="home">
