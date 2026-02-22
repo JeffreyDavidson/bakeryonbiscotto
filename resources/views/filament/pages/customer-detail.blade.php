@@ -33,8 +33,9 @@
     .cd-view-btn { display: inline-flex; align-items: center; padding: 0.3rem 0.625rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #6b4c3b; background: #fdf8f2; text-decoration: none; border: 1px solid #e8d0b0; }
     .cd-view-btn:hover { background: #f5e6d0; }
 
-    .cd-section-title { font-size: 0.8rem; font-weight: 700; color: #4a3225; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.625rem; display: flex; align-items: center; gap: 0.5rem; }
-    .cd-count { font-size: 0.7rem; font-weight: 600; color: white; background: #8b5e3c; padding: 0.1rem 0.4rem; border-radius: 9999px; }
+    .cd-orders-header { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: linear-gradient(135deg, #3d2314, #6b4c3b); border-radius: 0.5rem 0.5rem 0 0; margin-top: 0.25rem; }
+    .cd-orders-title { font-size: 0.8rem; font-weight: 700; color: white; text-transform: uppercase; letter-spacing: 0.05em; margin: 0; }
+    .cd-count { font-size: 0.7rem; font-weight: 600; color: #3d2314; background: #fef3c7; padding: 0.1rem 0.4rem; border-radius: 9999px; }
 </style>
 
 <div>
@@ -70,8 +71,11 @@
     </div>
 
     {{-- Orders table --}}
-    <div class="cd-section-title">Order History <span class="cd-count">{{ $orders->count() }}</span></div>
-    <table class="cd-table">
+    <div class="cd-orders-header">
+        <span class="cd-orders-title">Order History</span>
+        <span class="cd-count">{{ $orders->count() }}</span>
+    </div>
+    <table class="cd-table" style="border:1px solid #e8d0b0;border-top:none;border-radius:0 0 0.5rem 0.5rem;overflow:hidden;">
         <thead>
             <tr>
                 <th>Order</th>
