@@ -18,7 +18,7 @@
     .cd-stat-lbl { font-size: 0.65rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.375rem; }
 
     .cd-table { width: 100%; border-collapse: collapse; }
-    .cd-table th { text-align: left; font-size: 0.7rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.625rem 0.5rem; border-bottom: 2px solid #e5e7eb; }
+    .cd-table th { text-align: left; font-size: 0.7rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.625rem 0.5rem; border-bottom: 2px solid #e5e7eb; background: white !important; }
     .cd-table th:last-child { text-align: right; }
     .cd-table td { padding: 0.75rem 0.5rem; border-bottom: 1px solid #f3f4f6; font-size: 0.85rem; color: #374151; vertical-align: middle; }
     .cd-table tr:hover { background: #fafafa; }
@@ -49,7 +49,7 @@
             @if($customer->customer_phone)
                 <div class="cd-info-line"><a href="tel:{{ $customer->customer_phone }}">{{ $customer->customer_phone }}</a></div>
             @endif
-            <div class="cd-since">Customer since {{ \Carbon\Carbon::parse($stats->first_order_date)->format('M j, Y') }}</div>
+            <div class="cd-since">Customer since {{ \Carbon\Carbon::parse($stats->first_order_date)->format('M j, Y') }} · Last order {{ $orders->first()?->created_at->diffForHumans() ?? 'N/A' }}</div>
         </div>
         <div class="cd-actions">
             <a href="mailto:{{ $customer->customer_email }}" class="cd-btn">✉️ Email</a>
@@ -79,6 +79,7 @@
             <tr>
                 <th>Order</th>
                 <th>Status</th>
+                <th>Type</th>
                 <th>Date</th>
                 <th style="text-align:right;">Total</th>
                 <th style="width:4rem;"></th>
@@ -89,6 +90,7 @@
                 <tr>
                     <td class="order-num">{{ $order->order_number }}</td>
                     <td><span class="cd-badge cd-badge-{{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
+                    <td><span class="cd-badge" style="background:{{ $order->fulfillment_type === 'delivery' ? '#dbeafe' : '#f3f4f6' }};color:{{ $order->fulfillment_type === 'delivery' ? '#1e40af' : '#374151' }};">{{ $order->fulfillment_type === 'delivery' ? '🚗 Delivery' : '📦 Pickup' }}</span></td>
                     <td style="color:#9ca3af;">{{ $order->created_at->format('M j, Y') }}</td>
                     <td class="total">${{ number_format($order->total, 2) }}</td>
                     <td style="text-align:right;"><a href="/admin/orders/{{ $order->id }}" class="cd-view-btn">View</a></td>
