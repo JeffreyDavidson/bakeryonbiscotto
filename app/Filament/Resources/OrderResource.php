@@ -45,136 +45,32 @@ class OrderResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            \Filament\Schemas\Components\Grid::make(['default' => 1, 'lg' => 3])->schema([
-                \Filament\Schemas\Components\Grid::make(1)->schema([
-                    Section::make('Customer Info')->components([
-                        \Filament\Forms\Components\TextInput::make('customer_name')->required(),
-                        \Filament\Forms\Components\TextInput::make('customer_email')->email()->required(),
-                        \Filament\Forms\Components\TextInput::make('customer_phone'),
-                    ]),
+            Section::make('Customer Info')->components([
+                \Filament\Forms\Components\TextInput::make('customer_name')->required(),
+                \Filament\Forms\Components\TextInput::make('customer_email')->email()->required(),
+                \Filament\Forms\Components\TextInput::make('customer_phone'),
+            ])->columns(3),
 
-                    Section::make('Fulfillment')->components([
-                        \Filament\Forms\Components\Select::make('fulfillment_type')
-                            ->options(['pickup' => 'Pickup', 'delivery' => 'Delivery'])
-                            ->required()
-                            ->live(),
-                        \Filament\Forms\Components\DatePicker::make('requested_date')->required(),
-                        \Filament\Forms\Components\TextInput::make('requested_time')->label('Requested Time'),
-                        \Filament\Forms\Components\Textarea::make('delivery_address')
-                            ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
-                        \Filament\Forms\Components\TextInput::make('delivery_zip')
-                            ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
-                        \Filament\Forms\Components\TextInput::make('delivery_fee')
-                            ->numeric()->prefix('$')->default(0)
-                            ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
-                    ])->columns(2),
+            Section::make('Fulfillment')->components([
+                \Filament\Forms\Components\Select::make('fulfillment_type')
+                    ->options(['pickup' => 'Pickup', 'delivery' => 'Delivery'])
+                    ->required()
+                    ->live(),
+                \Filament\Forms\Components\DatePicker::make('requested_date')->required(),
+                \Filament\Forms\Components\TextInput::make('requested_time')->label('Requested Time'),
+                \Filament\Forms\Components\Textarea::make('delivery_address')
+                    ->visible(fn ($get) => $get('fulfillment_type') === 'delivery')
+                    ->columnSpanFull(),
+                \Filament\Forms\Components\TextInput::make('delivery_zip')
+                    ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
+                \Filament\Forms\Components\TextInput::make('delivery_fee')
+                    ->numeric()->prefix('$')->default(0)
+                    ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
+            ])->columns(3),
 
-                    Section::make('Notes')->components([
-                        \Filament\Forms\Components\Textarea::make('notes')->hiddenLabel()->rows(3),
-                    ])->collapsible(),
-                ])->columnSpan(['default' => 1, 'lg' => 2]),
-
-                \Filament\Schemas\Components\Grid::make(1)->schema([
-                    Section::make('Status')->components([
-                        \Filament\Forms\Components\Placeholder::make('status_badge')
-                            ->hiddenLabel()
-                            ->content(function (Order $record): \Illuminate\Support\HtmlString {
-                                $colors = [
-                                    'pending' => 'background:#fef9c3;color:#a16207;',
-                                    'confirmed' => 'background:#dbeafe;color:#1e40af;',
-                                    'baking' => 'background:#ede9fe;color:#6d28d9;',
-                                    'ready' => 'background:#d1fae5;color:#065f46;',
-                                    'delivered' => 'background:#f3f4f6;color:#374151;',
-                                    'cancelled' => 'background:#fee2e2;color:#991b1b;',
-                                ];
-                                $style = $colors[$record->status] ?? 'background:#f3f4f6;color:#374151;';
-                                $label = ucfirst($record->status);
-                                $html = "<div style=\"text-align:center;\">
-                                    <span style=\"display:inline-flex;align-items:center;padding:0.5rem 1.25rem;border-radius:9999px;font-size:1rem;font-weight:700;{$style}\">{$label}</span>";
-
-                                if ($record->status === 'cancelled' && $record->payment_status) {
-                                    $psLabel = ucfirst($record->payment_status);
-                                    $psStyle = $record->payment_status === 'refunded'
-                                        ? 'background:#d1fae5;color:#065f46;'
-                                        : 'background:#fef9c3;color:#a16207;';
-                                    $html .= "<br><span style=\"display:inline-flex;align-items:center;padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.75rem;font-weight:600;margin-top:0.5rem;{$psStyle}\">{$psLabel}</span>";
-                                }
-
-                                $html .= "</div>";
-                                return new \Illuminate\Support\HtmlString($html);
-                            }),
-                    ]),
-
-                    Section::make('Order Summary')->components([
-                        \Filament\Forms\Components\Placeholder::make('summary_display')
-                            ->hiddenLabel()
-                            ->content(function (Order $record): \Illuminate\Support\HtmlString {
-                                $rows = [];
-
-                                $rows[] = "<div style=\"padding:0.5rem 0;border-bottom:1px solid #f3f4f6;\">
-                                    <div style=\"font-size:0.75rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;\">Order #</div>
-                                    <div style=\"font-family:monospace;font-weight:700;color:#111827;font-size:0.85rem;margin-top:0.125rem;\">{$record->order_number}</div>
-                                </div>";
-
-                                $rows[] = "<div style=\"display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #f3f4f6;\">
-                                    <span style=\"font-size:0.75rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;\">Subtotal</span>
-                                    <span style=\"color:#374151;\">\$" . number_format($record->subtotal, 2) . "</span>
-                                </div>";
-
-                                if ($record->fulfillment_type === 'delivery') {
-                                    $rows[] = "<div style=\"display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #f3f4f6;\">
-                                        <span style=\"font-size:0.75rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;\">Delivery Fee</span>
-                                        <span style=\"color:#374151;\">\$" . number_format($record->delivery_fee, 2) . "</span>
-                                    </div>";
-                                }
-
-                                $rows[] = "<div style=\"display:flex;justify-content:space-between;padding:0.75rem 0;border-bottom:1px solid #e5e7eb;\">
-                                    <span style=\"font-size:0.875rem;font-weight:700;color:#111827;\">Total</span>
-                                    <span style=\"font-size:1.25rem;font-weight:800;color:#059669;\">\$" . number_format($record->total, 2) . "</span>
-                                </div>";
-
-                                $paidAt = $record->paid_at?->format('M j, Y g:i A') ?? 'Not paid';
-                                $paidColor = $record->paid_at ? '#059669' : '#dc2626';
-                                $rows[] = "<div style=\"display:flex;justify-content:space-between;align-items:baseline;padding:0.5rem 0;gap:0.5rem;\">
-                                    <span style=\"font-size:0.75rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;\">Paid</span>
-                                    <span style=\"font-size:0.8rem;color:{$paidColor};font-weight:500;text-align:right;\">{$paidAt}</span>
-                                </div>";
-
-                                return new \Illuminate\Support\HtmlString(implode('', $rows));
-                            }),
-                    ]),
-
-                    Section::make('Items')->components([
-                        \Filament\Forms\Components\Placeholder::make('items_list')
-                            ->hiddenLabel()
-                            ->content(function (Order $record): \Illuminate\Support\HtmlString {
-                                if ($record->items->isEmpty()) {
-                                    return new \Illuminate\Support\HtmlString('<div style="text-align:center;color:#9ca3af;padding:1rem;">No items</div>');
-                                }
-
-                                $items = $record->items->map(function ($item) {
-                                    return "<div style=\"display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0.75rem;border-bottom:1px solid #f3f4f6;gap:0.5rem;\">
-                                        <div style=\"display:flex;align-items:center;gap:0.5rem;min-width:0;\">
-                                            <span style=\"display:inline-flex;align-items:center;justify-content:center;min-width:1.75rem;height:1.75rem;border-radius:0.375rem;background:#fef3c7;font-size:0.8rem;font-weight:700;color:#92400e;flex-shrink:0;\">{$item->quantity}</span>
-                                            <span style=\"font-weight:500;color:#111827;font-size:0.875rem;overflow:hidden;text-overflow:ellipsis;\">{$item->product_name}</span>
-                                        </div>
-                                        <span style=\"font-weight:600;color:#374151;font-size:0.875rem;white-space:nowrap;flex-shrink:0;\">\$" . number_format($item->line_total, 2) . "</span>
-                                    </div>";
-                                })->join('');
-
-                                $total = $record->items->sum('quantity');
-                                $footer = "<div style=\"display:flex;justify-content:space-between;padding:0.625rem 0.75rem;background:#f9fafb;border-radius:0 0 0.5rem 0.5rem;\">
-                                    <span style=\"font-size:0.8rem;color:#6b7280;\">{$total} " . ($total === 1 ? 'item' : 'items') . "</span>
-                                    <span style=\"font-weight:700;color:#111827;\">\$" . number_format($record->subtotal, 2) . "</span>
-                                </div>";
-
-                                return new \Illuminate\Support\HtmlString(
-                                    "<div style=\"border:1px solid #e5e7eb;border-radius:0.5rem;overflow:hidden;\">{$items}{$footer}</div>"
-                                );
-                            }),
-                    ]),
-                ])->columnSpan(['default' => 1, 'lg' => 1]),
-            ]),
+            Section::make('Notes')->components([
+                \Filament\Forms\Components\Textarea::make('notes')->hiddenLabel()->rows(3)->columnSpanFull(),
+            ])->collapsible(),
         ]);
     }
 
@@ -257,7 +153,8 @@ class OrderResource extends Resource
                         'status' => 'delivered',
                         'delivered_at' => now(),
                     ])),
-                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\ViewAction::make()
+                    ->url(fn (Order $record) => static::getUrl('view', ['record' => $record])),
             ])
             ->bulkActions([]);
     }
@@ -266,7 +163,16 @@ class OrderResource extends Resource
     {
         return [
             'index' => Pages\ListOrders::route('/'),
+            'view' => Pages\ViewOrder::route('/{record}'),
             'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
+    }
+
+    public static function getRecordSubNavigation(\Filament\Resources\Pages\Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Pages\ViewOrder::class,
+            Pages\EditOrder::class,
+        ]);
     }
 }
