@@ -900,9 +900,9 @@
                                     <span>Subtotal</span>
                                     <span x-text="'$' + subtotal().toFixed(2)"></span>
                                 </div>
-                                <div class="cart-row" x-show="fulfillment === 'delivery'">
+                                <div class="cart-row" x-show="fulfillment === 'delivery' && deliveryTier">
                                     <span>Delivery Fee</span>
-                                    <span>$5.00</span>
+                                    <span x-text="deliveryFee() === 0 ? 'Free' : '$' + deliveryFee().toFixed(2)"></span>
                                 </div>
                                 <div class="cart-row total">
                                     <span>Total</span>
@@ -950,7 +950,7 @@
                             <button type="button" class="toggle-option" :class="{ active: fulfillment === 'delivery' }" @click="fulfillment = 'delivery'">
                                 <span class="toggle-icon">🚗</span>
                                 <span>Delivery</span>
-                                <span class="toggle-label">+$5 fee</span>
+                                <span class="toggle-label">Fee varies by distance</span>
                             </button>
                         </div>
                     </div>
@@ -964,6 +964,23 @@
                             <div class="form-group">
                                 <label class="form-label" for="order-zip">ZIP Code</label>
                                 <input type="text" id="order-zip" class="form-input" x-model="form.delivery_zip" placeholder="33837" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Distance from Davenport</label>
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <button type="button" class="toggle-option" style="flex-direction: row; justify-content: space-between;" :class="{ active: deliveryTier === 'under5' }" @click="deliveryTier = 'under5'">
+                                        <span style="font-family: 'Playfair Display', serif; font-size: 0.95rem;">Under 5 miles</span>
+                                        <span style="font-weight: 600; color: var(--accent);">Free</span>
+                                    </button>
+                                    <button type="button" class="toggle-option" style="flex-direction: row; justify-content: space-between;" :class="{ active: deliveryTier === '5to10' }" @click="deliveryTier = '5to10'">
+                                        <span style="font-family: 'Playfair Display', serif; font-size: 0.95rem;">5–10 miles</span>
+                                        <span style="font-weight: 600; color: var(--accent);">$5.00</span>
+                                    </button>
+                                    <button type="button" class="toggle-option" style="flex-direction: row; justify-content: space-between;" :class="{ active: deliveryTier === 'over10' }" @click="deliveryTier = 'over10'">
+                                        <span style="font-family: 'Playfair Display', serif; font-size: 0.95rem;">10+ miles</span>
+                                        <span style="font-weight: 600; color: var(--accent);">$10.00</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </template>
@@ -1265,6 +1282,7 @@
             return {
                 cart: [],
                 fulfillment: 'pickup',
+                deliveryTier: null,
                 mobileCollapsed: window.innerWidth <= 900,
                 submitting: false,
                 paymentError: '',
@@ -1329,8 +1347,16 @@
                     return this.cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
                 },
 
+                deliveryFee() {
+                    if (this.fulfillment !== 'delivery') return 0;
+                    if (this.deliveryTier === 'under5') return 0;
+                    if (this.deliveryTier === '5to10') return 5;
+                    if (this.deliveryTier === 'over10') return 10;
+                    return 0;
+                },
+
                 total() {
-                    return this.subtotal() + (this.fulfillment === 'delivery' ? 5 : 0);
+                    return this.subtotal() + this.deliveryFee();
                 },
 
                 openBundlePicker(id, name, price) {
@@ -1407,12 +1433,16 @@
                 },
 
                 formValid() {
-                    return this.cart.length > 0
+                    const base = this.cart.length > 0
                         && this.form.customer_name.trim() !== ''
                         && this.form.customer_email.trim() !== ''
                         && this.form.customer_phone.trim() !== ''
                         && this.form.requested_date !== ''
                         && this.form.requested_time !== '';
+                    if (this.fulfillment === 'delivery') {
+                        return base && this.deliveryTier !== null;
+                    }
+                    return base;
                 },
 
                 getOrderData() {
@@ -1423,6 +1453,7 @@
                         fulfillment_type: this.fulfillment,
                         delivery_address: this.form.delivery_address,
                         delivery_zip: this.form.delivery_zip,
+                        delivery_tier: this.deliveryTier,
                         requested_date: this.form.requested_date,
                         requested_time: this.form.requested_time,
                         notes: this.form.notes,
