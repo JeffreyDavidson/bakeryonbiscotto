@@ -1,43 +1,40 @@
 <style>
-    .cd-header { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: #f9fafb; border-radius: 0.75rem; margin-bottom: 1rem; }
-    .cd-avatar { width: 3rem; height: 3rem; border-radius: 9999px; background: linear-gradient(135deg, #92400e, #b45309); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.125rem; flex-shrink: 0; }
-    .cd-name { font-weight: 700; font-size: 1rem; color: #111827; margin-bottom: 0.125rem; }
-    .cd-info-line { font-size: 0.825rem; color: #6b7280; line-height: 1.4; }
-    .cd-info-line a { color: #2563eb; text-decoration: none; }
+    .cd-header { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: #fdf8f2; border: 1px solid #e8d0b0; border-radius: 0.75rem; margin-bottom: 1rem; }
+    .cd-avatar { width: 3rem; height: 3rem; border-radius: 9999px; background: linear-gradient(135deg, #8b5e3c, #6b4c3b); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.125rem; flex-shrink: 0; }
+    .cd-info-line { font-size: 0.825rem; color: #4a3225; line-height: 1.4; }
+    .cd-info-line a { color: #8b5e3c; text-decoration: none; font-weight: 500; }
     .cd-info-line a:hover { text-decoration: underline; }
     .cd-since { font-size: 0.75rem; color: #9ca3af; margin-top: 0.25rem; }
-    .cd-actions { display: flex; gap: 0.5rem; margin-left: auto; }
-    .cd-btn { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; text-decoration: none; border: 1px solid #d1d5db; color: #374151; background: white; cursor: pointer; }
-    .cd-btn:hover { background: #f3f4f6; }
+    .cd-actions { margin-left: auto; }
+    .cd-btn { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.4rem 0.75rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; text-decoration: none; border: 1px solid #e8d0b0; color: #6b4c3b; background: white; cursor: pointer; }
+    .cd-btn:hover { background: #fdf8f2; }
 
     .cd-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.25rem; }
-    .cd-stat { text-align: center; padding: 0.875rem 0.5rem; border: 1px solid #e5e7eb; border-radius: 0.625rem; background: white; }
-    .cd-stat-val { font-size: 1.5rem; font-weight: 800; color: #111827; line-height: 1; }
-    .cd-stat-val.green { color: #059669; }
-    .cd-stat-val.amber { color: #d97706; }
-    .cd-stat-lbl { font-size: 0.65rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.375rem; }
+    .cd-stat { text-align: center; padding: 0.875rem 0.5rem; border: 1px solid #e8d0b0; border-radius: 0.625rem; background: #fdf8f2; }
+    .cd-stat-val { font-size: 1.5rem; font-weight: 800; color: #6b4c3b; line-height: 1; }
+    .cd-stat-lbl { font-size: 0.65rem; font-weight: 600; color: #a08060; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.375rem; }
 
     .cd-table { width: 100%; border-collapse: collapse; }
-    .cd-table th { text-align: left; font-size: 0.7rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.625rem 0.5rem; border-bottom: 2px solid #e5e7eb; background: white !important; }
+    .cd-table th { text-align: left; font-size: 0.7rem; font-weight: 600; color: #a08060; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.625rem 0.5rem; border-bottom: 2px solid #e8d0b0; background: white !important; }
     .cd-table th:last-child { text-align: right; }
-    .cd-table td { padding: 0.75rem 0.5rem; border-bottom: 1px solid #f3f4f6; font-size: 0.85rem; color: #374151; vertical-align: middle; }
-    .cd-table tr:hover { background: #fafafa; }
-    .cd-table .order-num { font-family: monospace; font-weight: 700; color: #111827; }
-    .cd-table .total { font-weight: 700; color: #111827; text-align: right; }
+    .cd-table td { padding: 0.75rem 0.5rem; border-bottom: 1px solid #f3ebe0; font-size: 0.85rem; color: #4a3225; vertical-align: middle; }
+    .cd-table tr:hover { background: #fdf8f2; }
+    .cd-table .order-num { font-family: monospace; font-weight: 700; color: #3d2314; }
+    .cd-table .total { font-weight: 700; color: #3d2314; text-align: right; }
 
     .cd-badge { display: inline-flex; padding: 0.2rem 0.5rem; border-radius: 9999px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.025em; }
-    .cd-badge-pending { background: #fef9c3; color: #a16207; }
-    .cd-badge-confirmed { background: #dbeafe; color: #1e40af; }
-    .cd-badge-baking { background: #ede9fe; color: #6d28d9; }
+    .cd-badge-pending { background: #fef3c7; color: #92400e; }
+    .cd-badge-confirmed { background: #e8d0b0; color: #6b4c3b; }
+    .cd-badge-baking { background: #fde68a; color: #78350f; }
     .cd-badge-ready { background: #d1fae5; color: #065f46; }
-    .cd-badge-delivered { background: #f3f4f6; color: #374151; }
+    .cd-badge-delivered { background: #f3ebe0; color: #6b4c3b; }
     .cd-badge-cancelled { background: #fee2e2; color: #991b1b; }
 
-    .cd-view-btn { display: inline-flex; align-items: center; padding: 0.3rem 0.625rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #2563eb; background: #eff6ff; text-decoration: none; border: 1px solid #bfdbfe; }
-    .cd-view-btn:hover { background: #dbeafe; }
+    .cd-view-btn { display: inline-flex; align-items: center; padding: 0.3rem 0.625rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #6b4c3b; background: #fdf8f2; text-decoration: none; border: 1px solid #e8d0b0; }
+    .cd-view-btn:hover { background: #f5e6d0; }
 
-    .cd-section-title { font-size: 0.8rem; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.625rem; display: flex; align-items: center; gap: 0.5rem; }
-    .cd-count { font-size: 0.7rem; font-weight: 600; color: white; background: #6b7280; padding: 0.1rem 0.4rem; border-radius: 9999px; }
+    .cd-section-title { font-size: 0.8rem; font-weight: 700; color: #4a3225; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.625rem; display: flex; align-items: center; gap: 0.5rem; }
+    .cd-count { font-size: 0.7rem; font-weight: 600; color: white; background: #8b5e3c; padding: 0.1rem 0.4rem; border-radius: 9999px; }
 </style>
 
 <div>
@@ -63,11 +60,11 @@
             <div class="cd-stat-lbl">{{ Str::plural('Order', $customer->orders_count) }}</div>
         </div>
         <div class="cd-stat">
-            <div class="cd-stat-val green">${{ number_format($customer->total_spent, 2) }}</div>
+            <div class="cd-stat-val">${{ number_format($customer->total_spent, 2) }}</div>
             <div class="cd-stat-lbl">Total Spent</div>
         </div>
         <div class="cd-stat">
-            <div class="cd-stat-val amber">${{ number_format($stats->avg_order_value, 2) }}</div>
+            <div class="cd-stat-val">${{ number_format($stats->avg_order_value, 2) }}</div>
             <div class="cd-stat-lbl">Avg Order</div>
         </div>
     </div>
@@ -90,8 +87,8 @@
                 <tr>
                     <td class="order-num">{{ $order->order_number }}</td>
                     <td><span class="cd-badge cd-badge-{{ $order->status }}">{{ ucfirst($order->status) }}</span></td>
-                    <td><span class="cd-badge" style="background:{{ $order->fulfillment_type === 'delivery' ? '#dbeafe' : '#f3f4f6' }};color:{{ $order->fulfillment_type === 'delivery' ? '#1e40af' : '#374151' }};">{{ $order->fulfillment_type === 'delivery' ? '🚗 Delivery' : '📦 Pickup' }}</span></td>
-                    <td style="color:#9ca3af;">{{ $order->created_at->format('M j, Y') }}</td>
+                    <td><span class="cd-badge cd-badge-{{ $order->status === 'delivered' ? 'delivered' : 'confirmed' }}">{{ ucfirst($order->fulfillment_type) }}</span></td>
+                    <td style="color:#a08060;">{{ $order->created_at->format('M j, Y') }}</td>
                     <td class="total">${{ number_format($order->total, 2) }}</td>
                     <td style="text-align:right;"><a href="/admin/orders/{{ $order->id }}" class="cd-view-btn">View</a></td>
                 </tr>
