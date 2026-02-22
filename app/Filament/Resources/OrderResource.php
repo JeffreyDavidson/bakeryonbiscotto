@@ -173,7 +173,10 @@ class OrderResource extends Resource
                     ->icon('heroicon-o-check-badge')
                     ->color('gray')
                     ->visible(fn (Order $record) => $record->status === 'ready')
-                    ->action(fn (Order $record) => $record->update(['status' => 'completed'])),
+                    ->action(fn (Order $record) => $record->update([
+                        'status' => 'completed',
+                        'delivered_at' => now(),
+                    ])),
                 \Filament\Actions\EditAction::make(),
             ])
             ->bulkActions([]);

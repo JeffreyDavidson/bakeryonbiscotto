@@ -23,7 +23,7 @@
 | Item | Qty | Price |
 |:-----|:---:|------:|
 @foreach($order->items as $item)
-| {{ $item->product_name }} | {{ $item->quantity }} | ${{ number_format($item->unit_price * $item->quantity, 2) }} |
+| {{ $item->product_name }}@if($item->selections) ({{ implode(', ', $item->selections) }})@endif | {{ $item->quantity }} | ${{ number_format($item->unit_price * $item->quantity, 2) }} |
 @endforeach
 | **Total** | | **${{ number_format($order->total, 2) }}** |
 </x-mail::table>
@@ -36,5 +36,4 @@
 View Orders
 </x-mail::button>
 
-{{ config('app.name') }}
 </x-mail::message>

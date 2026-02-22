@@ -10,8 +10,9 @@ class Product extends Model
 {
     protected $fillable = [
         'category_id', 'name', 'slug', 'description', 'price',
-        'image', 'is_available', 'is_featured', 'sort_order',
-        'max_per_order', 'weekly_limit',
+        'image', 'is_available', 'is_featured', 'is_bundle',
+        'bundle_pick_count', 'bundle_category_id',
+        'sort_order', 'max_per_order', 'weekly_limit',
     ];
 
     protected function casts(): array
@@ -20,6 +21,7 @@ class Product extends Model
             'price' => 'decimal:2',
             'is_available' => 'boolean',
             'is_featured' => 'boolean',
+            'is_bundle' => 'boolean',
         ];
     }
 
@@ -35,6 +37,11 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function bundleCategory(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'bundle_category_id');
     }
 
     public function scopeAvailable($query)

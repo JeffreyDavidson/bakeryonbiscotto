@@ -17,6 +17,4 @@ This review is pending your approval.
 View Reviews
 </x-mail::button>
 
-Thanks,<br>
-{{ config('app.name') }}
 </x-mail::message>

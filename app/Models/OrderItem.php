@@ -9,7 +9,7 @@ class OrderItem extends Model
 {
     protected $fillable = [
         'order_id', 'product_id', 'product_name',
-        'unit_price', 'quantity', 'line_total',
+        'unit_price', 'quantity', 'line_total', 'selections',
     ];
 
     protected function casts(): array
@@ -17,6 +17,7 @@ class OrderItem extends Model
         return [
             'unit_price' => 'decimal:2',
             'line_total' => 'decimal:2',
+            'selections' => 'array',
         ];
     }
 

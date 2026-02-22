@@ -18,6 +18,40 @@
             --white: #FFFFFF;
             --warm: #6B4C3B;
         }
+        /* Skip to main content link */
+        .skip-to-main {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: var(--cream);
+            padding: 12px 24px;
+            border-radius: 0 0 8px 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            z-index: 10000;
+            transition: top 0.3s ease;
+        }
+        .skip-to-main:focus {
+            top: 0;
+            outline: 2px solid var(--golden);
+            outline-offset: 2px;
+        }
+
+        /* Focus styles for all interactive elements */
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible,
+        select:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--golden);
+            outline-offset: 2px;
+        }
+
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -146,10 +180,12 @@
     </style>
 </head>
 <body>
+    <a href="#main-content" class="skip-to-main">Skip to main content</a>
+    <main id="main-content">
     <div class="confirmation">
         <div class="check-circle">✓</div>
         <h1>Order Received!</h1>
-        <p class="subtitle">We've got your order and we're excited to start baking for you.</p>
+        <p class="subtitle">Payment received! We've got your order and we're excited to start baking for you.</p>
 
         <div class="order-card">
             <div class="order-number">Order {{ $order->order_number }}</div>
@@ -177,7 +213,12 @@
                 <h3 class="items-title">Items</h3>
                 @foreach($order->items as $item)
                 <div class="item-row">
-                    <span class="item-name">{{ $item->product_name }} &times; {{ $item->quantity }}</span>
+                    <span class="item-name">
+                        {{ $item->product_name }} &times; {{ $item->quantity }}
+                        @if($item->selections)
+                            <br><em style="font-size: 0.82rem; color: var(--warm);">({{ implode(', ', $item->selections) }})</em>
+                        @endif
+                    </span>
                     <span class="item-price">${{ number_format($item->line_total, 2) }}</span>
                 </div>
                 @endforeach
@@ -199,9 +240,14 @@
             <div class="note-box">
                 📧 A confirmation email has been sent to <strong>{{ $order->customer_email }}</strong>. Cassie will reach out if she has any questions about your order!
             </div>
+
+            <div class="note-box" style="background: rgba(61,35,20,0.05); margin-top: 12px; font-size: 0.82rem;">
+                ⏰ <strong>Pickup & delivery reminder:</strong> If you can't make your scheduled time, please contact us as soon as possible to reschedule. Orders not picked up or rescheduled within 24 hours will be considered cancelled with no refund.
+            </div>
         </div>
 
         <a href="/" class="back-link">← Back to Home</a>
     </div>
+    </main>
 </body>
 </html>

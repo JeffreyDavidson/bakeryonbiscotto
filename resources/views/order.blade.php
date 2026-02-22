@@ -22,6 +22,40 @@
             --ink: #2a1a0e;
         }
 
+        /* Skip to main content link */
+        .skip-to-main {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: var(--cream);
+            padding: 12px 24px;
+            border-radius: 0 0 8px 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            z-index: 10000;
+            transition: top 0.3s ease;
+        }
+        .skip-to-main:focus {
+            top: 0;
+            outline: 2px solid var(--golden);
+            outline-offset: 2px;
+        }
+
+        /* Focus styles for all interactive elements */
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible,
+        select:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--golden);
+            outline-offset: 2px;
+        }
+
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -80,11 +114,13 @@
         .order-layout {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 24px 80px;
+            padding: 0 24px;
             display: grid;
             grid-template-columns: 1fr 380px;
             gap: 40px;
-            align-items: start;
+        }
+        .products-col {
+            padding: 40px 0 80px;
         }
 
         /* ═══ PRODUCT GRID ═══ */
@@ -171,44 +207,48 @@
         }
 
         .qty-control {
-            display: flex;
-            align-items: center;
+            display: inline-flex;
+            align-items: stretch;
             gap: 0;
             border: 1.5px solid var(--golden);
             border-radius: 100px;
             overflow: hidden;
+            height: 36px;
+            background: var(--cream);
         }
         .qty-btn {
-            width: 34px; height: 34px;
+            width: 36px;
             border: none;
             background: transparent;
             color: var(--dark);
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.2s;
+            line-height: 1;
+            padding: 0;
         }
-        .qty-btn:hover { background: var(--cream); }
         .qty-btn:disabled { opacity: 0.3; cursor: default; }
-        .qty-btn:disabled:hover { background: transparent; }
         .qty-value {
             width: 32px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
             font-weight: 600;
             color: var(--dark);
+            line-height: 1;
         }
         .qty-value.has-items { color: var(--accent); }
 
         .add-btn {
             padding: 8px 20px;
-            background: var(--golden);
-            color: var(--dark);
-            border: none;
+            background: transparent;
+            color: var(--golden);
+            border: 1.5px solid var(--golden);
             border-radius: 100px;
             font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
@@ -216,19 +256,23 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .add-btn:hover { background: var(--accent); color: var(--white); }
+        .add-btn:hover { background: var(--golden); color: var(--white); }
 
         /* ═══ CART SIDEBAR ═══ */
         .cart-sidebar {
+            padding: 40px 0 80px;
             position: sticky;
             top: 80px;
+            align-self: start;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
         }
         .cart-card {
             background: var(--white);
             border-radius: 20px;
             border: 1px solid rgba(139,94,60,0.1);
             box-shadow: 0 4px 24px rgba(61,35,20,0.08);
-            overflow: hidden;
+            overflow: visible;
         }
         .cart-header {
             background: var(--dark);
@@ -236,6 +280,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            border-radius: 20px 20px 0 0;
         }
         .cart-header h2 {
             font-family: 'Dancing Script', cursive;
@@ -369,31 +414,55 @@
             border-color: var(--golden);
             box-shadow: 0 0 0 3px rgba(212,165,116,0.15);
         }
-        .form-input::placeholder { color: #b8a090; }
+        .form-input::placeholder { color: #8b7355; }
         textarea.form-input { resize: vertical; min-height: 80px; }
 
         .toggle-group {
-            display: flex;
-            border-radius: 12px;
-            border: 1.5px solid rgba(139,94,60,0.15);
-            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
         .toggle-option {
-            flex: 1;
-            padding: 12px;
+            position: relative;
+            padding: 16px 14px;
             text-align: center;
-            font-size: 0.9rem;
+            font-family: 'Lora', serif;
+            font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
             background: var(--light);
             color: var(--warm);
-            border: none;
+            border: 2px solid rgba(139,94,60,0.12);
+            border-radius: 12px;
             transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .toggle-option:hover {
+            border-color: var(--golden);
+            background: rgba(212,165,116,0.08);
         }
         .toggle-option.active {
-            background: var(--golden);
+            background: rgba(212,165,116,0.12);
+            border-color: var(--golden);
             color: var(--dark);
             font-weight: 600;
+            box-shadow: 0 0 0 1px var(--golden);
+        }
+        .toggle-option .toggle-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        .toggle-option .toggle-label {
+            font-size: 0.85rem;
+            opacity: 0.6;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+        }
+        .toggle-option.active .toggle-label {
+            opacity: 0.8;
         }
 
         .submit-btn {
@@ -436,25 +505,240 @@
             margin-top: 4px;
         }
 
+        /* ═══ DATE PICKER ═══ */
+        .date-picker-wrap { position: relative; }
+        .date-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0; right: 0;
+            background: var(--white);
+            border-radius: 16px;
+            border: 1.5px solid rgba(139,94,60,0.12);
+            box-shadow: 0 12px 40px rgba(61,35,20,0.15);
+            padding: 20px;
+            z-index: 50;
+        }
+        .cal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .cal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        .cal-nav {
+            width: 32px; height: 32px;
+            border: none;
+            background: var(--light);
+            border-radius: 8px;
+            font-size: 1.2rem;
+            color: var(--warm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .cal-nav:hover { background: var(--cream); color: var(--dark); }
+        .cal-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            margin-bottom: 6px;
+        }
+        .cal-wd {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--warm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 0;
+        }
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+        .cal-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--dark);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .cal-day:hover:not(.disabled):not(.empty) {
+            background: var(--cream);
+        }
+        .cal-day.empty { cursor: default; }
+        .cal-day.disabled {
+            color: #d0c4b8;
+            cursor: not-allowed;
+        }
+        .cal-day.disabled:hover { background: transparent; }
+        .cal-day.selected {
+            background: var(--golden);
+            color: var(--dark);
+            font-weight: 700;
+        }
+        .cal-day.today:not(.selected) {
+            border: 1.5px solid var(--golden);
+        }
+        .cal-footer {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(139,94,60,0.08);
+            font-size: 0.78rem;
+            color: var(--warm);
+            text-align: center;
+        }
+        [x-cloak] { display: none !important; }
+
+        /* ═══ BUNDLE PICKER ═══ */
+        .bundle-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(42,26,14,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .bundle-modal {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 480px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(61,35,20,0.25);
+        }
+        .bundle-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        .bundle-modal-header h3 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6rem;
+            color: var(--dark);
+        }
+        .bundle-close {
+            width: 32px; height: 32px;
+            border: none;
+            background: var(--light);
+            border-radius: 8px;
+            font-size: 1.3rem;
+            color: var(--warm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .bundle-close:hover { background: var(--cream); }
+        .bundle-modal-sub {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            color: var(--warm);
+            margin-bottom: 20px;
+        }
+        .bundle-progress {
+            height: 6px;
+            background: var(--light);
+            border-radius: 100px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+        .bundle-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--golden), var(--accent));
+            border-radius: 100px;
+            transition: width 0.3s ease;
+        }
+        .bundle-progress-text {
+            font-size: 0.8rem;
+            color: var(--warm);
+            margin-bottom: 20px;
+        }
+        .bundle-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .bundle-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--light);
+            border-radius: 12px;
+            border: 1.5px solid transparent;
+            transition: all 0.2s;
+        }
+        .bundle-option.has-qty {
+            background: rgba(212,165,116,0.1);
+            border-color: var(--golden);
+        }
+        .bundle-option-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
         /* ═══ FOOTER ═══ */
-        .order-footer {
+        .footer {
             text-align: center;
             padding: 40px 24px;
             background: var(--dark);
             color: var(--cream);
         }
-        .order-footer p {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1rem;
-            opacity: 0.7;
+        .footer h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-bottom: 4px; }
+        .tagline { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; opacity: 0.5; margin-bottom: 12px; }
+        .footer-badge { font-size: 0.85rem; opacity: 0.5; margin-bottom: 16px; }
+        .footer-info { font-size: 0.9rem; opacity: 0.6; }
+        .footer-info a { color: var(--golden); text-decoration: none; }
+        .footer a { color: var(--golden); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        .footer-allergen {
+            margin-top: 24px;
+            font-size: 11px;
+            color: rgba(245,230,208,0.35);
+            max-width: 600px;
+            margin-left: auto; margin-right: auto;
+            line-height: 1.5;
+            font-style: italic;
         }
-        .order-footer a { color: var(--golden); text-decoration: none; }
-        .order-footer a:hover { text-decoration: underline; }
+        .footer-bottom {
+            margin-top: 20px; padding-top: 20px;
+            border-top: 1px solid rgba(245,230,208,0.06);
+            font-size: 12px; color: rgba(245,230,208,0.2);
+        }
 
         /* ═══ RESPONSIVE ═══ */
         @media (max-width: 900px) {
             .order-layout {
                 grid-template-columns: 1fr;
+                height: auto;
+            }
+            .products-col {
+                overflow-y: visible;
+                padding: 24px 0;
             }
             .cart-sidebar {
                 position: fixed;
@@ -463,6 +747,8 @@
                 right: 0;
                 top: auto;
                 z-index: 999;
+                overflow-y: auto;
+                padding: 0;
             }
             .cart-card {
                 border-radius: 20px 20px 0 0;
@@ -495,13 +781,10 @@
 </head>
 <body>
     {{-- NAV --}}
-    <nav class="main-nav">
-        <a href="/">Home</a>
-        <a href="/#menu">Menu</a>
-        <a href="/order" class="active">Order</a>
-    </nav>
+    <x-main-nav active="order" />
 
     {{-- HERO --}}
+    <main id="main-content">
     <section class="order-hero">
         <h1>Place Your Order</h1>
         <p>Everything baked fresh to order. Please allow at least 2 days for your handcrafted sourdough.</p>
@@ -530,6 +813,11 @@
                                 @endif
                                 <div class="product-bottom">
                                     <span class="product-price">${{ number_format($product->price, 0) }}</span>
+                                    @if($product->is_bundle)
+                                    <button class="add-btn" @click="openBundlePicker({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->price }})">
+                                        Choose Flavors
+                                    </button>
+                                    @else
                                     <div x-show="getQty({{ $product->id }}) === 0">
                                         <button class="add-btn" @click="addItem({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->price }})">
                                             Add
@@ -540,6 +828,7 @@
                                         <span class="qty-value has-items" x-text="getQty({{ $product->id }})"></span>
                                         <button class="qty-btn" @click="addItem({{ $product->id }}, '{{ addslashes($product->name) }}', {{ $product->price }})" :disabled="getQty({{ $product->id }}) >= {{ $product->max_per_order ?? 20 }}">+</button>
                                     </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -561,7 +850,7 @@
                     </div>
                 </div>
 
-                <div class="cart-body">
+                <div class="cart-body" aria-live="polite">
                     <div x-show="cart.length === 0" class="cart-empty">
                         <span>🛒</span>
                         Add some goodies to get started!
@@ -572,9 +861,12 @@
                             <div class="cart-item-info">
                                 <div class="cart-item-name" x-text="item.name"></div>
                                 <div class="cart-item-qty" x-text="'Qty: ' + item.qty"></div>
+                                <template x-if="item.selections && item.selections.length">
+                                    <div class="cart-item-selections" x-text="item.selections.join(', ')" style="font-size: 0.78rem; color: var(--warm); margin-top: 2px; font-style: italic;"></div>
+                                </template>
                             </div>
                             <span class="cart-item-price" x-text="'$' + (item.price * item.qty).toFixed(2)"></span>
-                            <button class="cart-item-remove" @click="removeItem(item.id)" title="Remove">✕</button>
+                            <button class="cart-item-remove" @click="removeItem(item.id)" title="Remove" :aria-label="'Remove ' + item.name + ' from cart'">✕</button>
                         </div>
                     </template>
 
@@ -600,8 +892,8 @@
                 </div>
 
                 {{-- ORDER FORM --}}
-                <form method="POST" action="{{ route('order.store') }}" x-show="cart.length > 0" class="order-form"
-                      @submit.prevent="submitOrder">
+                <form x-show="cart.length > 0" class="order-form"
+                      @submit.prevent>
                     @csrf
 
                     <div class="notice">
@@ -612,48 +904,96 @@
                     <h3 class="form-section-title">Your Info</h3>
 
                     <div class="form-group">
-                        <label class="form-label">Name</label>
-                        <input type="text" class="form-input" x-model="form.customer_name" placeholder="Your name" required>
+                        <label class="form-label" for="order-name">Name</label>
+                        <input type="text" id="order-name" class="form-input" x-model="form.customer_name" placeholder="Your name" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-input" x-model="form.customer_email" placeholder="you@email.com" required>
+                        <label class="form-label" for="order-email">Email</label>
+                        <input type="email" id="order-email" class="form-input" x-model="form.customer_email" placeholder="you@email.com" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Phone</label>
-                        <input type="tel" class="form-input" x-model="form.customer_phone" placeholder="(555) 123-4567" required>
+                        <label class="form-label" for="order-phone">Phone</label>
+                        <input type="tel" id="order-phone" class="form-input" x-model="form.customer_phone" @input="formatPhone" placeholder="(555) 123-4567" required>
                     </div>
 
                     <h3 class="form-section-title" style="margin-top: 24px;">Fulfillment</h3>
 
                     <div class="form-group">
                         <div class="toggle-group">
-                            <button type="button" class="toggle-option" :class="{ active: fulfillment === 'pickup' }" @click="fulfillment = 'pickup'">🏠 Pickup</button>
-                            <button type="button" class="toggle-option" :class="{ active: fulfillment === 'delivery' }" @click="fulfillment = 'delivery'">🚗 Delivery (+$5)</button>
+                            <button type="button" class="toggle-option" :class="{ active: fulfillment === 'pickup' }" @click="fulfillment = 'pickup'">
+                                <span class="toggle-icon">🏠</span>
+                                <span>Pickup</span>
+                                <span class="toggle-label">Davenport, FL</span>
+                            </button>
+                            <button type="button" class="toggle-option" :class="{ active: fulfillment === 'delivery' }" @click="fulfillment = 'delivery'">
+                                <span class="toggle-icon">🚗</span>
+                                <span>Delivery</span>
+                                <span class="toggle-label">+$5 fee</span>
+                            </button>
                         </div>
                     </div>
 
                     <template x-if="fulfillment === 'delivery'">
                         <div>
                             <div class="form-group">
-                                <label class="form-label">Delivery Address</label>
-                                <input type="text" class="form-input" x-model="form.delivery_address" placeholder="123 Main St, Davenport FL" required>
+                                <label class="form-label" for="order-address">Delivery Address</label>
+                                <input type="text" id="order-address" class="form-input" x-model="form.delivery_address" placeholder="123 Main St, Davenport FL" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">ZIP Code</label>
-                                <input type="text" class="form-input" x-model="form.delivery_zip" placeholder="33837" required>
+                                <label class="form-label" for="order-zip">ZIP Code</label>
+                                <input type="text" id="order-zip" class="form-input" x-model="form.delivery_zip" placeholder="33837" required>
                             </div>
                         </div>
                     </template>
 
-                    <div class="form-group">
+                    <div class="form-group" x-data="datePicker()" x-init="init()">
                         <label class="form-label">Requested Date</label>
-                        <input type="date" class="form-input" x-model="form.requested_date" :min="minDate" required>
+                        <div class="date-picker-wrap">
+                            <button type="button" class="form-input date-trigger" @click="open = !open" style="text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                                <span x-text="selectedLabel || 'Choose a date'" :style="selectedLabel ? '' : 'color: #b8a090'"></span>
+                                <span style="font-size: 1.1rem;">📅</span>
+                            </button>
+                            <div class="date-dropdown" x-show="open" x-transition.opacity @click.outside="open = false" @keydown.escape.window="open = false" role="dialog" aria-label="Date picker" x-cloak>
+                                <div class="cal-header">
+                                    <button type="button" class="cal-nav" @click="prevMonth">‹</button>
+                                    <span class="cal-title" x-text="monthYear"></span>
+                                    <button type="button" class="cal-nav" @click="nextMonth">›</button>
+                                </div>
+                                <div class="cal-weekdays">
+                                    <template x-for="d in ['Su','Mo','Tu','We','Th','Fr','Sa']">
+                                        <span class="cal-wd" x-text="d"></span>
+                                    </template>
+                                </div>
+                                <div class="cal-grid">
+                                    <template x-for="blank in blanks"><span class="cal-day empty"></span></template>
+                                    <template x-for="day in days">
+                                        <button type="button"
+                                            class="cal-day"
+                                            :class="{
+                                                'disabled': !isSelectable(day),
+                                                'selected': isSelected(day),
+                                                'today': isToday(day)
+                                            }"
+                                            :disabled="!isSelectable(day)"
+                                            :aria-label="getDayLabel(day)"
+                                            :aria-selected="isSelected(day) ? 'true' : 'false'"
+                                            @click="selectDay(day)"
+                                            @keydown.arrow-right.prevent="$event.target.nextElementSibling?.focus()"
+                                            @keydown.arrow-left.prevent="$event.target.previousElementSibling?.focus()">
+                                            <span x-text="day"></span>
+                                        </button>
+                                    </template>
+                                </div>
+                                <div class="cal-footer">
+                                    <span>📌 Orders require 2 days advance notice</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Notes <span style="font-weight: 400; text-transform: none; opacity: 0.6;">(optional)</span></label>
-                        <textarea class="form-input" x-model="form.notes" placeholder="Any special requests or instructions..."></textarea>
+                        <label class="form-label" for="order-notes">Notes <span style="font-weight: 400; text-transform: none; opacity: 0.6;">(optional)</span></label>
+                        <textarea id="order-notes" class="form-input" x-model="form.notes" placeholder="Any special requests or instructions..."></textarea>
                     </div>
 
                     {{-- Hidden fields for items --}}
@@ -661,6 +1001,11 @@
                         <div>
                             <input type="hidden" :name="'items[' + index + '][product_id]'" :value="item.id">
                             <input type="hidden" :name="'items[' + index + '][quantity]'" :value="item.qty">
+                            <template x-if="item.selections && item.selections.length">
+                                <template x-for="(sel, si) in item.selections" :key="'sel-' + index + '-' + si">
+                                    <input type="hidden" :name="'items[' + index + '][selections][' + si + ']'" :value="sel">
+                                </template>
+                            </template>
                         </div>
                     </template>
                     <input type="hidden" name="customer_name" :value="form.customer_name">
@@ -672,10 +1017,17 @@
                     <input type="hidden" name="requested_date" :value="form.requested_date">
                     <input type="hidden" name="notes" :value="form.notes">
 
-                    <button type="submit" class="submit-btn" :disabled="submitting">
-                        <span x-show="!submitting">Place Order</span>
-                        <span x-show="submitting">Placing Order...</span>
-                    </button>
+                    <div x-show="formValid()" x-transition style="margin-top: 16px;">
+                        <p style="font-size: 0.85rem; color: var(--warm); text-align: center; margin-bottom: 12px;">Pay securely with PayPal to complete your order</p>
+                        <div id="paypal-button-container"></div>
+                        <p style="font-size: 0.75rem; color: var(--warm); opacity: 0.6; text-align: center; margin-top: 12px; line-height: 1.5; font-style: italic;">* While certain items may not contain allergens, they are produced in an environment where allergens could be present. Please proceed with caution.</p>
+                    </div>
+
+                    <div x-show="!formValid()" style="margin-top: 16px;">
+                        <button type="button" class="submit-btn" disabled>Complete all fields to pay</button>
+                    </div>
+
+                    <div x-show="paymentError" class="error-msg" style="margin-top: 12px; text-align: center;" x-text="paymentError"></div>
 
                     @if($errors->any())
                         <div style="margin-top: 12px;">
@@ -687,20 +1039,156 @@
                 </form>
             </div>
         </div>
+
+    {{-- BUNDLE PICKER MODAL --}}
+    <div x-show="bundleModal" x-transition.opacity class="bundle-overlay" @click.self="bundleModal = false" @keydown.escape.window="bundleModal = false" x-cloak>
+        <div class="bundle-modal" role="dialog" aria-modal="true" aria-label="Choose bundle flavors" @click.stop x-trap.noscroll="bundleModal">
+            <div class="bundle-modal-header">
+                <h3 x-text="'Choose ' + bundlePickCount + ' Flavors'"></h3>
+                <button @click="bundleModal = false" class="bundle-close">&times;</button>
+            </div>
+            <p class="bundle-modal-sub">Pick your favorites for the <span x-text="bundleName"></span></p>
+            <div class="bundle-progress">
+                <div class="bundle-progress-bar" :style="'width: ' + (bundleSelected() / bundlePickCount * 100) + '%'"></div>
+            </div>
+            <p class="bundle-progress-text"><span x-text="bundleSelected()"></span> of <span x-text="bundlePickCount"></span> selected</p>
+
+            <div class="bundle-options">
+                <template x-for="opt in bundleOptions" :key="opt.id">
+                    <div class="bundle-option" :class="{ 'has-qty': getBundleQty(opt.id) > 0 }">
+                        <span class="bundle-option-name" x-text="opt.name"></span>
+                        <div class="qty-control">
+                            <button class="qty-btn" @click="decBundleQty(opt.id)" :disabled="getBundleQty(opt.id) === 0">−</button>
+                            <span class="qty-value" :class="{ 'has-items': getBundleQty(opt.id) > 0 }" x-text="getBundleQty(opt.id)"></span>
+                            <button class="qty-btn" @click="incBundleQty(opt.id)" :disabled="bundleSelected() >= bundlePickCount">+</button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <button class="submit-btn" :disabled="bundleSelected() !== bundlePickCount" @click="confirmBundle()" style="margin-top: 20px;">
+                Add to Order
+            </button>
+        </div>
+    </div>
     </div>
 
+    </main>
+
     {{-- FOOTER --}}
-    <footer class="order-footer">
-        <p>&copy; {{ date('Y') }} Bakery on Biscotto. <a href="/">Back to Home</a></p>
-    </footer>
+    <x-site-footer />
 
     <script>
+        const bundleConfig = @json($bundles);
+
+        function datePicker() {
+            return {
+                open: false,
+                month: null,
+                year: null,
+                selectedLabel: '',
+                days: [],
+                blanks: [],
+
+                init() {
+                    const d = new Date();
+                    d.setDate(d.getDate() + 2);
+                    this.month = d.getMonth();
+                    this.year = d.getFullYear();
+                    this.buildCalendar();
+                },
+
+                get monthYear() {
+                    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+                    return months[this.month] + ' ' + this.year;
+                },
+
+                get minDate() {
+                    const d = new Date();
+                    d.setDate(d.getDate() + 2);
+                    d.setHours(0,0,0,0);
+                    return d;
+                },
+
+                buildCalendar() {
+                    const firstDay = new Date(this.year, this.month, 1).getDay();
+                    const daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
+                    this.blanks = Array(firstDay).fill(0);
+                    this.days = Array.from({length: daysInMonth}, (_, i) => i + 1);
+                },
+
+                prevMonth() {
+                    if (this.month === 0) { this.month = 11; this.year--; }
+                    else { this.month--; }
+                    this.buildCalendar();
+                },
+
+                nextMonth() {
+                    if (this.month === 11) { this.month = 0; this.year++; }
+                    else { this.month++; }
+                    this.buildCalendar();
+                },
+
+                isSelectable(day) {
+                    const date = new Date(this.year, this.month, day);
+                    date.setHours(0,0,0,0);
+                    return date >= this.minDate;
+                },
+
+                isSelected(day) {
+                    const parent = this.$el.closest('[x-data]');
+                    const form = Alpine.$data(parent.closest('.order-layout'));
+                    if (!form || !form.form.requested_date) return false;
+                    const sel = new Date(form.form.requested_date + 'T00:00:00');
+                    return sel.getFullYear() === this.year && sel.getMonth() === this.month && sel.getDate() === day;
+                },
+
+                isToday(day) {
+                    const now = new Date();
+                    return now.getFullYear() === this.year && now.getMonth() === this.month && now.getDate() === day;
+                },
+
+                getDayLabel(day) {
+                    const date = new Date(this.year, this.month, day);
+                    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+                    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                    return days[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + this.year;
+                },
+
+                selectDay(day) {
+                    const date = new Date(this.year, this.month, day);
+                    const y = date.getFullYear();
+                    const m = String(date.getMonth() + 1).padStart(2, '0');
+                    const d = String(date.getDate()).padStart(2, '0');
+                    const iso = y + '-' + m + '-' + d;
+
+                    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+                    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                    this.selectedLabel = days[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + y;
+
+                    const parent = this.$el.closest('.order-layout');
+                    const form = Alpine.$data(parent);
+                    form.form.requested_date = iso;
+
+                    this.open = false;
+                }
+            }
+        }
+
         function orderPage() {
             return {
                 cart: [],
                 fulfillment: 'pickup',
                 mobileCollapsed: window.innerWidth <= 900,
                 submitting: false,
+                paymentError: '',
+                bundleModal: false,
+                bundleProductId: null,
+                bundleName: '',
+                bundlePrice: 0,
+                bundlePickCount: 4,
+                bundleOptions: [],
+                bundlePicks: {},
                 form: {
                     customer_name: '',
                     customer_email: '',
@@ -758,11 +1246,203 @@
                     return this.subtotal() + (this.fulfillment === 'delivery' ? 5 : 0);
                 },
 
-                submitOrder() {
-                    this.submitting = true;
-                    this.$el.closest('form').submit();
+                openBundlePicker(id, name, price) {
+                    const config = bundleConfig[id];
+                    if (!config) return;
+                    this.bundleProductId = id;
+                    this.bundleName = name;
+                    this.bundlePrice = price;
+                    this.bundlePickCount = config.pick_count;
+                    this.bundleOptions = config.options;
+                    this.bundlePicks = {};
+                    this.bundleModal = true;
+                },
+
+                getBundleQty(optId) {
+                    return this.bundlePicks[optId] || 0;
+                },
+
+                bundleSelected() {
+                    return Object.values(this.bundlePicks).reduce((s, v) => s + v, 0);
+                },
+
+                incBundleQty(optId) {
+                    if (this.bundleSelected() >= this.bundlePickCount) return;
+                    this.bundlePicks[optId] = (this.bundlePicks[optId] || 0) + 1;
+                },
+
+                decBundleQty(optId) {
+                    if (!this.bundlePicks[optId]) return;
+                    this.bundlePicks[optId]--;
+                    if (this.bundlePicks[optId] <= 0) delete this.bundlePicks[optId];
+                },
+
+                confirmBundle() {
+                    if (this.bundleSelected() !== this.bundlePickCount) return;
+                    const selections = [];
+                    for (const [optId, qty] of Object.entries(this.bundlePicks)) {
+                        const opt = this.bundleOptions.find(o => o.id == optId);
+                        if (opt) {
+                            for (let i = 0; i < qty; i++) {
+                                selections.push(opt.name);
+                            }
+                        }
+                    }
+                    const existing = this.cart.find(i => i.id === this.bundleProductId);
+                    if (existing) {
+                        existing.qty++;
+                        existing.allSelections = existing.allSelections || [existing.selections];
+                        existing.allSelections.push(selections);
+                        existing.selections = existing.allSelections.flat();
+                    } else {
+                        this.cart.push({
+                            id: this.bundleProductId,
+                            name: this.bundleName,
+                            price: this.bundlePrice,
+                            qty: 1,
+                            isBundle: true,
+                            selections: selections,
+                            allSelections: [selections],
+                        });
+                    }
+                    this.bundleModal = false;
+                    this.mobileCollapsed = false;
+                },
+
+                formatPhone(e) {
+                    let digits = e.target.value.replace(/\D/g, '').substring(0, 10);
+                    let formatted = '';
+                    if (digits.length > 0) formatted = '(' + digits.substring(0, 3);
+                    if (digits.length >= 3) formatted += ') ';
+                    if (digits.length > 3) formatted += digits.substring(3, 6);
+                    if (digits.length >= 6) formatted += '-' + digits.substring(6);
+                    this.form.customer_phone = formatted;
+                },
+
+                formValid() {
+                    return this.cart.length > 0
+                        && this.form.customer_name.trim() !== ''
+                        && this.form.customer_email.trim() !== ''
+                        && this.form.customer_phone.trim() !== ''
+                        && this.form.requested_date !== '';
+                },
+
+                getOrderData() {
+                    return {
+                        customer_name: this.form.customer_name,
+                        customer_email: this.form.customer_email,
+                        customer_phone: this.form.customer_phone,
+                        fulfillment_type: this.fulfillment,
+                        delivery_address: this.form.delivery_address,
+                        delivery_zip: this.form.delivery_zip,
+                        requested_date: this.form.requested_date,
+                        notes: this.form.notes,
+                        items: this.cart.map(item => ({
+                            product_id: item.id,
+                            quantity: item.qty,
+                            selections: item.selections || null,
+                        })),
+                    };
                 }
             }
+        }
+    </script>
+
+    <script src="https://www.paypal.com/sdk/js?client-id={{ config('services.paypal.client_id') }}&currency=USD"></script>
+    <script>
+        // Wait for both Alpine and PayPal to be ready
+        document.addEventListener('alpine:init', () => {
+            // Small delay to ensure DOM is ready
+            setTimeout(initPayPalButtons, 500);
+        });
+
+        function initPayPalButtons() {
+            const container = document.getElementById('paypal-button-container');
+            if (!container) {
+                setTimeout(initPayPalButtons, 500);
+                return;
+            }
+
+            paypal.Buttons({
+                style: {
+                    color: 'gold',
+                    shape: 'pill',
+                    label: 'pay',
+                    height: 45,
+                },
+
+                createOrder: async function() {
+                    const alpineEl = document.querySelector('.order-layout');
+                    const data = Alpine.$data(alpineEl);
+
+                    if (!data.formValid()) {
+                        data.paymentError = 'Please fill in all required fields.';
+                        throw new Error('Form not valid');
+                    }
+
+                    data.paymentError = '';
+                    const orderData = data.getOrderData();
+
+                    const response = await fetch('{{ route("order.paypal.create") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        },
+                        body: JSON.stringify(orderData),
+                    });
+
+                    const result = await response.json();
+
+                    if (result.error) {
+                        data.paymentError = result.error;
+                        throw new Error(result.error);
+                    }
+
+                    return result.id;
+                },
+
+                onApprove: async function(paypalData) {
+                    const alpineEl = document.querySelector('.order-layout');
+                    const data = Alpine.$data(alpineEl);
+                    data.submitting = true;
+
+                    const response = await fetch('{{ route("order.paypal.capture") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        },
+                        body: JSON.stringify({
+                            paypal_order_id: paypalData.orderID,
+                        }),
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success && result.redirect) {
+                        window.location.href = result.redirect;
+                    } else {
+                        data.paymentError = result.error || 'Payment failed. Please try again.';
+                        data.submitting = false;
+                    }
+                },
+
+                onError: function(err) {
+                    const alpineEl = document.querySelector('.order-layout');
+                    const data = Alpine.$data(alpineEl);
+                    data.paymentError = 'Something went wrong with PayPal. Please try again.';
+                    data.submitting = false;
+                    console.error('PayPal error:', err);
+                },
+
+                onCancel: function() {
+                    const alpineEl = document.querySelector('.order-layout');
+                    const data = Alpine.$data(alpineEl);
+                    data.paymentError = '';
+                    data.submitting = false;
+                }
+            }).render('#paypal-button-container');
         }
     </script>
 </body>
