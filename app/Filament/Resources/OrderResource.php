@@ -45,7 +45,7 @@ class OrderResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            \Filament\Schemas\Components\Grid::make(3)->schema([
+            \Filament\Schemas\Components\Grid::make(5)->schema([
                 \Filament\Schemas\Components\Grid::make(1)->schema([
                     Section::make('Customer Info')->components([
                         \Filament\Forms\Components\TextInput::make('customer_name')->required(),
@@ -72,7 +72,7 @@ class OrderResource extends Resource
                     Section::make('Notes')->components([
                         \Filament\Forms\Components\Textarea::make('notes')->hiddenLabel()->rows(3),
                     ])->collapsible(),
-                ])->columnSpan(2),
+                ])->columnSpan(3),
 
                 \Filament\Schemas\Components\Grid::make(1)->schema([
                     Section::make('Status')->components([
@@ -113,7 +113,7 @@ class OrderResource extends Resource
 
                                 $rows[] = "<div style=\"display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #f3f4f6;\">
                                     <span style=\"font-size:0.75rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;\">Order #</span>
-                                    <span style=\"font-family:monospace;font-weight:700;color:#111827;\">{$record->order_number}</span>
+                                    <span style=\"font-family:monospace;font-weight:700;color:#111827;font-size:0.8rem;word-break:break-all;\">{$record->order_number}</span>
                                 </div>";
 
                                 $rows[] = "<div style=\"display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #f3f4f6;\">
@@ -135,9 +135,9 @@ class OrderResource extends Resource
 
                                 $paidAt = $record->paid_at?->format('M j, Y g:i A') ?? 'Not paid';
                                 $paidColor = $record->paid_at ? '#059669' : '#dc2626';
-                                $rows[] = "<div style=\"display:flex;justify-content:space-between;padding:0.5rem 0;\">
-                                    <span style=\"font-size:0.75rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;\">Paid</span>
-                                    <span style=\"font-size:0.8rem;color:{$paidColor};font-weight:500;\">{$paidAt}</span>
+                                $rows[] = "<div style=\"display:flex;justify-content:space-between;align-items:baseline;padding:0.5rem 0;gap:0.5rem;\">
+                                    <span style=\"font-size:0.75rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;\">Paid</span>
+                                    <span style=\"font-size:0.8rem;color:{$paidColor};font-weight:500;text-align:right;\">{$paidAt}</span>
                                 </div>";
 
                                 return new \Illuminate\Support\HtmlString(implode('', $rows));
@@ -173,7 +173,7 @@ class OrderResource extends Resource
                                 );
                             }),
                     ]),
-                ])->columnSpan(1),
+                ])->columnSpan(2),
             ]),
         ]);
     }
