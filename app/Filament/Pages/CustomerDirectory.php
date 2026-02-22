@@ -125,7 +125,9 @@ class CustomerDirectory extends Page implements HasTable
                             ->first(),
                     ]))
                     ->modalWidth('4xl')
-                    ->slideOver(),
+                    ->slideOver()
+                    ->modalSubmitAction(false)
+                    ->modalCancelAction(false),
             ]);
     }
 
