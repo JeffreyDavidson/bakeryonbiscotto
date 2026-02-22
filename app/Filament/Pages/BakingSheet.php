@@ -12,7 +12,7 @@ use Livewire\Attributes\Url;
 
 class BakingSheet extends Page
 {
-    protected static string $view = 'filament.pages.baking-sheet';
+    protected string $view = 'filament.pages.baking-sheet';
 
     protected static ?string $title = 'Baking Sheet';
 

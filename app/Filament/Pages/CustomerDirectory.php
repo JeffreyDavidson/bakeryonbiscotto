@@ -28,7 +28,7 @@ class CustomerDirectory extends Page implements HasTable
 
     protected static ?int $navigationSort = 4;
 
-    protected static string $view = 'filament.pages.customer-directory';
+    protected string $view = 'filament.pages.customer-directory';
 
     public static function getNavigationGroup(): ?string
     {
