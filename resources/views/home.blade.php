@@ -589,22 +589,6 @@
         .convo-meta .review-location {
             font-size: 12px; color: var(--warm);
         }
-        .reviews-more {
-            text-align: center;
-            margin-top: 48px;
-        }
-        .reviews-more a {
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--accent);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .reviews-more a:hover {
-            color: var(--dark);
-        }
-
         /* ═══════════════════════════════════
            SCROLL ANIMATIONS
         ═══════════════════════════════════ */
@@ -753,7 +737,7 @@
         </div>
     </section>
 
-    {{-- ═══ REVIEWS (Highlighted) ═══ --}}
+    {{-- ═══ REVIEWS ═══ --}}
     <section class="reviews" id="reviews">
         <div class="section-head reveal">
             <h2>What Our Neighbors Say</h2>
@@ -777,30 +761,25 @@
         @endif
 
         @if($approvedReviews->count())
-        @php $highlightedReview = $approvedReviews->first(); @endphp
-        @if($highlightedReview)
         <div class="reviews-conversation">
-            <div class="convo-card reveal">
-                <div class="convo-avatar">{{ strtoupper(substr($highlightedReview->name, 0, 1)) }}</div>
+            @foreach($approvedReviews as $review)
+            <div class="convo-card {{ $loop->iteration % 2 === 0 ? 'from-right' : '' }} reveal">
+                <div class="convo-avatar">{{ strtoupper(substr($review->name, 0, 1)) }}</div>
                 <div class="convo-bubble">
-                    <div class="review-stars">{!! str_repeat('★', $highlightedReview->rating) !!}</div>
-                    <blockquote>{{ $highlightedReview->body }}</blockquote>
+                    <div class="review-stars">{!! str_repeat('★', $review->rating) !!}</div>
+                    <blockquote>{{ $review->body }}</blockquote>
                     <div class="convo-meta">
-                        <span class="review-author">{{ $highlightedReview->name }}</span>
-                        @if($highlightedReview->favorite_bread)
+                        <span class="review-author">{{ $review->name }}</span>
+                        @if($review->favorite_bread)
                             <span class="dot"></span>
-                            <span class="review-location">Fav: {{ $highlightedReview->favorite_bread }}</span>
+                            <span class="review-location">Fav: {{ $review->favorite_bread }}</span>
                         @endif
                     </div>
                 </div>
             </div>
+            @endforeach
         </div>
         @endif
-        @endif
-
-        <div class="reviews-more reveal">
-            <a href="/about#reviews">See what others are saying →</a>
-        </div>
     </section>
 
     </main>

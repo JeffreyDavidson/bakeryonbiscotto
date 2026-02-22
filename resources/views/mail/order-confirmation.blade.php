@@ -30,6 +30,8 @@ We'll reach out if we have any questions. Remember, sourdough takes love and tim
 
 **A quick note on pickup & delivery:** If you can't make your scheduled time, please contact us as soon as possible to reschedule. Orders not picked up or rescheduled within 24 hours will be considered cancelled with no refund.
 
+Enjoyed your bread? We'd love to hear from you! [Leave us a review]({{ url('/review') }}).
+
 Thanks for supporting a small local bakery,<br>
 Cassie
 </x-mail::message>
