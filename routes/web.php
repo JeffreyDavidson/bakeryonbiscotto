@@ -28,17 +28,8 @@ Route::get('/order', [OrderController::class, 'index'])->name('order');
 Route::post('/order/paypal/create', [OrderController::class, 'createPayPalOrder'])->name('order.paypal.create');
 Route::post('/order/paypal/capture', [OrderController::class, 'capturePayPalOrder'])->name('order.paypal.capture');
 Route::get('/order/confirmation/{orderNumber}', [OrderController::class, 'confirmation'])->name('order.confirmation');
-Route::get('/about', function() {
-    $featuredReview = \App\Models\Review::approved()->where('is_featured', true)->first();
-    $approvedReviews = \App\Models\Review::approved()
-        ->when($featuredReview, fn($q) => $q->where('id', '!=', $featuredReview->id))
-        ->inRandomOrder()
-        ->get();
-    if (!$featuredReview && $approvedReviews->count()) {
-        $featuredReview = $approvedReviews->shift();
-    }
-    return view('about', compact('featuredReview', 'approvedReviews'));
-});
+Route::get('/about', fn() => view('about'));
+Route::get('/review', fn() => view('review'));
 Route::get('/gallery', fn() => view('gallery'));
 Route::get('/menu', function() {
     $categories = \App\Models\Category::with(['products' => function($q) {
