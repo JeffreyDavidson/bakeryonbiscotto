@@ -76,7 +76,8 @@ class ContactMessageResource extends Resource
                     ]),
             ])
             ->actions([
-                Actions\ViewAction::make(),
+                Actions\ViewAction::make()
+                    ->modalWidth('md'),
                 Actions\Action::make('markRead')
                     ->label('Mark Read')
                     ->icon('heroicon-o-eye')
