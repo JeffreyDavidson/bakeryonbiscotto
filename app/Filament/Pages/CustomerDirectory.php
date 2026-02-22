@@ -35,6 +35,11 @@ class CustomerDirectory extends Page implements HasTable
         return 'Shop';
     }
 
+    public function getTableRecordKey(\Illuminate\Database\Eloquent\Model|array $record): string
+    {
+        return $record->customer_email ?? '';
+    }
+
     public function table(Table $table): Table
     {
         return $table
@@ -100,7 +105,6 @@ class CustomerDirectory extends Page implements HasTable
                     })
                     ->placeholder('—'),
             ])
-            ->recordKey('customer_email')
             ->defaultSort('last_order_date', 'desc')
             ->actions([
                 Tables\Actions\Action::make('view')
