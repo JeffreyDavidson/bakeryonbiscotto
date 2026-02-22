@@ -109,7 +109,16 @@ class OrderResource extends Resource
                     ->formatStateUsing(fn (string $state) => ucfirst($state)),
                 Tables\Columns\TextColumn::make('requested_date')
                     ->label('Requested Date & Time')
-                    ->formatStateUsing(fn ($record) => $record->requested_date->format('M j, Y') . ($record->requested_time ? ' at ' . $record->requested_time : ''))
+                    ->formatStateUsing(function ($record) {
+                        $date = $record->requested_date->format('M j, Y');
+                        if (! $record->requested_time) return $date;
+                        $time = $record->requested_time;
+                        // Convert 24h format (e.g. "16:00") to 12h
+                        if (preg_match('/^\d{1,2}:\d{2}$/', $time) && !str_contains($time, 'AM') && !str_contains($time, 'PM')) {
+                            $time = date('g:i A', strtotime($time));
+                        }
+                        return $date . ' at ' . $time;
+                    })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
