@@ -84,7 +84,14 @@ class OrderResource extends Resource
                                 'ready' => 'Ready',
                                 'delivered' => 'Delivered',
                                 'cancelled' => 'Cancelled',
-                            ])->required(),
+                            ])->required()
+                            ->live(),
+                        \Filament\Forms\Components\Select::make('payment_status')
+                            ->options([
+                                'paid' => 'Paid',
+                                'refunded' => 'Refunded',
+                            ])->required()
+                            ->visible(fn ($get) => $get('status') === 'cancelled'),
                     ]),
 
                     Section::make('Order Summary')->components([
