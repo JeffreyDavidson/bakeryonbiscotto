@@ -31,6 +31,7 @@ Route::get('/order/confirmation/{orderNumber}', [OrderController::class, 'confir
 Route::get('/about', fn() => view('about'));
 Route::get('/review', fn() => view('review'));
 Route::get('/gallery', fn() => view('gallery'));
+Route::get('/faq', fn() => view('faq'));
 Route::get('/menu', function() {
     $categories = \App\Models\Category::with(['products' => function($q) {
         $q->where('is_available', true)->orderBy('sort_order');
