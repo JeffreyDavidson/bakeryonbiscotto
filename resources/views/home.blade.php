@@ -2348,6 +2348,12 @@
                     <p>It started with wanting bread without processed ingredients and preservatives. Sourdough uses a natural fermentation process, which means simpler ingredients and better flavor. No shortcuts, no additives.</p>
                 </div></div>
             </div>
+            <div class="faq-item" :class="{ 'open': open === 7 }">
+                <button class="faq-question" :aria-expanded="open === 7 ? 'true' : 'false'" aria-controls="faq-answer-7" @click="open = open === 7 ? null : 7" @keydown.enter.prevent="open = open === 7 ? null : 7" @keydown.space.prevent="open = open === 7 ? null : 7">What if I need to cancel?</button>
+                <div class="faq-answer" id="faq-answer-7" role="region"><div class="faq-answer-inner">
+                    <p>Cancellations made at least 48 hours in advance will receive a full refund. Between 24 and 48 hours notice will receive a 50% refund. Anything under 24 hours is non-refundable.</p>
+                </div></div>
+            </div>
         </div>
     </section>
 
