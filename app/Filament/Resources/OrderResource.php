@@ -45,44 +45,91 @@ class OrderResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make('Customer Info')->components([
-                \Filament\Forms\Components\TextInput::make('customer_name')->required(),
-                \Filament\Forms\Components\TextInput::make('customer_email')->email()->required(),
-                \Filament\Forms\Components\TextInput::make('customer_phone'),
-            ])->columns(3),
+            \Filament\Forms\Components\Grid::make(3)->schema([
+                \Filament\Forms\Components\Grid::make(1)->schema([
+                    Section::make('Customer Info')->components([
+                        \Filament\Forms\Components\TextInput::make('customer_name')->required(),
+                        \Filament\Forms\Components\TextInput::make('customer_email')->email()->required(),
+                        \Filament\Forms\Components\TextInput::make('customer_phone'),
+                    ]),
 
-            Section::make('Order Details')->components([
-                \Filament\Forms\Components\Select::make('fulfillment_type')
-                    ->options(['pickup' => 'Pickup', 'delivery' => 'Delivery'])
-                    ->required(),
-                \Filament\Forms\Components\DatePicker::make('requested_date')->required(),
-                \Filament\Forms\Components\TextInput::make('requested_time')->label('Requested Time'),
-                \Filament\Forms\Components\Textarea::make('delivery_address')
-                    ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
-                \Filament\Forms\Components\TextInput::make('delivery_zip')
-                    ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
-                \Filament\Forms\Components\TextInput::make('delivery_fee')
-                    ->numeric()->prefix('$')->default(0),
-                \Filament\Forms\Components\Textarea::make('notes')->columnSpanFull(),
-            ])->columns(2),
+                    Section::make('Fulfillment')->components([
+                        \Filament\Forms\Components\Select::make('fulfillment_type')
+                            ->options(['pickup' => 'Pickup', 'delivery' => 'Delivery'])
+                            ->required()
+                            ->live(),
+                        \Filament\Forms\Components\DatePicker::make('requested_date')->required(),
+                        \Filament\Forms\Components\TextInput::make('requested_time')->label('Requested Time'),
+                        \Filament\Forms\Components\Textarea::make('delivery_address')
+                            ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
+                        \Filament\Forms\Components\TextInput::make('delivery_zip')
+                            ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
+                        \Filament\Forms\Components\TextInput::make('delivery_fee')
+                            ->numeric()->prefix('$')->default(0)
+                            ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
+                    ])->columns(2),
 
-            Section::make('Status')->components([
-                \Filament\Forms\Components\Select::make('status')
-                    ->options([
-                        'pending' => 'Pending',
-                        'confirmed' => 'Confirmed',
-                        'baking' => 'Baking',
-                        'ready' => 'Ready',
-                        'delivered' => 'Delivered',
-                        'cancelled' => 'Cancelled',
-                    ])->required(),
-                \Filament\Forms\Components\Select::make('payment_status')
-                    ->options([
-                        'unpaid' => 'Unpaid',
-                        'paid' => 'Paid',
-                        'refunded' => 'Refunded',
-                    ])->required(),
-            ])->columns(2),
+                    Section::make('Notes')->components([
+                        \Filament\Forms\Components\Textarea::make('notes')->hiddenLabel()->rows(3),
+                    ])->collapsible(),
+                ])->columnSpan(2),
+
+                \Filament\Forms\Components\Grid::make(1)->schema([
+                    Section::make('Status')->components([
+                        \Filament\Forms\Components\Select::make('status')
+                            ->options([
+                                'pending' => 'Pending',
+                                'confirmed' => 'Confirmed',
+                                'baking' => 'Baking',
+                                'ready' => 'Ready',
+                                'delivered' => 'Delivered',
+                                'cancelled' => 'Cancelled',
+                            ])->required(),
+                        \Filament\Forms\Components\Select::make('payment_status')
+                            ->options([
+                                'unpaid' => 'Unpaid',
+                                'paid' => 'Paid',
+                                'refunded' => 'Refunded',
+                            ])->required(),
+                    ]),
+
+                    Section::make('Order Summary')->components([
+                        \Filament\Forms\Components\Placeholder::make('order_number_display')
+                            ->label('Order #')
+                            ->content(fn (Order $record): string => $record->order_number),
+                        \Filament\Forms\Components\Placeholder::make('subtotal_display')
+                            ->label('Subtotal')
+                            ->content(fn (Order $record): string => '$' . number_format($record->subtotal, 2)),
+                        \Filament\Forms\Components\Placeholder::make('delivery_fee_display')
+                            ->label('Delivery Fee')
+                            ->content(fn (Order $record): string => '$' . number_format($record->delivery_fee, 2))
+                            ->visible(fn (Order $record): bool => $record->fulfillment_type === 'delivery'),
+                        \Filament\Forms\Components\Placeholder::make('total_display')
+                            ->label('Total')
+                            ->content(fn (Order $record): string => '$' . number_format($record->total, 2)),
+                        \Filament\Forms\Components\Placeholder::make('paid_at_display')
+                            ->label('Paid At')
+                            ->content(fn (Order $record): string => $record->paid_at?->format('M j, Y g:i A') ?? 'Not paid'),
+                    ]),
+
+                    Section::make('Items')->components([
+                        \Filament\Forms\Components\Placeholder::make('items_list')
+                            ->hiddenLabel()
+                            ->content(function (Order $record): \Illuminate\Support\HtmlString {
+                                $items = $record->items->map(function ($item) {
+                                    return "<div class=\"flex justify-between py-1\">
+                                        <span>{$item->quantity}× {$item->product_name}</span>
+                                        <span class=\"font-medium\">\${$item->line_total}</span>
+                                    </div>";
+                                })->join('');
+
+                                return new \Illuminate\Support\HtmlString(
+                                    $items ?: '<span class="text-gray-400">No items</span>'
+                                );
+                            }),
+                    ]),
+                ])->columnSpan(1),
+            ]),
         ]);
     }
 
