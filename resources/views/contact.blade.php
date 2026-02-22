@@ -192,19 +192,11 @@
         }
         .form-input::placeholder { color: #c0a890; }
         textarea.form-input { resize: vertical; min-height: 130px; }
-        select.form-input {
-            appearance: none;
-            -webkit-appearance: none;
-            background: var(--light) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238B5E3C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 14px center;
-            padding-right: 40px;
-            cursor: pointer;
+        .form-group {
+            position: relative;
         }
-        select.form-input:focus {
-            background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238B5E3C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 14px center;
-        }
-        select.form-input option {
-            background: var(--light);
-            color: var(--dark);
+        .custom-select {
+            user-select: none;
         }
 
         .form-row {
@@ -475,14 +467,23 @@
                             <label class="form-label">Phone <span style="font-weight: 400; text-transform: none; opacity: 0.5;">(optional)</span></label>
                             <input type="tel" name="phone" class="form-input" placeholder="(555) 123-4567" value="{{ old('phone') }}">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" x-data="{ open: false, selected: '{{ old('subject', '') }}', options: ['General Question', 'Feedback', 'Other'] }" @click.away="open = false">
                             <label class="form-label">Subject</label>
-                            <select name="subject" class="form-input" required>
-                                <option value="" disabled {{ old('subject') ? '' : 'selected' }}>Choose a topic...</option>
-                                <option value="General Question" {{ old('subject') === 'General Question' ? 'selected' : '' }}>General Question</option>
-                                <option value="Feedback" {{ old('subject') === 'Feedback' ? 'selected' : '' }}>Feedback</option>
-                                <option value="Other" {{ old('subject') === 'Other' ? 'selected' : '' }}>Other</option>
-                            </select>
+                            <input type="hidden" name="subject" :value="selected" required>
+                            <div class="form-input custom-select" @click="open = !open" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding-right: 14px;">
+                                <span :style="selected ? '' : 'opacity: 0.5'" x-text="selected || 'Choose a topic...'"></span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8B5E3C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" :style="open ? 'transform: rotate(180deg)' : ''" style="transition: transform 0.2s"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </div>
+                            <div x-show="open" x-transition.opacity style="position: absolute; z-index: 50; width: 100%; margin-top: 4px; background: var(--light); border: 1px solid var(--golden); border-radius: 8px; overflow: hidden; box-shadow: 0 8px 24px rgba(61,35,20,0.15);">
+                                <template x-for="opt in options" :key="opt">
+                                    <div @click="selected = opt; open = false" x-text="opt"
+                                         style="padding: 10px 14px; cursor: pointer; font-family: 'Lora', serif; font-size: 0.95rem; color: var(--dark); transition: background 0.15s;"
+                                         :style="selected === opt ? 'background: rgba(212,165,116,0.3)' : ''"
+                                         onmouseover="this.style.background='rgba(212,165,116,0.2)'"
+                                         onmouseout="this.style.background=this.getAttribute('x-bind:style')?.includes('0.3') ? 'rgba(212,165,116,0.3)' : ''">
+                                    </div>
+                                </template>
+                            </div>
                             @error('subject') <p class="error-msg">{{ $message }}</p> @enderror
                         </div>
                     </div>
