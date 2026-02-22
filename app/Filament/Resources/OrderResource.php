@@ -76,23 +76,31 @@ class OrderResource extends Resource
 
                 \Filament\Forms\Components\Grid::make(1)->schema([
                     Section::make('Status')->components([
-                        \Filament\Forms\Components\Select::make('status')
-                            ->options([
-                                'pending' => 'Pending',
-                                'confirmed' => 'Confirmed',
-                                'baking' => 'Baking',
-                                'ready' => 'Ready',
-                                'delivered' => 'Delivered',
-                                'cancelled' => 'Cancelled',
-                            ])->required()
-                            ->live(),
-                        \Filament\Forms\Components\Select::make('payment_status')
-                            ->options([
-                                'paid' => 'Paid',
-                                'cancelled' => 'Cancelled',
-                                'refunded' => 'Refunded',
-                            ])->required()
-                            ->visible(fn ($get) => $get('status') === 'cancelled'),
+                        \Filament\Forms\Components\Placeholder::make('status_badge')
+                            ->hiddenLabel()
+                            ->content(function (Order $record): \Illuminate\Support\HtmlString {
+                                $colors = [
+                                    'pending' => 'bg-yellow-100 text-yellow-800',
+                                    'confirmed' => 'bg-blue-100 text-blue-800',
+                                    'baking' => 'bg-purple-100 text-purple-800',
+                                    'ready' => 'bg-green-100 text-green-800',
+                                    'delivered' => 'bg-gray-100 text-gray-800',
+                                    'cancelled' => 'bg-red-100 text-red-800',
+                                ];
+                                $color = $colors[$record->status] ?? 'bg-gray-100 text-gray-800';
+                                $label = ucfirst($record->status);
+                                $badge = "<span class=\"inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {$color}\">{$label}</span>";
+
+                                if ($record->status === 'cancelled' && $record->payment_status) {
+                                    $psLabel = ucfirst($record->payment_status);
+                                    $psColor = $record->payment_status === 'refunded'
+                                        ? 'bg-green-100 text-green-800'
+                                        : 'bg-yellow-100 text-yellow-800';
+                                    $badge .= " <span class=\"inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {$psColor} ml-2\">{$psLabel}</span>";
+                                }
+
+                                return new \Illuminate\Support\HtmlString($badge);
+                            }),
                     ]),
 
                     Section::make('Order Summary')->components([
