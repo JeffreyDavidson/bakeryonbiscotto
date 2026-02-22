@@ -23,6 +23,29 @@
             --candle: #f4c87a;
         }
 
+        /* Navigation */
+        .main-nav {
+            position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+            z-index: 1000;
+            display: flex; align-items: center; gap: 4px;
+            padding: 8px 12px;
+            background: rgba(61,35,20,0.75);
+            backdrop-filter: blur(24px) saturate(1.6);
+            -webkit-backdrop-filter: blur(24px) saturate(1.6);
+            border-radius: 100px;
+            border: 1px solid rgba(212,165,116,0.15);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .main-nav a {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px; font-weight: 500;
+            color: var(--cream); text-decoration: none;
+            padding: 10px 24px; border-radius: 100px;
+            transition: all 0.3s ease;
+        }
+        .main-nav a:hover { background: rgba(212,165,116,0.2); color: var(--golden); }
+        .main-nav a.active { background: var(--golden); color: var(--dark); font-weight: 600; }
+
         /* Skip to main content link */
         .skip-to-main {
             position: absolute;
@@ -564,6 +587,8 @@
             .menu-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 600px) {
+            .main-nav { top: 38px; padding: 6px 8px; gap: 2px; }
+            .main-nav a { padding: 8px 14px; font-size: 12px; }
             .review-featured { padding: 32px 16px; }
             .convo-card, .convo-card.from-right { flex-direction: column; text-align: left; }
             .convo-card.from-right .convo-meta { justify-content: flex-start; }
