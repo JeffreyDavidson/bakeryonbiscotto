@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->decimal('subtotal', 8, 2);
             $table->decimal('total', 8, 2);
-            $table->enum('status', ['pending', 'confirmed', 'baking', 'ready', 'completed', 'cancelled'])->default('pending');
+            $table->enum('status', ['pending', 'confirmed', 'baking', 'ready', 'delivered', 'cancelled'])->default('pending');
             $table->enum('payment_status', ['unpaid', 'paid', 'refunded'])->default('unpaid');
             $table->string('stripe_session_id')->nullable();
             $table->string('stripe_payment_intent')->nullable();
