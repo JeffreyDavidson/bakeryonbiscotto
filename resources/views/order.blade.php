@@ -603,6 +603,36 @@
             color: var(--warm);
             text-align: center;
         }
+        .address-suggestions {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0; right: 0;
+            background: var(--white);
+            border: 1.5px solid rgba(139,94,60,0.15);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(61,35,20,0.12);
+            z-index: 50;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .address-suggestion {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--dark);
+            cursor: pointer;
+            transition: background 0.15s;
+            border-bottom: 1px solid rgba(139,94,60,0.06);
+        }
+        .address-suggestion:last-child { border-bottom: none; }
+        .address-suggestion:hover {
+            background: rgba(212,165,116,0.1);
+        }
         .time-slot-btn {
             padding: 8px 14px;
             border: 1.5px solid rgba(139,94,60,0.15);
@@ -956,14 +986,15 @@
                     </div>
 
                     <template x-if="fulfillment === 'delivery'">
-                        <div>
-                            <div class="form-group">
+                        <div x-data="addressAutocomplete()" x-init="initAC()">
+                            <div class="form-group" style="position: relative;">
                                 <label class="form-label" for="order-address">Delivery Address</label>
-                                <input type="text" id="order-address" class="form-input" x-model="form.delivery_address" placeholder="123 Main St, Davenport FL" @input.debounce.800ms="calcDeliveryFee()" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="order-zip">ZIP Code</label>
-                                <input type="text" id="order-zip" class="form-input" x-model="form.delivery_zip" placeholder="33837" @input.debounce.800ms="calcDeliveryFee()" required>
+                                <input type="text" id="order-address" class="form-input" x-model="addressQuery" @input.debounce.400ms="searchAddress()" @click.outside="suggestions = []" placeholder="Start typing your address..." autocomplete="off" required>
+                                <div x-show="suggestions.length > 0" class="address-suggestions" x-cloak>
+                                    <template x-for="(s, i) in suggestions" :key="i">
+                                        <button type="button" class="address-suggestion" @click="selectAddress(s)" x-text="s.display"></button>
+                                    </template>
+                                </div>
                             </div>
                             <div x-show="deliveryCalcing" class="notice" style="justify-content: center;">
                                 <span>Calculating delivery fee...</span>
@@ -1355,69 +1386,6 @@
                     return 0;
                 },
 
-                async calcDeliveryFee() {
-                    const addr = this.form.delivery_address.trim();
-                    const zip = this.form.delivery_zip.trim();
-                    if (!addr || !zip) {
-                        this.deliveryTier = null;
-                        this.deliveryDistance = null;
-                        this.deliveryError = '';
-                        return;
-                    }
-
-                    this.deliveryCalcing = true;
-                    this.deliveryError = '';
-                    this.deliveryTier = null;
-                    this.deliveryDistance = null;
-
-                    try {
-                        // Step 1: Geocode the customer address
-                        const query = encodeURIComponent(addr + ', ' + zip + ', FL');
-                        const geoResp = await fetch('https://nominatim.openstreetmap.org/search?q=' + query + '&format=json&limit=1&countrycodes=us', {
-                            headers: { 'Accept': 'application/json' }
-                        });
-                        const geoData = await geoResp.json();
-
-                        if (!geoData.length) {
-                            this.deliveryError = "We couldn't find that address. Please double-check and try again.";
-                            this.deliveryCalcing = false;
-                            return;
-                        }
-
-                        const custLat = geoData[0].lat;
-                        const custLon = geoData[0].lon;
-
-                        // Step 2: Get driving distance via OSRM
-                        const baseLon = -81.65249;
-                        const baseLat = 28.31716;
-                        const routeResp = await fetch('https://router.project-osrm.org/route/v1/driving/' + baseLon + ',' + baseLat + ';' + custLon + ',' + custLat + '?overview=false');
-                        const routeData = await routeResp.json();
-
-                        if (routeData.code !== 'Ok' || !routeData.routes.length) {
-                            this.deliveryError = "Couldn't calculate driving distance. Please verify your address.";
-                            this.deliveryCalcing = false;
-                            return;
-                        }
-
-                        const meters = routeData.routes[0].legs[0].distance;
-                        const miles = meters / 1609.34;
-
-                        this.deliveryDistance = miles.toFixed(1);
-
-                        if (miles < 5) {
-                            this.deliveryTier = 'under5';
-                        } else if (miles <= 10) {
-                            this.deliveryTier = '5to10';
-                        } else {
-                            this.deliveryTier = 'over10';
-                        }
-                    } catch (e) {
-                        this.deliveryError = "Couldn't calculate distance. Please try again.";
-                    }
-
-                    this.deliveryCalcing = false;
-                },
-
                 total() {
                     return this.subtotal() + this.deliveryFee();
                 },
@@ -1531,6 +1499,99 @@
         }
     </script>
 
+    <script>
+        function addressAutocomplete() {
+            return {
+                addressQuery: '',
+                suggestions: [],
+                selectedCoords: null,
+
+                initAC() {},
+
+                async searchAddress() {
+                    const q = this.addressQuery.trim();
+                    if (q.length < 5) {
+                        this.suggestions = [];
+                        return;
+                    }
+
+                    try {
+                        const resp = await fetch('https://photon.komoot.io/api/?q=' + encodeURIComponent(q) + '&limit=5&lat=28.317&lon=-81.652&lang=en');
+                        const data = await resp.json();
+
+                        this.suggestions = data.features
+                            .filter(f => f.properties.country === 'United States' && f.properties.state === 'Florida')
+                            .map(f => {
+                                const p = f.properties;
+                                const parts = [p.housenumber, p.street, p.city, p.state, p.postcode].filter(Boolean);
+                                return {
+                                    display: parts.join(', '),
+                                    lat: f.geometry.coordinates[1],
+                                    lon: f.geometry.coordinates[0],
+                                    street: [p.housenumber, p.street].filter(Boolean).join(' '),
+                                    city: p.city || '',
+                                    zip: p.postcode || '',
+                                };
+                            });
+                    } catch (e) {
+                        this.suggestions = [];
+                    }
+                },
+
+                selectAddress(s) {
+                    this.addressQuery = s.display;
+                    this.suggestions = [];
+                    this.selectedCoords = { lat: s.lat, lon: s.lon };
+
+                    // Update parent form
+                    const parent = this.$el.closest('.order-layout');
+                    const form = Alpine.$data(parent);
+                    form.form.delivery_address = s.display;
+                    form.form.delivery_zip = s.zip;
+
+                    // Calculate distance with known coords
+                    this.calcWithCoords(form, s.lat, s.lon);
+                },
+
+                async calcWithCoords(form, lat, lon) {
+                    form.deliveryCalcing = true;
+                    form.deliveryError = '';
+                    form.deliveryTier = null;
+                    form.deliveryDistance = null;
+
+                    try {
+                        const baseLon = -81.65249;
+                        const baseLat = 28.31716;
+                        const routeResp = await fetch('https://router.project-osrm.org/route/v1/driving/' + baseLon + ',' + baseLat + ';' + lon + ',' + lat + '?overview=false');
+                        const routeData = await routeResp.json();
+
+                        if (routeData.code !== 'Ok' || !routeData.routes.length) {
+                            form.deliveryError = "Couldn't calculate driving distance. Please try a different address.";
+                            form.deliveryCalcing = false;
+                            return;
+                        }
+
+                        const meters = routeData.routes[0].legs[0].distance;
+                        const miles = meters / 1609.34;
+
+                        form.deliveryDistance = miles.toFixed(1);
+
+                        if (miles < 5) {
+                            form.deliveryTier = 'under5';
+                        } else if (miles <= 10) {
+                            form.deliveryTier = '5to10';
+                        } else {
+                            form.deliveryTier = 'over10';
+                        }
+                    } catch (e) {
+                        form.deliveryError = "Couldn't calculate distance. Please try again.";
+                    }
+
+                    form.deliveryCalcing = false;
+                }
+            }
+        }
+    </script>
     <script src="https://www.paypal.com/sdk/js?client-id={{ config('services.paypal.client_id') }}&currency=USD"></script>
     <script>
         // Wait for both Alpine and PayPal to be ready
