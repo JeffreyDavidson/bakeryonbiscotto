@@ -45,7 +45,7 @@ class OrderResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            \Filament\Schemas\Components\Grid::make(5)->schema([
+            \Filament\Schemas\Components\Grid::make(['default' => 1, 'lg' => 3])->schema([
                 \Filament\Schemas\Components\Grid::make(1)->schema([
                     Section::make('Customer Info')->components([
                         \Filament\Forms\Components\TextInput::make('customer_name')->required(),
@@ -72,7 +72,7 @@ class OrderResource extends Resource
                     Section::make('Notes')->components([
                         \Filament\Forms\Components\Textarea::make('notes')->hiddenLabel()->rows(3),
                     ])->collapsible(),
-                ])->columnSpan(3),
+                ])->columnSpan(['default' => 1, 'lg' => 2]),
 
                 \Filament\Schemas\Components\Grid::make(1)->schema([
                     Section::make('Status')->components([
@@ -111,9 +111,9 @@ class OrderResource extends Resource
                             ->content(function (Order $record): \Illuminate\Support\HtmlString {
                                 $rows = [];
 
-                                $rows[] = "<div style=\"display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #f3f4f6;\">
-                                    <span style=\"font-size:0.75rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;\">Order #</span>
-                                    <span style=\"font-family:monospace;font-weight:700;color:#111827;font-size:0.8rem;word-break:break-all;\">{$record->order_number}</span>
+                                $rows[] = "<div style=\"padding:0.5rem 0;border-bottom:1px solid #f3f4f6;\">
+                                    <div style=\"font-size:0.75rem;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;\">Order #</div>
+                                    <div style=\"font-family:monospace;font-weight:700;color:#111827;font-size:0.85rem;margin-top:0.125rem;\">{$record->order_number}</div>
                                 </div>";
 
                                 $rows[] = "<div style=\"display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #f3f4f6;\">
@@ -153,12 +153,12 @@ class OrderResource extends Resource
                                 }
 
                                 $items = $record->items->map(function ($item) {
-                                    return "<div style=\"display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0.75rem;border-bottom:1px solid #f3f4f6;\">
-                                        <div style=\"display:flex;align-items:center;gap:0.5rem;\">
-                                            <span style=\"display:inline-flex;align-items:center;justify-content:center;min-width:1.75rem;height:1.75rem;border-radius:0.375rem;background:#fef3c7;font-size:0.8rem;font-weight:700;color:#92400e;\">{$item->quantity}</span>
-                                            <span style=\"font-weight:500;color:#111827;font-size:0.875rem;\">{$item->product_name}</span>
+                                    return "<div style=\"display:flex;align-items:center;justify-content:space-between;padding:0.625rem 0.75rem;border-bottom:1px solid #f3f4f6;gap:0.5rem;\">
+                                        <div style=\"display:flex;align-items:center;gap:0.5rem;min-width:0;\">
+                                            <span style=\"display:inline-flex;align-items:center;justify-content:center;min-width:1.75rem;height:1.75rem;border-radius:0.375rem;background:#fef3c7;font-size:0.8rem;font-weight:700;color:#92400e;flex-shrink:0;\">{$item->quantity}</span>
+                                            <span style=\"font-weight:500;color:#111827;font-size:0.875rem;overflow:hidden;text-overflow:ellipsis;\">{$item->product_name}</span>
                                         </div>
-                                        <span style=\"font-weight:600;color:#374151;font-size:0.875rem;\">\$" . number_format($item->line_total, 2) . "</span>
+                                        <span style=\"font-weight:600;color:#374151;font-size:0.875rem;white-space:nowrap;flex-shrink:0;\">\$" . number_format($item->line_total, 2) . "</span>
                                     </div>";
                                 })->join('');
 
@@ -173,7 +173,7 @@ class OrderResource extends Resource
                                 );
                             }),
                     ]),
-                ])->columnSpan(2),
+                ])->columnSpan(['default' => 1, 'lg' => 1]),
             ]),
         ]);
     }
