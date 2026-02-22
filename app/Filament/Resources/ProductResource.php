@@ -33,79 +33,50 @@ class ProductResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            \Filament\Schemas\Components\Grid::make(['default' => 1, 'lg' => 3])->schema([
+            \Filament\Schemas\Components\Section::make('Product Details')
+                ->icon('heroicon-o-shopping-bag')
+                ->components([
+                    \Filament\Forms\Components\Select::make('category_id')
+                        ->relationship('category', 'name')
+                        ->required()
+                        ->preload(),
+                    \Filament\Forms\Components\TextInput::make('name')
+                        ->required()
+                        ->maxLength(255),
+                    \Filament\Forms\Components\TextInput::make('slug')
+                        ->maxLength(255),
+                    \Filament\Forms\Components\Textarea::make('description')
+                        ->rows(3),
+                    \Filament\Forms\Components\TextInput::make('price')
+                        ->required()
+                        ->numeric()
+                        ->prefix('$')
+                        ->step('0.01'),
+                    \Filament\Forms\Components\FileUpload::make('image')
+                        ->image()
+                        ->directory('products'),
+                ]),
 
-                // Left column — Product details
-                \Filament\Schemas\Components\Grid::make(1)->schema([
-                    \Filament\Schemas\Components\Section::make('Product Details')
-                        ->icon('heroicon-o-shopping-bag')
-                        ->components([
-                            \Filament\Forms\Components\TextInput::make('name')
-                                ->required()
-                                ->maxLength(255)
-                                ->columnSpanFull(),
-                            \Filament\Forms\Components\TextInput::make('slug')
-                                ->maxLength(255)
-                                ->columnSpanFull(),
-                            \Filament\Forms\Components\Textarea::make('description')
-                                ->rows(4)
-                                ->columnSpanFull(),
-                        ]),
-
-                    \Filament\Schemas\Components\Section::make('Pricing & Media')
-                        ->icon('heroicon-o-currency-dollar')
-                        ->components([
-                            \Filament\Forms\Components\TextInput::make('price')
-                                ->required()
-                                ->numeric()
-                                ->prefix('$')
-                                ->step('0.01'),
-                            \Filament\Forms\Components\FileUpload::make('image')
-                                ->image()
-                                ->directory('products')
-                                ->columnSpanFull(),
-                        ]),
-                ])->columnSpan(['default' => 1, 'lg' => 2]),
-
-                // Right column — Settings sidebar
-                \Filament\Schemas\Components\Grid::make(1)->schema([
-                    \Filament\Schemas\Components\Section::make('Category')
-                        ->icon('heroicon-o-tag')
-                        ->components([
-                            \Filament\Forms\Components\Select::make('category_id')
-                                ->relationship('category', 'name')
-                                ->required()
-                                ->preload()
-                                ->hiddenLabel(),
-                        ]),
-
-                    \Filament\Schemas\Components\Section::make('Availability')
-                        ->icon('heroicon-o-eye')
-                        ->components([
-                            \Filament\Forms\Components\Toggle::make('is_available')
-                                ->label('Available for ordering')
-                                ->default(true),
-                            \Filament\Forms\Components\Toggle::make('is_featured')
-                                ->label('Featured product'),
-                        ]),
-
-                    \Filament\Schemas\Components\Section::make('Limits')
-                        ->icon('heroicon-o-adjustments-horizontal')
-                        ->components([
-                            \Filament\Forms\Components\TextInput::make('sort_order')
-                                ->numeric()
-                                ->default(0),
-                            \Filament\Forms\Components\TextInput::make('max_per_order')
-                                ->numeric()
-                                ->nullable()
-                                ->helperText('Leave empty for no limit'),
-                            \Filament\Forms\Components\TextInput::make('weekly_limit')
-                                ->numeric()
-                                ->nullable()
-                                ->helperText('Max units she can bake per week'),
-                        ]),
-                ])->columnSpan(['default' => 1, 'lg' => 1]),
-            ]),
+            \Filament\Schemas\Components\Section::make('Settings')
+                ->icon('heroicon-o-adjustments-horizontal')
+                ->components([
+                    \Filament\Forms\Components\Toggle::make('is_available')
+                        ->label('Available for ordering')
+                        ->default(true),
+                    \Filament\Forms\Components\Toggle::make('is_featured')
+                        ->label('Featured product'),
+                    \Filament\Forms\Components\TextInput::make('sort_order')
+                        ->numeric()
+                        ->default(0),
+                    \Filament\Forms\Components\TextInput::make('max_per_order')
+                        ->numeric()
+                        ->nullable()
+                        ->helperText('Leave empty for no limit'),
+                    \Filament\Forms\Components\TextInput::make('weekly_limit')
+                        ->numeric()
+                        ->nullable()
+                        ->helperText('Max units she can bake per week'),
+                ])->collapsible(),
         ]);
     }
 
@@ -148,7 +119,9 @@ class ProductResource extends Resource
                     ->color(fn (Product $record) => $record->is_available ? 'gray' : 'success')
                     ->label(fn (Product $record) => $record->is_available ? 'Hide' : 'Show')
                     ->action(fn (Product $record) => $record->update(['is_available' => !$record->is_available])),
-                EditAction::make(),
+                EditAction::make()
+                    ->slideOver()
+                    ->modalWidth('2xl'),
             ])
             ->bulkActions([]);
     }
@@ -157,8 +130,6 @@ class ProductResource extends Resource
     {
         return [
             'index' => Pages\ListProducts::route('/'),
-            'create' => Pages\CreateProduct::route('/create'),
-            'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
 }
