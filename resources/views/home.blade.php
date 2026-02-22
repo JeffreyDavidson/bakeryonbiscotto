@@ -2315,7 +2315,7 @@
             <div class="faq-item" :class="{ 'open': open === 1 }">
                 <button class="faq-question" :aria-expanded="open === 1 ? 'true' : 'false'" aria-controls="faq-answer-1" @click="open = open === 1 ? null : 1" @keydown.enter.prevent="open = open === 1 ? null : 1" @keydown.space.prevent="open = open === 1 ? null : 1">How do I order?</button>
                 <div class="faq-answer" id="faq-answer-1" role="region"><div class="faq-answer-inner">
-                    <p>Use our <a href="/order">online order page</a>! Pick what you'd like, choose pickup or delivery, and check out. Have a special request? Email us at <a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a>.</p>
+                    <p>Use our <a href="/order">online order page</a>! Pick what you'd like, choose pickup or delivery, and check out.</p>
                 </div></div>
             </div>
             <div class="faq-item" :class="{ 'open': open === 2 }">
