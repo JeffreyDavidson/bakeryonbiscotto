@@ -32,10 +32,11 @@
         .cal-dot { width: 0.375rem; height: 0.375rem; border-radius: 9999px; background: #8b5e3c; }
         .cal-dot.extra { background: #e8d0b0; }
 
-        .cal-summary { display: flex; gap: 1.5rem; margin-top: 1rem; padding: 1rem 1.25rem; border-radius: 0.75rem; background: white; border: 1px solid #e8d0b0; }
-        .cal-summary-item { text-align: center; }
-        .cal-summary-value { font-size: 1.5rem; font-weight: 700; color: #3d2314; }
-        .cal-summary-label { font-size: 0.7rem; font-weight: 600; color: #a08060; text-transform: uppercase; letter-spacing: 0.05em; }
+        .cal-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-top: 1rem; }
+        .cal-summary-item { text-align: center; padding: 1rem 0.75rem; border-radius: 0.625rem; background: white; border: 1px solid #e8d0b0; }
+        .cal-summary-item:hover { border-color: #d4a574; box-shadow: 0 1px 3px rgba(61,35,20,0.08); }
+        .cal-summary-value { font-size: 1.75rem; font-weight: 800; color: #3d2314; line-height: 1; }
+        .cal-summary-label { font-size: 0.6rem; font-weight: 700; color: #a08060; text-transform: uppercase; letter-spacing: 0.075em; margin-top: 0.375rem; }
     </style>
 
     {{-- Navigation --}}
