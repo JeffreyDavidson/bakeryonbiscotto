@@ -64,7 +64,10 @@ class ReviewResource extends Resource
                     ->width('1rem'),
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('rating')
-                    ->formatStateUsing(fn ($state) => str_repeat('⭐', $state))
+                    ->formatStateUsing(fn ($state) => new \Illuminate\Support\HtmlString(
+                        str_repeat('<span style="color:#d97706;font-size:1rem;">★</span>', $state) .
+                        str_repeat('<span style="color:#e8d0b0;font-size:1rem;">★</span>', 5 - $state)
+                    ))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('body')->limit(50)->wrap(),
                 Tables\Columns\TextColumn::make('favorite_bread')->label('Fav Bread'),
