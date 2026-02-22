@@ -206,7 +206,7 @@
             left: 0;
             right: 0;
             margin-top: 4px;
-            background: var(--cream);
+            background: var(--light);
             border: 1.5px solid var(--golden);
             border-radius: 8px;
             overflow: hidden;
