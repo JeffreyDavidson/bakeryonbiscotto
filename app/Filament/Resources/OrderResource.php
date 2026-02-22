@@ -84,6 +84,19 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('customer_name')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('is_repeat')
+                    ->label('')
+                    ->width('1rem')
+                    ->getStateUsing(function (Order $record) {
+                        $count = Order::where('customer_email', $record->customer_email)
+                            ->where('id', '!=', $record->id)
+                            ->count();
+                        return $count > 0 ? '🔄' : '';
+                    })
+                    ->tooltip(function (Order $record) {
+                        $count = Order::where('customer_email', $record->customer_email)->count();
+                        return $count > 1 ? "Repeat customer ({$count} orders)" : null;
+                    }),
                 Tables\Columns\TextColumn::make('items_count')
                     ->counts('items')
                     ->label('Items'),
