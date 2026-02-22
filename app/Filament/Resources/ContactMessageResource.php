@@ -77,7 +77,7 @@ class ContactMessageResource extends Resource
             ])
             ->actions([
                 Actions\ViewAction::make()
-                    ->modalWidth('2xl'),
+                    ->modalWidth('3xl'),
                 Actions\Action::make('markRead')
                     ->label('Mark Read')
                     ->icon('heroicon-o-eye')
@@ -98,32 +98,30 @@ class ContactMessageResource extends Resource
 
     public static function infolist(Schema $schema): Schema
     {
-        return $schema->components([
-            Section::make()->columns(3)->schema([
-                \Filament\Infolists\Components\TextEntry::make('name'),
-                \Filament\Infolists\Components\TextEntry::make('email')
-                    ->copyable(),
-                \Filament\Infolists\Components\TextEntry::make('phone')
-                    ->copyable()
-                    ->default('—'),
-                \Filament\Infolists\Components\TextEntry::make('subject')
-                    ->weight('bold')
-                    ->columnSpan(2),
-                \Filament\Infolists\Components\TextEntry::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'new' => 'warning',
-                        'read' => 'info',
-                        'replied' => 'success',
-                        default => 'gray',
-                    }),
-                \Filament\Infolists\Components\TextEntry::make('message')
-                    ->prose()
-                    ->columnSpanFull(),
-                \Filament\Infolists\Components\TextEntry::make('created_at')
-                    ->label('Received')
-                    ->dateTime('M j, Y \a\t g:i A'),
-            ]),
+        return $schema->columns(3)->components([
+            \Filament\Infolists\Components\TextEntry::make('name'),
+            \Filament\Infolists\Components\TextEntry::make('email')
+                ->copyable(),
+            \Filament\Infolists\Components\TextEntry::make('phone')
+                ->copyable()
+                ->default('—'),
+            \Filament\Infolists\Components\TextEntry::make('subject')
+                ->weight('bold')
+                ->columnSpan(2),
+            \Filament\Infolists\Components\TextEntry::make('status')
+                ->badge()
+                ->color(fn (string $state): string => match ($state) {
+                    'new' => 'warning',
+                    'read' => 'info',
+                    'replied' => 'success',
+                    default => 'gray',
+                }),
+            \Filament\Infolists\Components\TextEntry::make('message')
+                ->prose()
+                ->columnSpanFull(),
+            \Filament\Infolists\Components\TextEntry::make('created_at')
+                ->label('Received')
+                ->dateTime('M j, Y \a\t g:i A'),
         ]);
     }
 
