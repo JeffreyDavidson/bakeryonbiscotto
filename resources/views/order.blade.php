@@ -711,11 +711,7 @@
 </head>
 <body>
     {{-- NAV --}}
-    <nav class="main-nav">
-        <a href="/">Home</a>
-        <a href="/#menu">Menu</a>
-        <a href="/order" class="active">Order</a>
-    </nav>
+    <x-main-nav active="order" />
 
     {{-- HERO --}}
     <section class="order-hero">
