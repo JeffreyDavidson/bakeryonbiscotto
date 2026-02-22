@@ -98,58 +98,91 @@ class ContactMessageResource extends Resource
 
     public static function infolist(Schema $schema): Schema
     {
-        return $schema->columns(2)->components([
+        return $schema->columns(5)->components([
             \Filament\Schemas\Components\Grid::make(1)->schema([
-                \Filament\Schemas\Components\Grid::make(3)->schema([
-                    \Filament\Infolists\Components\TextEntry::make('name'),
-                    \Filament\Infolists\Components\TextEntry::make('email')
-                        ->copyable(),
-                    \Filament\Infolists\Components\TextEntry::make('phone')
-                        ->copyable()
-                        ->default('—'),
-                ]),
-                \Filament\Schemas\Components\Grid::make(2)->schema([
-                    \Filament\Infolists\Components\TextEntry::make('subject')
-                        ->weight('bold'),
-                    \Filament\Infolists\Components\TextEntry::make('status')
-                        ->badge()
-                        ->color(fn (string $state): string => match ($state) {
-                            'new' => 'warning',
-                            'read' => 'info',
-                            'replied' => 'success',
-                            default => 'gray',
-                        }),
-                ]),
-                \Filament\Infolists\Components\TextEntry::make('message')
-                    ->prose(),
+                \Filament\Infolists\Components\TextEntry::make('name')
+                    ->size('lg')
+                    ->weight('bold'),
+                \Filament\Infolists\Components\TextEntry::make('email')
+                    ->icon('heroicon-o-envelope')
+                    ->copyable(),
+                \Filament\Infolists\Components\TextEntry::make('phone')
+                    ->icon('heroicon-o-phone')
+                    ->copyable()
+                    ->default('—'),
+                \Filament\Infolists\Components\TextEntry::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'new' => 'warning',
+                        'read' => 'info',
+                        'replied' => 'success',
+                        default => 'gray',
+                    }),
                 \Filament\Infolists\Components\TextEntry::make('created_at')
                     ->label('Received')
-                    ->dateTime('M j, Y \a\t g:i A'),
+                    ->since(),
             ])->columnSpan(1),
 
             \Filament\Schemas\Components\Grid::make(1)->schema([
-                Section::make('Order History')->schema([
-                    \Filament\Infolists\Components\TextEntry::make('order_history')
-                        ->hiddenLabel()
-                        ->state(function (ContactMessage $record): string {
-                            $orders = \App\Models\Order::where('customer_email', $record->email)
-                                ->orderByDesc('created_at')
-                                ->limit(10)
-                                ->get();
+                \Filament\Infolists\Components\TextEntry::make('subject')
+                    ->size('lg')
+                    ->weight('bold'),
+                \Filament\Infolists\Components\TextEntry::make('message')
+                    ->prose()
+                    ->hiddenLabel(),
+            ])->columnSpan(2),
 
-                            if ($orders->isEmpty()) {
-                                return 'No previous orders found.';
-                            }
+            \Filament\Schemas\Components\Grid::make(1)->schema([
+                Section::make('Order History')
+                    ->icon('heroicon-o-shopping-bag')
+                    ->schema([
+                        \Filament\Infolists\Components\TextEntry::make('order_history')
+                            ->hiddenLabel()
+                            ->state(function (ContactMessage $record): \Illuminate\Support\HtmlString {
+                                $orders = \App\Models\Order::where('customer_email', $record->email)
+                                    ->orderByDesc('created_at')
+                                    ->limit(10)
+                                    ->get();
 
-                            return $orders->map(function ($order) {
-                                $date = $order->created_at->format('M j, Y');
-                                $status = ucfirst($order->status);
-                                return "{$order->order_number} — \${$order->total} — {$status} — {$date}";
-                            })->join("\n");
-                        })
-                        ->listWithLineBreaks(),
-                ]),
-            ])->columnSpan(1),
+                                if ($orders->isEmpty()) {
+                                    return new \Illuminate\Support\HtmlString(
+                                        '<span class="text-gray-400 text-sm italic">No previous orders</span>'
+                                    );
+                                }
+
+                                $html = $orders->map(function ($order) {
+                                    $date = $order->created_at->format('M j');
+                                    $status = ucfirst($order->status);
+                                    $statusColors = [
+                                        'pending' => 'text-yellow-600',
+                                        'confirmed' => 'text-blue-600',
+                                        'baking' => 'text-purple-600',
+                                        'ready' => 'text-green-600',
+                                        'delivered' => 'text-gray-600',
+                                        'cancelled' => 'text-red-600',
+                                    ];
+                                    $color = $statusColors[$order->status] ?? 'text-gray-600';
+
+                                    return "<div class=\"py-1.5 border-b border-gray-100 last:border-0\">
+                                        <div class=\"font-medium text-sm\">{$order->order_number}</div>
+                                        <div class=\"flex justify-between text-xs text-gray-500 mt-0.5\">
+                                            <span>\${$order->total}</span>
+                                            <span class=\"{$color}\">{$status}</span>
+                                            <span>{$date}</span>
+                                        </div>
+                                    </div>";
+                                })->join('');
+
+                                $count = $orders->count();
+                                $totalSpent = '$' . number_format($orders->sum('total'), 2);
+
+                                return new \Illuminate\Support\HtmlString(
+                                    "<div class=\"text-xs text-gray-500 mb-2\">{$count} orders · {$totalSpent} total</div>{$html}"
+                                );
+                            })
+                            ->html(),
+                    ]),
+            ])->columnSpan(2),
         ]);
     }
 
