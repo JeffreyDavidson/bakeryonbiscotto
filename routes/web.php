@@ -28,6 +28,12 @@ Route::get('/order', [OrderController::class, 'index'])->name('order');
 Route::post('/order/paypal/create', [OrderController::class, 'createPayPalOrder'])->name('order.paypal.create');
 Route::post('/order/paypal/capture', [OrderController::class, 'capturePayPalOrder'])->name('order.paypal.capture');
 Route::get('/order/confirmation/{orderNumber}', [OrderController::class, 'confirmation'])->name('order.confirmation');
+Route::get('/menu', function() {
+    $categories = \App\Models\Category::with(['products' => function($q) {
+        $q->where('is_available', true)->orderBy('sort_order');
+    }])->orderBy('sort_order')->get();
+    return view('menu', compact('categories'));
+});
 Route::get('/menu-concepts', fn() => view('menu-concepts'));
 Route::get('/gallery-concepts', fn() => view('gallery-concepts'));
 Route::get('/gallery-concepts-2', fn() => view('gallery-concepts-2'));
