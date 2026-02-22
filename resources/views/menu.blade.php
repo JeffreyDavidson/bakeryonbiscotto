@@ -143,6 +143,26 @@
             max-width: 780px; margin: 0 auto;
             filter: drop-shadow(0 20px 60px rgba(0,0,0,0.5)) drop-shadow(0 4px 12px rgba(0,0,0,0.3));
         }
+        .order-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, var(--golden), var(--accent));
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 100px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(212,165,116,0.3);
+        }
+        .order-cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(212,165,116,0.4);
+        }
         .parchment {
             position: relative;
             background: var(--parchment);
@@ -615,6 +635,13 @@
                 @endif
             @endforeach
 
+        </div>
+
+        <div style="text-align: center; margin-top: 48px;">
+            <a href="/order" class="order-cta-btn">
+                Place Your Order
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
         </div>
         </div>
     </section>
