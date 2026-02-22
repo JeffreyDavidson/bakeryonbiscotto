@@ -1848,6 +1848,7 @@
             font-size: 11px;
             color: rgba(245,230,208,0.35);
             max-width: 600px;
+            margin-left: auto; margin-right: auto;
             line-height: 1.5;
             font-style: italic;
         }
