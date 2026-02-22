@@ -1022,6 +1022,7 @@
                     <div x-show="formValid()" x-transition style="margin-top: 16px;">
                         <p style="font-size: 0.85rem; color: var(--warm); text-align: center; margin-bottom: 12px;">Pay securely with PayPal to complete your order</p>
                         <div id="paypal-button-container"></div>
+                        <p style="font-size: 0.75rem; color: var(--warm); opacity: 0.6; text-align: center; margin-top: 12px; line-height: 1.5; font-style: italic;">* While certain items may not contain allergens, they are produced in an environment where allergens could be present. Please proceed with caution.</p>
                     </div>
 
                     <div x-show="!formValid()" style="margin-top: 16px;">
