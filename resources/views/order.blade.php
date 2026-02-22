@@ -386,27 +386,51 @@
         textarea.form-input { resize: vertical; min-height: 80px; }
 
         .toggle-group {
-            display: flex;
-            border-radius: 12px;
-            border: 1.5px solid rgba(139,94,60,0.15);
-            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
         }
         .toggle-option {
-            flex: 1;
-            padding: 12px;
+            position: relative;
+            padding: 16px 14px;
             text-align: center;
-            font-size: 0.9rem;
+            font-family: 'Lora', serif;
+            font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
             background: var(--light);
             color: var(--warm);
-            border: none;
+            border: 2px solid rgba(139,94,60,0.12);
+            border-radius: 12px;
             transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .toggle-option:hover {
+            border-color: var(--golden);
+            background: rgba(212,165,116,0.08);
         }
         .toggle-option.active {
-            background: var(--golden);
+            background: rgba(212,165,116,0.12);
+            border-color: var(--golden);
             color: var(--dark);
             font-weight: 600;
+            box-shadow: 0 0 0 1px var(--golden);
+        }
+        .toggle-option .toggle-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        .toggle-option .toggle-label {
+            font-size: 0.85rem;
+            opacity: 0.6;
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+        }
+        .toggle-option.active .toggle-label {
+            opacity: 0.8;
         }
 
         .submit-btn {
@@ -849,8 +873,16 @@
 
                     <div class="form-group">
                         <div class="toggle-group">
-                            <button type="button" class="toggle-option" :class="{ active: fulfillment === 'pickup' }" @click="fulfillment = 'pickup'">🏠 Pickup</button>
-                            <button type="button" class="toggle-option" :class="{ active: fulfillment === 'delivery' }" @click="fulfillment = 'delivery'">🚗 Delivery (+$5)</button>
+                            <button type="button" class="toggle-option" :class="{ active: fulfillment === 'pickup' }" @click="fulfillment = 'pickup'">
+                                <span class="toggle-icon">🏠</span>
+                                <span>Pickup</span>
+                                <span class="toggle-label">Davenport, FL</span>
+                            </button>
+                            <button type="button" class="toggle-option" :class="{ active: fulfillment === 'delivery' }" @click="fulfillment = 'delivery'">
+                                <span class="toggle-icon">🚗</span>
+                                <span>Delivery</span>
+                                <span class="toggle-label">+$5 fee</span>
+                            </button>
                         </div>
                     </div>
 
