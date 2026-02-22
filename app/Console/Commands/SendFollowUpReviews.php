@@ -15,7 +15,7 @@ class SendFollowUpReviews extends Command
 
     public function handle(): int
     {
-        $orders = Order::where('status', 'completed')
+        $orders = Order::where('status', 'delivered')
             ->where('follow_up_sent', false)
             ->whereNotNull('delivered_at')
             ->where('delivered_at', '<=', now()->subHours(24))
