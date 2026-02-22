@@ -14,7 +14,7 @@ class Order extends Model
         'requested_date', 'notes', 'subtotal', 'total',
         'status', 'payment_status',
         'stripe_session_id', 'stripe_payment_intent', 'paid_at',
-        'completed_at', 'follow_up_sent',
+        'delivered_at', 'follow_up_sent',
     ];
 
     protected function casts(): array
@@ -22,7 +22,7 @@ class Order extends Model
         return [
             'requested_date' => 'date',
             'paid_at' => 'datetime',
-            'completed_at' => 'datetime',
+            'delivered_at' => 'datetime',
             'follow_up_sent' => 'boolean',
             'subtotal' => 'decimal:2',
             'total' => 'decimal:2',

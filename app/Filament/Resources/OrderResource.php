@@ -175,7 +175,7 @@ class OrderResource extends Resource
                     ->visible(fn (Order $record) => $record->status === 'ready')
                     ->action(fn (Order $record) => $record->update([
                         'status' => 'completed',
-                        'completed_at' => now(),
+                        'delivered_at' => now(),
                     ])),
                 \Filament\Actions\EditAction::make(),
             ])
