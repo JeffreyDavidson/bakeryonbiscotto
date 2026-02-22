@@ -45,6 +45,7 @@ class BakingSheetWidget extends BaseWidget
                     ->badge()
                     ->color('primary'),
             ])
+            ->recordKey('product_name')
             ->defaultSort('total_quantity', 'desc')
             ->emptyStateHeading('Nothing to bake!')
             ->emptyStateIcon('heroicon-o-cake')
