@@ -989,7 +989,7 @@
                         <div x-data="addressAutocomplete()" x-init="initAC()">
                             <div class="form-group" style="position: relative;">
                                 <label class="form-label" for="order-address">Delivery Address</label>
-                                <input type="text" id="order-address" class="form-input" x-model="addressQuery" @input.debounce.400ms="searchAddress()" @click.outside="suggestions = []" placeholder="Start typing your address..." autocomplete="off" required>
+                                <input type="text" id="order-address" class="form-input" x-model="addressQuery" @input.debounce.400ms="searchAddress()" @click.outside="suggestions = []" placeholder="Start typing your address..." autocomplete="off" data-1p-ignore data-lpignore="true" data-form-type="other" required>
                                 <div x-show="suggestions.length > 0" class="address-suggestions" x-cloak>
                                     <template x-for="(s, i) in suggestions" :key="i">
                                         <button type="button" class="address-suggestion" @click="selectAddress(s)" x-text="s.display"></button>
