@@ -101,10 +101,11 @@
         text-align: left;
         font-size: 0.7rem;
         font-weight: 600;
-        color: #9ca3af;
+        color: #a08060;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         padding: 0.75rem 1rem;
+        background: #fdf8f2;
         border-bottom: 1px solid #e5e7eb;
     }
     .items-table th:last-child,
@@ -128,7 +129,7 @@
         font-weight: 700;
         color: #92400e;
     }
-    .items-table .product-name { font-weight: 600; color: #111827; }
+    .items-table .product-name { font-weight: 600; color: #3d2314; }
     .items-table .unit-price { color: #9ca3af; font-size: 0.8rem; }
     .items-table .line-total { font-weight: 600; color: #111827; }
 
@@ -140,8 +141,8 @@
         font-size: 0.875rem;
     }
     .summary-row.border-top { border-top: 1px solid #e5e7eb; }
-    .summary-row .label { color: #6b7280; }
-    .summary-row .value { font-weight: 600; color: #374151; }
+    .summary-row .label { color: #a08060; }
+    .summary-row .value { font-weight: 600; color: #3d2314; }
     .summary-row.total {
         padding: 0.75rem 1rem;
         border-top: 2px solid #e8d0b0;
@@ -162,19 +163,19 @@
     .info-row .label {
         font-size: 0.75rem;
         font-weight: 600;
-        color: #9ca3af;
+        color: #a08060;
         text-transform: uppercase;
         letter-spacing: 0.025em;
         flex-shrink: 0;
     }
     .info-row .value {
         font-size: 0.875rem;
-        color: #111827;
+        color: #3d2314;
         text-align: right;
         word-break: break-word;
     }
     .info-row .value a {
-        color: #2563eb;
+        color: #8b5e3c;
         text-decoration: none;
     }
     .info-row .value a:hover { text-decoration: underline; }
@@ -189,8 +190,8 @@
         font-size: 0.75rem;
         font-weight: 600;
     }
-    .fulfillment-delivery { background: #dbeafe; color: #1e40af; }
-    .fulfillment-pickup { background: #f3f4f6; color: #374151; }
+    .fulfillment-delivery { background: #e8d0b0; color: #3d2314; }
+    .fulfillment-pickup { background: #fdf8f2; color: #6b4c3b; }
 
     /* Payment badge */
     .payment-badge {
@@ -207,7 +208,7 @@
     /* Notes */
     .notes-text {
         font-size: 0.875rem;
-        color: #374151;
+        color: #4a3225;
         line-height: 1.5;
         white-space: pre-wrap;
     }
@@ -430,18 +431,18 @@
                 <div class="card-body">
                     <div style="font-size:0.8rem;color:#6b7280;display:flex;flex-direction:column;gap:0.5rem;">
                         <div>
-                            <span class="timeline-dot" style="background:#10b981;"></span>
+                            <span class="timeline-dot" style="background:#8b5e3c;"></span>
                             <strong>Ordered</strong> — {{ $record->created_at->format('M j, g:i A') }}
                         </div>
                         @if($record->paid_at)
                             <div>
-                                <span class="timeline-dot" style="background:#059669;"></span>
+                                <span class="timeline-dot" style="background:#8b5e3c;"></span>
                                 <strong>Paid</strong> — {{ $record->paid_at->format('M j, g:i A') }}
                             </div>
                         @endif
                         @if($record->delivered_at)
                             <div>
-                                <span class="timeline-dot" style="background:#6b7280;"></span>
+                                <span class="timeline-dot" style="background:#6b4c3b;"></span>
                                 <strong>Delivered</strong> — {{ $record->delivered_at->format('M j, g:i A') }}
                             </div>
                         @endif
