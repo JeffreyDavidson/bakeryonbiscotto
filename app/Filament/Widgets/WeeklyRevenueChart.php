@@ -11,7 +11,7 @@ class WeeklyRevenueChart extends ChartWidget
 {
     protected static ?int $sort = 4;
 
-    protected static ?string $heading = "This Week's Revenue";
+    protected ?string $heading = "This Week's Revenue";
 
     protected int|string|array $columnSpan = 'full';
 
