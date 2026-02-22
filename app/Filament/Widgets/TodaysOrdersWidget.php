@@ -52,7 +52,8 @@ class TodaysOrdersWidget extends BaseWidget
                 TextColumn::make('total')
                     ->money('usd'),
             ])
-            ->emptyStateHeading('No orders for today')
+            ->emptyStateHeading("No orders today — enjoy the quiet! 🍞")
+            ->emptyStateDescription('Orders scheduled for today will appear here.')
             ->emptyStateIcon('heroicon-o-shopping-bag');
     }
 }
