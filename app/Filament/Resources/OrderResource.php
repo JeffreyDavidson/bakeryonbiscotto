@@ -121,14 +121,6 @@ class OrderResource extends Resource
                         'cancelled' => 'danger',
                         default => 'gray',
                     }),
-                Tables\Columns\TextColumn::make('payment_status')
-                    ->badge()
-                    ->color(fn (string $state) => match ($state) {
-                        'paid' => 'success',
-                        'unpaid' => 'danger',
-                        'refunded' => 'warning',
-                        default => 'gray',
-                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -144,12 +136,6 @@ class OrderResource extends Resource
                         'ready' => 'Ready',
                         'completed' => 'Completed',
                         'cancelled' => 'Cancelled',
-                    ]),
-                Tables\Filters\SelectFilter::make('payment_status')
-                    ->options([
-                        'unpaid' => 'Unpaid',
-                        'paid' => 'Paid',
-                        'refunded' => 'Refunded',
                     ]),
             ])
             ->actions([
