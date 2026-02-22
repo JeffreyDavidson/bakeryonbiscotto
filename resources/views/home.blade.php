@@ -1843,8 +1843,16 @@
             transition: color 0.3s;
         }
         .footer-info a:hover { color: var(--cream); }
+        .footer-allergen {
+            margin-top: 24px;
+            font-size: 11px;
+            color: rgba(245,230,208,0.35);
+            max-width: 600px;
+            line-height: 1.5;
+            font-style: italic;
+        }
         .footer-bottom {
-            margin-top: 40px; padding-top: 20px;
+            margin-top: 20px; padding-top: 20px;
             border-top: 1px solid rgba(245,230,208,0.06);
             font-size: 12px; color: rgba(245,230,208,0.2);
         }
@@ -2337,14 +2345,20 @@
                 </div></div>
             </div>
             <div class="faq-item" :class="{ 'open': open === 5 }">
-                <button class="faq-question" :aria-expanded="open === 5 ? 'true' : 'false'" aria-controls="faq-answer-5" @click="open = open === 5 ? null : 5" @keydown.enter.prevent="open = open === 5 ? null : 5" @keydown.space.prevent="open = open === 5 ? null : 5">Can I customize my order?</button>
+                <button class="faq-question" :aria-expanded="open === 5 ? 'true' : 'false'" aria-controls="faq-answer-5" @click="open = open === 5 ? null : 5" @keydown.enter.prevent="open = open === 5 ? null : 5" @keydown.space.prevent="open = open === 5 ? null : 5">What if I can't pick up at my scheduled time?</button>
                 <div class="faq-answer" id="faq-answer-5" role="region"><div class="faq-answer-inner">
-                    <p>We don't take fully custom orders, but we can make small adjustments. Don't like walnuts in your banana bread? We can swap in pecans. We can't accommodate items outside our menu, but we always love hearing suggestions for future offerings.</p>
+                    <p>Please contact us as soon as possible to discuss rescheduling. Orders will not be held longer than 24 hours. If your order is not picked up or rescheduled during that time, it will be considered cancelled with no refund.</p>
                 </div></div>
             </div>
             <div class="faq-item" :class="{ 'open': open === 6 }">
-                <button class="faq-question" :aria-expanded="open === 6 ? 'true' : 'false'" aria-controls="faq-answer-6" @click="open = open === 6 ? null : 6" @keydown.enter.prevent="open = open === 6 ? null : 6" @keydown.space.prevent="open = open === 6 ? null : 6">Why sourdough?</button>
+                <button class="faq-question" :aria-expanded="open === 6 ? 'true' : 'false'" aria-controls="faq-answer-6" @click="open = open === 6 ? null : 6" @keydown.enter.prevent="open = open === 6 ? null : 6" @keydown.space.prevent="open = open === 6 ? null : 6">Can I customize my order?</button>
                 <div class="faq-answer" id="faq-answer-6" role="region"><div class="faq-answer-inner">
+                    <p>We don't take fully custom orders, but we can make small adjustments. Don't like walnuts in your banana bread? We can swap in pecans. We can't accommodate items outside our menu, but we always love hearing suggestions for future offerings.</p>
+                </div></div>
+            </div>
+            <div class="faq-item" :class="{ 'open': open === 7 }">
+                <button class="faq-question" :aria-expanded="open === 7 ? 'true' : 'false'" aria-controls="faq-answer-7" @click="open = open === 7 ? null : 7" @keydown.enter.prevent="open = open === 7 ? null : 7" @keydown.space.prevent="open = open === 7 ? null : 7">Why sourdough?</button>
+                <div class="faq-answer" id="faq-answer-7" role="region"><div class="faq-answer-inner">
                     <p>It started with wanting bread without processed ingredients and preservatives. Sourdough uses a natural fermentation process, which means simpler ingredients and better flavor. No shortcuts, no additives.</p>
                 </div></div>
             </div>
@@ -2568,19 +2582,7 @@
     </main>
 
     {{-- ═══ FOOTER ═══ --}}
-    <footer class="footer" id="contact">
-        <div class="footer-gradient"></div>
-        <h3>Bakery on Biscotto</h3>
-        <p class="tagline">With love and flour dust</p>
-        <div class="footer-badge">📍 Davenport, FL &nbsp;·&nbsp; Local Pickup &amp; Delivery Available</div>
-        <div class="footer-info">
-            <a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a><br>
-            <a href="https://facebook.com/bakeryonbiscotto" target="_blank">Facebook</a> &nbsp;·&nbsp;
-            <a href="https://instagram.com/bakeryonbiscotto" target="_blank">Instagram</a> &nbsp;·&nbsp;
-            @bakeryonbiscotto
-        </div>
-        <div class="footer-bottom">&copy; {{ date('Y') }} Bakery on Biscotto. All rights reserved.</div>
-    </footer>
+    <x-site-footer />
 
     <script>
         // ── Flour particles ──
