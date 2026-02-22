@@ -17,7 +17,7 @@ class PopularProductsWidget extends BaseWidget
 
     protected int|string|array $columnSpan = 'full';
 
-    public function getTableRecordKey(\Illuminate\Database\Eloquent\Model $record): string
+    public function getTableRecordKey(\Illuminate\Database\Eloquent\Model|array $record): string
     {
         return $record->product_name;
     }
