@@ -207,10 +207,10 @@
             right: 0;
             margin-top: 4px;
             background: var(--light);
-            border: 1.5px solid var(--golden);
-            border-radius: 8px;
+            border: 1.5px solid rgba(139,94,60,0.12);
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 8px 24px rgba(61,35,20,0.18);
+            box-shadow: 0 4px 12px rgba(61,35,20,0.08);
         }
         .subject-option {
             padding: 11px 16px;
