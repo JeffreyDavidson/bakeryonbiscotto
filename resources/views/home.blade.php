@@ -23,6 +23,40 @@
             --candle: #f4c87a;
         }
 
+        /* Skip to main content link */
+        .skip-to-main {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: var(--cream);
+            padding: 12px 24px;
+            border-radius: 0 0 8px 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            z-index: 10000;
+            transition: top 0.3s ease;
+        }
+        .skip-to-main:focus {
+            top: 0;
+            outline: 2px solid var(--golden);
+            outline-offset: 2px;
+        }
+
+        /* Focus styles for all interactive elements */
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible,
+        select:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--golden);
+            outline-offset: 2px;
+        }
+
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -2007,8 +2041,9 @@
     <x-main-nav active="home" />
 
     {{-- ═══ HERO ═══ --}}
+    <main id="main-content">
     <section class="hero" id="home">
-        <div class="hero-bg"></div>
+        <div class="hero-bg" role="img" aria-label="Freshly baked sourdough bread on a rustic table"></div>
         <div class="hero-overlay"></div>
         <div class="flour-particles" id="flour-particles"></div>
         <div class="hero-content">
@@ -2278,38 +2313,38 @@
         </div>
         <div class="faq-list reveal">
             <div class="faq-item" :class="{ 'open': open === 1 }">
-                <button class="faq-question" @click="open = open === 1 ? null : 1">How do I order?</button>
-                <div class="faq-answer"><div class="faq-answer-inner">
+                <button class="faq-question" :aria-expanded="open === 1 ? 'true' : 'false'" aria-controls="faq-answer-1" @click="open = open === 1 ? null : 1" @keydown.enter.prevent="open = open === 1 ? null : 1" @keydown.space.prevent="open = open === 1 ? null : 1">How do I order?</button>
+                <div class="faq-answer" id="faq-answer-1" role="region" aria-labelledby="faq-q-1"><div class="faq-answer-inner">
                     <p>Send us an email at <a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a> with what you'd like and we'll work out timing and logistics together.</p>
                 </div></div>
             </div>
             <div class="faq-item" :class="{ 'open': open === 2 }">
-                <button class="faq-question" @click="open = open === 2 ? null : 2">How far in advance should I order?</button>
-                <div class="faq-answer"><div class="faq-answer-inner">
+                <button class="faq-question" :aria-expanded="open === 2 ? 'true' : 'false'" aria-controls="faq-answer-2" @click="open = open === 2 ? null : 2" @keydown.enter.prevent="open = open === 2 ? null : 2" @keydown.space.prevent="open = open === 2 ? null : 2">How far in advance should I order?</button>
+                <div class="faq-answer" id="faq-answer-2" role="region"><div class="faq-answer-inner">
                     <p>At least 2 days. Sourdough is a slow process. A basic loaf takes a minimum of 24 hours from feeding the starter to pulling it out of the oven. Every order is baked fresh, never in advance.</p>
                 </div></div>
             </div>
             <div class="faq-item" :class="{ 'open': open === 3 }">
-                <button class="faq-question" @click="open = open === 3 ? null : 3">Do you deliver?</button>
-                <div class="faq-answer"><div class="faq-answer-inner">
+                <button class="faq-question" :aria-expanded="open === 3 ? 'true' : 'false'" aria-controls="faq-answer-3" @click="open = open === 3 ? null : 3" @keydown.enter.prevent="open = open === 3 ? null : 3" @keydown.space.prevent="open = open === 3 ? null : 3">Do you deliver?</button>
+                <div class="faq-answer" id="faq-answer-3" role="region"><div class="faq-answer-inner">
                     <p>Yes! We offer both pickup and delivery. Delivery includes a small fee based on mileage.</p>
                 </div></div>
             </div>
             <div class="faq-item" :class="{ 'open': open === 4 }">
-                <button class="faq-question" @click="open = open === 4 ? null : 4">What area do you serve?</button>
-                <div class="faq-answer"><div class="faq-answer-inner">
+                <button class="faq-question" :aria-expanded="open === 4 ? 'true' : 'false'" aria-controls="faq-answer-4" @click="open = open === 4 ? null : 4" @keydown.enter.prevent="open = open === 4 ? null : 4" @keydown.space.prevent="open = open === 4 ? null : 4">What area do you serve?</button>
+                <div class="faq-answer" id="faq-answer-4" role="region"><div class="faq-answer-inner">
                     <p>We easily serve the Four Corners, FL area. We can also accommodate the greater Orlando area with a bit more lead time and coordination.</p>
                 </div></div>
             </div>
             <div class="faq-item" :class="{ 'open': open === 5 }">
-                <button class="faq-question" @click="open = open === 5 ? null : 5">Can I customize my order?</button>
-                <div class="faq-answer"><div class="faq-answer-inner">
+                <button class="faq-question" :aria-expanded="open === 5 ? 'true' : 'false'" aria-controls="faq-answer-5" @click="open = open === 5 ? null : 5" @keydown.enter.prevent="open = open === 5 ? null : 5" @keydown.space.prevent="open = open === 5 ? null : 5">Can I customize my order?</button>
+                <div class="faq-answer" id="faq-answer-5" role="region"><div class="faq-answer-inner">
                     <p>We don't take fully custom orders, but we can make small adjustments. Don't like walnuts in your banana bread? We can swap in pecans. We can't accommodate items outside our menu, but we always love hearing suggestions for future offerings.</p>
                 </div></div>
             </div>
             <div class="faq-item" :class="{ 'open': open === 6 }">
-                <button class="faq-question" @click="open = open === 6 ? null : 6">Why sourdough?</button>
-                <div class="faq-answer"><div class="faq-answer-inner">
+                <button class="faq-question" :aria-expanded="open === 6 ? 'true' : 'false'" aria-controls="faq-answer-6" @click="open = open === 6 ? null : 6" @keydown.enter.prevent="open = open === 6 ? null : 6" @keydown.space.prevent="open = open === 6 ? null : 6">Why sourdough?</button>
+                <div class="faq-answer" id="faq-answer-6" role="region"><div class="faq-answer-inner">
                     <p>It started with wanting bread without processed ingredients and preservatives. Sourdough uses a natural fermentation process, which means simpler ingredients and better flavor. No shortcuts, no additives.</p>
                 </div></div>
             </div>
@@ -2529,6 +2564,8 @@
             </div>
         </div>
     </section>
+
+    </main>
 
     {{-- ═══ FOOTER ═══ --}}
     <footer class="footer" id="contact">

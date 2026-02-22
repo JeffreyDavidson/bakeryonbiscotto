@@ -22,6 +22,40 @@
             --ink: #2a1a0e;
         }
 
+        /* Skip to main content link */
+        .skip-to-main {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: var(--cream);
+            padding: 12px 24px;
+            border-radius: 0 0 8px 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            z-index: 10000;
+            transition: top 0.3s ease;
+        }
+        .skip-to-main:focus {
+            top: 0;
+            outline: 2px solid var(--golden);
+            outline-offset: 2px;
+        }
+
+        /* Focus styles for all interactive elements */
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible,
+        select:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--golden);
+            outline-offset: 2px;
+        }
+
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -190,7 +224,7 @@
             background-color: var(--white);
             background: var(--white);
         }
-        .form-input::placeholder { color: #c0a890; }
+        .form-input::placeholder { color: #8b7355; }
         textarea.form-input { resize: vertical; min-height: 130px; }
         .custom-select {
             user-select: none;
@@ -444,6 +478,7 @@
     <x-main-nav active="contact" />
 
     {{-- HERO --}}
+    <main id="main-content">
     <section class="hero">
         <div class="hero-flour">
             @for($i = 0; $i < 40; $i++)
@@ -479,32 +514,43 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label">Name</label>
-                            <input type="text" name="name" class="form-input" placeholder="Your name" value="{{ old('name') }}" required>
+                            <label class="form-label" for="contact-name">Name</label>
+                            <input type="text" id="contact-name" name="name" class="form-input" placeholder="Your name" value="{{ old('name') }}" required>
                             @error('name') <p class="error-msg">{{ $message }}</p> @enderror
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-input" placeholder="you@email.com" value="{{ old('email') }}" required>
+                            <label class="form-label" for="contact-email">Email</label>
+                            <input type="email" id="contact-email" name="email" class="form-input" placeholder="you@email.com" value="{{ old('email') }}" required>
                             @error('email') <p class="error-msg">{{ $message }}</p> @enderror
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label class="form-label">Phone <span style="font-weight: 400; text-transform: none; opacity: 0.5;">(optional)</span></label>
-                            <input type="tel" name="phone" class="form-input" placeholder="(555) 123-4567" value="{{ old('phone') }}">
+                            <label class="form-label" for="contact-phone">Phone <span style="font-weight: 400; text-transform: none; opacity: 0.5;">(optional)</span></label>
+                            <input type="tel" id="contact-phone" name="phone" class="form-input" placeholder="(555) 123-4567" value="{{ old('phone') }}">
                         </div>
-                        <div class="form-group" style="position: relative; z-index: 10;" x-data="{ open: false, selected: '{{ old('subject', '') }}', options: ['General Question', 'Feedback', 'Other'] }" @click.away="open = false">
-                            <label class="form-label">Subject</label>
+                        <div class="form-group" style="position: relative; z-index: 10;" x-data="{ open: false, selected: '{{ old('subject', '') }}', options: ['General Question', 'Feedback', 'Other'], focusIndex: -1 }" @click.away="open = false" @keydown.escape="open = false">
+                            <label class="form-label" id="subject-label">Subject</label>
                             <input type="hidden" name="subject" :value="selected" required>
-                            <div class="form-input custom-select" @click="open = !open">
+                            <div class="form-input custom-select"
+                                 role="combobox"
+                                 tabindex="0"
+                                 aria-labelledby="subject-label"
+                                 :aria-expanded="open ? 'true' : 'false'"
+                                 aria-haspopup="listbox"
+                                 aria-controls="subject-listbox"
+                                 @click="open = !open"
+                                 @keydown.enter.prevent="open = !open"
+                                 @keydown.space.prevent="open = !open"
+                                 @keydown.arrow-down.prevent="open = true; focusIndex = Math.min(focusIndex + 1, options.length - 1)"
+                                 @keydown.arrow-up.prevent="focusIndex = Math.max(focusIndex - 1, 0)">
                                 <span :style="selected ? '' : 'opacity: 0.5'" x-text="selected || 'Choose a topic...'"></span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" :style="open ? 'transform: rotate(180deg)' : ''" style="transition: transform 0.2s; flex-shrink: 0;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" :style="open ? 'transform: rotate(180deg)' : ''" style="transition: transform 0.2s; flex-shrink: 0;" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </div>
-                            <div x-show="open" x-transition:enter="dropdown-enter" x-transition:enter-start="dropdown-enter-start" x-transition:enter-end="dropdown-enter-end" x-transition:leave="dropdown-leave" x-transition:leave-start="dropdown-leave-start" x-transition:leave-end="dropdown-leave-end" class="subject-dropdown">
-                                <template x-for="opt in options" :key="opt">
-                                    <div @click="selected = opt; open = false" x-text="opt" class="subject-option" :class="selected === opt ? 'active' : ''"></div>
+                            <div x-show="open" x-transition:enter="dropdown-enter" x-transition:enter-start="dropdown-enter-start" x-transition:enter-end="dropdown-enter-end" x-transition:leave="dropdown-leave" x-transition:leave-start="dropdown-leave-start" x-transition:leave-end="dropdown-leave-end" class="subject-dropdown" role="listbox" id="subject-listbox" aria-labelledby="subject-label">
+                                <template x-for="(opt, idx) in options" :key="opt">
+                                    <div @click="selected = opt; open = false" @keydown.enter.prevent="selected = opt; open = false" x-text="opt" class="subject-option" :class="{ 'active': selected === opt }" role="option" :aria-selected="selected === opt ? 'true' : 'false'" tabindex="0"></div>
                                 </template>
                             </div>
                             @error('subject') <p class="error-msg">{{ $message }}</p> @enderror
@@ -512,8 +558,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Message</label>
-                        <textarea name="message" class="form-input" placeholder="What's on your mind..." required>{{ old('message') }}</textarea>
+                        <label class="form-label" for="contact-message">Message</label>
+                        <textarea id="contact-message" name="message" class="form-input" placeholder="What's on your mind..." required>{{ old('message') }}</textarea>
                         @error('message') <p class="error-msg">{{ $message }}</p> @enderror
                     </div>
 
@@ -578,6 +624,7 @@
                 {{-- MAP --}}
                 <div style="margin-top: 28px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(212,165,116,0.15); box-shadow: 0 2px 8px rgba(61,35,20,0.06);">
                     <iframe
+                        title="Map showing Davenport, Florida location"
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d112284.7!2d-81.65!3d28.16!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88dd7d5a0b6f3b55%3A0x82a8b8a0f7e7a0c0!2sDavenport%2C%20FL!5e0!3m2!1sen!2sus!4v1"
                         width="100%" height="180" style="border:0; display:block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
@@ -590,6 +637,8 @@
             </div>
         </div>
     </div>
+
+    </main>
 
     <footer class="footer">
         <p>&copy; {{ date('Y') }} Bakery on Biscotto. <a href="/">Back to Home</a></p>

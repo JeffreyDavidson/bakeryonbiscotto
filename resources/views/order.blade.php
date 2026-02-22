@@ -22,6 +22,40 @@
             --ink: #2a1a0e;
         }
 
+        /* Skip to main content link */
+        .skip-to-main {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: var(--cream);
+            padding: 12px 24px;
+            border-radius: 0 0 8px 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            z-index: 10000;
+            transition: top 0.3s ease;
+        }
+        .skip-to-main:focus {
+            top: 0;
+            outline: 2px solid var(--golden);
+            outline-offset: 2px;
+        }
+
+        /* Focus styles for all interactive elements */
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible,
+        select:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--golden);
+            outline-offset: 2px;
+        }
+
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
@@ -382,7 +416,7 @@
             border-color: var(--golden);
             box-shadow: 0 0 0 3px rgba(212,165,116,0.15);
         }
-        .form-input::placeholder { color: #b8a090; }
+        .form-input::placeholder { color: #8b7355; }
         textarea.form-input { resize: vertical; min-height: 80px; }
 
         .toggle-group {
@@ -738,6 +772,7 @@
     <x-main-nav active="order" />
 
     {{-- HERO --}}
+    <main id="main-content">
     <section class="order-hero">
         <h1>Place Your Order</h1>
         <p>Everything baked fresh to order. Please allow at least 2 days for your handcrafted sourdough.</p>
@@ -803,7 +838,7 @@
                     </div>
                 </div>
 
-                <div class="cart-body">
+                <div class="cart-body" aria-live="polite">
                     <div x-show="cart.length === 0" class="cart-empty">
                         <span>🛒</span>
                         Add some goodies to get started!
@@ -819,7 +854,7 @@
                                 </template>
                             </div>
                             <span class="cart-item-price" x-text="'$' + (item.price * item.qty).toFixed(2)"></span>
-                            <button class="cart-item-remove" @click="removeItem(item.id)" title="Remove">✕</button>
+                            <button class="cart-item-remove" @click="removeItem(item.id)" title="Remove" :aria-label="'Remove ' + item.name + ' from cart'">✕</button>
                         </div>
                     </template>
 
@@ -857,16 +892,16 @@
                     <h3 class="form-section-title">Your Info</h3>
 
                     <div class="form-group">
-                        <label class="form-label">Name</label>
-                        <input type="text" class="form-input" x-model="form.customer_name" placeholder="Your name" required>
+                        <label class="form-label" for="order-name">Name</label>
+                        <input type="text" id="order-name" class="form-input" x-model="form.customer_name" placeholder="Your name" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-input" x-model="form.customer_email" placeholder="you@email.com" required>
+                        <label class="form-label" for="order-email">Email</label>
+                        <input type="email" id="order-email" class="form-input" x-model="form.customer_email" placeholder="you@email.com" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Phone</label>
-                        <input type="tel" class="form-input" x-model="form.customer_phone" @input="formatPhone" placeholder="(555) 123-4567" required>
+                        <label class="form-label" for="order-phone">Phone</label>
+                        <input type="tel" id="order-phone" class="form-input" x-model="form.customer_phone" @input="formatPhone" placeholder="(555) 123-4567" required>
                     </div>
 
                     <h3 class="form-section-title" style="margin-top: 24px;">Fulfillment</h3>
@@ -889,12 +924,12 @@
                     <template x-if="fulfillment === 'delivery'">
                         <div>
                             <div class="form-group">
-                                <label class="form-label">Delivery Address</label>
-                                <input type="text" class="form-input" x-model="form.delivery_address" placeholder="123 Main St, Davenport FL" required>
+                                <label class="form-label" for="order-address">Delivery Address</label>
+                                <input type="text" id="order-address" class="form-input" x-model="form.delivery_address" placeholder="123 Main St, Davenport FL" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label">ZIP Code</label>
-                                <input type="text" class="form-input" x-model="form.delivery_zip" placeholder="33837" required>
+                                <label class="form-label" for="order-zip">ZIP Code</label>
+                                <input type="text" id="order-zip" class="form-input" x-model="form.delivery_zip" placeholder="33837" required>
                             </div>
                         </div>
                     </template>
@@ -906,7 +941,7 @@
                                 <span x-text="selectedLabel || 'Choose a date'" :style="selectedLabel ? '' : 'color: #b8a090'"></span>
                                 <span style="font-size: 1.1rem;">📅</span>
                             </button>
-                            <div class="date-dropdown" x-show="open" x-transition.opacity @click.outside="open = false" x-cloak>
+                            <div class="date-dropdown" x-show="open" x-transition.opacity @click.outside="open = false" @keydown.escape.window="open = false" role="dialog" aria-label="Date picker" x-cloak>
                                 <div class="cal-header">
                                     <button type="button" class="cal-nav" @click="prevMonth">‹</button>
                                     <span class="cal-title" x-text="monthYear"></span>
@@ -928,7 +963,11 @@
                                                 'today': isToday(day)
                                             }"
                                             :disabled="!isSelectable(day)"
-                                            @click="selectDay(day)">
+                                            :aria-label="getDayLabel(day)"
+                                            :aria-selected="isSelected(day) ? 'true' : 'false'"
+                                            @click="selectDay(day)"
+                                            @keydown.arrow-right.prevent="$event.target.nextElementSibling?.focus()"
+                                            @keydown.arrow-left.prevent="$event.target.previousElementSibling?.focus()">
                                             <span x-text="day"></span>
                                         </button>
                                     </template>
@@ -941,8 +980,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Notes <span style="font-weight: 400; text-transform: none; opacity: 0.6;">(optional)</span></label>
-                        <textarea class="form-input" x-model="form.notes" placeholder="Any special requests or instructions..."></textarea>
+                        <label class="form-label" for="order-notes">Notes <span style="font-weight: 400; text-transform: none; opacity: 0.6;">(optional)</span></label>
+                        <textarea id="order-notes" class="form-input" x-model="form.notes" placeholder="Any special requests or instructions..."></textarea>
                     </div>
 
                     {{-- Hidden fields for items --}}
@@ -989,8 +1028,8 @@
         </div>
 
     {{-- BUNDLE PICKER MODAL --}}
-    <div x-show="bundleModal" x-transition.opacity class="bundle-overlay" @click.self="bundleModal = false" x-cloak>
-        <div class="bundle-modal" @click.stop>
+    <div x-show="bundleModal" x-transition.opacity class="bundle-overlay" @click.self="bundleModal = false" @keydown.escape.window="bundleModal = false" x-cloak>
+        <div class="bundle-modal" role="dialog" aria-modal="true" aria-label="Choose bundle flavors" @click.stop x-trap.noscroll="bundleModal">
             <div class="bundle-modal-header">
                 <h3 x-text="'Choose ' + bundlePickCount + ' Flavors'"></h3>
                 <button @click="bundleModal = false" class="bundle-close">&times;</button>
@@ -1020,6 +1059,8 @@
         </div>
     </div>
     </div>
+
+    </main>
 
     {{-- FOOTER --}}
     <footer class="order-footer">
@@ -1094,6 +1135,13 @@
                 isToday(day) {
                     const now = new Date();
                     return now.getFullYear() === this.year && now.getMonth() === this.month && now.getDate() === day;
+                },
+
+                getDayLabel(day) {
+                    const date = new Date(this.year, this.month, day);
+                    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+                    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                    return days[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate() + ', ' + this.year;
                 },
 
                 selectDay(day) {
