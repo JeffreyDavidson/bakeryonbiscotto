@@ -118,14 +118,10 @@
             display: grid;
             grid-template-columns: 1fr 380px;
             gap: 40px;
-            height: calc(100vh - 140px);
         }
         .products-col {
-            overflow-y: auto;
             padding: 40px 0 80px;
         }
-        .products-col::-webkit-scrollbar { display: none; }
-        .products-col { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* ═══ PRODUCT GRID ═══ */
         .category-section { margin-bottom: 40px; }
@@ -264,11 +260,13 @@
 
         /* ═══ CART SIDEBAR ═══ */
         .cart-sidebar {
-            overflow-y: auto;
             padding: 40px 0 80px;
+            position: sticky;
+            top: 80px;
+            align-self: start;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
         }
-        .cart-sidebar::-webkit-scrollbar { display: none; }
-        .cart-sidebar { -ms-overflow-style: none; scrollbar-width: none; }
         .cart-card {
             background: var(--white);
             border-radius: 20px;
