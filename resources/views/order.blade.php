@@ -1371,34 +1371,36 @@
                     this.deliveryDistance = null;
 
                     try {
+                        // Step 1: Geocode the customer address
                         const query = encodeURIComponent(addr + ', ' + zip + ', FL');
-                        const resp = await fetch('https://nominatim.openstreetmap.org/search?q=' + query + '&format=json&limit=1&countrycodes=us', {
+                        const geoResp = await fetch('https://nominatim.openstreetmap.org/search?q=' + query + '&format=json&limit=1&countrycodes=us', {
                             headers: { 'Accept': 'application/json' }
                         });
-                        const data = await resp.json();
+                        const geoData = await geoResp.json();
 
-                        if (!data.length) {
+                        if (!geoData.length) {
                             this.deliveryError = "We couldn't find that address. Please double-check and try again.";
                             this.deliveryCalcing = false;
                             return;
                         }
 
-                        const lat = parseFloat(data[0].lat);
-                        const lon = parseFloat(data[0].lon);
+                        const custLat = geoData[0].lat;
+                        const custLon = geoData[0].lon;
 
-                        // Cassie's location: 28.31716, -81.65249
-                        const baseLat = 28.31716;
+                        // Step 2: Get driving distance via OSRM
                         const baseLon = -81.65249;
+                        const baseLat = 28.31716;
+                        const routeResp = await fetch('https://router.project-osrm.org/route/v1/driving/' + baseLon + ',' + baseLat + ';' + custLon + ',' + custLat + '?overview=false');
+                        const routeData = await routeResp.json();
 
-                        // Haversine formula
-                        const R = 3959; // Earth radius in miles
-                        const dLat = (lat - baseLat) * Math.PI / 180;
-                        const dLon = (lon - baseLon) * Math.PI / 180;
-                        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                                  Math.cos(baseLat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) *
-                                  Math.sin(dLon/2) * Math.sin(dLon/2);
-                        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-                        const miles = R * c;
+                        if (routeData.code !== 'Ok' || !routeData.routes.length) {
+                            this.deliveryError = "Couldn't calculate driving distance. Please verify your address.";
+                            this.deliveryCalcing = false;
+                            return;
+                        }
+
+                        const meters = routeData.routes[0].legs[0].distance;
+                        const miles = meters / 1609.34;
 
                         this.deliveryDistance = miles.toFixed(1);
 
