@@ -17,6 +17,11 @@ class BakingSheetWidget extends BaseWidget
 
     protected int|string|array $columnSpan = 'full';
 
+    public function getTableRecordKey(\Illuminate\Database\Eloquent\Model|array $record): string
+    {
+        return $record->product_name ?? '';
+    }
+
     public function table(Table $table): Table
     {
         return $table
@@ -45,7 +50,6 @@ class BakingSheetWidget extends BaseWidget
                     ->badge()
                     ->color('primary'),
             ])
-            ->recordKey('product_name')
             ->defaultSort('total_quantity', 'desc')
             ->emptyStateHeading('Nothing to bake!')
             ->emptyStateIcon('heroicon-o-cake')
