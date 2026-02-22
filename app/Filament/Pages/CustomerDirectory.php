@@ -107,7 +107,7 @@ class CustomerDirectory extends Page implements HasTable
             ])
             ->defaultSort('last_order_date', 'desc')
             ->actions([
-                Tables\Actions\Action::make('view')
+                \Filament\Actions\Action::make('view')
                     ->label('View')
                     ->icon('heroicon-o-eye')
                     ->modalHeading(fn ($record) => $record->customer_name)
