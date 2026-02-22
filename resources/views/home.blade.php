@@ -2118,36 +2118,7 @@
         </div>
     </section>
 
-    {{-- ═══ ORDER ═══ --}}
-    <section class="order" id="order">
-        <div class="order-inner">
-            <div class="order-card reveal">
-                <h2>Ready to Order?</h2>
-                <p class="sub">It's as easy as 1, 2, 3</p>
-                <div class="order-steps">
-                    <div class="order-step">
-                        <div class="order-num">1</div>
-                        <h3>Browse</h3>
-                        <p>Check out our menu above and pick your favorites</p>
-                    </div>
-                    <div class="order-step">
-                        <div class="order-num">2</div>
-                        <h3>Email Us</h3>
-                        <p>Send your order and we'll confirm details and timing</p>
-                    </div>
-                    <div class="order-step">
-                        <div class="order-num">3</div>
-                        <h3>Enjoy</h3>
-                        <p>Pick up your fresh bread or get it delivered locally</p>
-                    </div>
-                </div>
-                <a href="mailto:bakeryonbiscotto@gmail.com?subject=Bread%20Order" class="order-btn">
-                    Place Your Order
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </a>
-            </div>
-        </div>
-    </section>
+    {{-- ORDER section removed --}}
 
     </main>
 
