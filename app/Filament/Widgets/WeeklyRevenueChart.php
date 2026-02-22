@@ -41,7 +41,7 @@ class WeeklyRevenueChart extends ChartWidget
                 [
                     'label' => 'Revenue ($)',
                     'data' => $data,
-                    'backgroundColor' => '#f59e0b',
+                    'backgroundColor' => '#8b5e3c',
                 ],
             ],
             'labels' => $labels,
