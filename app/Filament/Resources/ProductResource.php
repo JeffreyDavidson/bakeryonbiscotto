@@ -54,7 +54,10 @@ class ProductResource extends Resource
                         ->step('0.01'),
                     \Filament\Forms\Components\FileUpload::make('image')
                         ->image()
-                        ->directory('products'),
+                        ->disk('public')
+                        ->directory('products')
+                        ->visibility('public')
+                        ->imagePreviewHeight('200'),
                 ]),
 
             \Filament\Schemas\Components\Section::make('Settings')
