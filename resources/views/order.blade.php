@@ -959,28 +959,25 @@
                         <div>
                             <div class="form-group">
                                 <label class="form-label" for="order-address">Delivery Address</label>
-                                <input type="text" id="order-address" class="form-input" x-model="form.delivery_address" placeholder="123 Main St, Davenport FL" required>
+                                <input type="text" id="order-address" class="form-input" x-model="form.delivery_address" placeholder="123 Main St, Davenport FL" @input.debounce.800ms="calcDeliveryFee()" required>
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="order-zip">ZIP Code</label>
-                                <input type="text" id="order-zip" class="form-input" x-model="form.delivery_zip" placeholder="33837" required>
+                                <input type="text" id="order-zip" class="form-input" x-model="form.delivery_zip" placeholder="33837" @input.debounce.800ms="calcDeliveryFee()" required>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Distance from Davenport</label>
-                                <div style="display: flex; flex-direction: column; gap: 8px;">
-                                    <button type="button" class="toggle-option" style="flex-direction: row; justify-content: space-between;" :class="{ active: deliveryTier === 'under5' }" @click="deliveryTier = 'under5'">
-                                        <span style="font-family: 'Playfair Display', serif; font-size: 0.95rem;">Under 5 miles</span>
-                                        <span style="font-weight: 600; color: var(--accent);">Free</span>
-                                    </button>
-                                    <button type="button" class="toggle-option" style="flex-direction: row; justify-content: space-between;" :class="{ active: deliveryTier === '5to10' }" @click="deliveryTier = '5to10'">
-                                        <span style="font-family: 'Playfair Display', serif; font-size: 0.95rem;">5–10 miles</span>
-                                        <span style="font-weight: 600; color: var(--accent);">$5.00</span>
-                                    </button>
-                                    <button type="button" class="toggle-option" style="flex-direction: row; justify-content: space-between;" :class="{ active: deliveryTier === 'over10' }" @click="deliveryTier = 'over10'">
-                                        <span style="font-family: 'Playfair Display', serif; font-size: 0.95rem;">10+ miles</span>
-                                        <span style="font-weight: 600; color: var(--accent);">$10.00</span>
-                                    </button>
-                                </div>
+                            <div x-show="deliveryCalcing" class="notice" style="justify-content: center;">
+                                <span>Calculating delivery fee...</span>
+                            </div>
+                            <div x-show="deliveryError" class="notice" style="background: rgba(192,57,43,0.1);">
+                                <span class="notice-icon">⚠️</span>
+                                <span x-text="deliveryError" style="color: #c0392b;"></span>
+                            </div>
+                            <div x-show="deliveryTier && !deliveryCalcing && !deliveryError" class="notice">
+                                <span class="notice-icon">🚗</span>
+                                <span>
+                                    <strong x-text="deliveryDistance"></strong> miles away —
+                                    Delivery fee: <strong x-text="deliveryFee() === 0 ? 'Free!' : '$' + deliveryFee().toFixed(2)"></strong>
+                                </span>
                             </div>
                         </div>
                     </template>
@@ -1283,6 +1280,9 @@
                 cart: [],
                 fulfillment: 'pickup',
                 deliveryTier: null,
+                deliveryDistance: null,
+                deliveryCalcing: false,
+                deliveryError: '',
                 mobileCollapsed: window.innerWidth <= 900,
                 submitting: false,
                 paymentError: '',
@@ -1353,6 +1353,67 @@
                     if (this.deliveryTier === '5to10') return 5;
                     if (this.deliveryTier === 'over10') return 10;
                     return 0;
+                },
+
+                async calcDeliveryFee() {
+                    const addr = this.form.delivery_address.trim();
+                    const zip = this.form.delivery_zip.trim();
+                    if (!addr || !zip) {
+                        this.deliveryTier = null;
+                        this.deliveryDistance = null;
+                        this.deliveryError = '';
+                        return;
+                    }
+
+                    this.deliveryCalcing = true;
+                    this.deliveryError = '';
+                    this.deliveryTier = null;
+                    this.deliveryDistance = null;
+
+                    try {
+                        const query = encodeURIComponent(addr + ', ' + zip + ', FL');
+                        const resp = await fetch('https://nominatim.openstreetmap.org/search?q=' + query + '&format=json&limit=1&countrycodes=us', {
+                            headers: { 'Accept': 'application/json' }
+                        });
+                        const data = await resp.json();
+
+                        if (!data.length) {
+                            this.deliveryError = "We couldn't find that address. Please double-check and try again.";
+                            this.deliveryCalcing = false;
+                            return;
+                        }
+
+                        const lat = parseFloat(data[0].lat);
+                        const lon = parseFloat(data[0].lon);
+
+                        // Cassie's location: 28.31716, -81.65249
+                        const baseLat = 28.31716;
+                        const baseLon = -81.65249;
+
+                        // Haversine formula
+                        const R = 3959; // Earth radius in miles
+                        const dLat = (lat - baseLat) * Math.PI / 180;
+                        const dLon = (lon - baseLon) * Math.PI / 180;
+                        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                                  Math.cos(baseLat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) *
+                                  Math.sin(dLon/2) * Math.sin(dLon/2);
+                        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                        const miles = R * c;
+
+                        this.deliveryDistance = miles.toFixed(1);
+
+                        if (miles < 5) {
+                            this.deliveryTier = 'under5';
+                        } else if (miles <= 10) {
+                            this.deliveryTier = '5to10';
+                        } else {
+                            this.deliveryTier = 'over10';
+                        }
+                    } catch (e) {
+                        this.deliveryError = "Couldn't calculate distance. Please try again.";
+                    }
+
+                    this.deliveryCalcing = false;
                 },
 
                 total() {
