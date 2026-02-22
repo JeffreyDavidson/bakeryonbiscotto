@@ -2314,8 +2314,8 @@
         <div class="faq-list reveal">
             <div class="faq-item" :class="{ 'open': open === 1 }">
                 <button class="faq-question" :aria-expanded="open === 1 ? 'true' : 'false'" aria-controls="faq-answer-1" @click="open = open === 1 ? null : 1" @keydown.enter.prevent="open = open === 1 ? null : 1" @keydown.space.prevent="open = open === 1 ? null : 1">How do I order?</button>
-                <div class="faq-answer" id="faq-answer-1" role="region" aria-labelledby="faq-q-1"><div class="faq-answer-inner">
-                    <p>Send us an email at <a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a> with what you'd like and we'll work out timing and logistics together.</p>
+                <div class="faq-answer" id="faq-answer-1" role="region"><div class="faq-answer-inner">
+                    <p>Use our <a href="/order">online order page</a>! Pick what you'd like, choose pickup or delivery, and check out. Have a special request? Email us at <a href="mailto:bakeryonbiscotto@gmail.com">bakeryonbiscotto@gmail.com</a>.</p>
                 </div></div>
             </div>
             <div class="faq-item" :class="{ 'open': open === 2 }">
@@ -2327,13 +2327,13 @@
             <div class="faq-item" :class="{ 'open': open === 3 }">
                 <button class="faq-question" :aria-expanded="open === 3 ? 'true' : 'false'" aria-controls="faq-answer-3" @click="open = open === 3 ? null : 3" @keydown.enter.prevent="open = open === 3 ? null : 3" @keydown.space.prevent="open = open === 3 ? null : 3">Do you deliver?</button>
                 <div class="faq-answer" id="faq-answer-3" role="region"><div class="faq-answer-inner">
-                    <p>Yes! We offer both pickup and delivery. Delivery includes a small fee based on mileage.</p>
+                    <p>Yes! Pickup is available in Davenport, FL and we deliver throughout the Four Corners and greater Orlando area for a $5 delivery fee.</p>
                 </div></div>
             </div>
             <div class="faq-item" :class="{ 'open': open === 4 }">
-                <button class="faq-question" :aria-expanded="open === 4 ? 'true' : 'false'" aria-controls="faq-answer-4" @click="open = open === 4 ? null : 4" @keydown.enter.prevent="open = open === 4 ? null : 4" @keydown.space.prevent="open = open === 4 ? null : 4">What area do you serve?</button>
+                <button class="faq-question" :aria-expanded="open === 4 ? 'true' : 'false'" aria-controls="faq-answer-4" @click="open = open === 4 ? null : 4" @keydown.enter.prevent="open = open === 4 ? null : 4" @keydown.space.prevent="open = open === 4 ? null : 4">What if I need to cancel?</button>
                 <div class="faq-answer" id="faq-answer-4" role="region"><div class="faq-answer-inner">
-                    <p>We easily serve the Four Corners, FL area. We can also accommodate the greater Orlando area with a bit more lead time and coordination.</p>
+                    <p>Cancellations made at least 48 hours in advance will receive a full refund. Between 24 and 48 hours notice will receive a 50% refund. Anything under 24 hours is non-refundable.</p>
                 </div></div>
             </div>
             <div class="faq-item" :class="{ 'open': open === 5 }">
@@ -2346,12 +2346,6 @@
                 <button class="faq-question" :aria-expanded="open === 6 ? 'true' : 'false'" aria-controls="faq-answer-6" @click="open = open === 6 ? null : 6" @keydown.enter.prevent="open = open === 6 ? null : 6" @keydown.space.prevent="open = open === 6 ? null : 6">Why sourdough?</button>
                 <div class="faq-answer" id="faq-answer-6" role="region"><div class="faq-answer-inner">
                     <p>It started with wanting bread without processed ingredients and preservatives. Sourdough uses a natural fermentation process, which means simpler ingredients and better flavor. No shortcuts, no additives.</p>
-                </div></div>
-            </div>
-            <div class="faq-item" :class="{ 'open': open === 7 }">
-                <button class="faq-question" :aria-expanded="open === 7 ? 'true' : 'false'" aria-controls="faq-answer-7" @click="open = open === 7 ? null : 7" @keydown.enter.prevent="open = open === 7 ? null : 7" @keydown.space.prevent="open = open === 7 ? null : 7">What if I need to cancel?</button>
-                <div class="faq-answer" id="faq-answer-7" role="region"><div class="faq-answer-inner">
-                    <p>Cancellations made at least 48 hours in advance will receive a full refund. Between 24 and 48 hours notice will receive a 50% refund. Anything under 24 hours is non-refundable.</p>
                 </div></div>
             </div>
         </div>
