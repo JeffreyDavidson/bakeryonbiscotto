@@ -147,15 +147,18 @@ table thead tr {
     padding: 0.75rem 1rem !important;
 }
 
-/* Search input */
+/* Search input — remove double border */
 .fi-ta-search-field input {
-    border: 1px solid rgba(212,165,116,0.3) !important;
+    border: none !important;
     border-radius: 8px !important;
-    background: #FFFFFF !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 .fi-ta-search-field input:focus {
-    border-color: #D4A574 !important;
-    box-shadow: 0 0 0 3px rgba(212,165,116,0.15) !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
 /* Pagination footer */
