@@ -109,7 +109,8 @@ class OrderResource extends Resource
                     ->formatStateUsing(fn (string $state) => ucfirst($state)),
                 Tables\Columns\TextColumn::make('requested_date')
                     ->date()
-                    ->sortable(),
+                    ->sortable()
+                    ->description(fn ($record) => $record->requested_time),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state) => match ($state) {
