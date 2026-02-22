@@ -7,9 +7,12 @@ use App\Models\Order;
 use BackedEnum;
 use Filament\Actions;
 use Filament\Resources\Pages\Page;
+use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 
 class ViewOrder extends Page
 {
+    use InteractsWithRecord;
+
     protected static string $resource = OrderResource::class;
 
     protected static ?string $navigationLabel = 'View';
@@ -18,16 +21,15 @@ class ViewOrder extends Page
 
     protected string $view = 'filament.pages.order-detail';
 
-    public Order $record;
-
     public function mount(int|string $record): void
     {
-        $this->record = Order::with('items')->findOrFail($record);
+        $this->record = $this->resolveRecord($record);
+        $this->record->load('items');
     }
 
     public function getTitle(): string
     {
-        return '';
+        return 'Order ' . $this->record->order_number;
     }
 
     public function getHeading(): string
