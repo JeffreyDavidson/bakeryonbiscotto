@@ -96,7 +96,7 @@
         </x-admin.stat-grid>
 
         {{-- Baking checklist --}}
-        <x-admin.card title="🧁 What to Bake" :subtitle="$this->bakingItems->count() . ' products · ' . $this->bakingItems->sum('total_quantity') . ' total'">
+        <x-admin.card title="🍞 What to Bake" :subtitle="$this->bakingItems->count() . ' products · ' . $this->bakingItems->sum('total_quantity') . ' total'">
             <x-admin.data-table data-admin-table>
                 <x-slot:head>
                     <th class="print-check" style="display: none; width: 40px;"></th>
