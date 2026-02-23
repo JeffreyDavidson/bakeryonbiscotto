@@ -288,6 +288,182 @@ table thead tr {
     box-shadow: 0 0 0 3px rgba(212,165,116,0.15) !important;
 }
 
+/* Helper text */
+.fi-fo-field-wrp .fi-fo-field-wrp-helper-text {
+    color: #a08060 !important;
+}
+
+/* Placeholder text */
+.fi-input input::placeholder,
+.fi-input textarea::placeholder {
+    color: #c4a882 !important;
+}
+
+/* ===== SECTIONS (Form Panels) ===== */
+.fi-section {
+    background: #FFFFFF !important;
+    overflow: hidden !important;
+}
+/* Section header — warm cream with brown accent */
+.fi-section-header {
+    background: #fdf8f2 !important;
+    border-bottom: 1px solid #e8d0b0 !important;
+    padding: 1rem 1.25rem !important;
+}
+.fi-section-header-heading {
+    color: #3d2314 !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+}
+.fi-section-header-description {
+    color: #a08060 !important;
+}
+/* Section icon */
+.fi-section-header .fi-icon {
+    color: #8b5e3c !important;
+}
+/* Collapsed section hover */
+.fi-section-header:hover {
+    background: #f5e6d0 !important;
+}
+/* Section collapse trigger */
+.fi-section-header button {
+    color: #8b5e3c !important;
+}
+
+/* ===== TOGGLE ===== */
+/* Active toggle — bakery brown instead of blue */
+.fi-toggle-input:checked {
+    background-color: #8b5e3c !important;
+    border-color: #8b5e3c !important;
+}
+.fi-toggle-input:checked:hover {
+    background-color: #6b4c3b !important;
+}
+.fi-toggle-input:focus {
+    box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.2) !important;
+}
+/* Unchecked toggle */
+.fi-toggle-input {
+    border-color: #e8d0b0 !important;
+}
+
+/* ===== SELECT ===== */
+.fi-select-input {
+    border: 1px solid rgba(212,165,116,0.3) !important;
+    border-radius: 8px !important;
+}
+
+/* ===== TEXTAREA ===== */
+textarea.fi-textarea-input {
+    border: 1px solid rgba(212,165,116,0.3) !important;
+    border-radius: 8px !important;
+}
+textarea.fi-textarea-input:focus {
+    border-color: #D4A574 !important;
+    box-shadow: 0 0 0 3px rgba(212,165,116,0.15) !important;
+}
+
+/* ===== REPEATER ===== */
+.fi-fo-repeater {
+    border: 1px solid #e8d0b0 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+/* Repeater items */
+.fi-fo-repeater-item {
+    border-bottom: 1px solid #f3ebe0 !important;
+    background: #FFFFFF !important;
+}
+.fi-fo-repeater-item:last-child {
+    border-bottom: none !important;
+}
+/* Repeater item header (drag handle, delete) */
+.fi-fo-repeater-item-header {
+    background: #fdf8f2 !important;
+    border-bottom: 1px solid #f3ebe0 !important;
+}
+/* Repeater add button */
+.fi-fo-repeater > .fi-fo-repeater-add-action-ctn {
+    padding: 0.75rem !important;
+    background: #fdf8f2 !important;
+    border-top: 1px solid #f3ebe0 !important;
+}
+.fi-fo-repeater .fi-fo-repeater-add-action-ctn .fi-btn {
+    color: #8b5e3c !important;
+    font-weight: 600 !important;
+}
+.fi-fo-repeater .fi-fo-repeater-add-action-ctn .fi-btn:hover {
+    background: #f5e6d0 !important;
+    color: #3d2314 !important;
+}
+/* Repeater item actions (delete, move) */
+.fi-fo-repeater-item-header .fi-icon-btn {
+    color: #a08060 !important;
+}
+.fi-fo-repeater-item-header .fi-icon-btn:hover {
+    color: #3d2314 !important;
+    background: #f5e6d0 !important;
+}
+
+/* ===== FILE UPLOAD ===== */
+.fi-fo-file-upload .filepond--panel-root {
+    background: #fdf8f2 !important;
+    border: 2px dashed #e8d0b0 !important;
+    border-radius: 12px !important;
+}
+.fi-fo-file-upload .filepond--drop-label label {
+    color: #8b5e3c !important;
+    font-weight: 500 !important;
+}
+.fi-fo-file-upload .filepond--label-action {
+    color: #6b4c3b !important;
+    font-weight: 600 !important;
+    text-decoration-color: #d4a574 !important;
+}
+
+/* ===== DATE PICKER ===== */
+.fi-date-time-picker-btn {
+    border: 1px solid rgba(212,165,116,0.3) !important;
+    border-radius: 8px !important;
+}
+.fi-date-time-picker-btn:focus {
+    border-color: #D4A574 !important;
+    box-shadow: 0 0 0 3px rgba(212,165,116,0.15) !important;
+}
+
+/* ===== FORM ACTIONS (Save/Cancel buttons) ===== */
+.fi-form-actions {
+    background: #fdf8f2 !important;
+    border-top: 1px solid #e8d0b0 !important;
+    padding: 1rem 1.5rem !important;
+    border-radius: 0 0 12px 12px !important;
+}
+
+/* ===== TABS (used in some forms) ===== */
+.fi-tabs-tab {
+    color: #a08060 !important;
+    font-weight: 600 !important;
+}
+.fi-tabs-tab[aria-selected="true"],
+.fi-tabs-tab.fi-active {
+    color: #3d2314 !important;
+    border-color: #8b5e3c !important;
+}
+
+/* ===== SLIDE-OVER ===== */
+.fi-modal-slide-over .fi-modal-window {
+    border-left: 3px solid #d4a574 !important;
+}
+.fi-modal-slide-over .fi-modal-header {
+    background: #fdf8f2 !important;
+    border-bottom: 1px solid #e8d0b0 !important;
+}
+.fi-modal-slide-over .fi-modal-heading {
+    color: #3d2314 !important;
+    font-family: "Playfair Display", serif !important;
+}
+
 /* ===== BUTTONS ===== */
 .fi-btn-primary {
     background: #8B5E3C !important;
