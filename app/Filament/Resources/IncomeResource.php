@@ -78,7 +78,7 @@ class IncomeResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->heading("💵 Other Income")
+            ->heading("Other Income")
             ->columns([
                 Tables\Columns\TextColumn::make('date')
                     ->date('M j, Y')
