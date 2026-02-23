@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -45,6 +46,11 @@ class Product extends Model
     public function bundleCategory(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'bundle_category_id');
+    }
+
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(CustomerFavorite::class);
     }
 
     public function scopeAvailable($query)
