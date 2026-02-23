@@ -194,8 +194,7 @@
         <div class="qo-totals" x-data="{
             get subtotal() {
                 let t = 0;
-                for (const item of $wire.items) {
-                    t += this.$root.__x_refs ? 0 : 0;
+                for (const item of Object.values($wire.items || {})) {
                     const price = parseFloat(this.prices[item?.product_id] || 0);
                     const qty = parseInt(item?.quantity || 0);
                     t += price * qty;
