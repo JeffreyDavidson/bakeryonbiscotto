@@ -148,6 +148,33 @@ class ProductResource extends Resource
                     ->relationship('category', 'name'),
                 Tables\Filters\TernaryFilter::make('is_available')
                     ->label('Available'),
+                Tables\Filters\TernaryFilter::make('seasonal')
+                    ->label('Seasonal')
+                    ->queries(
+                        true: fn ($query) => $query->whereNotNull('seasonal_start')->orWhereNotNull('seasonal_end'),
+                        false: fn ($query) => $query->whereNull('seasonal_start')->whereNull('seasonal_end'),
+                    ),
+                Tables\Filters\TernaryFilter::make('in_season')
+                    ->label('In Season')
+                    ->queries(
+                        true: fn ($query) => $query->where(function ($q) {
+                            $today = now()->toDateString();
+                            $q->where(function ($q2) use ($today) {
+                                $q2->whereNull('seasonal_start')->whereNull('seasonal_end');
+                            })->orWhere(function ($q2) use ($today) {
+                                $q2->where('seasonal_start', '<=', $today)->where('seasonal_end', '>=', $today);
+                            })->orWhere(function ($q2) use ($today) {
+                                $q2->where('seasonal_start', '<=', $today)->whereNull('seasonal_end');
+                            })->orWhere(function ($q2) use ($today) {
+                                $q2->whereNull('seasonal_start')->where('seasonal_end', '>=', $today);
+                            });
+                        }),
+                        false: fn ($query) => $query->where(function ($q) {
+                            $today = now()->toDateString();
+                            $q->where('seasonal_start', '>', $today)
+                              ->orWhere('seasonal_end', '<', $today);
+                        }),
+                    ),
             ])
             ->actions([
                 Action::make('toggle_availability')
