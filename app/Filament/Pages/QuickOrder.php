@@ -13,6 +13,8 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
@@ -95,9 +97,8 @@ class QuickOrder extends Page implements HasForms
                                     ->required()
                                     ->placeholder('Select a product')
                                     ->live()
-                                    ->afterStateUpdated(function ($state, $set) use ($productPrices) {
-                                        $price = $productPrices[$state] ?? 0;
-                                        $set('unit_price', $price);
+                                    ->afterStateUpdated(function ($state, Set $set) use ($productPrices) {
+                                        $set('unit_price', $productPrices[$state] ?? 0);
                                     }),
                                 TextInput::make('quantity')
                                     ->numeric()
@@ -112,7 +113,7 @@ class QuickOrder extends Page implements HasForms
                                     ->dehydrated(),
                                 Placeholder::make('line_total')
                                     ->label('Line Total')
-                                    ->content(function ($get) {
+                                    ->content(function (Get $get) {
                                         $qty = (int) ($get('quantity') ?? 0);
                                         $price = (float) ($get('unit_price') ?? 0);
                                         return '$' . number_format($qty * $price, 2);
@@ -153,10 +154,10 @@ class QuickOrder extends Page implements HasForms
                             ]),
                         TextInput::make('delivery_address')
                             ->label('Delivery Address')
-                            ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
+                            ->visible(fn (Get $get) => $get('fulfillment_type') === 'delivery'),
                         TextInput::make('delivery_zip')
                             ->label('Zip Code')
-                            ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
+                            ->visible(fn (Get $get) => $get('fulfillment_type') === 'delivery'),
                     ]),
 
                 Section::make('Notes')
