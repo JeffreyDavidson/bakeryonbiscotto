@@ -122,6 +122,7 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->heading("🧁 Products")
             ->columns([
                 Tables\Columns\ImageColumn::make('image_url')
                     ->label('')

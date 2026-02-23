@@ -104,6 +104,7 @@ class ExpenseResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->heading("💰 Expenses")
             ->columns([
                 Tables\Columns\TextColumn::make('date')
                     ->date('M j, Y')

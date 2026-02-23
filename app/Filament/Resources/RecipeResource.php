@@ -127,6 +127,7 @@ class RecipeResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->heading("📖 Recipes")
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
