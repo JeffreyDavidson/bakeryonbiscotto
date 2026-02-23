@@ -13,6 +13,7 @@ class Product extends Model
         'image', 'is_available', 'is_featured', 'is_bundle',
         'bundle_pick_count', 'bundle_category_id',
         'sort_order', 'max_per_order', 'weekly_limit',
+        'seasonal_start', 'seasonal_end',
     ];
 
     protected function casts(): array
@@ -22,6 +23,8 @@ class Product extends Model
             'is_available' => 'boolean',
             'is_featured' => 'boolean',
             'is_bundle' => 'boolean',
+            'seasonal_start' => 'date',
+            'seasonal_end' => 'date',
         ];
     }
 
@@ -47,6 +50,34 @@ class Product extends Model
     public function scopeAvailable($query)
     {
         return $query->where('is_available', true);
+    }
+
+    public function getIsSeasonalAttribute(): bool
+    {
+        return $this->seasonal_start !== null || $this->seasonal_end !== null;
+    }
+
+    public function getIsInSeasonAttribute(): bool
+    {
+        if (!$this->is_seasonal) {
+            return true; // year-round products are always in season
+        }
+
+        $today = now()->toDateString();
+
+        if ($this->seasonal_start && $this->seasonal_end) {
+            return $today >= $this->seasonal_start->toDateString() && $today <= $this->seasonal_end->toDateString();
+        }
+
+        if ($this->seasonal_start) {
+            return $today >= $this->seasonal_start->toDateString();
+        }
+
+        if ($this->seasonal_end) {
+            return $today <= $this->seasonal_end->toDateString();
+        }
+
+        return true;
     }
 
     public function getImageUrlAttribute(): ?string

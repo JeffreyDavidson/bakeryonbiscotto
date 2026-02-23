@@ -89,6 +89,19 @@ class ProductResource extends Resource
                         ->nullable()
                         ->helperText('Max units she can bake per week'),
                 ])->collapsible(),
+
+            \Filament\Schemas\Components\Section::make('Seasonal Availability')
+                ->icon('heroicon-o-calendar-days')
+                ->components([
+                    \Filament\Forms\Components\DatePicker::make('seasonal_start')
+                        ->label('Season Start')
+                        ->native(false)
+                        ->helperText('Leave blank for year-round availability'),
+                    \Filament\Forms\Components\DatePicker::make('seasonal_end')
+                        ->label('Season End')
+                        ->native(false)
+                        ->helperText('Leave blank for year-round availability'),
+                ])->collapsible(),
         ]);
     }
 
@@ -117,6 +130,14 @@ class ProductResource extends Resource
                     ->trueIcon('heroicon-s-star')
                     ->trueColor('warning')
                     ->falseIcon('')
+                    ->toggleable(),
+                Tables\Columns\IconColumn::make('is_seasonal')
+                    ->label('Seasonal')
+                    ->boolean()
+                    ->trueIcon('heroicon-s-calendar-days')
+                    ->trueColor('warning')
+                    ->falseIcon('')
+                    ->getStateUsing(fn (Product $record) => $record->is_seasonal)
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('sort_order')->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
