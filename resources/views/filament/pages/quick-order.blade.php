@@ -66,6 +66,9 @@
         transition: opacity 0.15s;
     }
     .quick-order-submit:hover { opacity: 0.9; }
+
+    /* Hide clear button on product select in repeater */
+    .fi-fo-repeater .fi-select-clear-btn { display: none !important; }
 </style>
 
 <x-filament-panels::page>
