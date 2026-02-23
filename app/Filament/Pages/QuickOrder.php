@@ -7,8 +7,10 @@ use App\Models\Product;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -74,6 +76,22 @@ class QuickOrder extends Page
         $products = Product::where('is_available', true)->orderBy('name')->get();
         $productOptions = $products->mapWithKeys(fn ($p) => [$p->id => "{$p->name} — \${$p->price}"])->toArray();
 
+        // Build bundle flavor options: product_id => [flavor names]
+        $bundleProducts = $products->where('is_bundle', true);
+        $bundleFlavorOptions = [];
+        foreach ($bundleProducts as $bp) {
+            if ($bp->bundle_category_id) {
+                $flavors = Product::where('category_id', $bp->bundle_category_id)
+                    ->where('is_available', true)
+                    ->where('is_bundle', false)
+                    ->orderBy('name')
+                    ->pluck('name')
+                    ->toArray();
+                $bundleFlavorOptions[$bp->id] = $flavors;
+            }
+        }
+        $bundlePickCounts = $bundleProducts->pluck('bundle_pick_count', 'id')->toArray();
+
         return $form
             ->schema([
                 Section::make('Customer Information')
@@ -120,6 +138,35 @@ class QuickOrder extends Page
                                     ->minValue(1)
                                     ->label('Qty')
                                     ->columnSpan(1),
+                                Placeholder::make('bundle_info')
+                                    ->label('')
+                                    ->columnSpanFull()
+                                    ->visible(function (Get $get) use ($bundlePickCounts) {
+                                        $productId = $get('product_id');
+                                        return isset($bundlePickCounts[$productId]);
+                                    })
+                                    ->content(function (Get $get) use ($bundlePickCounts) {
+                                        $productId = $get('product_id');
+                                        $count = $bundlePickCounts[$productId] ?? 0;
+                                        return "🎁 This is a pack — choose {$count} flavors below";
+                                    }),
+                                TagsInput::make('selections')
+                                    ->label('Flavor Selections')
+                                    ->columnSpanFull()
+                                    ->visible(function (Get $get) use ($bundleFlavorOptions) {
+                                        $productId = $get('product_id');
+                                        return isset($bundleFlavorOptions[$productId]);
+                                    })
+                                    ->suggestions(function (Get $get) use ($bundleFlavorOptions) {
+                                        $productId = $get('product_id');
+                                        return $bundleFlavorOptions[$productId] ?? [];
+                                    })
+                                    ->placeholder('Type or select flavors...')
+                                    ->helperText(function (Get $get) use ($bundlePickCounts) {
+                                        $productId = $get('product_id');
+                                        $count = $bundlePickCounts[$productId] ?? 0;
+                                        return "Pick exactly {$count} flavors (duplicates allowed)";
+                                    }),
                             ])
                             ->columns(3)
                             ->defaultItems(1)
@@ -227,6 +274,7 @@ class QuickOrder extends Page
                 'unit_price' => $price,
                 'quantity' => $qty,
                 'line_total' => $lineTotal,
+                'selections' => $item['selections'] ?? null,
             ];
         }
 
