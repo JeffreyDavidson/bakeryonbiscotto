@@ -385,16 +385,19 @@ textarea.fi-textarea-input:focus {
 /* Repeater item header — inline with row content */
 .fi-fo-repeater-item {
     position: relative !important;
+    overflow: visible !important;
 }
 .fi-fo-repeater-item-header {
     position: absolute !important;
     top: 50% !important;
-    right: 0.5rem !important;
+    right: 0.75rem !important;
     transform: translateY(-50%) !important;
     background: transparent !important;
     border-bottom: none !important;
     z-index: 10 !important;
     padding: 0 !important;
+    width: auto !important;
+    min-height: unset !important;
 }
 /* Repeater item actions */
 .fi-fo-repeater-item-header .fi-icon-btn {
