@@ -122,6 +122,12 @@
                 <span>${{ number_format($order->delivery_fee, 2) }}</span>
             </div>
         @endif
+        @if($order->discount_amount > 0)
+            <div class="totals-row" style="color: #16a34a;">
+                <span>Discount{{ $order->coupon ? ' (' . $order->coupon->code . ')' : '' }}</span>
+                <span>-${{ number_format($order->discount_amount, 2) }}</span>
+            </div>
+        @endif
         <div class="totals-row total">
             <span>Total</span>
             <span>${{ number_format($order->total, 2) }}</span>
