@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,9 @@ Route::get('/', function() {
 
     return view('home', compact('featuredReview', 'approvedReviews', 'categories'));
 });
+Route::post('/favorites/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+Route::get('/favorites/{email}', [FavoriteController::class, 'index'])->name('favorites.index');
+
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
