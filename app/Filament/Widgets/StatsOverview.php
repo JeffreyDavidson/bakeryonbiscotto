@@ -21,6 +21,10 @@ class StatsOverview extends BaseWidget
                 ->icon('heroicon-o-shopping-bag')
                 ->color('primary'),
 
+            Stat::make('Pending Orders', Order::where('status', 'pending')->count())
+                ->icon('heroicon-o-clock')
+                ->color('warning'),
+
             Stat::make("This Week's Revenue", '$' . number_format(
                 (float) Order::where('status', '!=', 'cancelled')
                     ->whereBetween('requested_date', [$weekStart, Carbon::now()->endOfWeek()])
@@ -29,10 +33,6 @@ class StatsOverview extends BaseWidget
             ))
                 ->icon('heroicon-o-currency-dollar')
                 ->color('success'),
-
-            Stat::make('Pending Orders', Order::where('status', 'pending')->count())
-                ->icon('heroicon-o-clock')
-                ->color('warning'),
 
             Stat::make('Total Customers', Order::distinct('customer_email')->count('customer_email'))
                 ->icon('heroicon-o-users')
