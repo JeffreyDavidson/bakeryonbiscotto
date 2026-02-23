@@ -93,11 +93,15 @@
     background: #FFFFFF !important;
 }
 
-/* Dark brown gradient title bar on resource tables (uses table heading()) */
-.fi-ta-header {
+/* Dark brown gradient title bar + toolbar container */
+.fi-ta-header-ctn {
     background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
     border-radius: 11px 11px 0 0 !important;
     padding: 0.75rem 1.25rem !important;
+}
+.fi-ta-header {
+    background: transparent !important;
+    padding: 0 !important;
 }
 .fi-ta-header-heading {
     color: #FFFFFF !important;
@@ -164,25 +168,46 @@ table thead tr {
     font-size: 0.8rem !important;
 }
 
-/* Toolbar area (search + filters) */
+/* Toolbar area (search + filters) — merged into dark brown header */
 .fi-ta-header-toolbar {
-    background: rgba(245,230,208,0.3) !important;
-    border-bottom: 1px solid rgba(212,165,116,0.1) !important;
-    padding: 0.75rem 1rem !important;
+    background: transparent !important;
+    border-bottom: none !important;
+    padding: 0 !important;
 }
 
-/* Search input — remove double border */
+/* Search input — light style on dark header */
 .fi-ta-search-field input {
-    border: none !important;
+    border: 1px solid rgba(255,255,255,0.25) !important;
     border-radius: 8px !important;
-    background: transparent !important;
+    background: rgba(255,255,255,0.1) !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: #FFFFFF !important;
+}
+.fi-ta-search-field input::placeholder {
+    color: rgba(255,255,255,0.5) !important;
+}
+.fi-ta-search-field input:focus {
+    border-color: rgba(255,255,255,0.4) !important;
+    background: rgba(255,255,255,0.15) !important;
     box-shadow: none !important;
     outline: none !important;
 }
-.fi-ta-search-field input:focus {
-    border: none !important;
-    box-shadow: none !important;
-    outline: none !important;
+/* Search icon */
+.fi-ta-search-field .fi-icon {
+    color: rgba(255,255,255,0.6) !important;
+}
+/* Filter & column toggle icons in header */
+.fi-ta-header-toolbar .fi-icon-btn,
+.fi-ta-header-toolbar .fi-badge {
+    color: rgba(255,255,255,0.8) !important;
+}
+.fi-ta-header-toolbar .fi-icon-btn:hover {
+    background: rgba(255,255,255,0.1) !important;
+}
+/* Filter badge count */
+.fi-ta-header-toolbar .fi-badge {
+    background: rgba(245,213,168,0.3) !important;
 }
 
 /* Pagination footer */
