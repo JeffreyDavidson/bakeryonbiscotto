@@ -35,29 +35,44 @@ class RecipeResource extends Resource
         return $schema->components([
             \Filament\Schemas\Components\Section::make('Recipe Details')
                 ->icon('heroicon-o-beaker')
+                ->description('Basic recipe information')
+                ->columns(2)
                 ->components([
                     \Filament\Forms\Components\TextInput::make('name')
                         ->required()
-                        ->maxLength(255),
+                        ->maxLength(255)
+                        ->prefixIcon('heroicon-o-tag')
+                        ->placeholder('e.g. Classic Sourdough Loaf')
+                        ->columnSpanFull(),
                     \Filament\Forms\Components\Select::make('product_id')
                         ->label('Linked Product')
                         ->relationship('product', 'name')
                         ->searchable()
                         ->preload()
-                        ->placeholder('Optional — link to a product for margin calculation'),
+                        ->prefixIcon('heroicon-o-link')
+                        ->placeholder('Optional — link to a product for margin calculation')
+                        ->columnSpanFull(),
                     \Filament\Forms\Components\TextInput::make('servings')
                         ->required()
                         ->numeric()
                         ->default(1)
-                        ->minValue(1),
+                        ->minValue(1)
+                        ->prefixIcon('heroicon-o-squares-2x2')
+                        ->placeholder('1'),
                     \Filament\Forms\Components\TextInput::make('prep_time_minutes')
                         ->label('Prep Time (minutes)')
                         ->numeric()
-                        ->minValue(0),
+                        ->minValue(0)
+                        ->prefixIcon('heroicon-o-clock')
+                        ->placeholder('e.g. 120'),
                     \Filament\Forms\Components\Textarea::make('description')
-                        ->rows(3),
+                        ->rows(3)
+                        ->placeholder('Describe the recipe — technique notes, variations, etc.')
+                        ->columnSpanFull(),
                     \Filament\Forms\Components\Textarea::make('notes')
-                        ->rows(2),
+                        ->rows(2)
+                        ->placeholder('Personal notes, tips, lessons learned...')
+                        ->columnSpanFull(),
                 ]),
             \Filament\Schemas\Components\Section::make('Ingredients')
                 ->icon('heroicon-o-list-bullet')
