@@ -66,13 +66,40 @@
         transition: opacity 0.15s;
     }
     .quick-order-submit:hover { opacity: 0.9; }
-
-    /* Hide clear button on product select in repeater */
-    .fi-fo-repeater .fi-select-clear-btn { display: none !important; }
 </style>
 
+@php
+    $products = \App\Models\Product::where('is_available', true)->orderBy('name')->get();
+    $priceMap = $products->pluck('price', 'id')->toArray();
+@endphp
+
 <x-filament-panels::page>
-    <div class="quick-order-page">
+    <div class="quick-order-page" x-data="{
+        prices: {{ json_encode($priceMap) }},
+        fulfillmentType: $wire.entangle('data.fulfillment_type'),
+        getPrice(productId) {
+            return parseFloat(this.prices[productId] || 0);
+        },
+        getSubtotal() {
+            let total = 0;
+            document.querySelectorAll('[data-repeater-item]').forEach(item => {
+                const select = item.querySelector('select');
+                const qtyInput = item.querySelector('input[type=number]');
+                if (select && qtyInput) {
+                    const price = this.getPrice(select.value);
+                    const qty = parseInt(qtyInput.value) || 0;
+                    total += price * qty;
+                }
+            });
+            return total;
+        },
+        getDeliveryFee() {
+            return this.fulfillmentType === 'delivery' ? 5.00 : 0;
+        },
+        formatMoney(val) {
+            return '$' + val.toFixed(2);
+        }
+    }">
         <div class="quick-order-header">
             <div>
                 <h1>🧁 Create Quick Order</h1>
@@ -85,31 +112,22 @@
                 {{ $this->form }}
             </div>
 
-            <div class="quick-order-totals" wire:poll.500ms>
-                @php
-                    $items = $this->data['items'] ?? [];
-                    $subtotal = 0;
-                    foreach ($items as $item) {
-                        $qty = (int) ($item['quantity'] ?? 0);
-                        $price = (float) ($item['unit_price'] ?? 0);
-                        $subtotal += $qty * $price;
-                    }
-                    $deliveryFee = ($this->data['fulfillment_type'] ?? '') === 'delivery' ? 5.00 : 0;
-                    $total = $subtotal + $deliveryFee;
-                @endphp
+            <div class="quick-order-totals"
+                 x-init="$watch('fulfillmentType', () => $el.querySelector('.subtotal-val') && $nextTick(() => $el.click()))"
+                 @click.self="$forceUpdate">
                 <div class="total-row">
                     <span>Subtotal</span>
-                    <span>${{ number_format($subtotal, 2) }}</span>
+                    <span class="subtotal-val" x-text="formatMoney(getSubtotal())"></span>
                 </div>
-                @if($deliveryFee > 0)
+                <template x-if="getDeliveryFee() > 0">
                     <div class="total-row">
                         <span>Delivery Fee</span>
-                        <span>${{ number_format($deliveryFee, 2) }}</span>
+                        <span x-text="formatMoney(getDeliveryFee())"></span>
                     </div>
-                @endif
+                </template>
                 <div class="total-row grand">
                     <span>Total</span>
-                    <span>${{ number_format($total, 2) }}</span>
+                    <span x-text="formatMoney(getSubtotal() + getDeliveryFee())"></span>
                 </div>
             </div>
 

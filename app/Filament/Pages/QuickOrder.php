@@ -7,8 +7,6 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use BackedEnum;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -20,7 +18,6 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class QuickOrder extends Page implements HasForms
@@ -72,8 +69,6 @@ class QuickOrder extends Page implements HasForms
     {
         $products = Product::where('is_available', true)->orderBy('name')->get();
         $productOptions = $products->mapWithKeys(fn ($p) => [$p->id => "{$p->name} (\${$p->price})"])->toArray();
-        $productPrices = $products->pluck('price', 'id')->toArray();
-
         return $form
             ->schema([
                 Section::make('Customer Information')
@@ -94,32 +89,14 @@ class QuickOrder extends Page implements HasForms
                                     ->label('Product')
                                     ->options($productOptions)
                                     ->required()
-                                    ->placeholder('Select a product')
-                                    ->native(false)
-                                    ->live(),
+                                    ->placeholder('Select a product'),
                                 TextInput::make('quantity')
                                     ->numeric()
                                     ->required()
                                     ->default(1)
-                                    ->minValue(1)
-                                    ->live(),
-                                Placeholder::make('unit_price')
-                                    ->label('Unit Price')
-                                    ->content(function (Get $get) use ($productPrices) {
-                                        $productId = $get('product_id');
-                                        $price = $productPrices[$productId] ?? 0;
-                                        return '$' . number_format($price, 2);
-                                    }),
-                                Placeholder::make('line_total')
-                                    ->label('Line Total')
-                                    ->content(function (Get $get) use ($productPrices) {
-                                        $productId = $get('product_id');
-                                        $price = (float) ($productPrices[$productId] ?? 0);
-                                        $qty = (int) ($get('quantity') ?? 0);
-                                        return '$' . number_format($qty * $price, 2);
-                                    }),
+                                    ->minValue(1),
                             ])
-                            ->columns(4)
+                            ->columns(2)
                             ->defaultItems(1)
                             ->addActionLabel('Add Product')
                             ->minItems(1),
