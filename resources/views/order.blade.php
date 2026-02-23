@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Order | Bakery on Biscotto</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -155,6 +156,42 @@
             overflow: hidden;
             transition: all 0.3s ease;
             box-shadow: 0 2px 12px rgba(61,35,20,0.06);
+            position: relative;
+        }
+        .product-card.is-favorite {
+            border-color: rgba(220,38,38,0.25);
+            box-shadow: 0 2px 12px rgba(220,38,38,0.08);
+        }
+        .favorite-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 10;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            line-height: 1;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .favorite-btn:hover {
+            transform: scale(1.15);
+            background: rgba(255,255,255,0.95);
+        }
+        .favorite-btn.active {
+            color: #dc2626;
+            background: rgba(255,255,255,0.95);
+        }
+        .favorite-btn.active:hover {
+            background: #fef2f2;
         }
         .product-card:hover {
             transform: translateY(-2px);
@@ -852,7 +889,14 @@
                     <h2 class="category-title">{{ $category->name }}</h2>
                     <div class="product-grid">
                         @foreach($category->products as $product)
-                        <div class="product-card">
+                        <div class="product-card" :class="{ 'is-favorite': isFavorite({{ $product->id }}) }">
+                            <button class="favorite-btn"
+                                :class="{ 'active': isFavorite({{ $product->id }}) }"
+                                @click="toggleFavorite({{ $product->id }})"
+                                :title="isFavorite({{ $product->id }}) ? 'Remove from favorites' : 'Add to favorites'"
+                                aria-label="Toggle favorite">
+                                <span x-text="isFavorite({{ $product->id }}) ? '❤️' : '🤍'"></span>
+                            </button>
                             @if($product->image_url)
                                 <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="product-img">
                             @else
@@ -1459,6 +1503,8 @@
         function orderPage() {
             return {
                 cart: [],
+                favorites: [],
+                favoritesEmail: localStorage.getItem('bob_customer_email') || '',
                 fulfillment: 'pickup',
                 deliveryTier: null,
                 deliveryDistance: null,
@@ -1491,6 +1537,64 @@
                     requested_date: '',
                     requested_time: '',
                     notes: '',
+                },
+
+                init() {
+                    // Load favorites if we have a stored email
+                    if (this.favoritesEmail) {
+                        this.loadFavorites(this.favoritesEmail);
+                    }
+                    // Watch for email changes to load favorites
+                    this.$watch('form.customer_email', (val) => {
+                        if (val && val.includes('@') && val.includes('.')) {
+                            localStorage.setItem('bob_customer_email', val);
+                            this.favoritesEmail = val;
+                            this.loadFavorites(val);
+                        }
+                    });
+                },
+
+                async loadFavorites(email) {
+                    try {
+                        const res = await fetch(`/favorites/${encodeURIComponent(email)}`);
+                        const data = await res.json();
+                        this.favorites = data.favorites || [];
+                    } catch (e) {
+                        console.warn('Could not load favorites', e);
+                    }
+                },
+
+                isFavorite(productId) {
+                    return this.favorites.includes(productId);
+                },
+
+                async toggleFavorite(productId) {
+                    let email = this.favoritesEmail || this.form.customer_email;
+                    if (!email || !email.includes('@')) {
+                        email = prompt('Enter your email to save favorites:');
+                        if (!email || !email.includes('@')) return;
+                        this.favoritesEmail = email;
+                        localStorage.setItem('bob_customer_email', email);
+                        await this.loadFavorites(email);
+                    }
+                    try {
+                        const res = await fetch('/favorites/toggle', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}',
+                            },
+                            body: JSON.stringify({ email, product_id: productId }),
+                        });
+                        const data = await res.json();
+                        if (data.favorited) {
+                            if (!this.favorites.includes(productId)) this.favorites.push(productId);
+                        } else {
+                            this.favorites = this.favorites.filter(id => id !== productId);
+                        }
+                    } catch (e) {
+                        console.warn('Could not toggle favorite', e);
+                    }
                 },
 
                 get minDate() {

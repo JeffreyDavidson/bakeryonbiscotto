@@ -143,6 +143,13 @@ class ProductResource extends Resource
                     ->label('Available')
                     ->boolean()
                     ->toggleable(),
+                Tables\Columns\TextColumn::make('favorites_count')
+                    ->label('♥')
+                    ->counts('favorites')
+                    ->sortable()
+                    ->badge()
+                    ->color('danger')
+                    ->toggleable(),
                 Tables\Columns\IconColumn::make('is_featured')
                     ->label('Featured')
                     ->boolean()
