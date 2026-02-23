@@ -19,12 +19,12 @@ class GoalTrackerWidget extends Widget
 
     public function mount(): void
     {
-        $this->newGoal = Setting::get('monthly_revenue_goal', '5000');
+        $this->newGoal = Setting::get('yearly_revenue_goal', '50000');
     }
 
     public function openEditModal(): void
     {
-        $this->newGoal = Setting::get('monthly_revenue_goal', '5000');
+        $this->newGoal = Setting::get('yearly_revenue_goal', '50000');
         $this->showEditModal = true;
     }
 
@@ -35,15 +35,15 @@ class GoalTrackerWidget extends Widget
 
     public function saveGoal(): void
     {
-        Setting::set('monthly_revenue_goal', $this->newGoal);
+        Setting::set('yearly_revenue_goal', $this->newGoal);
         $this->showEditModal = false;
     }
 
     public function getGoalDataProperty(): array
     {
-        $goal = (float) Setting::get('monthly_revenue_goal', 5000);
-        $start = Carbon::now()->startOfMonth();
-        $end = Carbon::now()->endOfMonth();
+        $goal = (float) Setting::get('yearly_revenue_goal', 50000);
+        $start = Carbon::now()->startOfYear();
+        $end = Carbon::now()->endOfYear();
 
         $revenue = (float) Order::whereBetween('created_at', [$start, $end])
             ->whereNotIn('status', ['cancelled'])
@@ -52,7 +52,7 @@ class GoalTrackerWidget extends Widget
         $percentage = $goal > 0 ? min(round($revenue / $goal * 100, 1), 100) : 0;
 
         return [
-            'month' => now()->format('F Y'),
+            'year' => now()->format('Y'),
             'goal' => $goal,
             'revenue' => $revenue,
             'percentage' => $percentage,
