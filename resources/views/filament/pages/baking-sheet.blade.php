@@ -23,44 +23,14 @@
         .bs-legend-item { display: flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; color: #6b4c3b; }
         .bs-legend-dot { width: 0.5rem; height: 0.5rem; border-radius: 9999px; }
 
-        /* Stats */
+        /* Stats grid */
         .bs-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
-        .bs-stat { border-radius: 0.75rem; border: 1px solid #e8d0b0; background: white; padding: 1rem 1.25rem; text-align: center; transition: all 0.15s; }
-        .bs-stat:hover { border-color: #d4a574; box-shadow: 0 1px 3px rgba(61,35,20,0.1); }
-        .bs-stat-label { font-size: 0.65rem; font-weight: 700; color: #a08060; text-transform: uppercase; letter-spacing: 0.08em; }
-        .bs-stat-value { margin-top: 0.25rem; font-size: 2rem; font-weight: 800; color: #3d2314; line-height: 1; }
-        .bs-stat-value.blue { color: #8b5e3c; }
-        .bs-stat-value.amber { color: #6b4c3b; }
-        .bs-stat-value.green { color: #8b5e3c; }
 
-        /* Cards */
-        .bs-card { border-radius: 0.75rem; border: 1px solid #e8d0b0; background: white; overflow: hidden; margin-bottom: 1.5rem; }
-        .bs-card-header { padding: 1rem 1.5rem; border-bottom: 1px solid #e8d0b0; display: flex; align-items: center; justify-content: space-between; }
-        .bs-card-header.warm { background: linear-gradient(135deg, #3d2314, #6b4c3b); }
-        .bs-card-header.warm .bs-card-title { color: white; }
-        .bs-card-header.warm .bs-card-subtitle { color: #3d2314; background: #fef3c7; }
-        .bs-card-header.cool { background: linear-gradient(135deg, #3d2314, #6b4c3b); }
-        .bs-card-header.cool .bs-card-title { color: white; }
-        .bs-card-header.cool .bs-card-subtitle { color: #3d2314; background: #fef3c7; }
-        .bs-card-header.green { background: linear-gradient(135deg, #3d2314, #6b4c3b); }
-        .bs-card-header.green .bs-card-title { color: white; }
-        .bs-card-title { font-size: 1.125rem; font-weight: 700; color: #3d2314; }
-        .bs-card-subtitle { font-size: 0.8rem; font-weight: 500; color: #6b4c3b; background: rgba(255,255,255,0.6); padding: 0.25rem 0.625rem; border-radius: 9999px; }
-
-        /* Baking table */
-        .bs-table { width: 100%; border-collapse: collapse; }
-        .bs-table thead th { padding: 0.75rem 1.5rem; text-align: left; font-size: 0.7rem; font-weight: 700; color: #a08060; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid #f3ebe0; background: #fdf8f2; }
-        .bs-table thead th.center { text-align: center; }
-        .bs-table tbody td { padding: 0.875rem 1.5rem; vertical-align: middle; }
-        .bs-table tbody tr { border-bottom: 1px solid #f3ebe0; transition: background 0.1s; }
-        .bs-table tbody tr:last-child { border-bottom: none; }
-        .bs-table tbody tr:hover { background: #fdf8f2; }
+        /* Baking table extras */
         .bs-product-name { font-weight: 600; color: #3d2314; font-size: 0.95rem; }
-        .bs-product-category { font-size: 0.75rem; color: #9ca3af; margin-top: 0.125rem; }
         .bs-qty-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 3.25rem; border-radius: 0.5rem; background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 0.5rem 0.875rem; font-size: 1.25rem; font-weight: 800; color: #92400e; box-shadow: 0 1px 2px rgba(146,64,14,0.15); }
         .bs-qty-total { background: linear-gradient(135deg, #292524, #44403c); color: #fef3c7; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
         .bs-order-tag { display: inline-flex; align-items: center; border-radius: 0.375rem; background: #fdf8f2; padding: 0.25rem 0.625rem; font-size: 0.75rem; font-weight: 500; color: #6b4c3b; margin: 0.125rem; border: 1px solid #e8d0b0; }
-        .bs-table tfoot td { padding: 1rem 1.5rem; border-top: 2px solid #e8d0b0; }
 
         /* Timeline */
         .bs-timeline-slot { padding: 0.75rem 1.5rem; border-bottom: 1px solid #f3f4f6; }
@@ -74,14 +44,6 @@
         .bs-order-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.375rem; }
         .bs-order-badges { display: flex; align-items: center; gap: 0.375rem; flex-wrap: wrap; }
         .bs-order-num { font-weight: 700; color: #3d2314; font-size: 0.875rem; }
-        .bs-badge { display: inline-flex; align-items: center; border-radius: 0.375rem; padding: 0.2rem 0.5rem; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.02em; }
-        .bs-badge-pickup { background: #fdf8f2; color: #6b4c3b; border: 1px solid #e8d0b0; }
-        .bs-badge-delivery { background: #e8d0b0; color: #3d2314; }
-        .bs-badge-pending { background: #fef3c7; color: #92400e; }
-        .bs-badge-confirmed { background: #e8d0b0; color: #3d2314; }
-        .bs-badge-baking { background: #fde68a; color: #78350f; }
-        .bs-badge-ready { background: #d1fae5; color: #065f46; }
-        .bs-badge-delivered { background: #f3ebe0; color: #6b4c3b; }
         .bs-order-customer { font-size: 0.8rem; color: #a08060; margin-bottom: 0.375rem; }
         .bs-order-items { display: flex; flex-wrap: wrap; gap: 0.375rem; }
         .bs-item-pill { display: inline-flex; align-items: center; gap: 0.25rem; border-radius: 0.375rem; background: white; padding: 0.25rem 0.5rem; font-size: 0.8rem; border: 1px solid #e8d0b0; }
@@ -95,12 +57,6 @@
         .bs-upcoming-dayname { font-size: 0.7rem; font-weight: 600; color: #a08060; text-transform: uppercase; }
         .bs-upcoming-date { font-size: 0.875rem; font-weight: 700; color: #3d2314; }
         .bs-upcoming-count { font-size: 0.7rem; color: #8b5e3c; font-weight: 600; margin-top: 0.125rem; }
-
-        /* Empty state */
-        .bs-empty { border-radius: 0.75rem; border: 2px dashed #e8d0b0; background: #fdf8f2; padding: 4rem 2rem; text-align: center; }
-        .bs-empty-icon { font-size: 3.5rem; margin-bottom: 1rem; }
-        .bs-empty-title { font-size: 1.25rem; font-weight: 600; color: #3d2314; }
-        .bs-empty-subtitle { font-size: 0.875rem; color: #a08060; margin-top: 0.375rem; }
 
         @media (max-width: 768px) {
             .bs-stats { grid-template-columns: repeat(2, 1fr); }
@@ -116,7 +72,6 @@
             .print-header { display: flex !important; }
             .print-check { display: table-cell !important; }
             body { background: white !important; }
-            .bs-card { break-inside: avoid; box-shadow: none; }
             .bs-order { background: white; }
         }
     </style>
@@ -146,17 +101,10 @@
     </div>
 
     @if($this->bakingItems->isEmpty())
-        <div class="bs-empty">
-            <div class="bs-empty-icon">🧁</div>
-            <div class="bs-empty-title">No orders for this day</div>
-            <div class="bs-empty-subtitle">Enjoy the day off! 🎉</div>
-        </div>
+        <x-admin.empty-state icon="🧁" title="No orders for this day" subtitle="Enjoy the day off! 🎉" />
 
         @if($this->upcomingDays->isNotEmpty())
-            <div class="bs-card no-print" style="margin-top: 1.5rem;">
-                <div class="bs-card-header green">
-                    <span class="bs-card-title">📅 Upcoming Days with Orders</span>
-                </div>
+            <x-admin.card title="📅 Upcoming Days with Orders" class="no-print" style="margin-top: 1.5rem;">
                 <div style="padding: 1rem 1.5rem;">
                     <div class="bs-upcoming">
                         @foreach($this->upcomingDays as $day)
@@ -168,7 +116,7 @@
                         @endforeach
                     </div>
                 </div>
-            </div>
+            </x-admin.card>
         @endif
     @else
         {{-- Order progress bar --}}
@@ -200,74 +148,47 @@
 
         {{-- Stats --}}
         <div class="bs-stats no-print">
-            <div class="bs-stat">
-                <div class="bs-stat-label">Orders</div>
-                <div class="bs-stat-value">{{ $this->stats->total_orders }}</div>
-            </div>
-            <div class="bs-stat">
-                <div class="bs-stat-label">Items to Bake</div>
-                <div class="bs-stat-value amber">{{ $this->stats->total_items }}</div>
-            </div>
-            <div class="bs-stat">
-                <div class="bs-stat-label">Pickups</div>
-                <div class="bs-stat-value blue">{{ $this->stats->pickup_count }}</div>
-            </div>
-            <div class="bs-stat">
-                <div class="bs-stat-label">Deliveries</div>
-                <div class="bs-stat-value amber">{{ $this->stats->delivery_count }}</div>
-            </div>
-            <div class="bs-stat">
-                <div class="bs-stat-label">Revenue</div>
-                <div class="bs-stat-value green">${{ number_format($this->stats->total_revenue, 0) }}</div>
-            </div>
+            <x-admin.stat-card label="Orders" :value="$this->stats->total_orders" />
+            <x-admin.stat-card label="Items to Bake" :value="$this->stats->total_items" color="#6b4c3b" />
+            <x-admin.stat-card label="Pickups" :value="$this->stats->pickup_count" color="#8b5e3c" />
+            <x-admin.stat-card label="Deliveries" :value="$this->stats->delivery_count" color="#6b4c3b" />
+            <x-admin.stat-card label="Revenue" :value="'$' . number_format($this->stats->total_revenue, 0)" color="#8b5e3c" />
         </div>
 
         {{-- Baking checklist --}}
-        <div class="bs-card">
-            <div class="bs-card-header warm">
-                <span class="bs-card-title">🧁 What to Bake</span>
-                <span class="bs-card-subtitle">{{ $this->bakingItems->count() }} products · {{ $this->bakingItems->sum('total_quantity') }} total</span>
-            </div>
-            <table class="bs-table">
-                <thead>
+        <x-admin.card title="🧁 What to Bake" :subtitle="$this->bakingItems->count() . ' products · ' . $this->bakingItems->sum('total_quantity') . ' total'">
+            <x-admin.data-table data-admin-table>
+                <x-slot:head>
+                    <th class="print-check" style="display: none; width: 40px;"></th>
+                    <th>Product</th>
+                    <th style="text-align: center; width: 7rem;">Qty</th>
+                    <th>For Orders</th>
+                </x-slot:head>
+                @foreach($this->bakingItems as $item)
                     <tr>
-                        <th class="print-check" style="display: none; width: 40px;"></th>
-                        <th>Product</th>
-                        <th class="center" style="width: 7rem;">Qty</th>
-                        <th>For Orders</th>
+                        <td class="print-check" style="display: none; padding: 0.875rem 0.75rem;"><input type="checkbox" style="width: 18px; height: 18px;" /></td>
+                        <td><span class="bs-product-name">{{ $item->product_name }}</span></td>
+                        <td style="text-align: center;"><span class="bs-qty-badge">{{ $item->total_quantity }}</span></td>
+                        <td>
+                            @foreach($item->order_numbers as $num)
+                                <span class="bs-order-tag">{{ $num }}</span>
+                            @endforeach
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach($this->bakingItems as $item)
-                        <tr>
-                            <td class="print-check" style="display: none; padding: 0.875rem 0.75rem;"><input type="checkbox" style="width: 18px; height: 18px;" /></td>
-                            <td><span class="bs-product-name">{{ $item->product_name }}</span></td>
-                            <td style="text-align: center;"><span class="bs-qty-badge">{{ $item->total_quantity }}</span></td>
-                            <td>
-                                @foreach($item->order_numbers as $num)
-                                    <span class="bs-order-tag">{{ $num }}</span>
-                                @endforeach
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-                <tfoot>
+                @endforeach
+                <x-slot:foot>
                     <tr>
                         <td class="print-check" style="display: none;"></td>
                         <td style="font-weight: 700; color: #111827;">Total</td>
                         <td style="text-align: center;"><span class="bs-qty-badge bs-qty-total">{{ $this->bakingItems->sum('total_quantity') }}</span></td>
                         <td style="color: #6b7280; font-size: 0.875rem;">across {{ $this->stats->total_orders }} orders</td>
                     </tr>
-                </tfoot>
-            </table>
-        </div>
+                </x-slot:foot>
+            </x-admin.data-table>
+        </x-admin.card>
 
         {{-- Order timeline grouped by time --}}
-        <div class="bs-card">
-            <div class="bs-card-header cool">
-                <span class="bs-card-title">🕐 Today's Schedule</span>
-                <span class="bs-card-subtitle">{{ $this->stats->total_orders }} orders by time slot</span>
-            </div>
+        <x-admin.card title="🕐 Today's Schedule" :subtitle="$this->stats->total_orders . ' orders by time slot'">
             @foreach($this->timeline as $timeSlot => $orders)
                 <div class="bs-timeline-slot">
                     <div class="bs-timeline-time">
@@ -280,12 +201,8 @@
                             <div class="bs-order-header">
                                 <div class="bs-order-badges">
                                     <span class="bs-order-num">{{ $order->order_number }}</span>
-                                    <span class="bs-badge {{ $order->fulfillment_type === 'delivery' ? 'bs-badge-delivery' : 'bs-badge-pickup' }}">
-                                        {{ ucfirst($order->fulfillment_type) }}
-                                    </span>
-                                    <span class="bs-badge bs-badge-{{ $order->status }}">
-                                        {{ ucfirst($order->status) }}
-                                    </span>
+                                    <x-admin.badge :type="$order->fulfillment_type" />
+                                    <x-admin.badge :type="$order->status" />
                                 </div>
                             </div>
                             <div class="bs-order-customer">👤 {{ $order->customer_name }}@if($order->fulfillment_type === 'delivery' && $order->delivery_address) · 📍 Delivery @endif</div>
@@ -301,14 +218,11 @@
                     @endforeach
                 </div>
             @endforeach
-        </div>
+        </x-admin.card>
 
         {{-- Upcoming days --}}
         @if($this->upcomingDays->isNotEmpty())
-            <div class="bs-card no-print">
-                <div class="bs-card-header green">
-                    <span class="bs-card-title">📅 Coming Up Next</span>
-                </div>
+            <x-admin.card title="📅 Coming Up Next" class="no-print">
                 <div style="padding: 1rem 1.5rem;">
                     <div class="bs-upcoming">
                         @foreach($this->upcomingDays as $day)
@@ -320,7 +234,7 @@
                         @endforeach
                     </div>
                 </div>
-            </div>
+            </x-admin.card>
         @endif
     @endif
 </x-filament-panels::page>
