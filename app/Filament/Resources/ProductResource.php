@@ -35,72 +35,86 @@ class ProductResource extends Resource
         return $schema->components([
             \Filament\Schemas\Components\Section::make('Product Details')
                 ->icon('heroicon-o-shopping-bag')
+                ->columns(2)
                 ->components([
-                    \Filament\Forms\Components\Select::make('category_id')
-                        ->relationship('category', 'name')
-                        ->required()
-                        ->preload(),
                     \Filament\Forms\Components\TextInput::make('name')
                         ->required()
                         ->maxLength(255)
+                        ->placeholder('Sourdough Loaf')
+                        ->prefixIcon('heroicon-o-tag')
                         ->live(onBlur: true)
-                        ->afterStateUpdated(fn ($set, $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                        ->afterStateUpdated(fn ($set, $state) => $set('slug', \Illuminate\Support\Str::slug($state)))
+                        ->columnSpanFull(),
                     \Filament\Forms\Components\TextInput::make('slug')
                         ->maxLength(255)
-                        ->helperText('Auto-generated from name. Edit to override.'),
-                    \Filament\Forms\Components\Textarea::make('description')
-                        ->rows(3),
+                        ->helperText('Auto-generated from name. Edit to override.')
+                        ->prefixIcon('heroicon-o-link'),
+                    \Filament\Forms\Components\Select::make('category_id')
+                        ->relationship('category', 'name')
+                        ->required()
+                        ->preload()
+                        ->prefixIcon('heroicon-o-folder'),
                     \Filament\Forms\Components\TextInput::make('price')
                         ->required()
                         ->numeric()
                         ->prefix('$')
-                        ->step('0.01'),
+                        ->step('0.01')
+                        ->placeholder('12.00'),
+                    \Filament\Forms\Components\TextInput::make('sort_order')
+                        ->numeric()
+                        ->default(0)
+                        ->prefixIcon('heroicon-o-arrows-up-down'),
+                    \Filament\Forms\Components\Textarea::make('description')
+                        ->rows(3)
+                        ->placeholder('Describe this product...')
+                        ->columnSpanFull(),
                     \Filament\Forms\Components\Placeholder::make('current_image')
                         ->label('Current Image')
                         ->visible(fn ($record) => $record?->image)
                         ->content(fn ($record) => new \Illuminate\Support\HtmlString(
                             '<img src="' . asset($record->image) . '" style="max-height:150px;border-radius:0.5rem;border:1px solid #e8d0b0;" />'
-                        )),
+                        ))
+                        ->columnSpanFull(),
                     \Filament\Forms\Components\FileUpload::make('image')
                         ->image()
                         ->disk('public')
                         ->directory('products')
                         ->visibility('public')
-                        ->helperText('Upload a new image to replace the current one'),
+                        ->helperText('Upload a new image to replace the current one')
+                        ->columnSpanFull(),
                 ]),
 
-            \Filament\Schemas\Components\Section::make('Settings')
+            \Filament\Schemas\Components\Section::make('Availability')
                 ->icon('heroicon-o-adjustments-horizontal')
+                ->columns(2)
                 ->components([
                     \Filament\Forms\Components\Toggle::make('is_available')
                         ->label('Available for ordering')
                         ->default(true),
                     \Filament\Forms\Components\Toggle::make('is_featured')
                         ->label('Featured product'),
-                    \Filament\Forms\Components\TextInput::make('sort_order')
-                        ->numeric()
-                        ->default(0),
                     \Filament\Forms\Components\TextInput::make('max_per_order')
                         ->numeric()
                         ->nullable()
-                        ->helperText('Leave empty for no limit'),
+                        ->placeholder('No limit')
+                        ->helperText('Max per single order')
+                        ->prefixIcon('heroicon-o-shopping-cart'),
                     \Filament\Forms\Components\TextInput::make('weekly_limit')
                         ->numeric()
                         ->nullable()
-                        ->helperText('Max units she can bake per week'),
-                ])->collapsible(),
-
-            \Filament\Schemas\Components\Section::make('Seasonal Availability')
-                ->icon('heroicon-o-calendar-days')
-                ->components([
+                        ->placeholder('No limit')
+                        ->helperText('Max baked per week')
+                        ->prefixIcon('heroicon-o-calendar'),
                     \Filament\Forms\Components\DatePicker::make('seasonal_start')
                         ->label('Season Start')
                         ->native(false)
-                        ->helperText('Leave blank for year-round availability'),
+                        ->prefixIcon('heroicon-o-play')
+                        ->helperText('Leave blank for year-round'),
                     \Filament\Forms\Components\DatePicker::make('seasonal_end')
                         ->label('Season End')
                         ->native(false)
-                        ->helperText('Leave blank for year-round availability'),
+                        ->prefixIcon('heroicon-o-stop')
+                        ->helperText('Leave blank for year-round'),
                 ])->collapsible(),
         ]);
     }
@@ -186,7 +200,10 @@ class ProductResource extends Resource
                     ->slideOver()
                     ->modalWidth('2xl'),
             ])
-            ->bulkActions([]);
+            ->bulkActions([])
+            ->emptyStateHeading('No products yet')
+            ->emptyStateDescription('Add your first product to start taking orders! 🍞')
+            ->emptyStateIcon('heroicon-o-shopping-bag');
     }
 
     public static function getPages(): array

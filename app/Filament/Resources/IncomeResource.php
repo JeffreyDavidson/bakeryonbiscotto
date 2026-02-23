@@ -34,25 +34,32 @@ class IncomeResource extends Resource
         return $schema->components([
             \Filament\Schemas\Components\Section::make('Income Details')
                 ->icon('heroicon-o-banknotes')
+                ->columns(2)
                 ->components([
-                    \Filament\Forms\Components\Select::make('source')
-                        ->options(Income::SOURCES)
-                        ->required()
-                        ->searchable(),
                     \Filament\Forms\Components\TextInput::make('description')
                         ->required()
                         ->maxLength(255)
-                        ->placeholder('e.g. Farmers market booth sales'),
+                        ->placeholder('e.g. Farmers market booth sales')
+                        ->prefixIcon('heroicon-o-document-text')
+                        ->columnSpanFull(),
+                    \Filament\Forms\Components\Select::make('source')
+                        ->options(Income::SOURCES)
+                        ->required()
+                        ->searchable()
+                        ->prefixIcon('heroicon-o-arrow-trending-up'),
                     \Filament\Forms\Components\TextInput::make('amount')
                         ->required()
                         ->numeric()
                         ->prefix('$')
-                        ->step('0.01'),
+                        ->step('0.01')
+                        ->placeholder('0.00'),
                     \Filament\Forms\Components\DatePicker::make('date')
                         ->required()
-                        ->default(now()),
+                        ->default(now())
+                        ->prefixIcon('heroicon-o-calendar'),
                     \Filament\Forms\Components\Textarea::make('notes')
                         ->rows(2)
+                        ->placeholder('Any additional notes...')
                         ->columnSpanFull(),
                 ]),
         ]);
@@ -107,7 +114,10 @@ class IncomeResource extends Resource
             ->actions([
                 EditAction::make()->slideOver()->modalWidth('2xl'),
             ])
-            ->bulkActions([]);
+            ->bulkActions([])
+            ->emptyStateHeading('No other income recorded')
+            ->emptyStateDescription('Log farmers market sales, cash orders, and other non-website revenue here. 🏪')
+            ->emptyStateIcon('heroicon-o-arrow-trending-up');
     }
 
     public static function getPages(): array
