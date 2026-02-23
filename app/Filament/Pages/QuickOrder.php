@@ -294,9 +294,8 @@ class QuickOrder extends Page
                         DatePicker::make('requested_date')
                             ->label('Requested Date')
                             ->required()
-                            ->native(false)
-                            ->minDate(now())
-                            ,
+                            ->native(true)
+                            ->minDate(now()),
                         Select::make('requested_time')
                             ->label('Time Slot')
                             ->options([
