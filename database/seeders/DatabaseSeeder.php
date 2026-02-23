@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             RecipeSeeder::class,
             ExpenseSeeder::class,
             IncomeSeeder::class,
+            NotificationSeeder::class,
             SettingSeeder::class,
         ]);
     }
