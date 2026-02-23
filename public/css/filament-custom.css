@@ -373,11 +373,19 @@ textarea.fi-textarea-input:focus {
     border-radius: 12px !important;
     overflow: visible !important;
 }
+/* Remove gap between repeater items */
+.fi-fo-repeater-items {
+    gap: 0 !important;
+}
 /* Repeater items — clean with subtle separator */
 .fi-fo-repeater-item {
     border-bottom: 1px solid #f3ebe0 !important;
     background: #FFFFFF !important;
     position: relative !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    --tw-ring-shadow: none !important;
+    --tw-shadow: none !important;
 }
 .fi-fo-repeater-item:last-child {
     border-bottom: none !important;
