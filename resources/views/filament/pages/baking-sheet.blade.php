@@ -1,6 +1,8 @@
 <x-filament-panels::page>
     <style>
         .bs-controls { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .bs-date-input { padding: 0.5rem 0.75rem; border: 1px solid #e8d0b0; border-radius: 8px; background: #fff; font-size: 0.875rem; color: #3d2314; }
+        .bs-date-input:focus { outline: none; border-color: #D4A574; box-shadow: 0 0 0 3px rgba(212,165,116,0.15); }
 
         /* Baking table extras */
         .bs-product-name { font-weight: 600; color: #3d2314; font-size: 0.95rem; }
@@ -43,7 +45,7 @@
     {{-- Controls --}}
     <div class="bs-controls no-print">
         <x-admin.btn variant="secondary" wire:click="previousDay">◀</x-admin.btn>
-        <input type="date" wire:model.live="date" style="border-radius: 0.5rem; border: 1px solid #d1d5db; padding: 0.5rem 0.75rem; font-size: 0.875rem;" />
+        <input type="date" wire:model.live="date" class="bs-date-input" />
         <x-admin.btn variant="secondary" wire:click="nextDay">▶</x-admin.btn>
         @unless($this->isToday)
             <x-admin.btn variant="ghost" wire:click="goToToday">↩ Today</x-admin.btn>
