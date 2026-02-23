@@ -321,17 +321,19 @@ table thead tr {
     --tw-ring-shadow: 0 0 0 0 transparent !important;
     --tw-ring-color: transparent !important;
 }
-/* Remove gray divider between prefix icon and input */
+/* Tan divider between prefix icon and input */
 .fi-input-wrp-prefix,
 .fi-input-wrp .fi-input-wrp-prefix {
-    border-right: none !important;
-    border-inline-end: none !important;
-    border-color: transparent !important;
+    border-inline-end: 1px solid #e8d0b0 !important;
+    border-right: 1px solid #e8d0b0 !important;
 }
 .fi-input-wrp .fi-input-wrp-suffix {
-    border-left: none !important;
-    border-inline-start: none !important;
-    border-color: transparent !important;
+    border-inline-start: 1px solid #e8d0b0 !important;
+    border-left: 1px solid #e8d0b0 !important;
+}
+/* Input field inside wrapper — no rounded corners on the prefix side */
+.fi-input-wrp .fi-input {
+    border-radius: 0 !important;
 }
 .fi-section-content {
     border-top: none !important;
