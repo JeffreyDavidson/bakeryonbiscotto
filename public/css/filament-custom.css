@@ -308,6 +308,22 @@ table thead tr {
     --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color) !important;
     --tw-shadow: none !important;
 }
+/* Global input ring/shadow cleanup — single tan border only */
+.fi-input-wrp {
+    --tw-ring-shadow: none !important;
+    --tw-ring-color: transparent !important;
+    border-color: #e8d0b0 !important;
+}
+.fi-input-wrp:focus-within {
+    border-color: #D4A574 !important;
+    --tw-ring-shadow: none !important;
+    box-shadow: 0 0 0 3px rgba(212,165,116,0.15) !important;
+}
+/* Remove gray divider between prefix icon and input */
+.fi-input-wrp-prefix {
+    border-right: none !important;
+    border-color: transparent !important;
+}
 .fi-section-content {
     border-top: none !important;
 }
@@ -629,10 +645,18 @@ input[type="date"][value=""] {
     border-color: #e8d0b0 !important;
     border-radius: 8px !important;
     background: #FFFFFF !important;
+    --tw-ring-shadow: none !important;
+    --tw-shadow: none !important;
 }
 .fi-modal-slide-over .fi-input-wrp:focus-within {
     border-color: #D4A574 !important;
     box-shadow: 0 0 0 3px rgba(212,165,116,0.15) !important;
+    --tw-ring-shadow: none !important;
+}
+/* Remove gray divider between prefix icon and input */
+.fi-modal-slide-over .fi-input-wrp-prefix {
+    border-right: none !important;
+    border-color: transparent !important;
 }
 /* Textarea inside slide-overs */
 .fi-modal-slide-over textarea {
