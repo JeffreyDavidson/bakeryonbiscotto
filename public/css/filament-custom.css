@@ -400,6 +400,17 @@ li.fi-fo-repeater-item {
 .fi-fo-repeater-item:last-child {
     border-bottom: none !important;
 }
+/* Match native select placeholder color to Filament styled selects */
+.fi-fo-repeater select option[value=""] {
+    color: #9ca3af;
+}
+.fi-fo-repeater select:has(option[value=""]:checked) {
+    color: #9ca3af;
+}
+.fi-fo-repeater select:not(:has(option[value=""]:checked)) {
+    color: #3d2314;
+}
+
 /* Hide default repeater item header (delete button is inline in schema) */
 .fi-fo-repeater-item-header {
     display: none !important;
