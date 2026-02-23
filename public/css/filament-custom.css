@@ -87,6 +87,15 @@
 .fi-no-database .fi-modal-content > div {
     background: #FFFFFF !important;
 }
+/* Kill Filament's color-mix tinting on notification backgrounds */
+.fi-no-notification.fi-color {
+    background: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+}
+/* Kill color-tinted ring */
+.fi-no-notification.fi-color {
+    --tw-ring-color: #e8d0b0 !important;
+}
 /* Unread indicator — bakery brown left bar */
 .fi-no-notification-unread-ctn::before {
     background: #8b5e3c !important;
