@@ -40,16 +40,22 @@
             <div style="padding: 0.75rem 1.25rem; background: #fdf8f2; border-bottom: 1px solid #f3ebe0; font-size: 0.8rem; color: #a08060;">
                 {{ $orders->count() }} {{ Str::plural('order', $orders->count()) }} · ${{ number_format($orders->sum('total'), 2) }} total
             </div>
-            @foreach($orders as $order)
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:0.625rem 1.25rem;border-bottom:1px solid #f3ebe0;font-size:0.85rem;">
-                    <div style="display:flex;align-items:center;gap:0.5rem;">
-                        <span style="font-family:monospace;font-weight:700;color:#3d2314;">{{ $order->order_number }}</span>
-                        <x-admin.badge :type="$order->status" />
-                        <span style="color:#a08060;font-size:0.8rem;">{{ $order->created_at->format('M j, Y') }}</span>
-                    </div>
-                    <span style="font-weight:700;color:#3d2314;">${{ number_format($order->total, 2) }}</span>
-                </div>
-            @endforeach
+            <x-admin.data-table data-admin-table>
+                <x-slot:head>
+                    <th>Order</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th style="text-align:right;">Total</th>
+                </x-slot:head>
+                @foreach($orders as $order)
+                    <tr>
+                        <td style="font-family:monospace;font-weight:700;color:#3d2314;">{{ $order->order_number }}</td>
+                        <td><x-admin.badge :type="$order->status" /></td>
+                        <td style="color:#a08060;font-size:0.8rem;">{{ $order->created_at->format('M j, Y') }}</td>
+                        <td style="text-align:right;font-weight:700;color:#3d2314;">${{ number_format($order->total, 2) }}</td>
+                    </tr>
+                @endforeach
+            </x-admin.data-table>
         @endif
     </x-admin.card>
 </div>
