@@ -74,7 +74,7 @@ class QuickOrder extends Page
                 Actions::make([
                     Action::make('submit')
                         ->label('🧾 Create Order')
-                        ->submit('submit')
+                        ->action(fn () => $this->submit())
                         ->color('primary')
                         ->size('lg'),
                     Action::make('clear')
