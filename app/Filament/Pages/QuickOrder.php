@@ -88,7 +88,8 @@ class QuickOrder extends Page
     public function form(Schema $form): Schema
     {
         $products = Product::where('is_available', true)->orderBy('name')->get();
-        $productOptions = $products->mapWithKeys(fn ($p) => [$p->id => "{$p->name} — \${$p->price}"])->toArray();
+        $productOptions = $products->mapWithKeys(fn ($p) => [$p->id => $p->name])->toArray();
+        $productPrices = $products->pluck('price', 'id')->toArray();
 
         // Build bundle flavor options: product_id => [flavor names]
         $bundleProducts = $products->where('is_bundle', true);
@@ -143,7 +144,7 @@ class QuickOrder extends Page
                                     ->options($productOptions)
                                     ->required()
                                     ->placeholder('Choose a product...')
-                                    ->columnSpan(2)
+                                    ->columnSpan(3)
                                     ->live(),
                                 TextInput::make('quantity')
                                     ->numeric()
@@ -151,7 +152,28 @@ class QuickOrder extends Page
                                     ->default(1)
                                     ->minValue(1)
                                     ->label('Qty')
-                                    ->columnSpan(1),
+                                    ->columnSpan(1)
+                                    ->live(),
+                                Placeholder::make('unit_price')
+                                    ->label('Price')
+                                    ->columnSpan(1)
+                                    ->content(function (Get $get) use ($productPrices) {
+                                        $productId = $get('product_id');
+                                        $price = $productPrices[$productId] ?? 0;
+                                        return '$' . number_format($price, 2);
+                                    }),
+                                Placeholder::make('line_total')
+                                    ->label('Total')
+                                    ->columnSpan(1)
+                                    ->content(function (Get $get) use ($productPrices) {
+                                        $productId = $get('product_id');
+                                        $price = $productPrices[$productId] ?? 0;
+                                        $qty = (int) ($get('quantity') ?: 1);
+                                        $total = $price * $qty;
+                                        return new \Illuminate\Support\HtmlString(
+                                            '<strong style="color:#3d2314;font-size:1rem;">$' . number_format($total, 2) . '</strong>'
+                                        );
+                                    }),
                                 Placeholder::make('bundle_info')
                                     ->label('')
                                     ->columnSpanFull()
@@ -225,7 +247,7 @@ class QuickOrder extends Page
                                     ->reorderable(false)
                                     ->live(),
                             ])
-                            ->columns(3)
+                            ->columns(6)
                             ->defaultItems(1)
                             ->addActionLabel('+ Add Another Product')
                             ->addAction(function (\Filament\Actions\Action $action) {
