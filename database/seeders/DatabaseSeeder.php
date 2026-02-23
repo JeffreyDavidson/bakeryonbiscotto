@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
             ReviewSeeder::class,
             OrderSeeder::class,
             ContactMessageSeeder::class,
+            ExpenseSeeder::class,
+            IncomeSeeder::class,
         ]);
     }
 }
