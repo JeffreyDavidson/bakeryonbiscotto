@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class PopularProductsWidget extends BaseWidget
 {
-    protected static ?int $sort = 5;
+    protected static ?int $sort = 4;
 
     protected static ?string $heading = 'Popular Products This Week';
 
