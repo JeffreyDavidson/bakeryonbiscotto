@@ -160,7 +160,9 @@ class QuickOrder extends Page
                                     ->content(function (Get $get) use ($productPrices) {
                                         $productId = $get('product_id');
                                         $price = $productPrices[$productId] ?? 0;
-                                        return '$' . number_format($price, 2);
+                                        return new \Illuminate\Support\HtmlString(
+                                            '<div style="padding:0.5rem 0.75rem;background:#fdf8f2;border:1px solid #e8d0b0;border-radius:8px;color:#3d2314;font-weight:600;text-align:center;">$' . number_format($price, 2) . '</div>'
+                                        );
                                     }),
                                 Placeholder::make('line_total')
                                     ->label('Total')
@@ -171,7 +173,7 @@ class QuickOrder extends Page
                                         $qty = (int) ($get('quantity') ?: 1);
                                         $total = $price * $qty;
                                         return new \Illuminate\Support\HtmlString(
-                                            '<strong style="color:#3d2314;font-size:1rem;">$' . number_format($total, 2) . '</strong>'
+                                            '<div style="padding:0.5rem 0.75rem;background:linear-gradient(135deg,#3d2314,#6b4c3b);border-radius:8px;color:white;font-weight:700;text-align:center;font-size:1rem;">$' . number_format($total, 2) . '</div>'
                                         );
                                     }),
                                 Placeholder::make('bundle_info')

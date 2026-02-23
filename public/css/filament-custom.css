@@ -396,17 +396,21 @@ textarea.fi-textarea-input:focus {
 }
 /* Repeater add button */
 .fi-fo-repeater > .fi-fo-repeater-add-action-ctn {
-    padding: 0.75rem !important;
+    padding: 0.75rem 1rem !important;
     background: #fdf8f2 !important;
     border-top: 1px solid #f3ebe0 !important;
+    justify-content: flex-start !important;
 }
 .fi-fo-repeater .fi-fo-repeater-add-action-ctn .fi-btn {
-    color: #8b5e3c !important;
+    color: #FFFFFF !important;
+    background: linear-gradient(135deg, #8b5e3c, #6b4c3b) !important;
     font-weight: 600 !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 1.25rem !important;
+    font-size: 0.85rem !important;
 }
 .fi-fo-repeater .fi-fo-repeater-add-action-ctn .fi-btn:hover {
-    background: #f5e6d0 !important;
-    color: #3d2314 !important;
+    background: linear-gradient(135deg, #6b4c3b, #3d2314) !important;
 }
 
 /* ===== FILE UPLOAD ===== */
