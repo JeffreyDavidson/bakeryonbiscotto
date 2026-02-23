@@ -9,7 +9,7 @@
             </div>
             <x-admin.btn variant="primary" href="mailto:{{ $customer->customer_email }}" icon="✉️" style="padding: 0.4rem 0.875rem; font-size: 0.75rem;">Email</x-admin.btn>
         </div>
-        <div style="padding: 0.875rem 1.25rem;">
+        <div style="padding: 1rem 1.25rem;">
             <x-admin.info-row label="Email" :value="$customer->customer_email" :href="'mailto:' . $customer->customer_email" />
             @if($customer->customer_phone)
                 <x-admin.info-row label="Phone" :value="$customer->customer_phone" :href="'tel:' . $customer->customer_phone" />

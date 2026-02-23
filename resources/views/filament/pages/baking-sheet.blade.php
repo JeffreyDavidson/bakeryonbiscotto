@@ -8,7 +8,7 @@
         .bs-product-name { font-weight: 600; color: #3d2314; font-size: 0.95rem; }
 
         /* Timeline slot */
-        .bs-timeline-slot { padding: 0.75rem 1.5rem; border-bottom: 1px solid #f3f4f6; }
+        .bs-timeline-slot { padding: 0.75rem 1.5rem; border-bottom: 1px solid #f3ebe0; }
         .bs-timeline-slot:last-child { border-bottom: none; }
         .bs-timeline-time { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 700; color: #3d2314; margin-bottom: 0.75rem; padding: 0.375rem 0.875rem; background: #fdf8f2; border: 1px solid #e8d0b0; border-radius: 0.5rem; }
 
@@ -87,7 +87,7 @@
         <x-admin.progress-bar :segments="$segments" label="Progress" class="no-print" />
 
         {{-- Stats --}}
-        <x-admin.stat-grid :cols="5" class="no-print">
+        <x-admin.stat-grid :cols="5" class="no-print" data-stat-grid>
             <x-admin.stat-card label="Orders" :value="$this->stats->total_orders" />
             <x-admin.stat-card label="Items to Bake" :value="$this->stats->total_items" color="#6b4c3b" />
             <x-admin.stat-card label="Pickups" :value="$this->stats->pickup_count" color="#8b5e3c" />
@@ -119,9 +119,9 @@
                 <x-slot:foot>
                     <tr>
                         <td class="print-check" style="display: none;"></td>
-                        <td style="font-weight: 700; color: #111827; padding: 1rem;">Total</td>
+                        <td style="font-weight: 700; color: #3d2314; padding: 1rem;">Total</td>
                         <td style="text-align: center; padding: 1rem;"><x-admin.pill color="dark" size="lg">{{ $this->bakingItems->sum('total_quantity') }}</x-admin.pill></td>
-                        <td style="color: #6b7280; font-size: 0.875rem; padding: 1rem;">across {{ $this->stats->total_orders }} orders</td>
+                        <td style="color: #a08060; font-size: 0.875rem; padding: 1rem;">across {{ $this->stats->total_orders }} orders</td>
                     </tr>
                 </x-slot:foot>
             </x-admin.data-table>
@@ -134,7 +134,7 @@
                     <div class="bs-timeline-time">
                         <span>🕐</span>
                         {{ $timeSlot }}
-                        <span style="font-weight: 400; color: #6b7280; font-size: 0.8rem;">— {{ $orders->count() }} {{ Str::plural('order', $orders->count()) }}</span>
+                        <span style="font-weight: 400; color: #a08060; font-size: 0.8rem;">— {{ $orders->count() }} {{ Str::plural('order', $orders->count()) }}</span>
                     </div>
                     @foreach($orders as $order)
                         <x-admin.order-card :order="$order" />

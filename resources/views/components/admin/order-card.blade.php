@@ -15,7 +15,7 @@
         @foreach($order->items as $item)
             <x-admin.pill color="brown">
                 <span style="font-weight: 700; color: #92400e;">{{ $item->quantity }}×</span>
-                <span style="color: #374151;">{{ $item->product_name }}</span>
+                <span style="color: #4a3225;">{{ $item->product_name }}</span>
             </x-admin.pill>
         @endforeach
     </div>
