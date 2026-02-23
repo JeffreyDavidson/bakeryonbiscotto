@@ -52,6 +52,13 @@ class QuickOrder extends Page
         return 'Quick Order';
     }
 
+    public function content(Schema $schema): Schema
+    {
+        return $schema->components([
+            $this->form,
+        ]);
+    }
+
     public function form(Schema $form): Schema
     {
         $products = Product::where('is_available', true)->orderBy('name')->get();
