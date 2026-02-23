@@ -51,7 +51,12 @@ class QuickOrder extends Page
 
     public function getTitle(): string
     {
-        return 'Quick Order';
+        return '🧁 Quick Order';
+    }
+
+    public function getSubheading(): ?string
+    {
+        return 'Create an order on behalf of a customer';
     }
 
     public function content(Schema $schema): Schema
@@ -67,19 +72,35 @@ class QuickOrder extends Page
     public function form(Schema $form): Schema
     {
         $products = Product::where('is_available', true)->orderBy('name')->get();
-        $productOptions = $products->mapWithKeys(fn ($p) => [$p->id => "{$p->name} (\${$p->price})"])->toArray();
+        $productOptions = $products->mapWithKeys(fn ($p) => [$p->id => "{$p->name} — \${$p->price}"])->toArray();
 
         return $form
             ->schema([
                 Section::make('Customer Information')
+                    ->description('Who is this order for?')
                     ->icon('heroicon-o-user')
+                    ->columns(3)
                     ->components([
-                        TextInput::make('customer_name')->required()->label('Name'),
-                        TextInput::make('customer_email')->email()->required()->label('Email'),
-                        TextInput::make('customer_phone')->tel()->label('Phone'),
+                        TextInput::make('customer_name')
+                            ->required()
+                            ->label('Name')
+                            ->placeholder('Jane Smith')
+                            ->prefixIcon('heroicon-o-user'),
+                        TextInput::make('customer_email')
+                            ->email()
+                            ->required()
+                            ->label('Email')
+                            ->placeholder('jane@example.com')
+                            ->prefixIcon('heroicon-o-envelope'),
+                        TextInput::make('customer_phone')
+                            ->tel()
+                            ->label('Phone')
+                            ->placeholder('(555) 123-4567')
+                            ->prefixIcon('heroicon-o-phone'),
                     ]),
 
                 Section::make('Order Items')
+                    ->description('Add products and quantities')
                     ->icon('heroicon-o-shopping-cart')
                     ->components([
                         Repeater::make('items')
@@ -89,17 +110,20 @@ class QuickOrder extends Page
                                     ->label('Product')
                                     ->options($productOptions)
                                     ->required()
-                                    ->placeholder('Select a product')
+                                    ->placeholder('Choose a product...')
+                                    ->columnSpan(2)
                                     ->live(),
                                 TextInput::make('quantity')
                                     ->numeric()
                                     ->required()
                                     ->default(1)
-                                    ->minValue(1),
+                                    ->minValue(1)
+                                    ->label('Qty')
+                                    ->columnSpan(1),
                             ])
-                            ->columns(2)
+                            ->columns(3)
                             ->defaultItems(1)
-                            ->addActionLabel('Add Product')
+                            ->addActionLabel('+ Add Another Product')
                             ->addAction(function (\Filament\Actions\Action $action) {
                                 return $action->disabled(function (Repeater $component): bool {
                                     foreach ($component->getRawState() ?? [] as $item) {
@@ -110,24 +134,30 @@ class QuickOrder extends Page
                                     return false;
                                 });
                             })
+                            ->reorderable(false)
                             ->minItems(1),
                     ]),
 
-                Section::make('Fulfillment')
+                Section::make('Fulfillment Details')
+                    ->description('When and how should this order be fulfilled?')
                     ->icon('heroicon-o-truck')
+                    ->columns(3)
                     ->components([
                         Select::make('fulfillment_type')
+                            ->label('Fulfillment Type')
                             ->options([
-                                'pickup' => 'Pickup',
-                                'delivery' => 'Delivery',
+                                'pickup' => '📦 Pickup',
+                                'delivery' => '🚚 Delivery',
                             ])
                             ->required()
                             ->native(false)
                             ->live(),
                         DatePicker::make('requested_date')
+                            ->label('Requested Date')
                             ->required()
                             ->native(false)
-                            ->minDate(now()),
+                            ->minDate(now())
+                            ->prefixIcon('heroicon-o-calendar'),
                         Select::make('requested_time')
                             ->label('Time Slot')
                             ->options([
@@ -140,19 +170,30 @@ class QuickOrder extends Page
                                 '15:00' => '3:00 PM',
                                 '16:00' => '4:00 PM',
                                 '17:00' => '5:00 PM',
-                            ]),
+                            ])
+                            ->placeholder('Select a time...'),
                         TextInput::make('delivery_address')
                             ->label('Delivery Address')
+                            ->placeholder('123 Main St, Davenport, FL')
+                            ->prefixIcon('heroicon-o-map-pin')
+                            ->columnSpan(2)
                             ->visible(fn (Get $get) => $get('fulfillment_type') === 'delivery'),
                         TextInput::make('delivery_zip')
                             ->label('Zip Code')
+                            ->placeholder('33837')
+                            ->columnSpan(1)
                             ->visible(fn (Get $get) => $get('fulfillment_type') === 'delivery'),
                     ]),
 
-                Section::make('Notes')
+                Section::make('Special Instructions')
+                    ->icon('heroicon-o-chat-bubble-bottom-center-text')
+                    ->collapsed()
                     ->components([
-                        Textarea::make('notes')->rows(3)->label(''),
-                    ])->collapsible(),
+                        Textarea::make('notes')
+                            ->rows(3)
+                            ->label('')
+                            ->placeholder('Allergies, special requests, decorations, etc.'),
+                    ]),
             ])
             ->statePath('data');
     }
