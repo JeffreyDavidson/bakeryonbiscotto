@@ -25,13 +25,13 @@ class Expense extends Model
 
     public const CATEGORIES = [
         'ingredients' => 'Ingredients (COGS)',
-        'packaging' => 'Packaging & Supplies (COGS)',
+        'packaging' => 'Packaging & Labels (COGS)',
         'equipment' => 'Equipment',
         'delivery_gas' => 'Delivery & Gas',
         'marketing' => 'Marketing & Advertising',
-        'licenses_permits' => 'Licenses & Permits',
-        'utilities' => 'Utilities (Kitchen)',
-        'supplies' => 'Office & General Supplies',
+        'booth_fees' => 'Farmers Market Booth Fees',
+        'education' => 'Classes & Education',
+        'supplies' => 'General Supplies',
         'other' => 'Other',
     ];
 
@@ -40,8 +40,7 @@ class Expense extends Model
         'cogs' => ['ingredients', 'packaging'],
         'car_truck' => ['delivery_gas'],
         'advertising' => ['marketing'],
-        'legal_professional' => ['licenses_permits'],
-        'utilities' => ['utilities'],
+        'other_deductions' => ['booth_fees', 'education'],
         'other' => ['equipment', 'supplies', 'other'],
     ];
 

@@ -96,7 +96,8 @@ class ExpenseResource extends Resource
                         'ingredients', 'packaging' => 'warning',
                         'delivery_gas' => 'info',
                         'marketing' => 'primary',
-                        'equipment' => 'gray',
+                        'booth_fees' => 'success',
+                        'education' => 'info',
                         default => 'gray',
                     })
                     ->toggleable(),

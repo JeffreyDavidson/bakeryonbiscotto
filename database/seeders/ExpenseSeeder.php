@@ -38,12 +38,11 @@ class ExpenseSeeder extends Seeder
             ['category' => 'marketing', 'description' => 'Instagram promoted post', 'vendor' => 'Meta', 'amount' => 25.00, 'date' => '2026-01-20'],
             ['category' => 'marketing', 'description' => 'Business cards (250 qty)', 'vendor' => 'Vistaprint', 'amount' => 19.99, 'date' => '2026-02-12'],
 
-            // Licenses
-            ['category' => 'licenses_permits', 'description' => 'Florida cottage food license renewal', 'vendor' => 'FL Dept of Agriculture', 'amount' => 0.00, 'date' => '2026-01-02', 'notes' => 'Free in Florida — no license required for cottage food'],
-
-            // Utilities
-            ['category' => 'utilities', 'description' => 'Electric bill (kitchen portion ~30%)', 'vendor' => 'Duke Energy', 'amount' => 48.00, 'date' => '2026-01-31', 'is_recurring' => true, 'recurring_frequency' => 'monthly'],
-            ['category' => 'utilities', 'description' => 'Electric bill (kitchen portion ~30%)', 'vendor' => 'Duke Energy', 'amount' => 52.00, 'date' => '2026-02-28', 'is_recurring' => true, 'recurring_frequency' => 'monthly'],
+            // Booth Fees
+            ['category' => 'booth_fees', 'description' => 'Davenport Farmers Market booth rental', 'vendor' => 'Davenport Farmers Market', 'amount' => 35.00, 'date' => '2026-01-11', 'is_recurring' => true, 'recurring_frequency' => 'weekly'],
+            ['category' => 'booth_fees', 'description' => 'Davenport Farmers Market booth rental', 'vendor' => 'Davenport Farmers Market', 'amount' => 35.00, 'date' => '2026-01-25'],
+            ['category' => 'booth_fees', 'description' => 'Davenport Farmers Market booth rental', 'vendor' => 'Davenport Farmers Market', 'amount' => 35.00, 'date' => '2026-02-08'],
+            ['category' => 'booth_fees', 'description' => 'Davenport Farmers Market booth rental', 'vendor' => 'Davenport Farmers Market', 'amount' => 35.00, 'date' => '2026-02-22'],
 
             // Supplies
             ['category' => 'supplies', 'description' => 'Cleaning supplies, dish soap, sponges', 'vendor' => 'Publix', 'amount' => 16.43, 'date' => '2026-01-18'],
