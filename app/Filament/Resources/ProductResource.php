@@ -32,10 +32,12 @@ class ProductResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
+        return $schema->columns(1)->components([
             \Filament\Schemas\Components\Section::make('Product Details')
                 ->icon('heroicon-o-shopping-bag')
+                ->description('Name, pricing, and images')
                 ->columns(2)
+                ->columnSpanFull()
                 ->components([
                     \Filament\Forms\Components\TextInput::make('name')
                         ->required()
@@ -86,7 +88,9 @@ class ProductResource extends Resource
 
             \Filament\Schemas\Components\Section::make('Availability')
                 ->icon('heroicon-o-adjustments-horizontal')
+                ->description('Stock limits and seasonal scheduling')
                 ->columns(2)
+                ->columnSpanFull()
                 ->components([
                     \Filament\Forms\Components\Toggle::make('is_available')
                         ->label('Available for ordering')

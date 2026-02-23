@@ -31,10 +31,12 @@ class ExpenseResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
+        return $schema->columns(1)->components([
             \Filament\Schemas\Components\Section::make('Expense Details')
                 ->icon('heroicon-o-banknotes')
+                ->description('What was purchased and how much')
                 ->columns(2)
+                ->columnSpanFull()
                 ->components([
                     \Filament\Forms\Components\TextInput::make('description')
                         ->required()
@@ -79,7 +81,9 @@ class ExpenseResource extends Resource
 
             \Filament\Schemas\Components\Section::make('Additional')
                 ->icon('heroicon-o-cog-6-tooth')
+                ->description('Recurring settings and notes')
                 ->columns(2)
+                ->columnSpanFull()
                 ->components([
                     \Filament\Forms\Components\Toggle::make('is_recurring')
                         ->label('Recurring expense')

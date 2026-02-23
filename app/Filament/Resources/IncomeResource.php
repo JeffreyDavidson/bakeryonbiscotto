@@ -31,10 +31,12 @@ class IncomeResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
+        return $schema->columns(1)->components([
             \Filament\Schemas\Components\Section::make('Income Details')
                 ->icon('heroicon-o-banknotes')
+                ->description('Revenue from non-order sources')
                 ->columns(2)
+                ->columnSpanFull()
                 ->components([
                     \Filament\Forms\Components\TextInput::make('description')
                         ->required()
