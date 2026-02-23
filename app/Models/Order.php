@@ -47,6 +47,11 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function notes(): HasMany
+    {
+        return $this->hasMany(OrderNote::class);
+    }
+
     public function scopePending($query)
     {
         return $query->where('status', 'pending');
