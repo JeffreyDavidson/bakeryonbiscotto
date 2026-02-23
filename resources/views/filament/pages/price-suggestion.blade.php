@@ -41,7 +41,7 @@
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                     <span>Quick Margin:</span>
                     @foreach([40, 50, 60, 75] as $m)
-                        <x-admin.action-btn :variant="$margin == $m ? 'dark' : 'primary'" wire:click="setMargin({{ $m }})" style="padding:0.4rem 1rem;font-size:0.85rem;{{ $margin == $m ? 'border:2px solid #f5e6d0;' : '' }}">{{ $m }}%</x-admin.action-btn>
+                        <x-admin.btn :variant="$margin == $m ? 'dark' : 'primary'" wire:click="setMargin({{ $m }})" style="padding:0.4rem 1rem;font-size:0.85rem;{{ $margin == $m ? 'border:2px solid #f5e6d0;' : '' }}">{{ $m }}%</x-admin.btn>
                     @endforeach
                 </div>
             </div>

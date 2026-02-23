@@ -25,7 +25,7 @@ class ViewOrder extends Page
     public function mount(int|string $record): void
     {
         $this->record = $this->resolveRecord($record);
-        $this->record->load(['items', 'notes.user']);
+        $this->record->load(['items', 'orderNotes.user']);
     }
 
     public function getBreadcrumbs(): array

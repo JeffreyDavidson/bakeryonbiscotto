@@ -7,7 +7,7 @@
                 <div style="font-weight: 700; font-size: 1rem; color: white;">{{ $customer->customer_name }}</div>
                 <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-top: 0.125rem;">Customer since {{ \Carbon\Carbon::parse($stats->first_order_date)->format('M j, Y') }} · Last order {{ $orders->first()?->created_at->diffForHumans() ?? 'N/A' }}</div>
             </div>
-            <x-admin.action-btn variant="primary" href="mailto:{{ $customer->customer_email }}" icon="✉️" style="padding: 0.4rem 0.875rem; font-size: 0.75rem;">Email</x-admin.action-btn>
+            <x-admin.btn variant="primary" href="mailto:{{ $customer->customer_email }}" icon="✉️" style="padding: 0.4rem 0.875rem; font-size: 0.75rem;">Email</x-admin.btn>
         </div>
         <div style="padding: 0.875rem 1.25rem;">
             <x-admin.info-row label="Email" :value="$customer->customer_email" :href="'mailto:' . $customer->customer_email" />
@@ -42,7 +42,7 @@
                     <td><x-admin.badge :type="$order->fulfillment_type" /></td>
                     <td style="color:#a08060;font-size:0.8rem;">{{ $order->created_at->format('M j, Y') }}</td>
                     <td style="text-align:right;font-weight:700;color:#3d2314;">${{ number_format($order->total, 2) }}</td>
-                    <td style="text-align:right;"><x-admin.action-btn variant="ghost" href="/admin/orders/{{ $order->id }}" style="padding:0.3rem 0.625rem;font-size:0.7rem;">View</x-admin.action-btn></td>
+                    <td style="text-align:right;"><x-admin.btn variant="ghost" href="/admin/orders/{{ $order->id }}" style="padding:0.3rem 0.625rem;font-size:0.7rem;">View</x-admin.btn></td>
                 </tr>
             @endforeach
         </x-admin.data-table>

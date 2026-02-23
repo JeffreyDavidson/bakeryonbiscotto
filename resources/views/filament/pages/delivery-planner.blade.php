@@ -11,9 +11,9 @@
                 <label style="font-weight: 600; color: #3d2314;">Delivery Date:</label>
                 <input type="date" wire:model.live="date" class="dp-date-input">
                 @if($this->deliveries->count() > 0)
-                    <x-admin.action-btn variant="primary" href="{{ $this->optimizedRouteUrl }}" target="_blank" icon="🗺️" style="margin-left: auto;">
+                    <x-admin.btn variant="primary" href="{{ $this->optimizedRouteUrl }}" target="_blank" icon="🗺️" style="margin-left: auto;">
                         Optimize Route ({{ $this->deliveries->count() }} stops)
-                    </x-admin.action-btn>
+                    </x-admin.btn>
                 @endif
             </div>
         </x-admin.card>
@@ -47,7 +47,7 @@
                             <td>${{ number_format($order->delivery_fee, 2) }}</td>
                             <td>
                                 @if($order->delivery_address)
-                                    <x-admin.action-btn variant="ghost" href="{{ $this->getDirectionsUrl($order->delivery_address) }}" target="_blank" style="font-size:0.8rem;padding:0.3rem 0.6rem;">Get Directions →</x-admin.action-btn>
+                                    <x-admin.btn variant="ghost" href="{{ $this->getDirectionsUrl($order->delivery_address) }}" target="_blank" style="font-size:0.8rem;padding:0.3rem 0.6rem;">Get Directions →</x-admin.btn>
                                 @else —
                                 @endif
                             </td>
