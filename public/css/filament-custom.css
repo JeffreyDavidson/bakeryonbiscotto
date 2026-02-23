@@ -382,22 +382,30 @@ textarea.fi-textarea-input:focus {
 .fi-fo-repeater-item:last-child {
     border-bottom: none !important;
 }
-/* Repeater item — use flex to put header inline with content */
-.fi-fo-repeater-item {
+/* Repeater item — flex row-reverse to put delete inline */
+.fi-fo-repeater li.fi-fo-repeater-item,
+li.fi-fo-repeater-item {
     display: flex !important;
     flex-direction: row-reverse !important;
     align-items: center !important;
 }
-.fi-fo-repeater-item-content {
+.fi-fo-repeater li.fi-fo-repeater-item > .fi-fo-repeater-item-content,
+li.fi-fo-repeater-item > .fi-fo-repeater-item-content {
     flex: 1 !important;
     min-width: 0 !important;
 }
-.fi-fo-repeater-item-header {
+.fi-fo-repeater li.fi-fo-repeater-item > .fi-fo-repeater-item-header,
+li.fi-fo-repeater-item > .fi-fo-repeater-item-header {
     flex-shrink: 0 !important;
     background: transparent !important;
     border-bottom: none !important;
-    padding: 0 0.5rem !important;
+    padding: 0 0.25rem 0 0 !important;
     min-height: unset !important;
+    width: auto !important;
+}
+/* Hide the border-top that Filament adds between header and content */
+.fi-fo-repeater-item-has-header > .fi-fo-repeater-item-content {
+    border-top: none !important;
 }
 /* Repeater item actions */
 .fi-fo-repeater-item-header .fi-icon-btn {
