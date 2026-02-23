@@ -68,38 +68,8 @@
     .quick-order-submit:hover { opacity: 0.9; }
 </style>
 
-@php
-    $products = \App\Models\Product::where('is_available', true)->orderBy('name')->get();
-    $priceMap = $products->pluck('price', 'id')->toArray();
-@endphp
-
 <x-filament-panels::page>
-    <div class="quick-order-page" x-data="{
-        prices: {{ json_encode($priceMap) }},
-        fulfillmentType: $wire.entangle('data.fulfillment_type'),
-        getPrice(productId) {
-            return parseFloat(this.prices[productId] || 0);
-        },
-        getSubtotal() {
-            let total = 0;
-            document.querySelectorAll('[data-repeater-item]').forEach(item => {
-                const select = item.querySelector('select');
-                const qtyInput = item.querySelector('input[type=number]');
-                if (select && qtyInput) {
-                    const price = this.getPrice(select.value);
-                    const qty = parseInt(qtyInput.value) || 0;
-                    total += price * qty;
-                }
-            });
-            return total;
-        },
-        getDeliveryFee() {
-            return this.fulfillmentType === 'delivery' ? 5.00 : 0;
-        },
-        formatMoney(val) {
-            return '$' + val.toFixed(2);
-        }
-    }">
+    <div class="quick-order-page">
         <div class="quick-order-header">
             <div>
                 <h1>🧁 Create Quick Order</h1>
@@ -107,33 +77,21 @@
             </div>
         </div>
 
-        <form wire:submit="submit">
+        <x-filament-panels::form wire:submit="submit">
             <div class="quick-order-form-card">
                 {{ $this->form }}
             </div>
 
-            <div class="quick-order-totals"
-                 x-init="$watch('fulfillmentType', () => $el.querySelector('.subtotal-val') && $nextTick(() => $el.click()))"
-                 @click.self="$forceUpdate">
+            <div class="quick-order-totals">
                 <div class="total-row">
                     <span>Subtotal</span>
-                    <span class="subtotal-val" x-text="formatMoney(getSubtotal())"></span>
-                </div>
-                <template x-if="getDeliveryFee() > 0">
-                    <div class="total-row">
-                        <span>Delivery Fee</span>
-                        <span x-text="formatMoney(getDeliveryFee())"></span>
-                    </div>
-                </template>
-                <div class="total-row grand">
-                    <span>Total</span>
-                    <span x-text="formatMoney(getSubtotal() + getDeliveryFee())"></span>
+                    <span>Calculated on submit</span>
                 </div>
             </div>
 
-            <button type="submit" class="quick-order-submit">
+            <x-filament::button type="submit" size="lg">
                 🧾 Create Order
-            </button>
-        </form>
+            </x-filament::button>
+        </x-filament-panels::form>
     </div>
 </x-filament-panels::page>
