@@ -4,16 +4,6 @@
     }
     @media (max-width: 1024px) { .order-layout { grid-template-columns: 1fr; } }
 
-    .items-table { width: 100%; border-collapse: collapse; }
-    .items-table th {
-        text-align: left; font-size: 0.7rem; font-weight: 600; color: #a08060;
-        text-transform: uppercase; letter-spacing: 0.05em; padding: 0.75rem 1rem;
-        background: #fdf8f2; border-bottom: 1px solid #e5e7eb;
-    }
-    .items-table th:last-child, .items-table td:last-child { text-align: right; }
-    .items-table td { padding: 0.75rem 1rem; font-size: 0.875rem; color: #374151; border-bottom: 1px solid #f3f4f6; }
-    .items-table tr:last-child td { border-bottom: none; }
-
     .summary-row { display: flex; justify-content: space-between; padding: 0.5rem 1rem; font-size: 0.875rem; }
     .summary-row .label { color: #a08060; }
     .summary-row .value { font-weight: 600; color: #3d2314; }
@@ -47,28 +37,24 @@
         <div>
             {{-- Items --}}
             <x-admin.card title="Items" :subtitle="$record->items->sum('quantity') . ' ' . ($record->items->sum('quantity') === 1 ? 'item' : 'items')" headerStyle="flat">
-                <table class="items-table">
-                    <thead>
+                <x-admin.data-table data-admin-table>
+                    <x-slot:head>
+                        <th style="width:3rem;text-align:center;">Qty</th>
+                        <th>Product</th>
+                        <th style="width:6rem;">Unit Price</th>
+                        <th style="width:6rem;text-align:right;">Total</th>
+                    </x-slot:head>
+                    @foreach($record->items as $item)
                         <tr>
-                            <th style="width:3rem;text-align:center;">Qty</th>
-                            <th>Product</th>
-                            <th style="width:6rem;">Unit Price</th>
-                            <th style="width:6rem;">Total</th>
+                            <td style="text-align:center;">
+                                <span style="display:inline-flex;align-items:center;justify-content:center;min-width:1.75rem;height:1.75rem;border-radius:0.375rem;background:#fef3c7;font-size:0.8rem;font-weight:700;color:#92400e;">{{ $item->quantity }}</span>
+                            </td>
+                            <td><span style="font-weight:600;color:#3d2314;">{{ $item->product_name }}</span></td>
+                            <td style="color:#9ca3af;font-size:0.8rem;">${{ number_format($item->unit_price, 2) }}</td>
+                            <td style="text-align:right;font-weight:600;color:#3d2314;">${{ number_format($item->line_total, 2) }}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($record->items as $item)
-                            <tr>
-                                <td style="text-align:center;">
-                                    <span style="display:inline-flex;align-items:center;justify-content:center;min-width:1.75rem;height:1.75rem;border-radius:0.375rem;background:#fef3c7;font-size:0.8rem;font-weight:700;color:#92400e;">{{ $item->quantity }}</span>
-                                </td>
-                                <td><span style="font-weight:600;color:#3d2314;">{{ $item->product_name }}</span></td>
-                                <td style="color:#9ca3af;font-size:0.8rem;">${{ number_format($item->unit_price, 2) }}</td>
-                                <td style="font-weight:600;color:#111827;">${{ number_format($item->line_total, 2) }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                    @endforeach
+                </x-admin.data-table>
                 <div style="border-top:1px solid #e5e7eb;">
                     <div class="summary-row">
                         <span class="label">Subtotal</span>
