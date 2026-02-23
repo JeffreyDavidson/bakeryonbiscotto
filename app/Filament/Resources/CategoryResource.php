@@ -33,29 +33,42 @@ class CategoryResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            \Filament\Forms\Components\TextInput::make('name')
-                ->required()
-                ->maxLength(100)
-                ->prefixIcon('heroicon-o-tag')
-                ->placeholder('e.g. Breads, Pastries, Cookies')
-                ->live(onBlur: true)
-                ->afterStateUpdated(fn ($set, $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
-            \Filament\Forms\Components\TextInput::make('slug')
-                ->maxLength(100)
-                ->prefixIcon('heroicon-o-link')
-                ->helperText('Auto-generated from name. Edit to override.'),
-            \Filament\Forms\Components\TextInput::make('description')
-                ->maxLength(255)
-                ->prefixIcon('heroicon-o-document-text')
-                ->placeholder('A short description for the storefront'),
-            \Filament\Forms\Components\Toggle::make('is_active')
-                ->label('Active')
-                ->default(true)
-                ->helperText('Inactive categories are hidden from the order page'),
-            \Filament\Forms\Components\TextInput::make('sort_order')
-                ->numeric()
-                ->default(0)
-                ->prefixIcon('heroicon-o-arrows-up-down'),
+            \Filament\Schemas\Components\Section::make('Category Details')
+                ->icon('heroicon-o-tag')
+                ->description('Name and URL for this category')
+                ->columns(2)
+                ->components([
+                    \Filament\Forms\Components\TextInput::make('name')
+                        ->required()
+                        ->maxLength(100)
+                        ->prefixIcon('heroicon-o-tag')
+                        ->placeholder('e.g. Breads, Pastries, Cookies')
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(fn ($set, $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                    \Filament\Forms\Components\TextInput::make('slug')
+                        ->maxLength(100)
+                        ->prefixIcon('heroicon-o-link')
+                        ->helperText('Auto-generated from name. Edit to override.'),
+                    \Filament\Forms\Components\TextInput::make('description')
+                        ->maxLength(255)
+                        ->prefixIcon('heroicon-o-document-text')
+                        ->placeholder('A short description for the storefront')
+                        ->columnSpanFull(),
+                ]),
+            \Filament\Schemas\Components\Section::make('Settings')
+                ->icon('heroicon-o-cog-6-tooth')
+                ->columns(2)
+                ->components([
+                    \Filament\Forms\Components\Toggle::make('is_active')
+                        ->label('Active')
+                        ->default(true)
+                        ->helperText('Inactive categories are hidden from the order page'),
+                    \Filament\Forms\Components\TextInput::make('sort_order')
+                        ->numeric()
+                        ->default(0)
+                        ->prefixIcon('heroicon-o-arrows-up-down')
+                        ->helperText('Lower numbers appear first'),
+                ]),
         ]);
     }
 
@@ -93,7 +106,7 @@ class CategoryResource extends Resource
                     ->color(fn (Category $record) => $record->is_active ? 'gray' : 'success')
                     ->label(fn (Category $record) => $record->is_active ? 'Deactivate' : 'Activate')
                     ->action(fn (Category $record) => $record->update(['is_active' => !$record->is_active])),
-                EditAction::make()->slideOver()->modalWidth('xl'),
+                EditAction::make()->slideOver()->modalWidth('2xl'),
             ])
             ->bulkActions([]);
     }
