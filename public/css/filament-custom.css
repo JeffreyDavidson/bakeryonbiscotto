@@ -1,6 +1,29 @@
 /* Bakery on Biscotto - Filament Admin Theme */
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap");
 
+/* ===== NOTIFICATION BELL BADGE ===== */
+.fi-topbar-database-notifications-btn {
+    position: relative !important;
+}
+.fi-topbar-database-notifications-btn .fi-badge {
+    position: absolute !important;
+    top: -2px !important;
+    right: -2px !important;
+    min-width: 1.25rem !important;
+    height: 1.25rem !important;
+    padding: 0 0.35rem !important;
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
+    line-height: 1.25rem !important;
+    text-align: center !important;
+    border-radius: 9999px !important;
+    background: #c0392b !important;
+    color: #FFFFFF !important;
+    border: 2px solid #3d2314 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+    --tw-ring-shadow: none !important;
+}
+
 /* ===== GLOBAL ACTION BUTTONS ===== */
 /* Primary action buttons — dark brown gradient */
 .fi-btn.fi-color-primary {
