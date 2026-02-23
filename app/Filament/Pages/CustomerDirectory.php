@@ -50,6 +50,7 @@ class CustomerDirectory extends Page implements HasTable
     public function table(Table $table): Table
     {
         return $table
+            ->heading('👥 Customers')
             ->query(
                 Order::query()
                     ->select([
