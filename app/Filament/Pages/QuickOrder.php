@@ -264,18 +264,17 @@ class QuickOrder extends Page
                                 '17:00' => '5:00 PM',
                             ])
                             ->placeholder('Select a time...'),
-                        TextInput::make('delivery_address')
+                        ViewField::make('delivery_address')
                             ->label('Delivery Address')
-                            ->placeholder('123 Main St, Davenport, FL')
+                            ->view('forms.components.address-autocomplete')
                             ->columnSpan(2)
-                            ->visible(fn (Get $get) => $get('fulfillment_type') === 'delivery')
-                            ->extraInputAttributes(['autocomplete' => 'street-address']),
+                            ->visible(fn (Get $get) => $get('fulfillment_type') === 'delivery'),
                         TextInput::make('delivery_zip')
                             ->label('Zip Code')
                             ->placeholder('33837')
                             ->columnSpan(1)
                             ->visible(fn (Get $get) => $get('fulfillment_type') === 'delivery')
-                            ->extraInputAttributes(['autocomplete' => 'postal-code']),
+                            ->readOnly(),
                     ]),
 
                 Section::make('Special Instructions')
