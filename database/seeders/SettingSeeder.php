@@ -17,5 +17,9 @@ class SettingSeeder extends Seeder
             ['key' => 'yearly_revenue_goal'],
             ['value' => '50000']
         );
+        Setting::updateOrCreate(
+            ['key' => 'send_order_emails'],
+            ['value' => '1']
+        );
     }
 }

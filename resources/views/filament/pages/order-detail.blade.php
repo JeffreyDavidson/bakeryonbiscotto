@@ -209,6 +209,9 @@
                     @if($record->status === 'cancelled')
                         <x-admin.timeline-entry label="Cancelled" dotColor="#ef4444" />
                     @endif
+                    @if($record->last_notification_sent_at)
+                        <x-admin.timeline-entry label="📧 Email Sent" :time="$record->last_notification_sent_at->format('M j, g:i A')" dotColor="#2563eb" />
+                    @endif
                 </div>
             </x-admin.card>
 

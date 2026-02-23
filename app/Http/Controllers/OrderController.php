@@ -289,4 +289,24 @@ class OrderController extends Controller
             'total' => $subtotal + $deliveryFee,
         ];
     }
+
+    public function joinWaitlist(Request $request)
+    {
+        $validated = $request->validate([
+            'customer_name' => 'required|string|max:255',
+            'customer_email' => 'required|email|max:255',
+            'customer_phone' => 'nullable|string|max:50',
+            'product_interest' => 'nullable|string|max:1000',
+            'requested_date' => 'required|date|after_or_equal:today',
+        ]);
+
+        \App\Models\WaitlistEntry::create(array_merge($validated, [
+            'status' => 'waiting',
+        ]));
+
+        return response()->json([
+            'success' => true,
+            'message' => "You're on the waitlist! We'll email you if a spot opens up.",
+        ]);
+    }
 }

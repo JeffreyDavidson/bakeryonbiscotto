@@ -22,6 +22,7 @@ class Order extends Model
         'payment_deadline', 'payment_reminder_sent',
         'paid_at', 'delivered_at', 'follow_up_sent',
         'coupon_id', 'discount_amount',
+        'last_notification_sent_at',
     ];
 
     protected function casts(): array
@@ -37,6 +38,7 @@ class Order extends Model
             'total' => 'decimal:2',
             'delivery_fee' => 'decimal:2',
             'discount_amount' => 'decimal:2',
+            'last_notification_sent_at' => 'datetime',
         ];
     }
 
