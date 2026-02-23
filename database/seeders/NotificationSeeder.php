@@ -22,7 +22,7 @@ class NotificationSeeder extends Seeder
 
             // New orders
             [
-                'title' => '🧁 New order received!',
+                'title' => 'New order received!',
                 'body' => 'Sarah Mitchell ordered Sourdough Loaf ×2, Cinnamon Rolls ×1 — $48.00 (Pickup, tomorrow at 2:00 PM)',
                 'icon' => 'heroicon-o-shopping-bag',
                 'color' => 'success',
@@ -30,7 +30,7 @@ class NotificationSeeder extends Seeder
                 'read' => false,
             ],
             [
-                'title' => '🧁 New order received!',
+                'title' => 'New order received!',
                 'body' => 'Mike Thompson ordered Custom Birthday Cake, Chocolate Chip Cookies ×2 — $136.00 (Delivery to Davenport)',
                 'icon' => 'heroicon-o-shopping-bag',
                 'color' => 'success',
@@ -38,7 +38,7 @@ class NotificationSeeder extends Seeder
                 'read' => false,
             ],
             [
-                'title' => '🧁 New order received!',
+                'title' => 'New order received!',
                 'body' => 'Jessica Ramirez ordered Banana Bread ×3, Blueberry Muffins ×6 — $63.00 (Pickup, Friday at 10:00 AM)',
                 'icon' => 'heroicon-o-shopping-bag',
                 'color' => 'success',
@@ -48,7 +48,7 @@ class NotificationSeeder extends Seeder
 
             // Status change
             [
-                'title' => '📦 Order ready for pickup',
+                'title' => 'Order ready for pickup',
                 'body' => 'BOB-RSIEAAPJ for Velda Quitzon — 5 items, $148.00. Customer has been notified.',
                 'icon' => 'heroicon-o-check-circle',
                 'color' => 'success',
@@ -58,7 +58,7 @@ class NotificationSeeder extends Seeder
 
             // Reviews
             [
-                'title' => '⭐ New 5-star review!',
+                'title' => 'New 5-star review!',
                 'body' => 'Emily Watson: "The sourdough is absolutely incredible! Best I\'ve ever had. Will be ordering weekly."',
                 'icon' => 'heroicon-o-star',
                 'color' => 'warning',
@@ -66,7 +66,7 @@ class NotificationSeeder extends Seeder
                 'read' => false,
             ],
             [
-                'title' => '⭐ New 3-star review',
+                'title' => 'New 3-star review',
                 'body' => 'Robert Kim: "Good bread but the packaging was a bit crushed on delivery. Taste was great though!"',
                 'icon' => 'heroicon-o-star',
                 'color' => 'danger',
@@ -76,7 +76,7 @@ class NotificationSeeder extends Seeder
 
             // Messages
             [
-                'title' => '📬 New message: Catering inquiry',
+                'title' => 'New message: Catering inquiry',
                 'body' => 'Lisa Anderson: "Hi! I\'m planning a corporate event for 50 people next month. Do you do large orders?"',
                 'icon' => 'heroicon-o-envelope',
                 'color' => 'primary',
@@ -84,7 +84,7 @@ class NotificationSeeder extends Seeder
                 'read' => false,
             ],
             [
-                'title' => '📬 New message: Allergen question',
+                'title' => 'New message: Allergen question',
                 'body' => 'Tom Richards: "Do your brownies contain tree nuts? My son has a severe allergy and we want to be safe."',
                 'icon' => 'heroicon-o-envelope',
                 'color' => 'primary',
@@ -96,7 +96,7 @@ class NotificationSeeder extends Seeder
 
             // Orders
             [
-                'title' => '🧁 New order received!',
+                'title' => 'New order received!',
                 'body' => 'David Chen ordered Cookie Platter (Large), Brownie Box — $95.00 (Delivery)',
                 'icon' => 'heroicon-o-shopping-bag',
                 'color' => 'success',
@@ -104,7 +104,7 @@ class NotificationSeeder extends Seeder
                 'read' => true,
             ],
             [
-                'title' => '🧁 New order received!',
+                'title' => 'New order received!',
                 'body' => 'Amanda Foster ordered Sourdough Loaf ×1 — $28.00 (Pickup, Saturday)',
                 'icon' => 'heroicon-o-shopping-bag',
                 'color' => 'success',
@@ -112,7 +112,7 @@ class NotificationSeeder extends Seeder
                 'read' => true,
             ],
             [
-                'title' => '🧁 New order received!',
+                'title' => 'New order received!',
                 'body' => 'Chris Patel ordered Focaccia ×2, Olive Bread ×1 — $72.00 (Pickup)',
                 'icon' => 'heroicon-o-shopping-bag',
                 'color' => 'success',
@@ -120,7 +120,7 @@ class NotificationSeeder extends Seeder
                 'read' => true,
             ],
             [
-                'title' => '🧁 New order received!',
+                'title' => 'New order received!',
                 'body' => 'Nicole Brown ordered Wedding Cookie Favors (100 pcs) — $155.00 (Delivery)',
                 'icon' => 'heroicon-o-shopping-bag',
                 'color' => 'success',
@@ -130,7 +130,7 @@ class NotificationSeeder extends Seeder
 
             // Status changes
             [
-                'title' => '🚗 Order delivered',
+                'title' => 'Order delivered',
                 'body' => 'BOB-XONZPHTC for Mr. Tyrell Hagenes — 2 items, $63.00. Delivered successfully.',
                 'icon' => 'heroicon-o-check-badge',
                 'color' => 'gray',
@@ -138,7 +138,7 @@ class NotificationSeeder extends Seeder
                 'read' => true,
             ],
             [
-                'title' => '🔥 Order is baking',
+                'title' => 'Order is baking',
                 'body' => 'BOB-MYXG7OBU for Sid Bednar — 2 items, $66.00. Started baking.',
                 'icon' => 'heroicon-o-fire',
                 'color' => 'warning',
@@ -148,7 +148,7 @@ class NotificationSeeder extends Seeder
 
             // Reviews
             [
-                'title' => '⭐ New 5-star review!',
+                'title' => 'New 5-star review!',
                 'body' => 'Maria Gonzalez: "Ordered cookies for my daughter\'s birthday — everyone loved them! Beautiful packaging too."',
                 'icon' => 'heroicon-o-star',
                 'color' => 'warning',
@@ -156,7 +156,7 @@ class NotificationSeeder extends Seeder
                 'read' => true,
             ],
             [
-                'title' => '⭐ New 4-star review',
+                'title' => 'New 4-star review',
                 'body' => 'James Parker: "Cinnamon rolls were absolutely delicious. Delivery was about 20 min late but worth the wait."',
                 'icon' => 'heroicon-o-star',
                 'color' => 'warning',
@@ -164,7 +164,7 @@ class NotificationSeeder extends Seeder
                 'read' => true,
             ],
             [
-                'title' => '⭐ New 5-star review!',
+                'title' => 'New 5-star review!',
                 'body' => 'Priya Sharma: "Found you at the farmers market and now I\'m hooked! The jalapeño cheddar is life-changing."',
                 'icon' => 'heroicon-o-star',
                 'color' => 'warning',
@@ -174,7 +174,7 @@ class NotificationSeeder extends Seeder
 
             // Messages
             [
-                'title' => '📬 New message: Wholesale pricing',
+                'title' => 'New message: Wholesale pricing',
                 'body' => 'Karen White: "I own a coffee shop downtown and would love to carry your sourdough. Can we discuss pricing?"',
                 'icon' => 'heroicon-o-envelope',
                 'color' => 'primary',
@@ -182,7 +182,7 @@ class NotificationSeeder extends Seeder
                 'read' => true,
             ],
             [
-                'title' => '📬 New message: Thank you!',
+                'title' => 'New message: Thank you!',
                 'body' => 'Diane Murphy: "Just wanted to say the bread at the market last Saturday was phenomenal. You made our weekend!"',
                 'icon' => 'heroicon-o-envelope',
                 'color' => 'primary',
@@ -190,7 +190,7 @@ class NotificationSeeder extends Seeder
                 'read' => true,
             ],
             [
-                'title' => '📬 New message: Custom order request',
+                'title' => 'New message: Custom order request',
                 'body' => 'Rachel Torres: "Can you make a gluten-free birthday cake? My husband\'s 40th is coming up next month."',
                 'icon' => 'heroicon-o-envelope',
                 'color' => 'primary',

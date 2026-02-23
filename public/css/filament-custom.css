@@ -90,9 +90,9 @@
     background: #8b5e3c !important;
     width: 3px !important;
 }
-/* Hide the Filament outline icon — the emoji in the title is enough */
+/* Notification icon — bakery brown */
 .fi-no-database .fi-no-notification-icon {
-    display: none !important;
+    color: #8b5e3c !important;
 }
 /* Notification title */
 .fi-no-database .fi-no-notification-title {
