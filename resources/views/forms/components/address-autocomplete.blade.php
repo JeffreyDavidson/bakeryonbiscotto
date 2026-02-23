@@ -7,15 +7,20 @@
                 const q = (this.query || '').trim();
                 if (q.length < 5) { this.suggestions = []; return; }
                 try {
-                    const resp = await fetch('https://photon.komoot.io/api/?q=' + encodeURIComponent(q) + '&limit=5&lat=28.317&lon=-81.652&lang=en');
+                    const resp = await fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(q) + '&format=json&addressdetails=1&countrycodes=us&viewbox=-82.2,28.7,-81.2,27.9&bounded=1&limit=5', {
+                        headers: { 'Accept': 'application/json' }
+                    });
                     const data = await resp.json();
-                    this.suggestions = data.features
-                        .filter(f => f.properties.country === 'United States' && f.properties.state === 'Florida')
-                        .map(f => {
-                            const p = f.properties;
-                            const parts = [p.housenumber, p.street, p.city, p.state, p.postcode].filter(Boolean);
-                            return { display: parts.join(', '), zip: p.postcode || '' };
-                        });
+                    this.suggestions = data
+                        .filter(r => r.address && r.address.state === 'Florida')
+                        .map(r => {
+                            const a = r.address;
+                            const street = [a.house_number, a.road].filter(Boolean).join(' ');
+                            const city = a.city || a.town || a.village || a.hamlet || '';
+                            const parts = [street, city, a.state, a.postcode].filter(Boolean);
+                            return { display: parts.join(', '), zip: a.postcode || '' };
+                        })
+                        .filter(s => s.display.includes(','));
                 } catch (e) { this.suggestions = []; }
             },
             select(s) {
