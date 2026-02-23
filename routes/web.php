@@ -25,6 +25,7 @@ Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/order', [OrderController::class, 'index'])->name('order');
+Route::post('/order/apply-coupon', [OrderController::class, 'applyCoupon'])->name('order.apply-coupon');
 Route::post('/order/paypal/create', [OrderController::class, 'createPayPalOrder'])->name('order.paypal.create');
 Route::post('/order/paypal/capture', [OrderController::class, 'capturePayPalOrder'])->name('order.paypal.capture');
 Route::get('/order/confirmation/{orderNumber}', [OrderController::class, 'confirmation'])->name('order.confirmation');

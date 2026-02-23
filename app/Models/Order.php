@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
@@ -20,6 +21,7 @@ class Order extends Model
         'paypal_invoice_id', 'paypal_invoice_url',
         'payment_deadline', 'payment_reminder_sent',
         'paid_at', 'delivered_at', 'follow_up_sent',
+        'coupon_id', 'discount_amount',
     ];
 
     protected function casts(): array
@@ -34,6 +36,7 @@ class Order extends Model
             'subtotal' => 'decimal:2',
             'total' => 'decimal:2',
             'delivery_fee' => 'decimal:2',
+            'discount_amount' => 'decimal:2',
         ];
     }
 
@@ -49,6 +52,11 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function coupon(): BelongsTo
+    {
+        return $this->belongsTo(Coupon::class);
     }
 
     public function orderNotes(): HasMany
