@@ -9,7 +9,7 @@ use Illuminate\Support\Carbon;
 
 class GoalTrackerWidget extends Widget
 {
-    protected static string $view = 'filament.widgets.goal-tracker';
+    protected string $view = 'filament.widgets.goal-tracker';
 
     protected int | string | array $columnSpan = 1;
 

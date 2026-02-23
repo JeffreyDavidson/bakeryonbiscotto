@@ -455,6 +455,41 @@
                     </div>
                 </div>
             </div>
+
+            {{-- Activity / Notes --}}
+            <div class="card">
+                <div class="card-header">
+                    <h3>Activity Log</h3>
+                    <span style="font-size:0.75rem;color:#a08060;">{{ $record->notes->count() }} {{ $record->notes->count() === 1 ? 'entry' : 'entries' }}</span>
+                </div>
+                <div class="card-body">
+                    @if($record->notes->count() > 0)
+                        <div style="display:flex;flex-direction:column;gap:0;">
+                            @foreach($record->notes->sortByDesc('created_at') as $note)
+                                <div style="position:relative;padding-left:1.5rem;padding-bottom:1rem;border-left:2px solid #e8d0b0;margin-left:0.25rem;">
+                                    {{-- Dot --}}
+                                    <div style="position:absolute;left:-0.4375rem;top:0.125rem;width:0.75rem;height:0.75rem;border-radius:9999px;border:2px solid {{ $note->type === 'status_change' ? '#8b5e3c' : ($note->type === 'system' ? '#9ca3af' : '#6b4c3b') }};background:{{ $note->type === 'status_change' ? '#fef3c7' : ($note->type === 'system' ? '#f3f4f6' : '#fdf8f2') }};"></div>
+
+                                    {{-- Content --}}
+                                    <div style="margin-left:0.5rem;">
+                                        @if($note->type === 'status_change')
+                                            <span style="display:inline-block;padding:0.125rem 0.5rem;border-radius:9999px;background:#fef3c7;color:#92400e;font-size:0.675rem;font-weight:600;text-transform:uppercase;letter-spacing:0.025em;margin-bottom:0.25rem;">Status Change</span>
+                                        @elseif($note->type === 'system')
+                                            <span style="display:inline-block;padding:0.125rem 0.5rem;border-radius:9999px;background:#f3f4f6;color:#6b7280;font-size:0.675rem;font-weight:600;text-transform:uppercase;letter-spacing:0.025em;margin-bottom:0.25rem;">System</span>
+                                        @endif
+                                        <div style="font-size:0.8125rem;color:#3d2314;line-height:1.4;">{{ $note->content }}</div>
+                                        <div style="font-size:0.7rem;color:#a08060;margin-top:0.25rem;">
+                                            {{ $note->user?->name ?? 'System' }} · {{ $note->created_at->format('M j, g:i A') }}
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div style="font-size:0.8rem;color:#d1d5db;font-style:italic;">No activity yet.</div>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 </div>
