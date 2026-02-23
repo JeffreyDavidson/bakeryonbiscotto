@@ -14,7 +14,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Components\Utilities\Set;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
@@ -96,26 +95,26 @@ class QuickOrder extends Page implements HasForms
                                     ->options($productOptions)
                                     ->required()
                                     ->placeholder('Select a product')
-                                    ->live()
-                                    ->afterStateUpdated(function ($state, Set $set) use ($productPrices) {
-                                        $set('unit_price', $productPrices[$state] ?? 0);
-                                    }),
+                                    ->live(),
                                 TextInput::make('quantity')
                                     ->numeric()
                                     ->required()
                                     ->default(1)
                                     ->minValue(1)
                                     ->live(),
-                                TextInput::make('unit_price')
-                                    ->numeric()
-                                    ->prefix('$')
-                                    ->readOnly()
-                                    ->dehydrated(),
+                                Placeholder::make('unit_price')
+                                    ->label('Unit Price')
+                                    ->content(function (Get $get) use ($productPrices) {
+                                        $productId = $get('product_id');
+                                        $price = $productPrices[$productId] ?? 0;
+                                        return '$' . number_format($price, 2);
+                                    }),
                                 Placeholder::make('line_total')
                                     ->label('Line Total')
-                                    ->content(function (Get $get) {
+                                    ->content(function (Get $get) use ($productPrices) {
+                                        $productId = $get('product_id');
+                                        $price = (float) ($productPrices[$productId] ?? 0);
                                         $qty = (int) ($get('quantity') ?? 0);
-                                        $price = (float) ($get('unit_price') ?? 0);
                                         return '$' . number_format($qty * $price, 2);
                                     }),
                             ])
