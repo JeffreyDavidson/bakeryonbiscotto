@@ -35,7 +35,7 @@
         padding: 0.75rem 1rem;
         vertical-align: middle;
         font-size: 0.875rem;
-        color: #374151;
+        color: #4a3225;
     }
     [data-admin-table] tbody tr {
         border-bottom: 1px solid #f3ebe0;

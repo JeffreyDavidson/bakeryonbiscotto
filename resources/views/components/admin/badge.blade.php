@@ -19,7 +19,7 @@
         'warn' => ['background' => '#f59e0b', 'color' => '#fff'],
         'danger' => ['background' => '#ef4444', 'color' => '#fff'],
         'critical' => ['background' => '#7f1d1d', 'color' => '#fff'],
-        default => ['background' => '#f3f4f6', 'color' => '#374151'],
+        default => ['background' => '#fdf8f2', 'color' => '#4a3225'],
     };
     $radius = $rounded ? '9999px' : '0.375rem';
 @endphp
