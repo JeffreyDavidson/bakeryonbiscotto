@@ -128,6 +128,7 @@ class QuickOrder extends Page
                             ,
                         TextInput::make('customer_phone')
                             ->tel()
+                            ->required()
                             ->label('Phone')
                             ->placeholder('(555) 123-4567')
                             ,
