@@ -9,3 +9,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('orders:send-follow-ups')->hourly();
+Schedule::command('payments:check-paypal')->hourly();
+Schedule::command('payments:send-reminders')->dailyAt('14:00'); // 9am ET

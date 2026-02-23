@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,9 +16,10 @@ class Order extends Model
         'order_number', 'customer_name', 'customer_email', 'customer_phone',
         'fulfillment_type', 'delivery_address', 'delivery_zip', 'delivery_fee',
         'requested_date', 'requested_time', 'notes', 'subtotal', 'total',
-        'status', 'payment_status',
-        'stripe_session_id', 'stripe_payment_intent', 'paid_at',
-        'delivered_at', 'follow_up_sent',
+        'status', 'payment_status', 'payment_method',
+        'paypal_invoice_id', 'paypal_invoice_url',
+        'payment_deadline', 'payment_reminder_sent',
+        'paid_at', 'delivered_at', 'follow_up_sent',
     ];
 
     protected function casts(): array
@@ -27,6 +29,8 @@ class Order extends Model
             'paid_at' => 'datetime',
             'delivered_at' => 'datetime',
             'follow_up_sent' => 'boolean',
+            'payment_deadline' => 'date',
+            'payment_reminder_sent' => 'boolean',
             'subtotal' => 'decimal:2',
             'total' => 'decimal:2',
             'delivery_fee' => 'decimal:2',
@@ -60,6 +64,20 @@ class Order extends Model
     public function scopeActive($query)
     {
         return $query->whereNotIn('status', ['delivered', 'cancelled']);
+    }
+
+    public function getIsOverdueAttribute(): bool
+    {
+        return $this->payment_status === 'unpaid'
+            && $this->payment_deadline
+            && Carbon::parse($this->payment_deadline)->isPast();
+    }
+
+    public function scopeUnpaidOverdue($query)
+    {
+        return $query->where('payment_status', 'unpaid')
+            ->whereNotNull('payment_deadline')
+            ->where('payment_deadline', '<', Carbon::today());
     }
 
     public function getIsDeliveryAttribute(): bool
