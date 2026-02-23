@@ -12,15 +12,21 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            SettingSeeder::class,
             ProductSeeder::class,
-            ReviewSeeder::class,
+            CouponSeeder::class,
             OrderSeeder::class,
-            ContactMessageSeeder::class,
+            ReviewSeeder::class,
             RecipeSeeder::class,
             ExpenseSeeder::class,
             IncomeSeeder::class,
+            ContactMessageSeeder::class,
             NotificationSeeder::class,
-            SettingSeeder::class,
+            HolidaySeeder::class,
+            CustomerNoteSeeder::class,
+            CustomerFavoriteSeeder::class,
+            CapacityLimitSeeder::class,
+            WaitlistEntrySeeder::class,
         ]);
     }
 }
