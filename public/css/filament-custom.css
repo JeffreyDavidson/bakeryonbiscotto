@@ -82,9 +82,6 @@
     padding: 0.875rem 1.5rem !important;
     background: #FFFFFF !important;
 }
-.fi-no-database .fi-modal-content > *:nth-child(even) {
-    background: #fdf8f2 !important;
-}
 /* Unread indicator — bakery brown left bar */
 .fi-no-notification-unread-ctn::before {
     background: #8b5e3c !important;
