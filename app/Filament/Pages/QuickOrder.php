@@ -71,12 +71,12 @@ class QuickOrder extends Page
                     ->id('form')
                     ->livewireSubmitHandler('submit'),
                 Actions::make([
-                    Actions\Action::make('submit')
+                    Action::make('submit')
                         ->label('🧾 Create Order')
                         ->submit('submit')
                         ->color('primary')
                         ->size('lg'),
-                    Actions\Action::make('clear')
+                    Action::make('clear')
                         ->label('Clear Form')
                         ->color('gray')
                         ->size('lg')
