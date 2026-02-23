@@ -77,9 +77,14 @@
     --tw-divide-color: #e8d0b0 !important;
     border-color: #e8d0b0 !important;
 }
-/* Individual notification rows */
+/* Individual notification rows — ALL same color */
 .fi-no-database .fi-modal-content > * {
     padding: 0.875rem 1.5rem !important;
+    background: #FFFFFF !important;
+}
+.fi-no-notification-unread-ctn,
+.fi-no-notification-read-ctn,
+.fi-no-database .fi-modal-content > div {
     background: #FFFFFF !important;
 }
 /* Unread indicator — bakery brown left bar */
