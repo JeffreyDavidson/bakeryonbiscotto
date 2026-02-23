@@ -14,36 +14,189 @@ class NotificationSeeder extends Seeder
         $user = User::first();
         if (!$user) return;
 
+        // Clear existing notifications so we don't duplicate
+        $user->notifications()->delete();
+
         $notifications = [
-            // New orders — unread
-            ['title' => 'New order BOB-KJ8RTMWP', 'body' => 'Sarah Mitchell ordered Sourdough Loaf ×2, Cinnamon Rolls ×1 — $48.00', 'icon' => 'heroicon-o-shopping-bag', 'color' => 'success', 'ago' => 15, 'read' => false],
-            ['title' => 'New order BOB-QN3PLXVA', 'body' => 'Mike Thompson ordered Custom Birthday Cake, Chocolate Chip Cookies ×2 — $136.00', 'icon' => 'heroicon-o-shopping-bag', 'color' => 'success', 'ago' => 45, 'read' => false],
-            ['title' => 'New order BOB-YT9HBWZK', 'body' => 'Jessica Ramirez ordered Banana Bread ×3, Blueberry Muffins ×6 — $63.00', 'icon' => 'heroicon-o-shopping-bag', 'color' => 'success', 'ago' => 120, 'read' => false],
+            // === UNREAD (8) — these show in the bell dropdown ===
 
-            // Status changes — unread
-            ['title' => 'Order BOB-RSIEAAPJ confirmed', 'body' => 'Velda Quitzon — 5 items, $148.00', 'icon' => 'heroicon-o-check', 'color' => 'info', 'ago' => 30, 'read' => false],
-            ['title' => 'Order BOB-MYXG7OBU is baking', 'body' => 'Sid Bednar MD — 2 items, $66.00', 'icon' => 'heroicon-o-fire', 'color' => 'warning', 'ago' => 90, 'read' => false],
+            // New orders
+            [
+                'title' => '🧁 New order received!',
+                'body' => 'Sarah Mitchell ordered Sourdough Loaf ×2, Cinnamon Rolls ×1 — $48.00 (Pickup, tomorrow at 2:00 PM)',
+                'icon' => 'heroicon-o-shopping-bag',
+                'color' => 'success',
+                'ago' => 12,
+                'read' => false,
+            ],
+            [
+                'title' => '🧁 New order received!',
+                'body' => 'Mike Thompson ordered Custom Birthday Cake, Chocolate Chip Cookies ×2 — $136.00 (Delivery to Davenport)',
+                'icon' => 'heroicon-o-shopping-bag',
+                'color' => 'success',
+                'ago' => 38,
+                'read' => false,
+            ],
+            [
+                'title' => '🧁 New order received!',
+                'body' => 'Jessica Ramirez ordered Banana Bread ×3, Blueberry Muffins ×6 — $63.00 (Pickup, Friday at 10:00 AM)',
+                'icon' => 'heroicon-o-shopping-bag',
+                'color' => 'success',
+                'ago' => 95,
+                'read' => false,
+            ],
 
-            // Reviews — unread
-            ['title' => 'New 5-star review', 'body' => 'Emily Watson: "The sourdough is absolutely incredible! Best I\'ve ever had."', 'icon' => 'heroicon-o-star', 'color' => 'warning', 'ago' => 60, 'read' => false],
-            ['title' => 'New 3-star review', 'body' => 'Robert Kim: "Good bread but packaging could be better."', 'icon' => 'heroicon-o-star', 'color' => 'danger', 'ago' => 75, 'read' => false],
+            // Status change
+            [
+                'title' => '📦 Order ready for pickup',
+                'body' => 'BOB-RSIEAAPJ for Velda Quitzon — 5 items, $148.00. Customer has been notified.',
+                'icon' => 'heroicon-o-check-circle',
+                'color' => 'success',
+                'ago' => 25,
+                'read' => false,
+            ],
 
-            // Messages — unread
-            ['title' => 'New message: Catering inquiry', 'body' => 'Lisa Anderson: "Hi, I\'m interested in ordering for a corporate event..."', 'icon' => 'heroicon-o-envelope', 'color' => 'primary', 'ago' => 50, 'read' => false],
+            // Reviews
+            [
+                'title' => '⭐ New 5-star review!',
+                'body' => 'Emily Watson: "The sourdough is absolutely incredible! Best I\'ve ever had. Will be ordering weekly."',
+                'icon' => 'heroicon-o-star',
+                'color' => 'warning',
+                'ago' => 55,
+                'read' => false,
+            ],
+            [
+                'title' => '⭐ New 3-star review',
+                'body' => 'Robert Kim: "Good bread but the packaging was a bit crushed on delivery. Taste was great though!"',
+                'icon' => 'heroicon-o-star',
+                'color' => 'danger',
+                'ago' => 72,
+                'read' => false,
+            ],
 
-            // Older — read
-            ['title' => 'New order BOB-FM2DSCAE', 'body' => 'David Chen ordered Cookie Platter (Large), Brownie Box — $95.00', 'icon' => 'heroicon-o-shopping-bag', 'color' => 'success', 'ago' => 200, 'read' => true],
-            ['title' => 'Order BOB-ZOCBWKII ready for pickup', 'body' => 'Theron Cartwright — 4 items, $136.00', 'icon' => 'heroicon-o-check-circle', 'color' => 'success', 'ago' => 180, 'read' => true],
-            ['title' => 'Order BOB-XONZPHTC delivered', 'body' => 'Mr. Tyrell Hagenes — 2 items, $63.00', 'icon' => 'heroicon-o-check-badge', 'color' => 'gray', 'ago' => 300, 'read' => true],
-            ['title' => 'New 5-star review', 'body' => 'Maria Gonzalez: "Ordered cookies for my daughter\'s birthday — everyone loved them!"', 'icon' => 'heroicon-o-star', 'color' => 'warning', 'ago' => 480, 'read' => true],
-            ['title' => 'New 4-star review', 'body' => 'James Parker: "Cinnamon rolls were delicious, delivery was a bit late."', 'icon' => 'heroicon-o-star', 'color' => 'warning', 'ago' => 240, 'read' => true],
-            ['title' => 'New message: Allergen question', 'body' => 'Tom Richards: "Do your brownies contain tree nuts? My son has an allergy..."', 'icon' => 'heroicon-o-envelope', 'color' => 'primary', 'ago' => 150, 'read' => true],
-            ['title' => 'New message: Wholesale pricing', 'body' => 'Karen White: "I own a coffee shop and would love to carry your bread..."', 'icon' => 'heroicon-o-envelope', 'color' => 'primary', 'ago' => 400, 'read' => true],
-            ['title' => 'New order BOB-LW7XPNTG', 'body' => 'Amanda Foster ordered Sourdough Loaf ×1 — $28.00', 'icon' => 'heroicon-o-shopping-bag', 'color' => 'success', 'ago' => 360, 'read' => true],
-            ['title' => 'New order BOB-RV4CJNHP', 'body' => 'Chris Patel ordered Focaccia ×2, Olive Bread ×1 — $72.00', 'icon' => 'heroicon-o-shopping-bag', 'color' => 'success', 'ago' => 500, 'read' => true],
-            ['title' => 'New order BOB-HK8MWZTQ', 'body' => 'Nicole Brown ordered Wedding Cookie Favors (100 pcs) — $155.00', 'icon' => 'heroicon-o-shopping-bag', 'color' => 'success', 'ago' => 600, 'read' => true],
-            ['title' => 'New order BOB-AS5GYDNW', 'body' => 'Brian Lopez ordered Chocolate Chip Cookies ×2 — $42.00', 'icon' => 'heroicon-o-shopping-bag', 'color' => 'success', 'ago' => 800, 'read' => true],
-            ['title' => 'New order BOB-WT6ELPXR', 'body' => 'Samantha Lee ordered Sourdough Loaf ×1, Croissants ×6 — $89.00', 'icon' => 'heroicon-o-shopping-bag', 'color' => 'success', 'ago' => 1000, 'read' => true],
+            // Messages
+            [
+                'title' => '📬 New message: Catering inquiry',
+                'body' => 'Lisa Anderson: "Hi! I\'m planning a corporate event for 50 people next month. Do you do large orders?"',
+                'icon' => 'heroicon-o-envelope',
+                'color' => 'primary',
+                'ago' => 42,
+                'read' => false,
+            ],
+            [
+                'title' => '📬 New message: Allergen question',
+                'body' => 'Tom Richards: "Do your brownies contain tree nuts? My son has a severe allergy and we want to be safe."',
+                'icon' => 'heroicon-o-envelope',
+                'color' => 'primary',
+                'ago' => 68,
+                'read' => false,
+            ],
+
+            // === READ (12) — older activity ===
+
+            // Orders
+            [
+                'title' => '🧁 New order received!',
+                'body' => 'David Chen ordered Cookie Platter (Large), Brownie Box — $95.00 (Delivery)',
+                'icon' => 'heroicon-o-shopping-bag',
+                'color' => 'success',
+                'ago' => 180,
+                'read' => true,
+            ],
+            [
+                'title' => '🧁 New order received!',
+                'body' => 'Amanda Foster ordered Sourdough Loaf ×1 — $28.00 (Pickup, Saturday)',
+                'icon' => 'heroicon-o-shopping-bag',
+                'color' => 'success',
+                'ago' => 360,
+                'read' => true,
+            ],
+            [
+                'title' => '🧁 New order received!',
+                'body' => 'Chris Patel ordered Focaccia ×2, Olive Bread ×1 — $72.00 (Pickup)',
+                'icon' => 'heroicon-o-shopping-bag',
+                'color' => 'success',
+                'ago' => 500,
+                'read' => true,
+            ],
+            [
+                'title' => '🧁 New order received!',
+                'body' => 'Nicole Brown ordered Wedding Cookie Favors (100 pcs) — $155.00 (Delivery)',
+                'icon' => 'heroicon-o-shopping-bag',
+                'color' => 'success',
+                'ago' => 720,
+                'read' => true,
+            ],
+
+            // Status changes
+            [
+                'title' => '🚗 Order delivered',
+                'body' => 'BOB-XONZPHTC for Mr. Tyrell Hagenes — 2 items, $63.00. Delivered successfully.',
+                'icon' => 'heroicon-o-check-badge',
+                'color' => 'gray',
+                'ago' => 300,
+                'read' => true,
+            ],
+            [
+                'title' => '🔥 Order is baking',
+                'body' => 'BOB-MYXG7OBU for Sid Bednar — 2 items, $66.00. Started baking.',
+                'icon' => 'heroicon-o-fire',
+                'color' => 'warning',
+                'ago' => 240,
+                'read' => true,
+            ],
+
+            // Reviews
+            [
+                'title' => '⭐ New 5-star review!',
+                'body' => 'Maria Gonzalez: "Ordered cookies for my daughter\'s birthday — everyone loved them! Beautiful packaging too."',
+                'icon' => 'heroicon-o-star',
+                'color' => 'warning',
+                'ago' => 480,
+                'read' => true,
+            ],
+            [
+                'title' => '⭐ New 4-star review',
+                'body' => 'James Parker: "Cinnamon rolls were absolutely delicious. Delivery was about 20 min late but worth the wait."',
+                'icon' => 'heroicon-o-star',
+                'color' => 'warning',
+                'ago' => 600,
+                'read' => true,
+            ],
+            [
+                'title' => '⭐ New 5-star review!',
+                'body' => 'Priya Sharma: "Found you at the farmers market and now I\'m hooked! The jalapeño cheddar is life-changing."',
+                'icon' => 'heroicon-o-star',
+                'color' => 'warning',
+                'ago' => 900,
+                'read' => true,
+            ],
+
+            // Messages
+            [
+                'title' => '📬 New message: Wholesale pricing',
+                'body' => 'Karen White: "I own a coffee shop downtown and would love to carry your sourdough. Can we discuss pricing?"',
+                'icon' => 'heroicon-o-envelope',
+                'color' => 'primary',
+                'ago' => 400,
+                'read' => true,
+            ],
+            [
+                'title' => '📬 New message: Thank you!',
+                'body' => 'Diane Murphy: "Just wanted to say the bread at the market last Saturday was phenomenal. You made our weekend!"',
+                'icon' => 'heroicon-o-envelope',
+                'color' => 'primary',
+                'ago' => 800,
+                'read' => true,
+            ],
+            [
+                'title' => '📬 New message: Custom order request',
+                'body' => 'Rachel Torres: "Can you make a gluten-free birthday cake? My husband\'s 40th is coming up next month."',
+                'icon' => 'heroicon-o-envelope',
+                'color' => 'primary',
+                'ago' => 1200,
+                'read' => true,
+            ],
         ];
 
         foreach ($notifications as $n) {
@@ -67,7 +220,7 @@ class NotificationSeeder extends Seeder
                 ],
                 'created_at' => $createdAt,
                 'updated_at' => $createdAt,
-                'read_at' => $n['read'] ? $createdAt->copy()->addMinutes(15) : null,
+                'read_at' => $n['read'] ? $createdAt->copy()->addMinutes(rand(5, 30)) : null,
             ]);
         }
     }
