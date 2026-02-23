@@ -5,32 +5,32 @@
 .fi-topbar-database-notifications-btn {
     position: relative !important;
 }
-/* Make bell icon bigger */
+/* Make bell icon bigger and more visible */
 .fi-topbar-database-notifications-btn .fi-icon {
-    width: 1.5rem !important;
-    height: 1.5rem !important;
-    color: #e8d0b0 !important;
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+    color: #6b4c3b !important;
 }
 .fi-topbar-database-notifications-btn:hover .fi-icon {
-    color: #FFFFFF !important;
+    color: #3d2314 !important;
 }
-/* Badge — small bakery-themed pill */
+/* Badge — small, high-contrast */
 .fi-topbar-database-notifications-btn .fi-badge {
     position: absolute !important;
-    top: 2px !important;
-    right: 0px !important;
-    min-width: 0.95rem !important;
-    height: 0.95rem !important;
-    padding: 0 0.25rem !important;
-    font-size: 0.55rem !important;
+    top: 0px !important;
+    right: -4px !important;
+    min-width: 1.1rem !important;
+    height: 1.1rem !important;
+    padding: 0 0.3rem !important;
+    font-size: 0.6rem !important;
     font-weight: 700 !important;
-    line-height: 0.95rem !important;
+    line-height: 1.1rem !important;
     text-align: center !important;
     border-radius: 9999px !important;
-    background: #d4a574 !important;
-    color: #3d2314 !important;
-    border: 1.5px solid #3d2314 !important;
-    box-shadow: none !important;
+    background: #3d2314 !important;
+    color: #FFFFFF !important;
+    border: 1.5px solid #fdf8f2 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
     --tw-ring-shadow: none !important;
 }
 
