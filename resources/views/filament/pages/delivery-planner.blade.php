@@ -1,7 +1,7 @@
 <x-filament-panels::page>
     <style>
         .dp-date-input { padding: 0.5rem 0.75rem; border: 1px solid #e8d0b0; border-radius: 8px; background: #fff; font-size: 1rem; color: #3d2314; }
-        .dp-date-input:focus { outline: none; border-color: #6b4c3b; box-shadow: 0 0 0 2px rgba(107,76,59,0.15); }
+        .dp-date-input:focus { outline: none; border-color: #D4A574; box-shadow: 0 0 0 3px rgba(212,165,116,0.15); }
     </style>
 
     <div style="display: flex; flex-direction: column; gap: 1.5rem;">
