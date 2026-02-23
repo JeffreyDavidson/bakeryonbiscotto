@@ -93,15 +93,11 @@
     background: #FFFFFF !important;
 }
 
-/* Dark brown gradient title bar + toolbar container */
-.fi-ta-header-ctn {
+/* Dark brown gradient title bar (heading only, not toolbar) */
+.fi-ta-header {
     background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
     border-radius: 11px 11px 0 0 !important;
     padding: 0.75rem 1.25rem !important;
-}
-.fi-ta-header {
-    background: transparent !important;
-    padding: 0 !important;
 }
 .fi-ta-header-heading {
     color: #FFFFFF !important;
@@ -168,54 +164,25 @@ table thead tr {
     font-size: 0.8rem !important;
 }
 
-/* Toolbar area (search + filters) — inside dark brown header */
+/* Toolbar area (search + filters) — below dark header, cream background */
 .fi-ta-header-toolbar {
-    background: transparent !important;
-    border-bottom: none !important;
-    padding: 0.5rem 0 0 0 !important;
+    background: rgba(245,230,208,0.3) !important;
+    border-bottom: 1px solid rgba(212,165,116,0.1) !important;
+    padding: 0.75rem 1rem !important;
 }
 
-/* Search input — light style on dark header */
-.fi-ta-search-field input,
-.fi-ta-header-ctn input[type="search"],
-.fi-ta-header-ctn input[type="text"] {
-    border: 1px solid rgba(255,255,255,0.3) !important;
+/* Search input */
+.fi-ta-search-field input {
+    border: none !important;
     border-radius: 8px !important;
-    background: rgba(255,255,255,0.12) !important;
-    box-shadow: none !important;
-    outline: none !important;
-    color: #FFFFFF !important;
-}
-.fi-ta-search-field input::placeholder,
-.fi-ta-header-ctn input::placeholder {
-    color: rgba(255,255,255,0.5) !important;
-}
-.fi-ta-search-field input:focus,
-.fi-ta-header-ctn input:focus {
-    border-color: rgba(255,255,255,0.5) !important;
-    background: rgba(255,255,255,0.18) !important;
+    background: transparent !important;
     box-shadow: none !important;
     outline: none !important;
 }
-/* Search & filter icons in header */
-.fi-ta-header-ctn .fi-icon {
-    color: rgba(255,255,255,0.7) !important;
-}
-/* Filter & column toggle icon buttons */
-.fi-ta-header-ctn .fi-icon-btn {
-    color: rgba(255,255,255,0.8) !important;
-}
-.fi-ta-header-ctn .fi-icon-btn:hover {
-    background: rgba(255,255,255,0.1) !important;
-}
-/* Filter badge count */
-.fi-ta-header-ctn .fi-badge {
-    background: rgba(245,213,168,0.3) !important;
-    color: #FFFFFF !important;
-}
-/* Toolbar action buttons (bulk actions, etc.) on dark bg */
-.fi-ta-header-ctn .fi-ta-actions .fi-btn {
-    color: #FFFFFF !important;
+.fi-ta-search-field input:focus {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
 /* Pagination footer */
