@@ -20,8 +20,8 @@ class Dashboard extends BaseDashboard
             StatsOverview::class,
             TodaysOrdersWidget::class,
             BakingSheetWidget::class,
-            WeeklyRevenueChart::class,
             PopularProductsWidget::class,
+            WeeklyRevenueChart::class,
             GoalTrackerWidget::class,
         ];
     }
