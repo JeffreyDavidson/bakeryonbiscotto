@@ -25,6 +25,11 @@ class ReviewResource extends Resource
         return 'heroicon-o-star';
     }
 
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Communication';
+    }
+
     public static function getNavigationBadge(): ?string
     {
         return (string) Review::pending()->count() ?: null;

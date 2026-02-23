@@ -51,6 +51,12 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->font('Inter')
             ->spa()
+            ->navigationGroups([
+                \Filament\Navigation\NavigationGroup::make('Tools'),
+                \Filament\Navigation\NavigationGroup::make('Shop'),
+                \Filament\Navigation\NavigationGroup::make('Finances'),
+                \Filament\Navigation\NavigationGroup::make('Communication'),
+            ])
             ->databaseNotifications()
             ->renderHook('panels::head.end', fn () => new \Illuminate\Support\HtmlString(
                 '<link rel="stylesheet" href="' . asset('css/filament-custom.css') . '">'
