@@ -59,7 +59,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->databaseNotifications()
             ->renderHook('panels::head.end', fn () => new \Illuminate\Support\HtmlString(
-                '<link rel="stylesheet" href="' . asset('css/filament-custom.css') . '">'
+                '<link rel="stylesheet" href="' . asset('css/filament-custom.css') . '?v=' . filemtime(public_path('css/filament-custom.css')) . '">'
             ))
             ->renderHook('panels::body.end', fn () => new \Illuminate\Support\HtmlString('
                 <script>
