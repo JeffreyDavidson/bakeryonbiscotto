@@ -151,7 +151,8 @@ class QuickOrder extends Page
                             ])
                             ->required()
                             ->native(false)
-                            ->live(),
+                            ->live()
+                            ->selectablePlaceholder(false),
                         DatePicker::make('requested_date')
                             ->label('Requested Date')
                             ->required()
