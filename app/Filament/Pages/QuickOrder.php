@@ -188,17 +188,6 @@ class QuickOrder extends Page
                                             ->numeric()
                                             ->default(1)
                                             ->minValue(1)
-                                            ->maxValue(function (Get $get) use ($bundlePickCounts): ?int {
-                                                $productId = $get('../../product_id');
-                                                $maxPicks = $bundlePickCounts[$productId] ?? null;
-                                                if (!$maxPicks) return null;
-
-                                                $selections = $get('../../selections') ?? [];
-                                                $currentQty = (int) ($get('qty') ?? 0);
-                                                $othersTotal = collect($selections)->sum(fn ($sel) => (int) ($sel['qty'] ?? 1)) - $currentQty;
-
-                                                return max(1, $maxPicks - $othersTotal);
-                                            })
                                             ->required()
                                             ->columnSpan(1)
                                             ->live(),
@@ -207,12 +196,14 @@ class QuickOrder extends Page
                                     ->defaultItems(0)
                                     ->addActionLabel('+ Add Flavor')
                                     ->addAction(function (\Filament\Actions\Action $action) use ($bundlePickCounts) {
-                                        return $action->hidden(function (Get $get) use ($bundlePickCounts): bool {
-                                            $productId = $get('../../product_id');
+                                        return $action->hidden(function (Repeater $component) use ($bundlePickCounts): bool {
+                                            // Walk up to the parent items repeater to get this item's product_id
+                                            $itemState = $component->getContainer()->getRawState();
+                                            $productId = $itemState['product_id'] ?? null;
                                             $maxPicks = $bundlePickCounts[$productId] ?? 0;
                                             if ($maxPicks === 0) return false;
 
-                                            $selections = $get('../../selections') ?? [];
+                                            $selections = $itemState['selections'] ?? [];
                                             $totalPicked = collect($selections)->sum(fn ($sel) => (int) ($sel['qty'] ?? 1));
 
                                             return $totalPicked >= $maxPicks;
@@ -333,6 +324,21 @@ class QuickOrder extends Page
     public function submit(): void
     {
         $data = $this->form->getState();
+
+        // Validate bundle selections
+        foreach ($data['items'] as $idx => $item) {
+            $product = Product::find($item['product_id']);
+            if ($product && $product->is_bundle && $product->bundle_pick_count) {
+                $totalPicked = collect($item['selections'] ?? [])->sum(fn ($sel) => (int) ($sel['qty'] ?? 1));
+                if ($totalPicked !== $product->bundle_pick_count) {
+                    Notification::make()
+                        ->title("{$product->name} requires exactly {$product->bundle_pick_count} flavors (you selected {$totalPicked})")
+                        ->danger()
+                        ->send();
+                    return;
+                }
+            }
+        }
 
         $subtotal = 0;
         $itemsData = [];
