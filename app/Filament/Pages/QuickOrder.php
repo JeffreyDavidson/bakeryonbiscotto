@@ -41,6 +41,7 @@ class QuickOrder extends Page
     {
         $this->form->fill([
             'fulfillment_type' => 'pickup',
+            'payment_method' => 'cash',
             'items' => [['product_id' => null, 'quantity' => 1]],
         ]);
     }
@@ -290,6 +291,7 @@ class QuickOrder extends Page
                             ->required()
                             ->native(false)
                             ->live()
+                            ->default('pickup')
                             ->selectablePlaceholder(false),
                         DatePicker::make('requested_date')
                             ->label('Requested Date')
