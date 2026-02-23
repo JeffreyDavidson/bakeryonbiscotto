@@ -16,6 +16,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ViewField;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\EmbeddedSchema;
 use Filament\Schemas\Components\Form;
 use Filament\Schemas\Components\Section;
@@ -69,6 +70,18 @@ class QuickOrder extends Page
                 Form::make([EmbeddedSchema::make('form')])
                     ->id('form')
                     ->livewireSubmitHandler('submit'),
+                Actions::make([
+                    Actions\Action::make('submit')
+                        ->label('🧾 Create Order')
+                        ->submit('submit')
+                        ->color('primary')
+                        ->size('lg'),
+                    Actions\Action::make('clear')
+                        ->label('Clear Form')
+                        ->color('gray')
+                        ->size('lg')
+                        ->action(fn () => $this->resetForm()),
+                ])->alignEnd(),
             ]);
     }
 
@@ -290,15 +303,6 @@ class QuickOrder extends Page
             ->statePath('data');
     }
 
-    protected function getFormActions(): array
-    {
-        return [
-            Action::make('submit')
-                ->label('🧾 Create Order')
-                ->submit('submit'),
-        ];
-    }
-
     /**
      * Convert nested selections [{flavor: 'Chocolate Chip', qty: 2}, ...] 
      * to flat array ['Chocolate Chip', 'Chocolate Chip', ...] matching storefront format.
@@ -319,6 +323,12 @@ class QuickOrder extends Page
         }
 
         return empty($flat) ? null : $flat;
+    }
+
+    public function resetForm(): void
+    {
+        $this->data = [];
+        $this->form->fill();
     }
 
     public function submit(): void
