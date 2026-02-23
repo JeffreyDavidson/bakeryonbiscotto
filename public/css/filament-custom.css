@@ -391,7 +391,7 @@ textarea.fi-textarea-input:focus {
 }
 /* Custom repeater grid: give trash column minimal width */
 .fi-fo-repeater-item-content > .fi-sc {
-    grid-template-columns: 3fr 1fr 1fr 1fr 2.5rem !important;
+    grid-template-columns: 3fr 1fr 1fr 1fr 3rem !important;
 }
 /* Repeater item actions */
 .fi-fo-repeater-item-header .fi-icon-btn {
