@@ -407,17 +407,14 @@ li.fi-fo-repeater-item {
 .fi-fo-repeater-item-has-header > .fi-fo-repeater-item-content {
     border-top: none !important;
 }
-/* Clean up input borders inside repeaters */
+/* Clean up input wrappers inside repeaters — kill ALL borders/rings, use single outline */
 .fi-fo-repeater .fi-input-wrp {
+    border: none !important;
+    box-shadow: 0 0 0 1px #e8d0b0 !important;
     border-radius: 8px !important;
-    box-shadow: none !important;
-    --tw-ring-shadow: 0 0 0 0 transparent !important;
-    --tw-shadow: 0 0 0 0 transparent !important;
-    --tw-inset-ring-shadow: 0 0 0 0 transparent !important;
-    border: 1px solid #e8d0b0 !important;
 }
 .fi-fo-repeater .fi-input-wrp:focus-within {
-    border-color: #8b5e3c !important;
+    box-shadow: 0 0 0 2px #8b5e3c !important;
 }
 /* Custom repeater grid: give trash column minimal width */
 .fi-fo-repeater-item-content > .fi-sc {
