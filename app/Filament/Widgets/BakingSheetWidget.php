@@ -13,7 +13,7 @@ class BakingSheetWidget extends BaseWidget
 {
     protected static ?int $sort = 3;
 
-    protected static ?string $heading = '🍞 Daily Baking Sheet';
+    protected static ?string $heading = 'Daily Baking Sheet';
 
     protected int|string|array $columnSpan = 'full';
 

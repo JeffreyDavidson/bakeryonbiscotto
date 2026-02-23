@@ -13,7 +13,7 @@
 
     <div class="price-grid">
         {{-- Inputs --}}
-        <x-admin.card title="🧮 Cost Inputs">
+        <x-admin.card title="Cost Inputs">
             <div style="padding: 1.5rem;">
                 <div class="price-input-group">
                     <label>Ingredient Cost ($)</label>
@@ -53,7 +53,7 @@
         {{-- Results --}}
         <div>
             <div style="background: #3d2314; color: #fdf8f2; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
-                <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;">📊 Results</div>
+                <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;">Results</div>
                 @foreach([
                     ['Total Cost', '$' . number_format($this->totalCost, 2)],
                     ['Cost per Unit', '$' . number_format($this->costPerUnit, 2)],

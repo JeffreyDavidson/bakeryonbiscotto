@@ -13,7 +13,7 @@ class PopularProductsWidget extends BaseWidget
 {
     protected static ?int $sort = 4;
 
-    protected static ?string $heading = '🔥 Popular Products This Week';
+    protected static ?string $heading = 'Popular Products This Week';
 
     protected int|string|array $columnSpan = 'full';
 

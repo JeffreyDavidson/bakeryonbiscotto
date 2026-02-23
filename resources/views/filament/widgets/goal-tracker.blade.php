@@ -21,7 +21,7 @@
         {{-- Monthly --}}
         <div class="goal-card">
             <div data-admin-gradient-header>
-                <span data-header-title>🎯 Monthly Goal</span>
+                <span data-header-title>Monthly Goal</span>
                 <button wire:click="openEditModal('monthly')" type="button">Edit</button>
             </div>
             <div class="goal-card-body">
@@ -44,7 +44,7 @@
         {{-- Yearly --}}
         <div class="goal-card">
             <div data-admin-gradient-header>
-                <span data-header-title>🎯 Yearly Goal</span>
+                <span data-header-title>Yearly Goal</span>
                 <button wire:click="openEditModal('yearly')" type="button">Edit</button>
             </div>
             <div class="goal-card-body">

@@ -33,7 +33,7 @@
     {{-- Print header --}}
     <div class="print-header" style="display: none; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 3px solid #92400e;">
         <div>
-            <div style="font-size: 1.5rem; font-weight: 800; color: #3d2314;">🧁 Baking Sheet</div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: #3d2314;">Baking Sheet</div>
             <div style="font-size: 1.125rem; color: #4a3225; font-weight: 600;">{{ $this->formattedDate }}</div>
         </div>
         <div style="text-align: right; font-size: 0.875rem; color: #a08060;">
@@ -58,7 +58,7 @@
         <x-admin.empty-state icon="🧁" title="No orders for this day" subtitle="Enjoy the day off! 🎉" />
 
         @if($this->upcomingDays->isNotEmpty())
-            <x-admin.card title="📅 Upcoming Days with Orders" class="no-print" style="margin-top: 1.5rem;">
+            <x-admin.card title="Upcoming Days with Orders" class="no-print" style="margin-top: 1.5rem;">
                 <div style="padding: 1rem 1.5rem;">
                     <div class="bs-upcoming">
                         @foreach($this->upcomingDays as $day)
@@ -96,7 +96,7 @@
         </x-admin.stat-grid>
 
         {{-- Baking checklist --}}
-        <x-admin.card title="🍞 What to Bake" :subtitle="$this->bakingItems->count() . ' products · ' . $this->bakingItems->sum('total_quantity') . ' total'">
+        <x-admin.card title="What to Bake" :subtitle="$this->bakingItems->count() . ' products · ' . $this->bakingItems->sum('total_quantity') . ' total'">
             <x-admin.data-table data-admin-table>
                 <x-slot:head>
                     <th class="print-check" style="display: none; width: 40px;"></th>
@@ -128,7 +128,7 @@
         </x-admin.card>
 
         {{-- Order timeline grouped by time --}}
-        <x-admin.card title="🕐 Today's Schedule" :subtitle="$this->stats->total_orders . ' orders by time slot'">
+        <x-admin.card title="Today's Schedule" :subtitle="$this->stats->total_orders . ' orders by time slot'">
             @foreach($this->timeline as $timeSlot => $orders)
                 <div class="bs-timeline-slot">
                     <div class="bs-timeline-time">
@@ -145,7 +145,7 @@
 
         {{-- Upcoming days --}}
         @if($this->upcomingDays->isNotEmpty())
-            <x-admin.card title="📅 Coming Up Next" class="no-print">
+            <x-admin.card title="Coming Up Next" class="no-print">
                 <div style="padding: 1rem 1.5rem;">
                     <div class="bs-upcoming">
                         @foreach($this->upcomingDays as $day)

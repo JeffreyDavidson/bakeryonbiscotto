@@ -25,7 +25,7 @@
         </x-admin.stat-grid>
 
         {{-- Table --}}
-        <x-admin.card :title="'📦 Deliveries for ' . \Carbon\Carbon::parse($date)->format('l, M j, Y')">
+        <x-admin.card :title="'Deliveries for ' . \Carbon\Carbon::parse($date)->format('l, M j, Y')">
             @if($this->deliveries->count() > 0)
                 <x-admin.data-table data-admin-table>
                     <x-slot:head>
