@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             ContactMessageSeeder::class,
             ExpenseSeeder::class,
             IncomeSeeder::class,
+            SettingSeeder::class,
         ]);
     }
 }

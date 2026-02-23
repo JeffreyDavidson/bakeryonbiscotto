@@ -57,7 +57,14 @@ class ViewOrder extends Page
                 ->visible(fn () => $this->record->status === 'pending')
                 ->requiresConfirmation()
                 ->action(function () {
+                    $oldStatus = $this->record->status;
                     $this->record->update(['status' => 'confirmed']);
+                    OrderNote::create([
+                        'order_id' => $this->record->id,
+                        'user_id' => auth()->id(),
+                        'type' => 'status_change',
+                        'content' => 'Status changed from ' . ucfirst($oldStatus) . ' to Confirmed',
+                    ]);
                     $this->redirect(static::getResource()::getUrl('view', ['record' => $this->record]));
                 }),
 
@@ -68,7 +75,14 @@ class ViewOrder extends Page
                 ->visible(fn () => $this->record->status === 'confirmed')
                 ->requiresConfirmation()
                 ->action(function () {
+                    $oldStatus = $this->record->status;
                     $this->record->update(['status' => 'baking']);
+                    OrderNote::create([
+                        'order_id' => $this->record->id,
+                        'user_id' => auth()->id(),
+                        'type' => 'status_change',
+                        'content' => 'Status changed from ' . ucfirst($oldStatus) . ' to Baking',
+                    ]);
                     $this->redirect(static::getResource()::getUrl('view', ['record' => $this->record]));
                 }),
 
@@ -79,7 +93,14 @@ class ViewOrder extends Page
                 ->visible(fn () => $this->record->status === 'baking')
                 ->requiresConfirmation()
                 ->action(function () {
+                    $oldStatus = $this->record->status;
                     $this->record->update(['status' => 'ready']);
+                    OrderNote::create([
+                        'order_id' => $this->record->id,
+                        'user_id' => auth()->id(),
+                        'type' => 'status_change',
+                        'content' => 'Status changed from ' . ucfirst($oldStatus) . ' to Ready',
+                    ]);
                     $this->redirect(static::getResource()::getUrl('view', ['record' => $this->record]));
                 }),
 
@@ -90,9 +111,16 @@ class ViewOrder extends Page
                 ->visible(fn () => $this->record->status === 'ready')
                 ->requiresConfirmation()
                 ->action(function () {
+                    $oldStatus = $this->record->status;
                     $this->record->update([
                         'status' => 'delivered',
                         'delivered_at' => now(),
+                    ]);
+                    OrderNote::create([
+                        'order_id' => $this->record->id,
+                        'user_id' => auth()->id(),
+                        'type' => 'status_change',
+                        'content' => 'Status changed from ' . ucfirst($oldStatus) . ' to Delivered',
                     ]);
                     $this->redirect(static::getResource()::getUrl('view', ['record' => $this->record]));
                 }),
@@ -117,12 +145,46 @@ class ViewOrder extends Page
                         ->required(),
                 ])
                 ->action(function (array $data) {
+                    $oldStatus = $this->record->status;
                     $this->record->update([
                         'status' => 'cancelled',
                         'payment_status' => $data['payment_status'],
                     ]);
+                    OrderNote::create([
+                        'order_id' => $this->record->id,
+                        'user_id' => auth()->id(),
+                        'type' => 'status_change',
+                        'content' => 'Status changed from ' . ucfirst($oldStatus) . ' to Cancelled',
+                    ]);
                     $this->redirect(static::getResource()::getUrl('view', ['record' => $this->record]));
                 }),
+
+            Actions\Action::make('add_note')
+                ->label('Add Note')
+                ->icon('heroicon-o-chat-bubble-left-ellipsis')
+                ->color('gray')
+                ->form([
+                    \Filament\Forms\Components\Textarea::make('content')
+                        ->label('Note')
+                        ->required()
+                        ->rows(3),
+                ])
+                ->action(function (array $data) {
+                    OrderNote::create([
+                        'order_id' => $this->record->id,
+                        'user_id' => auth()->id(),
+                        'type' => 'note',
+                        'content' => $data['content'],
+                    ]);
+                    $this->redirect(static::getResource()::getUrl('view', ['record' => $this->record]));
+                }),
+
+            Actions\Action::make('printInvoice')
+                ->label('Print Invoice')
+                ->icon('heroicon-o-printer')
+                ->color('gray')
+                ->url(fn () => route('admin.orders.invoice', $this->record))
+                ->openUrlInNewTab(),
 
             Actions\Action::make('edit')
                 ->label('Edit Order')
