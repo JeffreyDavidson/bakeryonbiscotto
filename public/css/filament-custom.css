@@ -378,19 +378,24 @@ textarea.fi-textarea-input:focus {
     gap: 0 !important;
 }
 /* Repeater items — flat rows, no individual card styling */
-.fi-fo-repeater-item {
-    border-bottom: 1px solid #f3ebe0 !important;
+.fi-fo-repeater-item,
+.fi-fo-repeater .fi-fo-repeater-item,
+li.fi-fo-repeater-item {
     background: transparent !important;
-    position: relative !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    --tw-ring-shadow: 0 0 #0000 !important;
-    --tw-shadow: 0 0 #0000 !important;
-    --tw-ring-color: transparent !important;
     outline: none !important;
-    ring: unset !important;
     border: none !important;
     border-bottom: 1px solid #f3ebe0 !important;
+}
+/* Kill Filament's ring on repeater items at every specificity level */
+.fi-fo-repeater-item {
+    --tw-ring-shadow: 0 0 0 0 transparent !important;
+    --tw-ring-offset-shadow: 0 0 0 0 transparent !important;
+    --tw-shadow: 0 0 0 0 transparent !important;
+    --tw-inset-shadow: 0 0 0 0 transparent !important;
+    --tw-inset-ring-shadow: 0 0 0 0 transparent !important;
+    --tw-ring-color: transparent !important;
 }
 .fi-fo-repeater-item:last-child {
     border-bottom: none !important;
