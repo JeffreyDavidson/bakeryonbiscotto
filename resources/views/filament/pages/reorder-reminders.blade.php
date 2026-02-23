@@ -1,9 +1,8 @@
 <x-filament-panels::page>
     <style>
         .reorder-wrap { font-family: inherit; }
-        .reorder-header { background: #3d2314; color: #fdf8f2; padding: 1.25rem 1.5rem; border-radius: 0.75rem 0.75rem 0 0; display: flex; justify-content: space-between; align-items: center; }
-        .reorder-header h2 { margin: 0; font-size: 1.25rem; font-weight: 700; }
-        .reorder-body { background: #fdf8f2; border: 2px solid #e8d0b0; border-top: 0; border-radius: 0 0 0.75rem 0.75rem; overflow-x: auto; }
+        .reorder-controls { display: flex; align-items: center; gap: 0.75rem; }
+        .reorder-select { padding: 0.35rem 0.6rem; border-radius: 0.4rem; border: 1px solid #e8d0b0; background: #fdf8f2; color: #3d2314; font-size: 0.85rem; }
         .reorder-table { width: 100%; border-collapse: collapse; }
         .reorder-table th { background: #6b4c3b; color: #fdf8f2; padding: 0.75rem 1rem; text-align: left; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
         .reorder-table td { padding: 0.75rem 1rem; border-bottom: 1px solid #e8d0b0; font-size: 0.9rem; color: #3d2314; }
@@ -15,31 +14,28 @@
         .badge-crit { background: #7f1d1d; color: #fff; }
         .reorder-btn { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.4rem 0.85rem; background: #6b4c3b; color: #fdf8f2; border-radius: 0.5rem; font-size: 0.8rem; font-weight: 600; text-decoration: none; transition: background 0.15s; }
         .reorder-btn:hover { background: #3d2314; color: #fdf8f2; }
-        .reorder-controls { display: flex; align-items: center; gap: 0.75rem; }
-        .reorder-select { padding: 0.35rem 0.6rem; border-radius: 0.4rem; border: 1px solid #e8d0b0; background: #fdf8f2; color: #3d2314; font-size: 0.85rem; }
-        .reorder-empty { text-align: center; padding: 3rem; color: #6b4c3b; font-size: 1rem; }
         .reorder-count { background: rgba(255,255,255,0.2); padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.85rem; margin-left: 0.5rem; }
     </style>
 
     <div class="reorder-wrap">
-        <div class="reorder-header">
-            <h2>
-                🔔 Customer Reorder Reminders
-                <span class="reorder-count">{{ $this->getCustomers()->count() }} customers</span>
-            </h2>
-            <div class="reorder-controls">
-                <label style="font-size: 0.85rem;">Inactive for</label>
-                <select wire:model.live="threshold" class="reorder-select">
-                    <option value="30">30+ days</option>
-                    <option value="60">60+ days</option>
-                    <option value="90">90+ days</option>
-                    <option value="120">120+ days</option>
-                </select>
+        <x-admin.card>
+            <div style="background: #3d2314; color: #fdf8f2; padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="margin: 0; font-size: 1.25rem; font-weight: 700;">
+                    🔔 Customer Reorder Reminders
+                    <span class="reorder-count">{{ $this->getCustomers()->count() }} customers</span>
+                </h2>
+                <div class="reorder-controls">
+                    <label style="font-size: 0.85rem;">Inactive for</label>
+                    <select wire:model.live="threshold" class="reorder-select">
+                        <option value="30">30+ days</option>
+                        <option value="60">60+ days</option>
+                        <option value="90">90+ days</option>
+                        <option value="120">120+ days</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="reorder-body">
             @if($this->getCustomers()->isEmpty())
-                <div class="reorder-empty">
+                <div style="text-align: center; padding: 3rem; color: #6b4c3b; font-size: 1rem;">
                     🎉 All customers have ordered within the last {{ $threshold }} days!
                 </div>
             @else
@@ -82,6 +78,6 @@
                     </tbody>
                 </table>
             @endif
-        </div>
+        </x-admin.card>
     </div>
 </x-filament-panels::page>

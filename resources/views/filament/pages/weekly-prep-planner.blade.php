@@ -10,15 +10,9 @@
 
         .prep-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
         @media (max-width: 768px) { .prep-stats { grid-template-columns: 1fr; } }
-        .prep-stat { background: #fff; border: 1px solid #e8d0b0; border-radius: 12px; padding: 1rem 1.25rem; text-align: center; }
-        .prep-stat-value { font-family: "Playfair Display", serif; font-size: 1.5rem; font-weight: 700; color: #3d2314; }
-        .prep-stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: #8b5e3c; font-weight: 600; margin-top: 0.25rem; }
 
-        .prep-day { background: #fff; border: 1px solid #e8d0b0; border-radius: 12px; margin-bottom: 1.25rem; overflow: hidden; }
-        .prep-day-header { background: linear-gradient(135deg, #3d2314, #6b4c3b); color: #fff; padding: 0.75rem 1.25rem; font-weight: 700; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
-        .prep-day-header .task-count { background: rgba(255,255,255,0.2); padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.75rem; }
-        .prep-day-today { border: 2px solid #8b5e3c; }
-        .prep-day-today .prep-day-header { background: linear-gradient(135deg, #8b5e3c, #6b4c3b); }
+        .prep-day-today { border: 2px solid #8b5e3c !important; }
+        .prep-day-today > div:first-child { background: linear-gradient(135deg, #8b5e3c, #6b4c3b) !important; }
 
         .prep-task { display: flex; gap: 1rem; padding: 1rem 1.25rem; border-bottom: 1px solid #f3ebe0; align-items: flex-start; }
         .prep-task:last-child { border-bottom: none; }
@@ -43,17 +37,9 @@
         .prep-badge-pickup { background: #f3ebe0; color: #6b4c3b; }
         .prep-badge-delivery { background: #dbeafe; color: #1d4ed8; }
 
-        .prep-empty { padding: 3rem; text-align: center; color: #a08060; }
-        .prep-empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-        .prep-empty-text { font-size: 0.95rem; }
-        .prep-empty-sub { font-size: 0.8rem; margin-top: 0.375rem; color: #c4a882; }
-
-        .prep-no-recipes { padding: 1rem 1.25rem; color: #a08060; font-size: 0.85rem; font-style: italic; text-align: center; }
-
         @media print {
             .fi-sidebar, .fi-topbar, .fi-header, .prep-nav, button { display: none !important; }
             .fi-main { padding: 0 !important; margin: 0 !important; }
-            .prep-day { break-inside: avoid; }
         }
     </style>
 
@@ -62,7 +48,6 @@
         @php
             $weekStartDate = \Carbon\Carbon::parse($this->weekStart);
             $weekEndDate = $weekStartDate->copy()->addDays(6);
-            $isThisWeek = $weekStartDate->isCurrentWeek();
             $today = now()->toDateString();
         @endphp
         <div class="prep-nav">
@@ -75,34 +60,16 @@
         {{-- Stats --}}
         @php $stats = $this->weekStats; @endphp
         <div class="prep-stats">
-            <div class="prep-stat">
-                <div class="prep-stat-value">{{ $stats['total_tasks'] }}</div>
-                <div class="prep-stat-label">Prep Tasks</div>
-            </div>
-            <div class="prep-stat">
-                <div class="prep-stat-value">{{ $stats['total_hours'] }}h</div>
-                <div class="prep-stat-label">Est. Work Time</div>
-            </div>
-            <div class="prep-stat">
-                <div class="prep-stat-value">{{ $stats['unique_products'] }}</div>
-                <div class="prep-stat-label">Products to Make</div>
-            </div>
+            <x-admin.stat-card label="Prep Tasks" :value="$stats['total_tasks']" />
+            <x-admin.stat-card label="Est. Work Time" :value="$stats['total_hours'] . 'h'" />
+            <x-admin.stat-card label="Products to Make" :value="$stats['unique_products']" />
         </div>
 
         {{-- Timeline by day --}}
         @php $timeline = $this->prepTimeline; @endphp
 
         @if(empty($timeline))
-            <div class="prep-day">
-                <div class="prep-empty">
-                    <div class="prep-empty-icon">📋</div>
-                    <div class="prep-empty-text">No prep tasks this week</div>
-                    <div class="prep-empty-sub">
-                        Either no orders are scheduled, or recipes don't have prep stages defined yet.<br>
-                        Add stages to your recipes under Tools → Recipes to see the prep timeline.
-                    </div>
-                </div>
-            </div>
+            <x-admin.empty-state icon="📋" title="No prep tasks this week" subtitle="Either no orders are scheduled, or recipes don't have prep stages defined yet. Add stages to your recipes under Tools → Recipes to see the prep timeline." />
         @else
             @for($i = 0; $i < 7; $i++)
                 @php
@@ -113,15 +80,7 @@
                 @endphp
 
                 @if(!empty($dayTasks))
-                    <div class="prep-day {{ $isToday ? 'prep-day-today' : '' }}">
-                        <div class="prep-day-header">
-                            <span>
-                                {{ $date->format('l, M j') }}
-                                @if($isToday) — Today @endif
-                            </span>
-                            <span class="task-count">{{ count($dayTasks) }} {{ str('task')->plural(count($dayTasks)) }}</span>
-                        </div>
-
+                    <x-admin.card :title="$date->format('l, M j') . ($isToday ? ' — Today' : '')" :subtitle="count($dayTasks) . ' ' . str('task')->plural(count($dayTasks))" class="{{ $isToday ? 'prep-day-today' : '' }}">
                         @foreach($dayTasks as $task)
                             <div class="prep-task">
                                 <div class="prep-time">
@@ -149,7 +108,7 @@
                                 </div>
                             </div>
                         @endforeach
-                    </div>
+                    </x-admin.card>
                 @endif
             @endfor
         @endif

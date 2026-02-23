@@ -33,10 +33,6 @@
         .cal-dot.extra { background: #e8d0b0; }
 
         .cal-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-top: 1rem; }
-        .cal-summary-item { text-align: center; padding: 1rem 0.75rem; border-radius: 0.625rem; background: white; border: 1px solid #e8d0b0; }
-        .cal-summary-item:hover { border-color: #d4a574; box-shadow: 0 1px 3px rgba(61,35,20,0.08); }
-        .cal-summary-value { font-size: 1.75rem; font-weight: 800; color: #3d2314; line-height: 1; }
-        .cal-summary-label { font-size: 0.6rem; font-weight: 700; color: #a08060; text-transform: uppercase; letter-spacing: 0.075em; margin-top: 0.375rem; }
     </style>
 
     {{-- Navigation --}}
@@ -48,47 +44,22 @@
 
     {{-- Monthly summary --}}
     @php
-        $totalOrders = 0;
-        $totalRevenue = 0;
-        $busyDay = null;
-        $busyDayCount = 0;
+        $totalOrders = 0; $totalRevenue = 0; $busyDay = null; $busyDayCount = 0; $daysWithOrders = 0;
         foreach ($this->calendarData as $week) {
             foreach ($week as $cell) {
                 if ($cell !== null && $cell['count'] > 0) {
-                    $totalOrders += $cell['count'];
-                    $totalRevenue += $cell['revenue'];
-                    if ($cell['count'] > $busyDayCount) {
-                        $busyDayCount = $cell['count'];
-                        $busyDay = $cell['day'];
-                    }
+                    $totalOrders += $cell['count']; $totalRevenue += $cell['revenue']; $daysWithOrders++;
+                    if ($cell['count'] > $busyDayCount) { $busyDayCount = $cell['count']; $busyDay = $cell['day']; }
                 }
-            }
-        }
-        $daysWithOrders = 0;
-        foreach ($this->calendarData as $week) {
-            foreach ($week as $cell) {
-                if ($cell !== null && $cell['count'] > 0) $daysWithOrders++;
             }
         }
     @endphp
     <div class="cal-summary">
-        <div class="cal-summary-item">
-            <div class="cal-summary-value">{{ $totalOrders }}</div>
-            <div class="cal-summary-label">Total Orders</div>
-        </div>
-        <div class="cal-summary-item">
-            <div class="cal-summary-value">${{ number_format($totalRevenue, 0) }}</div>
-            <div class="cal-summary-label">Revenue</div>
-        </div>
-        <div class="cal-summary-item">
-            <div class="cal-summary-value">{{ $daysWithOrders }}</div>
-            <div class="cal-summary-label">Active Days</div>
-        </div>
+        <x-admin.stat-card label="Total Orders" :value="$totalOrders" />
+        <x-admin.stat-card label="Revenue" :value="'$' . number_format($totalRevenue, 0)" />
+        <x-admin.stat-card label="Active Days" :value="$daysWithOrders" />
         @if($busyDay)
-        <div class="cal-summary-item">
-            <div class="cal-summary-value">{{ $busyDay }}th</div>
-            <div class="cal-summary-label">Busiest Day</div>
-        </div>
+            <x-admin.stat-card label="Busiest Day" :value="$busyDay . 'th'" />
         @endif
     </div>
 

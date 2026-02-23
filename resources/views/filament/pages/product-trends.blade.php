@@ -6,8 +6,6 @@
         .trends-nav button:hover { background: #6b4c3b; }
         .trends-nav .month-label { font-family: "Playfair Display", serif; font-size: 1.5rem; color: #3d2314; font-weight: 700; min-width: 200px; text-align: center; }
 
-        .trends-section { background: #fff; border: 1px solid #e8d0b0; border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
-        .trends-section-header { background: linear-gradient(135deg, #3d2314, #6b4c3b); color: #fff; padding: 0.75rem 1.25rem; font-weight: 700; font-size: 0.9rem; }
         .trends-table { width: 100%; border-collapse: collapse; }
         .trends-table th { background: #f5e6d0; color: #3d2314; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; padding: 0.625rem 1rem; text-align: left; border-bottom: 2px solid #d4a574; }
         .trends-table th.text-right { text-align: right; }
@@ -30,8 +28,7 @@
         </div>
 
         @forelse ($this->trendsData as $group)
-            <div class="trends-section">
-                <div class="trends-section-header">{{ $group['category'] }}</div>
+            <x-admin.card :title="$group['category']">
                 <table class="trends-table">
                     <thead>
                         <tr>
@@ -66,11 +63,9 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
+            </x-admin.card>
         @empty
-            <div style="text-align: center; padding: 3rem; color: #8b5e3c; font-size: 0.95rem;">
-                No order data found for this period.
-            </div>
+            <x-admin.empty-state icon="📊" title="No order data found for this period" subtitle="Try navigating to a different month." />
         @endforelse
     </div>
 </x-filament-panels::page>

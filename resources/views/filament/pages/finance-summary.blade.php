@@ -8,9 +8,6 @@
 
         .summary-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
         @media (max-width: 768px) { .summary-cards { grid-template-columns: repeat(2, 1fr); } }
-        .summary-card { background: #fff; border: 1px solid #e8d0b0; border-radius: 12px; padding: 1.25rem; }
-        .summary-card-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: #8b5e3c; font-weight: 600; margin-bottom: 0.25rem; }
-        .summary-card-value { font-family: "Playfair Display", serif; font-size: 1.5rem; font-weight: 700; }
         .text-green { color: #16a34a; }
         .text-red { color: #dc2626; }
         .text-brown { color: #3d2314; }
@@ -45,24 +42,10 @@
 
         {{-- Summary cards --}}
         <div class="summary-cards">
-            <div class="summary-card">
-                <div class="summary-card-label">Order Revenue</div>
-                <div class="summary-card-value text-brown">${{ number_format($this->yearTotals['order_income'], 2) }}</div>
-            </div>
-            <div class="summary-card">
-                <div class="summary-card-label">Other Income</div>
-                <div class="summary-card-value text-brown">${{ number_format($this->yearTotals['other_income'], 2) }}</div>
-            </div>
-            <div class="summary-card">
-                <div class="summary-card-label">Total Expenses</div>
-                <div class="summary-card-value text-red">${{ number_format($this->yearTotals['expenses'], 2) }}</div>
-            </div>
-            <div class="summary-card">
-                <div class="summary-card-label">Net Profit</div>
-                <div class="summary-card-value {{ $this->yearTotals['profit'] >= 0 ? 'text-green' : 'text-red' }}">
-                    {{ $this->yearTotals['profit'] >= 0 ? '' : '-' }}${{ number_format(abs($this->yearTotals['profit']), 2) }}
-                </div>
-            </div>
+            <x-admin.stat-card label="Order Revenue" :value="'$' . number_format($this->yearTotals['order_income'], 2)" color="#3d2314" />
+            <x-admin.stat-card label="Other Income" :value="'$' . number_format($this->yearTotals['other_income'], 2)" color="#3d2314" />
+            <x-admin.stat-card label="Total Expenses" :value="'$' . number_format($this->yearTotals['expenses'], 2)" color="#dc2626" />
+            <x-admin.stat-card label="Net Profit" :value="($this->yearTotals['profit'] >= 0 ? '' : '-') . '$' . number_format(abs($this->yearTotals['profit']), 2)" :color="$this->yearTotals['profit'] >= 0 ? '#16a34a' : '#dc2626'" />
         </div>
 
         {{-- Revenue cap tracker --}}
