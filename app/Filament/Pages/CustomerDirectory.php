@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Models\CustomerNote;
 use App\Models\Order;
 use Filament\Actions\Action;
 use Filament\Pages\Page;
@@ -168,12 +169,33 @@ class CustomerDirectory extends Page implements HasTable
                                 DB::raw('MIN(created_at) as first_order_date'),
                             ])
                             ->first(),
+                        'customerNotes' => CustomerNote::forCustomer($record->customer_email)
+                            ->orderByDesc('created_at')
+                            ->get(),
                     ]))
                     ->modalWidth('2xl')
                     ->slideOver()
                     ->modalSubmitAction(false)
                     ->modalCancelAction(false),
             ]);
+    }
+
+    public function addCustomerNote(string $email, string $name, string $note, bool $isImportant = false): void
+    {
+        if (empty(trim($note))) return;
+
+        CustomerNote::create([
+            'customer_email' => $email,
+            'customer_name' => $name,
+            'note' => trim($note),
+            'is_important' => $isImportant,
+            'created_by' => auth()->user()?->name,
+        ]);
+
+        \Filament\Notifications\Notification::make()
+            ->title('Note added')
+            ->success()
+            ->send();
     }
 
     public function content(Schema $schema): Schema
