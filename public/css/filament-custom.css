@@ -93,17 +93,24 @@
     background: #FFFFFF !important;
 }
 
-/* Dark brown gradient — entire header container (title + toolbar) */
+/* Dark brown gradient — single row: title left, search+filters right */
 .fi-ta-header-ctn {
     background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
     border-radius: 11px 11px 0 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    padding: 0.65rem 1.25rem !important;
+    gap: 1rem !important;
 }
 .fi-ta-header {
     background: transparent !important;
     border-bottom: none !important;
-    padding: 0.75rem 1.25rem 0.25rem !important;
+    padding: 0 !important;
     flex-direction: row !important;
     align-items: center !important;
+    flex-shrink: 0 !important;
+    gap: 0.5rem !important;
 }
 .fi-ta-header .fi-ta-actions {
     margin-left: auto !important;
@@ -173,11 +180,13 @@ table thead tr {
     font-size: 0.8rem !important;
 }
 
-/* Toolbar (search + filters) — inside dark header */
+/* Toolbar (search + filters) — right side of dark header row */
 .fi-ta-header-toolbar {
     background: transparent !important;
     border-bottom: none !important;
-    padding: 0.25rem 1.25rem 0.75rem !important;
+    padding: 0 !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
 }
 
 /* Search input — white input on dark background */
