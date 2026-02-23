@@ -371,26 +371,26 @@ textarea.fi-textarea-input:focus {
 .fi-fo-repeater {
     border: 1px solid #e8d0b0 !important;
     border-radius: 12px !important;
-    overflow: hidden !important;
+    overflow: visible !important;
 }
 /* Repeater items — clean with subtle separator */
 .fi-fo-repeater-item {
     border-bottom: 1px solid #f3ebe0 !important;
     background: #FFFFFF !important;
-    padding-right: 2.5rem !important;
+    position: relative !important;
 }
 .fi-fo-repeater-item:last-child {
     border-bottom: none !important;
 }
-/* Repeater item header — inline with row content */
-.fi-fo-repeater-item {
-    position: relative !important;
-    overflow: visible !important;
+/* Repeater item content — make room for inline delete button */
+.fi-fo-repeater-item-content {
+    padding-right: 2.5rem !important;
 }
+/* Repeater item header — inline delete button */
 .fi-fo-repeater-item-header {
     position: absolute !important;
     top: 50% !important;
-    right: 0.75rem !important;
+    right: 0.5rem !important;
     transform: translateY(-50%) !important;
     background: transparent !important;
     border-bottom: none !important;
