@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             ReviewSeeder::class,
             OrderSeeder::class,
             ContactMessageSeeder::class,
+            RecipeSeeder::class,
             ExpenseSeeder::class,
             IncomeSeeder::class,
             SettingSeeder::class,
