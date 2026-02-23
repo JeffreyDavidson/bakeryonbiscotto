@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\CapacityLimit;
 use App\Models\Order;
 use Carbon\Carbon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -37,6 +38,27 @@ class StatsOverview extends BaseWidget
             Stat::make('Total Customers', Order::distinct('customer_email')->count('customer_email'))
                 ->icon('heroicon-o-users')
                 ->color('info'),
+
+            ...collect([$today, $today->copy()->addDay()])
+                ->map(function (Carbon $date) {
+                    $usage = CapacityLimit::usagePercent($date);
+                    if ($usage === null || $usage < 80) return null;
+                    $label = $date->isToday() ? 'Today' : 'Tomorrow';
+                    $limit = CapacityLimit::forDate($date);
+                    if ($limit?->is_blocked) {
+                        return Stat::make("$label Capacity", 'BLOCKED')
+                            ->icon('heroicon-o-x-circle')
+                            ->color('danger')
+                            ->description('Day is blocked for orders');
+                    }
+                    $remaining = CapacityLimit::remainingSlots($date);
+                    return Stat::make("$label Capacity", round($usage) . '% full')
+                        ->icon('heroicon-o-exclamation-triangle')
+                        ->color($usage >= 100 ? 'danger' : 'warning')
+                        ->description($remaining . ' slots remaining');
+                })
+                ->filter()
+                ->all(),
         ];
     }
 }
