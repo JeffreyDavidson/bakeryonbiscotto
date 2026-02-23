@@ -65,6 +65,36 @@
             </div>
         </div>
 
+        {{-- Revenue cap tracker --}}
+        @php $revCap = $this->revCap; @endphp
+        <div class="finance-section" style="margin-bottom: 1.5rem;">
+            <div class="finance-section-header" style="{{ $revCap['danger'] ? 'background: linear-gradient(135deg, #991b1b, #dc2626);' : ($revCap['warning'] ? 'background: linear-gradient(135deg, #92400e, #d97706);' : '') }}">
+                🏠 Florida Cottage Food Revenue Cap — {{ $this->year }}
+            </div>
+            <div style="padding: 1.25rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <span style="font-size: 0.85rem; color: #6b4c3b; font-weight: 600;">
+                        ${{ number_format($revCap['total'], 2) }} of ${{ number_format($revCap['cap'], 0) }} ({{ $revCap['percentage'] }}%)
+                    </span>
+                    <span style="font-size: 0.85rem; color: {{ $revCap['danger'] ? '#dc2626' : ($revCap['warning'] ? '#d97706' : '#16a34a') }}; font-weight: 700;">
+                        ${{ number_format($revCap['remaining'], 2) }} remaining
+                    </span>
+                </div>
+                <div style="background: #f3ebe0; border-radius: 9999px; height: 12px; overflow: hidden;">
+                    <div style="background: {{ $revCap['danger'] ? '#dc2626' : ($revCap['warning'] ? '#d97706' : '#8b5e3c') }}; height: 100%; border-radius: 9999px; width: {{ $revCap['percentage'] }}%; transition: width 0.3s ease;"></div>
+                </div>
+                @if($revCap['danger'])
+                    <div style="margin-top: 0.75rem; padding: 0.75rem; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; font-size: 0.8rem; color: #991b1b;">
+                        ⚠️ <strong>Warning:</strong> You're approaching the Florida cottage food annual revenue cap of $250,000. Exceeding this requires a food establishment license.
+                    </div>
+                @elseif($revCap['warning'])
+                    <div style="margin-top: 0.75rem; padding: 0.75rem; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; font-size: 0.8rem; color: #92400e;">
+                        📊 <strong>Heads up:</strong> You've passed 80% of the cottage food revenue cap. Great year!
+                    </div>
+                @endif
+            </div>
+        </div>
+
         {{-- Monthly breakdown --}}
         <div class="finance-section">
             <div class="finance-section-header">📊 Monthly Breakdown</div>

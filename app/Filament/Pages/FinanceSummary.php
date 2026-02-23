@@ -132,6 +132,23 @@ class FinanceSummary extends Page
             ->toArray();
     }
 
+    public function getRevCapProperty(): array
+    {
+        $cap = 250000;
+        $totalRevenue = $this->yearTotals['total_income'];
+        $percentage = min(($totalRevenue / $cap) * 100, 100);
+        $remaining = max($cap - $totalRevenue, 0);
+
+        return [
+            'cap' => $cap,
+            'total' => $totalRevenue,
+            'percentage' => round($percentage, 1),
+            'remaining' => $remaining,
+            'warning' => $percentage >= 80,
+            'danger' => $percentage >= 95,
+        ];
+    }
+
     public function getCogsProperty(): float
     {
         $start = Carbon::create($this->year, 1, 1)->startOfYear();
