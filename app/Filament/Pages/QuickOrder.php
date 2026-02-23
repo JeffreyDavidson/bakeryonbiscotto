@@ -268,12 +268,14 @@ class QuickOrder extends Page
                             ->label('Delivery Address')
                             ->placeholder('123 Main St, Davenport, FL')
                             ->columnSpan(2)
-                            ->visible(fn (Get $get) => $get('fulfillment_type') === 'delivery'),
+                            ->visible(fn (Get $get) => $get('fulfillment_type') === 'delivery')
+                            ->extraInputAttributes(['autocomplete' => 'street-address']),
                         TextInput::make('delivery_zip')
                             ->label('Zip Code')
                             ->placeholder('33837')
                             ->columnSpan(1)
-                            ->visible(fn (Get $get) => $get('fulfillment_type') === 'delivery'),
+                            ->visible(fn (Get $get) => $get('fulfillment_type') === 'delivery')
+                            ->extraInputAttributes(['autocomplete' => 'postal-code']),
                     ]),
 
                 Section::make('Special Instructions')
