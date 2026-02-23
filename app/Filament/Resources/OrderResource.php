@@ -137,7 +137,36 @@ class OrderResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
-            ->filters([])
+            ->filters([
+                Tables\Filters\SelectFilter::make('fulfillment_type')
+                    ->label('Fulfillment')
+                    ->options([
+                        'pickup' => 'Pickup',
+                        'delivery' => 'Delivery',
+                    ]),
+                Tables\Filters\Filter::make('requested_date')
+                    ->form([
+                        \Filament\Forms\Components\DatePicker::make('from')->label('From'),
+                        \Filament\Forms\Components\DatePicker::make('until')->label('Until'),
+                    ])
+                    ->query(function (\Illuminate\Database\Eloquent\Builder $query, array $data): \Illuminate\Database\Eloquent\Builder {
+                        return $query
+                            ->when($data['from'], fn ($q, $date) => $q->whereDate('requested_date', '>=', $date))
+                            ->when($data['until'], fn ($q, $date) => $q->whereDate('requested_date', '<=', $date));
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        if ($data['from'] ?? null) $indicators[] = 'From ' . \Carbon\Carbon::parse($data['from'])->format('M j, Y');
+                        if ($data['until'] ?? null) $indicators[] = 'Until ' . \Carbon\Carbon::parse($data['until'])->format('M j, Y');
+                        return $indicators;
+                    }),
+                Tables\Filters\TernaryFilter::make('has_notes')
+                    ->label('Special Instructions')
+                    ->queries(
+                        true: fn ($query) => $query->whereNotNull('notes')->where('notes', '!=', ''),
+                        false: fn ($query) => $query->where(fn ($q) => $q->whereNull('notes')->orWhere('notes', '')),
+                    ),
+            ])
             ->actions([
                 TableAction::make('confirm')
                     ->icon('heroicon-o-check')

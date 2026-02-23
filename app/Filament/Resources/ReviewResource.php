@@ -85,6 +85,16 @@ class ReviewResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options(['pending' => 'Pending', 'approved' => 'Approved', 'rejected' => 'Rejected']),
+                Tables\Filters\SelectFilter::make('rating')
+                    ->options([
+                        5 => '5 Stars',
+                        4 => '4 Stars',
+                        3 => '3 Stars',
+                        2 => '2 Stars',
+                        1 => '1 Star',
+                    ]),
+                Tables\Filters\TernaryFilter::make('is_featured')
+                    ->label('Featured'),
             ])
             ->actions([
                 Action::make('feature')
