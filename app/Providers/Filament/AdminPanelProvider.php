@@ -60,6 +60,7 @@ class AdminPanelProvider extends PanelProvider
             ->databaseNotifications()
             ->renderHook('panels::head.end', fn () => new \Illuminate\Support\HtmlString(
                 '<link rel="stylesheet" href="' . asset('css/filament-custom.css') . '?v=' . filemtime(public_path('css/filament-custom.css')) . '">'
+                . '<style>.fi-fo-repeater .fi-fo-repeater-items .fi-fo-repeater-item{border-radius:0!important;box-shadow:none!important;background:transparent!important;outline:none!important;--tw-ring-shadow:0 0 0 0 transparent!important;--tw-shadow:0 0 0 0 transparent!important;--tw-inset-shadow:0 0 0 0 transparent!important;--tw-inset-ring-shadow:0 0 0 0 transparent!important;--tw-ring-offset-shadow:0 0 0 0 transparent!important;--tw-ring-color:transparent!important;border:none!important;border-bottom:1px solid #f3ebe0!important}.fi-fo-repeater .fi-fo-repeater-items .fi-fo-repeater-item:last-child{border-bottom:none!important}.fi-fo-repeater .fi-fo-repeater-items{gap:0!important}</style>'
             ))
             ->renderHook('panels::body.end', fn () => new \Illuminate\Support\HtmlString('
                 <script>
