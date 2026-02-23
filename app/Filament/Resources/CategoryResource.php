@@ -70,6 +70,13 @@ class CategoryResource extends Resource
                     ->boolean(),
                 Tables\Columns\TextColumn::make('sort_order')->sortable(),
             ])
+            ->filters([
+                Tables\Filters\TernaryFilter::make('is_active')
+                    ->label('Active')
+                    ->trueLabel('Active only')
+                    ->falseLabel('Inactive only')
+                    ->placeholder('All'),
+            ])
             ->defaultSort('sort_order')
             ->reorderable('sort_order')
             ->actions([

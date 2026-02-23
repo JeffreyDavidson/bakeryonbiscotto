@@ -34,6 +34,15 @@ class CustomerDirectory extends Page implements HasTable
         return 'Shop';
     }
 
+    public function getBreadcrumbs(): array
+    {
+        return [
+            '/admin' => 'Dashboard',
+            static::getUrl() => 'Customers',
+            'Customer Directory',
+        ];
+    }
+
     public function getTableRecordKey(\Illuminate\Database\Eloquent\Model|array $record): string
     {
         return $record->customer_email ?? '';
