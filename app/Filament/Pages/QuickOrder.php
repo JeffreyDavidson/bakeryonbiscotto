@@ -93,9 +93,7 @@ class QuickOrder extends Page implements HasForms
                                     ->label('Product')
                                     ->options($productOptions)
                                     ->required()
-                                    ->searchable()
-                                    ->allowHtml(false)
-                                    ->native(false)
+                                    ->placeholder('Select a product')
                                     ->live()
                                     ->afterStateUpdated(function ($state, $set) use ($productPrices) {
                                         $price = $productPrices[$state] ?? 0;
