@@ -55,6 +55,24 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook('panels::head.end', fn () => new \Illuminate\Support\HtmlString(
                 '<link rel="stylesheet" href="' . asset('css/filament-custom.css') . '">'
             ))
+            ->renderHook('panels::body.end', fn () => new \Illuminate\Support\HtmlString('
+                <script>
+                    (() => {
+                        let sidebarScrollTop = 0;
+                        const getSidebar = () => document.querySelector(".fi-sidebar-nav");
+
+                        document.addEventListener("livewire:navigate", () => {
+                            const sidebar = getSidebar();
+                            if (sidebar) sidebarScrollTop = sidebar.scrollTop;
+                        });
+
+                        document.addEventListener("livewire:navigated", () => {
+                            const sidebar = getSidebar();
+                            if (sidebar) sidebar.scrollTop = sidebarScrollTop;
+                        });
+                    })();
+                </script>
+            '))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
