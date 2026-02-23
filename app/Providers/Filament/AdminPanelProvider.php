@@ -58,17 +58,40 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook('panels::body.end', fn () => new \Illuminate\Support\HtmlString('
                 <script>
                     (() => {
-                        let sidebarScrollTop = 0;
-                        const getSidebar = () => document.querySelector(".fi-sidebar-nav");
+                        let sidebarTop = 0;
 
                         document.addEventListener("livewire:navigate", () => {
-                            const sidebar = getSidebar();
-                            if (sidebar) sidebarScrollTop = sidebar.scrollTop;
+                            // Find the actual scrolling container — walk up from nav
+                            const nav = document.querySelector(".fi-sidebar-nav");
+                            if (!nav) return;
+                            let el = nav;
+                            while (el) {
+                                if (el.scrollHeight > el.clientHeight && el.scrollTop > 0) {
+                                    sidebarTop = el.scrollTop;
+                                    break;
+                                }
+                                el = el.parentElement;
+                            }
+                            // Also check nav itself
+                            if (nav.scrollTop > 0) sidebarTop = nav.scrollTop;
                         });
 
                         document.addEventListener("livewire:navigated", () => {
-                            const sidebar = getSidebar();
-                            if (sidebar) sidebar.scrollTop = sidebarScrollTop;
+                            if (sidebarTop === 0) return;
+                            requestAnimationFrame(() => {
+                                // Restore to any scrollable sidebar element
+                                const candidates = [
+                                    document.querySelector(".fi-sidebar-nav"),
+                                    document.querySelector(".fi-sidebar"),
+                                    ...document.querySelectorAll("aside *"),
+                                ];
+                                for (const el of candidates) {
+                                    if (el && el.scrollHeight > el.clientHeight) {
+                                        el.scrollTop = sidebarTop;
+                                        break;
+                                    }
+                                }
+                            });
                         });
                     })();
                 </script>
