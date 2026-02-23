@@ -400,6 +400,12 @@ li.fi-fo-repeater-item {
 .fi-fo-repeater-item:last-child {
     border-bottom: none !important;
 }
+/* Match native date input placeholder color to Filament styled selects */
+input[type="date"]:not(:valid),
+input[type="date"][value=""] {
+    color: #9ca3af;
+}
+
 /* Match native select placeholder color to Filament styled selects */
 .fi-fo-repeater select option[value=""] {
     color: #9ca3af;
