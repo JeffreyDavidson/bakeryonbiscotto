@@ -11,12 +11,12 @@ class ExpenseSeeder extends Seeder
     {
         $expenses = [
             // Ingredients
-            ['category' => 'ingredients', 'description' => 'Flour, sugar, butter, eggs', 'vendor' => 'Publix', 'amount' => 67.43, 'date' => '2026-01-05'],
+            ['category' => 'ingredients', 'description' => 'Flour, sugar, butter, eggs', 'vendor' => 'Publix', 'amount' => 67.43, 'date' => '2026-01-05', 'business_percentage' => 80],
             ['category' => 'ingredients', 'description' => 'Chocolate chips, vanilla extract, cocoa powder', 'vendor' => 'Costco', 'amount' => 42.18, 'date' => '2026-01-12'],
-            ['category' => 'ingredients', 'description' => 'Cream cheese, heavy cream, powdered sugar', 'vendor' => 'Publix', 'amount' => 38.92, 'date' => '2026-01-19'],
+            ['category' => 'ingredients', 'description' => 'Cream cheese, heavy cream, powdered sugar', 'vendor' => 'Publix', 'amount' => 38.92, 'date' => '2026-01-19', 'business_percentage' => 75],
             ['category' => 'ingredients', 'description' => 'Specialty sprinkles and food coloring', 'vendor' => 'Amazon', 'amount' => 24.99, 'date' => '2026-01-25'],
             ['category' => 'ingredients', 'description' => 'Bulk flour and sugar restock', 'vendor' => 'Costco', 'amount' => 89.50, 'date' => '2026-02-01'],
-            ['category' => 'ingredients', 'description' => 'Butter, eggs, milk, yeast', 'vendor' => 'Publix', 'amount' => 53.27, 'date' => '2026-02-08'],
+            ['category' => 'ingredients', 'description' => 'Butter, eggs, milk, yeast', 'vendor' => 'Publix', 'amount' => 53.27, 'date' => '2026-02-08', 'business_percentage' => 70],
             ['category' => 'ingredients', 'description' => 'Seasonal berries and fruit', 'vendor' => 'Publix', 'amount' => 31.60, 'date' => '2026-02-14'],
             ['category' => 'ingredients', 'description' => 'Almond flour, coconut oil, honey', 'vendor' => 'Whole Foods', 'amount' => 47.85, 'date' => '2026-02-20'],
 
@@ -54,6 +54,7 @@ class ExpenseSeeder extends Seeder
                 'is_recurring' => false,
                 'recurring_frequency' => null,
                 'notes' => null,
+                'business_percentage' => 100,
             ], $expense));
         }
     }
