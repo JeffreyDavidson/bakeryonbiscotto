@@ -83,7 +83,7 @@ class ReviewResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->heading("⭐ Reviews")
+            ->heading("Reviews")
             ->columns([
                 Tables\Columns\IconColumn::make('is_featured')
                     ->label('')
