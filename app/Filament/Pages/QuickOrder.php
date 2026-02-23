@@ -108,7 +108,7 @@ class QuickOrder extends Page implements HasForms
                                 TextInput::make('unit_price')
                                     ->numeric()
                                     ->prefix('$')
-                                    ->disabled()
+                                    ->readOnly()
                                     ->dehydrated(),
                                 Placeholder::make('line_total')
                                     ->label('Line Total')
