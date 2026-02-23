@@ -5,13 +5,12 @@ namespace App\Filament\Pages;
 use App\Models\Order;
 use App\Models\Product;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
@@ -19,14 +18,11 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
-class QuickOrder extends Page implements HasForms
+class QuickOrder extends Page
 {
-    use InteractsWithForms;
-
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-plus-circle';
     protected static ?string $navigationLabel = 'Quick Order';
     protected static ?int $navigationSort = 10;
-    protected string $view = 'filament.pages.quick-order';
 
     public ?array $data = [];
 
@@ -54,11 +50,6 @@ class QuickOrder extends Page implements HasForms
     public function getTitle(): string
     {
         return 'Quick Order';
-    }
-
-    public function getHeading(): string
-    {
-        return '';
     }
 
     public function form(Schema $form): Schema
@@ -140,6 +131,15 @@ class QuickOrder extends Page implements HasForms
                     ])->collapsible(),
             ])
             ->statePath('data');
+    }
+
+    protected function getFormActions(): array
+    {
+        return [
+            Action::make('submit')
+                ->label('🧾 Create Order')
+                ->submit('submit'),
+        ];
     }
 
     public function submit(): void
