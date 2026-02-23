@@ -7,12 +7,13 @@ use App\Models\Product;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ViewField;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\EmbeddedSchema;
@@ -145,28 +146,56 @@ class QuickOrder extends Page
                                         $productId = $get('product_id');
                                         return isset($bundlePickCounts[$productId]);
                                     })
-                                    ->content(function (Get $get) use ($bundlePickCounts) {
+                                    ->content(function (Get $get) use ($bundlePickCounts, $bundleFlavorOptions) {
                                         $productId = $get('product_id');
                                         $count = $bundlePickCounts[$productId] ?? 0;
-                                        return "🎁 This is a pack — choose {$count} flavors below";
+                                        $selections = $get('selections') ?? [];
+                                        $totalPicked = collect($selections)->sum('qty');
+                                        $remaining = $count - $totalPicked;
+                                        $pct = $count > 0 ? round(($totalPicked / $count) * 100) : 0;
+
+                                        $bar = '<div style="background:#e8d0b0;border-radius:9999px;height:8px;margin:8px 0;overflow:hidden;">'
+                                            . '<div style="background:#8b5e3c;height:100%;width:'.$pct.'%;transition:width 0.3s;border-radius:9999px;"></div>'
+                                            . '</div>';
+
+                                        $status = $totalPicked === $count
+                                            ? '✅ All flavors selected!'
+                                            : "🎁 Choose {$count} flavors — {$totalPicked} of {$count} selected";
+
+                                        return new \Illuminate\Support\HtmlString($status . $bar);
                                     }),
-                                TagsInput::make('selections')
+                                Repeater::make('selections')
                                     ->label('Flavor Selections')
                                     ->columnSpanFull()
                                     ->visible(function (Get $get) use ($bundleFlavorOptions) {
                                         $productId = $get('product_id');
                                         return isset($bundleFlavorOptions[$productId]);
                                     })
-                                    ->suggestions(function (Get $get) use ($bundleFlavorOptions) {
-                                        $productId = $get('product_id');
-                                        return $bundleFlavorOptions[$productId] ?? [];
-                                    })
-                                    ->placeholder('Type or select flavors...')
-                                    ->helperText(function (Get $get) use ($bundlePickCounts) {
-                                        $productId = $get('product_id');
-                                        $count = $bundlePickCounts[$productId] ?? 0;
-                                        return "Pick exactly {$count} flavors (duplicates allowed)";
-                                    }),
+                                    ->schema([
+                                        Select::make('flavor')
+                                            ->label('Flavor')
+                                            ->options(function (Get $get) use ($bundleFlavorOptions) {
+                                                // Navigate up to parent item's product_id
+                                                $productId = $get('../../product_id');
+                                                $flavors = $bundleFlavorOptions[$productId] ?? [];
+                                                return array_combine($flavors, $flavors);
+                                            })
+                                            ->required()
+                                            ->placeholder('Pick a flavor...')
+                                            ->columnSpan(2),
+                                        TextInput::make('qty')
+                                            ->label('Qty')
+                                            ->numeric()
+                                            ->default(1)
+                                            ->minValue(1)
+                                            ->required()
+                                            ->columnSpan(1),
+                                    ])
+                                    ->columns(3)
+                                    ->defaultItems(0)
+                                    ->addActionLabel('+ Add Flavor')
+                                    ->reorderable(false)
+                                    ->live(),
                             ])
                             ->columns(3)
                             ->defaultItems(1)
@@ -255,6 +284,28 @@ class QuickOrder extends Page
         ];
     }
 
+    /**
+     * Convert nested selections [{flavor: 'Chocolate Chip', qty: 2}, ...] 
+     * to flat array ['Chocolate Chip', 'Chocolate Chip', ...] matching storefront format.
+     */
+    private function flattenSelections(array $selections): ?array
+    {
+        if (empty($selections)) return null;
+
+        $flat = [];
+        foreach ($selections as $sel) {
+            $flavor = $sel['flavor'] ?? null;
+            $qty = (int) ($sel['qty'] ?? 1);
+            if ($flavor) {
+                for ($i = 0; $i < $qty; $i++) {
+                    $flat[] = $flavor;
+                }
+            }
+        }
+
+        return empty($flat) ? null : $flat;
+    }
+
     public function submit(): void
     {
         $data = $this->form->getState();
@@ -274,7 +325,7 @@ class QuickOrder extends Page
                 'unit_price' => $price,
                 'quantity' => $qty,
                 'line_total' => $lineTotal,
-                'selections' => $item['selections'] ?? null,
+                'selections' => $this->flattenSelections($item['selections'] ?? []),
             ];
         }
 
