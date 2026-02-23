@@ -303,6 +303,8 @@ class QuickOrder extends Page
                             ->live(),
                         Select::make('requested_time')
                             ->label('Time Slot')
+                            ->required()
+                            ->validationAttribute('time slot')
                             ->options(function (Get $get) {
                                 $date = $get('requested_date');
                                 if (!$date) return [];
