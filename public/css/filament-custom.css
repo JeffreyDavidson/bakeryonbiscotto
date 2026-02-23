@@ -93,21 +93,11 @@
     background: #FFFFFF !important;
 }
 
-/* Dark brown gradient bar — contains heading + toolbar in one row */
-.fi-ta-header-ctn {
+/* Dark brown gradient title bar */
+.fi-ta-header {
     background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
     border-radius: 11px 11px 0 0 !important;
     padding: 0.75rem 1.25rem !important;
-    display: flex !important;
-    flex-wrap: wrap !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-}
-.fi-ta-header {
-    background: transparent !important;
-    padding: 0 !important;
-    flex: 1 !important;
-    min-width: 0 !important;
 }
 .fi-ta-header-heading {
     color: #FFFFFF !important;
@@ -174,45 +164,33 @@ table thead tr {
     font-size: 0.8rem !important;
 }
 
-/* Toolbar (search + filters) — inside dark bar, right-aligned */
+/* Toolbar (search + filters) — cream bar below title */
 .fi-ta-header-toolbar {
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-    flex-shrink: 0 !important;
+    background: #F5E6D0 !important;
+    border-bottom: 1px solid rgba(212,165,116,0.2) !important;
+    padding: 0.5rem 1rem !important;
 }
 
-/* Search input — translucent white on dark */
+/* Search input */
 .fi-ta-search-field input {
-    border: 1px solid rgba(255,255,255,0.25) !important;
+    border: 1px solid rgba(212,165,116,0.3) !important;
     border-radius: 8px !important;
-    background: rgba(255,255,255,0.1) !important;
+    background: #FFFFFF !important;
     box-shadow: none !important;
     outline: none !important;
-    color: #FFFFFF !important;
-}
-.fi-ta-search-field input::placeholder {
-    color: rgba(255,255,255,0.5) !important;
+    color: #3D2314 !important;
 }
 .fi-ta-search-field input:focus {
-    border-color: rgba(255,255,255,0.4) !important;
-    background: rgba(255,255,255,0.15) !important;
-    box-shadow: none !important;
+    border-color: #D4A574 !important;
+    box-shadow: 0 0 0 2px rgba(212,165,116,0.15) !important;
     outline: none !important;
 }
-/* Icons inside dark header bar */
-.fi-ta-header-ctn .fi-icon {
-    color: rgba(255,255,255,0.7) !important;
+/* Filter/column toggle icons */
+.fi-ta-header-toolbar .fi-icon-btn {
+    color: #6b4c3b !important;
 }
-.fi-ta-header-ctn .fi-icon-btn {
-    color: rgba(255,255,255,0.8) !important;
-}
-.fi-ta-header-ctn .fi-icon-btn:hover {
-    background: rgba(255,255,255,0.1) !important;
-}
-.fi-ta-header-ctn .fi-badge {
-    background: rgba(245,213,168,0.3) !important;
-    color: #FFFFFF !important;
+.fi-ta-header-toolbar .fi-icon-btn:hover {
+    background: rgba(61,35,20,0.08) !important;
 }
 
 /* Pagination footer */
