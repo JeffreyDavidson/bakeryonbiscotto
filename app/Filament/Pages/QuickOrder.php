@@ -89,7 +89,8 @@ class QuickOrder extends Page
                                     ->label('Product')
                                     ->options($productOptions)
                                     ->required()
-                                    ->placeholder('Select a product'),
+                                    ->placeholder('Select a product')
+                                    ->live(),
                                 TextInput::make('quantity')
                                     ->numeric()
                                     ->required()
@@ -99,6 +100,16 @@ class QuickOrder extends Page
                             ->columns(2)
                             ->defaultItems(1)
                             ->addActionLabel('Add Product')
+                            ->addAction(function (\Filament\Actions\Action $action) {
+                                return $action->disabled(function (Repeater $component): bool {
+                                    foreach ($component->getRawState() ?? [] as $item) {
+                                        if (empty($item['product_id'])) {
+                                            return true;
+                                        }
+                                    }
+                                    return false;
+                                });
+                            })
                             ->minItems(1),
                     ]),
 
