@@ -303,6 +303,10 @@ table thead tr {
 .fi-section {
     background: #FFFFFF !important;
     overflow: hidden !important;
+    border-color: #e8d0b0 !important;
+}
+.fi-section-content {
+    border-top: none !important;
 }
 /* Section header — dark brown gradient matching table headers */
 .fi-section-header {
