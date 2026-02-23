@@ -38,8 +38,7 @@ class CustomerDirectory extends Page implements HasTable
     {
         return [
             '/admin' => 'Dashboard',
-            static::getUrl() => 'Customers',
-            'Customer Directory',
+            static::getUrl() => 'Customer Directory',
         ];
     }
 

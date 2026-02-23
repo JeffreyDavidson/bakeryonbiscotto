@@ -30,6 +30,14 @@ class BakingSheet extends Page
         return 'Tools';
     }
 
+    public function getBreadcrumbs(): array
+    {
+        return [
+            '/admin' => 'Dashboard',
+            static::getUrl() => 'Baking Sheet',
+        ];
+    }
+
     #[Url]
     public string $date = '';
 
