@@ -98,6 +98,12 @@
     background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
     border-radius: 11px 11px 0 0 !important;
     padding: 0.75rem 1.25rem !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    border-bottom: none !important;
+}
+.fi-ta-header .fi-ta-actions {
+    margin-left: auto !important;
 }
 .fi-ta-header-heading {
     color: #FFFFFF !important;
