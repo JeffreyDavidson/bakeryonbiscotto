@@ -40,8 +40,8 @@ class QuickOrder extends Page
     public function mount(): void
     {
         $this->form->fill([
-            'fulfillment_type' => 'pickup',
-            'payment_method' => 'cash',
+            'fulfillment_type' => null,
+            'payment_method' => null,
             'items' => [['product_id' => null, 'quantity' => 1]],
         ]);
     }
@@ -291,8 +291,7 @@ class QuickOrder extends Page
                             ->required()
                             ->native(false)
                             ->live()
-                            ->default('pickup')
-                            ->selectablePlaceholder(false),
+                            ->placeholder('Select fulfillment type...'),
                         DatePicker::make('requested_date')
                             ->label('Requested Date')
                             ->required()
@@ -358,8 +357,7 @@ class QuickOrder extends Page
                             ])
                             ->required()
                             ->live()
-                            ->selectablePlaceholder(false)
-                            ->default('cash'),
+                            ->placeholder('Select payment method...'),
                         Placeholder::make('payment_deadline_display')
                             ->label('Payment Deadline')
                             ->visible(fn (Get $get) => $get('payment_method') === 'paypal' && $get('requested_date'))
