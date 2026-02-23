@@ -104,6 +104,7 @@ class OrderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->heading("📦 Orders")
             ->recordUrl(fn (Order $record) => static::getUrl('view', ['record' => $record]))
             ->columns([
                 Tables\Columns\TextColumn::make('order_number')

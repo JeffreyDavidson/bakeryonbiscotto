@@ -93,6 +93,30 @@
     background: #FFFFFF !important;
 }
 
+/* Dark brown gradient title bar on resource tables (uses table heading()) */
+.fi-ta-header {
+    background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
+    border-radius: 11px 11px 0 0 !important;
+    padding: 0.75rem 1.25rem !important;
+}
+.fi-ta-header-heading {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    font-family: "Playfair Display", serif !important;
+}
+.fi-ta-header-description {
+    color: rgba(255,255,255,0.7) !important;
+}
+/* Header actions (buttons) on dark background */
+.fi-ta-header .fi-btn {
+    color: #FFFFFF !important;
+    border-color: rgba(255,255,255,0.3) !important;
+}
+.fi-ta-header .fi-btn:hover {
+    background: rgba(255,255,255,0.1) !important;
+}
+
 /* Table header */
 .fi-ta-header-cell {
     background: #F5E6D0 !important;

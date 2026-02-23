@@ -45,6 +45,7 @@ class ContactMessageResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->heading("📬 Messages")
             ->columns([
                 TextColumn::make('name')
                     ->searchable()
