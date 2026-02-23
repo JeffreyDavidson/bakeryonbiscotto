@@ -252,6 +252,11 @@ table thead tr {
     backdrop-filter: blur(2px) !important;
 }
 
+/* ===== HIDE SELECT CLEAR/X BUTTON (Quick Order repeater) ===== */
+.fi-fo-repeater .fi-select-input-value-remove-btn {
+    display: none !important;
+}
+
 /* ===== EMPTY STATE ===== */
 .fi-ta-empty-state-heading {
     color: #3D2314 !important;
