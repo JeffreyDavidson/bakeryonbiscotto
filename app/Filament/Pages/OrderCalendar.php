@@ -28,6 +28,14 @@ class OrderCalendar extends Page
         return 'Tools';
     }
 
+    public function getBreadcrumbs(): array
+    {
+        return [
+            '/admin' => 'Dashboard',
+            static::getUrl() => 'Order Calendar',
+        ];
+    }
+
     #[Url]
     public int $month = 0;
 

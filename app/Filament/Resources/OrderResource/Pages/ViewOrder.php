@@ -27,6 +27,15 @@ class ViewOrder extends Page
         $this->record->load('items');
     }
 
+    public function getBreadcrumbs(): array
+    {
+        return [
+            OrderResource::getUrl() => 'Orders',
+            static::getResource()::getUrl('view', ['record' => $this->record]) => $this->record->order_number,
+            'View',
+        ];
+    }
+
     public function getTitle(): string
     {
         return 'Order ' . $this->record->order_number;
