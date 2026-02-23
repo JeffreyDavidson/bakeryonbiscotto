@@ -1,6 +1,23 @@
 /* Bakery on Biscotto - Filament Admin Theme */
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap");
 
+/* ===== SHARED: Dark gradient header bar ===== */
+/* Used by: Filament tables (.fi-ta-header-ctn), x-admin.card, x-admin.card-header */
+[data-admin-gradient-header] {
+    background: linear-gradient(135deg, #3d2314, #6b4c3b);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e8d0b0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+[data-admin-gradient-header] > [data-header-title] {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+}
+
 /* Login page */
 .fi-simple-layout {
     background: #FDF8F2 !important;
@@ -94,14 +111,16 @@
 }
 
 /* Dark brown gradient — single row: title left, search+filters right */
+/* Matches x-admin.card gradient header: 1rem 1.5rem padding, same gradient */
 .fi-ta-header-ctn {
     background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
     border-radius: 11px 11px 0 0 !important;
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    padding: 0.65rem 1.25rem !important;
+    padding: 1rem 1.5rem !important;
     gap: 1rem !important;
+    border-bottom: 1px solid #e8d0b0 !important;
 }
 .fi-ta-header {
     background: transparent !important;
