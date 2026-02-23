@@ -249,27 +249,29 @@ table thead tr {
 
 /* Pagination layout: overview left, pages center, per-page right */
 .fi-pagination {
-    grid-template-columns: 1fr auto 1fr !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
 }
 .fi-pagination-overview {
-    justify-self: start !important;
+    flex: 1 !important;
+    display: inline !important;
 }
 .fi-pagination-items {
-    grid-column: 2 !important;
-    justify-self: center !important;
+    display: flex !important;
+    order: 2 !important;
 }
 .fi-pagination-records-per-page-select-ctn {
-    grid-column: 3 !important;
-    justify-self: end !important;
+    order: 3 !important;
+    flex: 1 !important;
+    display: flex !important;
+    justify-content: flex-end !important;
 }
-/* Hide simple prev/next when page items show */
-.fi-pagination-previous-btn {
-    grid-column: 1 !important;
-    justify-self: start !important;
-}
-.fi-pagination-next-btn {
-    grid-column: 3 !important;
-    justify-self: end !important;
+/* Hide simple prev/next when page items are visible */
+.fi-pagination:has(.fi-pagination-items) .fi-pagination-previous-btn,
+.fi-pagination:has(.fi-pagination-items) .fi-pagination-next-btn {
+    display: none !important;
 }
 
 /* ===== FORMS ===== */
