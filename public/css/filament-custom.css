@@ -310,18 +310,27 @@ table thead tr {
 }
 /* Global input ring/shadow cleanup — single tan border only */
 .fi-input-wrp {
-    --tw-ring-shadow: none !important;
+    --tw-ring-shadow: 0 0 0 0 transparent !important;
     --tw-ring-color: transparent !important;
-    border-color: #e8d0b0 !important;
+    --tw-shadow: 0 0 #0000 !important;
+    box-shadow: 0 0 0 1px #e8d0b0 !important;
+    border: none !important;
 }
 .fi-input-wrp:focus-within {
-    border-color: #D4A574 !important;
-    --tw-ring-shadow: none !important;
-    box-shadow: 0 0 0 3px rgba(212,165,116,0.15) !important;
+    box-shadow: 0 0 0 1px #D4A574, 0 0 0 4px rgba(212,165,116,0.15) !important;
+    --tw-ring-shadow: 0 0 0 0 transparent !important;
+    --tw-ring-color: transparent !important;
 }
 /* Remove gray divider between prefix icon and input */
-.fi-input-wrp-prefix {
+.fi-input-wrp-prefix,
+.fi-input-wrp .fi-input-wrp-prefix {
     border-right: none !important;
+    border-inline-end: none !important;
+    border-color: transparent !important;
+}
+.fi-input-wrp .fi-input-wrp-suffix {
+    border-left: none !important;
+    border-inline-start: none !important;
     border-color: transparent !important;
 }
 .fi-section-content {
