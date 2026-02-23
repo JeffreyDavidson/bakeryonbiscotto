@@ -71,7 +71,7 @@
             <div style="background: #fff; border-radius: 12px; border: 1px solid #e8d0b0; padding: 1.5rem; width: 360px; max-width: 90vw;">
                 <div style="font-weight: 700; color: #3d2314; font-size: 1rem; margin-bottom: 1rem;">Edit {{ ucfirst($editingType) }} Goal</div>
                 <label style="font-size: 0.8rem; color: #6b4c3b; font-weight: 600; display: block; margin-bottom: 0.25rem;">Goal Amount ($)</label>
-                <input type="number" wire:model="editingGoal" step="100" min="0" style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #e8d0b0; border-radius: 8px; font-size: 0.9rem; margin-bottom: 1rem; outline: none;">
+                <input type="number" wire:model="editingGoal" step="100" min="0" style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #e8d0b0; border-radius: 8px; font-size: 0.9rem; margin-bottom: 1rem; outline: none; color: #3d2314;" onfocus="this.style.borderColor='#D4A574';this.style.boxShadow='0 0 0 3px rgba(212,165,116,0.15)'" onblur="this.style.borderColor='#e8d0b0';this.style.boxShadow='none'">
                 <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
                     <button wire:click="closeEditModal" type="button" style="padding: 0.5rem 1rem; border: 1px solid #e8d0b0; background: #fdf8f2; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; color: #6b4c3b;">Cancel</button>
                     <button wire:click="saveGoal" type="button" style="padding: 0.5rem 1rem; border: none; background: #3d2314; color: #fff; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600;">Save</button>

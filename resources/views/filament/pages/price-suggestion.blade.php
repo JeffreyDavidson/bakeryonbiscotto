@@ -3,7 +3,7 @@
         .price-input-group { margin-bottom: 1rem; }
         .price-input-group label { display: block; font-weight: 600; color: #3d2314; margin-bottom: 0.25rem; font-size: 0.875rem; }
         .price-input-group input { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #e8d0b0; border-radius: 8px; background: #fff; font-size: 1rem; color: #3d2314; }
-        .price-input-group input:focus { outline: none; border-color: #6b4c3b; box-shadow: 0 0 0 2px rgba(107,76,59,0.15); }
+        .price-input-group input:focus { outline: none; border-color: #D4A574; box-shadow: 0 0 0 3px rgba(212,165,116,0.15); }
         .price-input-group input[type=range] { padding: 0; height: 8px; -webkit-appearance: none; appearance: none; background: #e8d0b0; border: none; border-radius: 4px; }
         .price-input-group input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #6b4c3b; cursor: pointer; }
         .price-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }

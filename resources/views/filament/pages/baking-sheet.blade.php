@@ -34,9 +34,9 @@
     <div class="print-header" style="display: none; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 3px solid #92400e;">
         <div>
             <div style="font-size: 1.5rem; font-weight: 800; color: #3d2314;">🧁 Baking Sheet</div>
-            <div style="font-size: 1.125rem; color: #374151; font-weight: 600;">{{ $this->formattedDate }}</div>
+            <div style="font-size: 1.125rem; color: #4a3225; font-weight: 600;">{{ $this->formattedDate }}</div>
         </div>
-        <div style="text-align: right; font-size: 0.875rem; color: #666;">
+        <div style="text-align: right; font-size: 0.875rem; color: #a08060;">
             <div style="font-weight: 700; font-size: 1rem;">{{ $this->stats->total_items }} items</div>
             <div>{{ $this->stats->total_orders }} orders — {{ $this->stats->pickup_count }} pickup, {{ $this->stats->delivery_count }} delivery</div>
         </div>
