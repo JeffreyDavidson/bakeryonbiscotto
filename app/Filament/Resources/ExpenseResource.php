@@ -48,7 +48,8 @@ class ExpenseResource extends Resource
                         ->options(Expense::CATEGORIES)
                         ->required()
                         ->searchable()
-                        ->prefixIcon('heroicon-o-folder'),
+                        ->prefixIcon('heroicon-o-folder')
+                        ->helperText('Maps to IRS Schedule C categories'),
                     \Filament\Forms\Components\TextInput::make('vendor')
                         ->maxLength(255)
                         ->placeholder('e.g. Publix, Amazon, Costco')
@@ -63,6 +64,14 @@ class ExpenseResource extends Resource
                         ->required()
                         ->default(now())
                         ->prefixIcon('heroicon-o-calendar'),
+                ]),
+
+            \Filament\Schemas\Components\Section::make('Business Use & Tax')
+                ->icon('heroicon-o-calculator')
+                ->description('Deduction details for shared purchases')
+                ->columns(2)
+                ->columnSpanFull()
+                ->components([
                     \Filament\Forms\Components\TextInput::make('business_percentage')
                         ->label('Business Use %')
                         ->numeric()
@@ -70,36 +79,50 @@ class ExpenseResource extends Resource
                         ->minValue(1)
                         ->maxValue(100)
                         ->suffix('%')
-                        ->helperText('100% = fully business. Lower for shared purchases.'),
+                        ->prefixIcon('heroicon-o-chart-pie')
+                        ->helperText('100% = fully business. Lower for shared purchases (e.g. groceries).'),
+                    \Filament\Forms\Components\Placeholder::make('deductible_preview')
+                        ->label('Deductible Amount')
+                        ->content(function ($get) {
+                            $amount = (float) ($get('amount') ?? 0);
+                            $pct = (float) ($get('business_percentage') ?? 100);
+                            $deductible = $amount * ($pct / 100);
+                            return new \Illuminate\Support\HtmlString(
+                                '<div style="padding:0.5rem 0.75rem;background:#fdf8f2;border:1px solid #e8d0b0;border-radius:8px;color:#3d2314;font-weight:600;">$' . number_format($deductible, 2) . '</div>'
+                            );
+                        }),
                     \Filament\Forms\Components\FileUpload::make('receipt')
                         ->image()
                         ->disk('public')
                         ->directory('receipts')
                         ->visibility('public')
-                        ->helperText('Optional — snap a photo of the receipt'),
+                        ->helperText('Optional — snap a photo of the receipt')
+                        ->columnSpanFull(),
                 ]),
 
-            \Filament\Schemas\Components\Section::make('Additional')
-                ->icon('heroicon-o-cog-6-tooth')
-                ->description('Recurring settings and notes')
+            \Filament\Schemas\Components\Section::make('Recurring & Notes')
+                ->icon('heroicon-o-arrow-path')
+                ->description('Set up recurring tracking')
                 ->columns(2)
                 ->columnSpanFull()
                 ->components([
                     \Filament\Forms\Components\Toggle::make('is_recurring')
                         ->label('Recurring expense')
+                        ->helperText('Track this as a regular expense')
                         ->live(),
                     \Filament\Forms\Components\Select::make('recurring_frequency')
                         ->options([
-                            'weekly' => 'Weekly',
-                            'monthly' => 'Monthly',
-                            'quarterly' => 'Quarterly',
-                            'yearly' => 'Yearly',
+                            'weekly' => '📅 Weekly',
+                            'monthly' => '🗓️ Monthly',
+                            'quarterly' => '📊 Quarterly',
+                            'yearly' => '📆 Yearly',
                         ])
                         ->visible(fn ($get) => $get('is_recurring'))
-                        ->prefixIcon('heroicon-o-arrow-path'),
+                        ->prefixIcon('heroicon-o-arrow-path')
+                        ->placeholder('How often?'),
                     \Filament\Forms\Components\Textarea::make('notes')
-                        ->rows(2)
-                        ->placeholder('Any additional notes...')
+                        ->rows(3)
+                        ->placeholder('Any additional notes about this expense...')
                         ->columnSpanFull(),
                 ])->collapsible(),
         ]);
