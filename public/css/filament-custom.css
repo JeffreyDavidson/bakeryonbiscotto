@@ -377,22 +377,33 @@ textarea.fi-textarea-input:focus {
 .fi-fo-repeater-item {
     border-bottom: 1px solid #f3ebe0 !important;
     background: #FFFFFF !important;
+    padding-right: 2.5rem !important;
 }
 .fi-fo-repeater-item:last-child {
     border-bottom: none !important;
 }
-/* Repeater item header (delete, drag) — light cream strip */
+/* Repeater item header — inline with row content */
+.fi-fo-repeater-item {
+    position: relative !important;
+}
 .fi-fo-repeater-item-header {
-    background: #fdf8f2 !important;
-    border-bottom: 1px solid #f3ebe0 !important;
+    position: absolute !important;
+    top: 50% !important;
+    right: 0.5rem !important;
+    transform: translateY(-50%) !important;
+    background: transparent !important;
+    border-bottom: none !important;
+    z-index: 10 !important;
+    padding: 0 !important;
 }
 /* Repeater item actions */
 .fi-fo-repeater-item-header .fi-icon-btn {
-    color: #a08060 !important;
+    color: #c4a882 !important;
 }
 .fi-fo-repeater-item-header .fi-icon-btn:hover {
-    color: #3d2314 !important;
-    background: #f5e6d0 !important;
+    color: #fff !important;
+    background: #c0392b !important;
+    border-radius: 6px !important;
 }
 /* Repeater add button */
 .fi-fo-repeater-add {
