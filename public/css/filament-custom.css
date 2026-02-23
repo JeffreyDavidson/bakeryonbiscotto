@@ -168,46 +168,54 @@ table thead tr {
     font-size: 0.8rem !important;
 }
 
-/* Toolbar area (search + filters) — merged into dark brown header */
+/* Toolbar area (search + filters) — inside dark brown header */
 .fi-ta-header-toolbar {
     background: transparent !important;
     border-bottom: none !important;
-    padding: 0 !important;
+    padding: 0.5rem 0 0 0 !important;
 }
 
 /* Search input — light style on dark header */
-.fi-ta-search-field input {
-    border: 1px solid rgba(255,255,255,0.25) !important;
+.fi-ta-search-field input,
+.fi-ta-header-ctn input[type="search"],
+.fi-ta-header-ctn input[type="text"] {
+    border: 1px solid rgba(255,255,255,0.3) !important;
     border-radius: 8px !important;
-    background: rgba(255,255,255,0.1) !important;
+    background: rgba(255,255,255,0.12) !important;
     box-shadow: none !important;
     outline: none !important;
     color: #FFFFFF !important;
 }
-.fi-ta-search-field input::placeholder {
+.fi-ta-search-field input::placeholder,
+.fi-ta-header-ctn input::placeholder {
     color: rgba(255,255,255,0.5) !important;
 }
-.fi-ta-search-field input:focus {
-    border-color: rgba(255,255,255,0.4) !important;
-    background: rgba(255,255,255,0.15) !important;
+.fi-ta-search-field input:focus,
+.fi-ta-header-ctn input:focus {
+    border-color: rgba(255,255,255,0.5) !important;
+    background: rgba(255,255,255,0.18) !important;
     box-shadow: none !important;
     outline: none !important;
 }
-/* Search icon */
-.fi-ta-search-field .fi-icon {
-    color: rgba(255,255,255,0.6) !important;
+/* Search & filter icons in header */
+.fi-ta-header-ctn .fi-icon {
+    color: rgba(255,255,255,0.7) !important;
 }
-/* Filter & column toggle icons in header */
-.fi-ta-header-toolbar .fi-icon-btn,
-.fi-ta-header-toolbar .fi-badge {
+/* Filter & column toggle icon buttons */
+.fi-ta-header-ctn .fi-icon-btn {
     color: rgba(255,255,255,0.8) !important;
 }
-.fi-ta-header-toolbar .fi-icon-btn:hover {
+.fi-ta-header-ctn .fi-icon-btn:hover {
     background: rgba(255,255,255,0.1) !important;
 }
 /* Filter badge count */
-.fi-ta-header-toolbar .fi-badge {
+.fi-ta-header-ctn .fi-badge {
     background: rgba(245,213,168,0.3) !important;
+    color: #FFFFFF !important;
+}
+/* Toolbar action buttons (bulk actions, etc.) on dark bg */
+.fi-ta-header-ctn .fi-ta-actions .fi-btn {
+    color: #FFFFFF !important;
 }
 
 /* Pagination footer */
