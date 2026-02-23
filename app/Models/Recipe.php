@@ -30,6 +30,11 @@ class Recipe extends Model
         return $this->hasMany(RecipeIngredient::class);
     }
 
+    public function stages(): HasMany
+    {
+        return $this->hasMany(RecipeStage::class)->orderBy('sort_order');
+    }
+
     public function getTotalCostAttribute(): float
     {
         return (float) $this->ingredients->sum(fn ($i) => $i->quantity * $i->cost_per_unit);

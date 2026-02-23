@@ -1,103 +1,157 @@
 <x-filament-panels::page>
     <style>
-        .prep-wrap { font-family: inherit; }
-        .prep-header { background: #3d2314; color: #fdf8f2; padding: 1.25rem 1.5rem; border-radius: 0.75rem 0.75rem 0 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
-        .prep-header h2 { margin: 0; font-size: 1.25rem; font-weight: 700; }
-        .prep-nav { display: flex; align-items: center; gap: 0.5rem; }
-        .prep-nav-btn { padding: 0.4rem 0.85rem; background: rgba(255,255,255,0.15); color: #fdf8f2; border: 1px solid rgba(255,255,255,0.2); border-radius: 0.4rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
-        .prep-nav-btn:hover { background: rgba(255,255,255,0.25); }
-        .prep-body { background: #fdf8f2; border: 2px solid #e8d0b0; border-top: 0; border-radius: 0 0 0.75rem 0.75rem; padding: 1.5rem; }
-        .prep-section { margin-bottom: 1.5rem; }
-        .prep-section-title { background: #6b4c3b; color: #fdf8f2; padding: 0.6rem 1rem; border-radius: 0.5rem; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem; }
-        .prep-agg { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
-        .prep-agg-item { background: #fff; border: 2px solid #e8d0b0; border-radius: 0.5rem; padding: 0.5rem 0.85rem; font-size: 0.85rem; color: #3d2314; }
-        .prep-agg-item strong { color: #6b4c3b; }
-        .prep-day { margin-bottom: 1.25rem; }
-        .prep-day-header { background: #e8d0b0; color: #3d2314; padding: 0.5rem 1rem; border-radius: 0.4rem; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; display: flex; justify-content: space-between; }
-        .prep-order { background: #fff; border: 1px solid #e8d0b0; border-radius: 0.4rem; padding: 0.65rem 1rem; margin-bottom: 0.4rem; font-size: 0.85rem; color: #3d2314; }
-        .prep-order-head { font-weight: 600; margin-bottom: 0.25rem; display: flex; justify-content: space-between; }
-        .prep-items { padding-left: 1rem; color: #6b4c3b; }
-        .prep-empty { color: #6b4c3b; font-style: italic; padding: 0.5rem 1rem; font-size: 0.85rem; }
-        .prep-status { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
-        .status-pending { background: #fef3c7; color: #92400e; }
-        .status-confirmed { background: #dbeafe; color: #1e40af; }
-        .status-baking { background: #ede9fe; color: #6d28d9; }
-        .status-ready { background: #d1fae5; color: #065f46; }
-        .status-delivered { background: #f3f4f6; color: #374151; }
+        .prep-wrap { max-width: 1200px; margin: 0 auto; }
+        .prep-nav { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .prep-nav button { background: #3d2314; color: #fff; border: none; border-radius: 8px; padding: 0.5rem 1rem; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+        .prep-nav button:hover { background: #6b4c3b; }
+        .prep-nav button.secondary { background: #e8d0b0; color: #3d2314; }
+        .prep-nav button.secondary:hover { background: #d4a574; }
+        .prep-nav .week-label { font-family: "Playfair Display", serif; font-size: 1.25rem; color: #3d2314; font-weight: 700; min-width: 200px; text-align: center; }
+
+        .prep-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        @media (max-width: 768px) { .prep-stats { grid-template-columns: 1fr; } }
+        .prep-stat { background: #fff; border: 1px solid #e8d0b0; border-radius: 12px; padding: 1rem 1.25rem; text-align: center; }
+        .prep-stat-value { font-family: "Playfair Display", serif; font-size: 1.5rem; font-weight: 700; color: #3d2314; }
+        .prep-stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: #8b5e3c; font-weight: 600; margin-top: 0.25rem; }
+
+        .prep-day { background: #fff; border: 1px solid #e8d0b0; border-radius: 12px; margin-bottom: 1.25rem; overflow: hidden; }
+        .prep-day-header { background: linear-gradient(135deg, #3d2314, #6b4c3b); color: #fff; padding: 0.75rem 1.25rem; font-weight: 700; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
+        .prep-day-header .task-count { background: rgba(255,255,255,0.2); padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.75rem; }
+        .prep-day-today { border: 2px solid #8b5e3c; }
+        .prep-day-today .prep-day-header { background: linear-gradient(135deg, #8b5e3c, #6b4c3b); }
+
+        .prep-task { display: flex; gap: 1rem; padding: 1rem 1.25rem; border-bottom: 1px solid #f3ebe0; align-items: flex-start; }
+        .prep-task:last-child { border-bottom: none; }
+        .prep-task:hover { background: rgba(245,230,208,0.3); }
+
+        .prep-time { min-width: 80px; text-align: right; flex-shrink: 0; }
+        .prep-time-value { font-weight: 700; color: #3d2314; font-size: 0.9rem; }
+        .prep-time-duration { font-size: 0.7rem; color: #a08060; margin-top: 0.125rem; }
+
+        .prep-divider { width: 3px; background: #e8d0b0; border-radius: 999px; min-height: 50px; flex-shrink: 0; position: relative; }
+        .prep-dot { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); width: 10px; height: 10px; border-radius: 50%; border: 2px solid #8b5e3c; background: #fff; }
+
+        .prep-details { flex: 1; }
+        .prep-stage-name { font-weight: 700; color: #3d2314; font-size: 0.9rem; }
+        .prep-product { font-size: 0.85rem; color: #6b4c3b; margin-top: 0.125rem; }
+        .prep-product .qty { background: #f5e6d0; padding: 0.1rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.75rem; color: #3d2314; margin-left: 0.25rem; }
+        .prep-meta { display: flex; gap: 0.75rem; margin-top: 0.375rem; font-size: 0.75rem; color: #a08060; flex-wrap: wrap; }
+        .prep-meta span { display: inline-flex; align-items: center; gap: 0.25rem; }
+        .prep-instructions { font-size: 0.8rem; color: #8b5e3c; margin-top: 0.375rem; font-style: italic; background: #fdf8f2; padding: 0.375rem 0.625rem; border-radius: 6px; border-left: 3px solid #d4a574; }
+
+        .prep-badge { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 999px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+        .prep-badge-pickup { background: #f3ebe0; color: #6b4c3b; }
+        .prep-badge-delivery { background: #dbeafe; color: #1d4ed8; }
+
+        .prep-empty { padding: 3rem; text-align: center; color: #a08060; }
+        .prep-empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+        .prep-empty-text { font-size: 0.95rem; }
+        .prep-empty-sub { font-size: 0.8rem; margin-top: 0.375rem; color: #c4a882; }
+
+        .prep-no-recipes { padding: 1rem 1.25rem; color: #a08060; font-size: 0.85rem; font-style: italic; text-align: center; }
 
         @media print {
-            .fi-header, .fi-sidebar, .fi-topbar, nav, .prep-nav { display: none !important; }
-            .prep-header { border-radius: 0; }
-            .prep-body { border: none; border-radius: 0; }
-            body { background: #fff !important; }
-            .prep-wrap { margin: 0; }
+            .fi-sidebar, .fi-topbar, .fi-header, .prep-nav, button { display: none !important; }
+            .fi-main { padding: 0 !important; margin: 0 !important; }
+            .prep-day { break-inside: avoid; }
         }
     </style>
 
     <div class="prep-wrap">
-        <div class="prep-header">
-            <h2>📋 Weekly Prep Planner</h2>
-            <div class="prep-nav">
-                <button wire:click="previousWeek" class="prep-nav-btn">← Previous</button>
-                <button wire:click="thisWeek" class="prep-nav-btn">This Week</button>
-                <button wire:click="nextWeek" class="prep-nav-btn">Next →</button>
+        {{-- Week navigation --}}
+        @php
+            $weekStartDate = \Carbon\Carbon::parse($this->weekStart);
+            $weekEndDate = $weekStartDate->copy()->addDays(6);
+            $isThisWeek = $weekStartDate->isCurrentWeek();
+            $today = now()->toDateString();
+        @endphp
+        <div class="prep-nav">
+            <button wire:click="previousWeek" type="button">← Prev</button>
+            <button wire:click="thisWeek" type="button" class="secondary">This Week</button>
+            <span class="week-label">{{ $weekStartDate->format('M j') }} — {{ $weekEndDate->format('M j, Y') }}</span>
+            <button wire:click="nextWeek" type="button">Next →</button>
+        </div>
+
+        {{-- Stats --}}
+        @php $stats = $this->weekStats; @endphp
+        <div class="prep-stats">
+            <div class="prep-stat">
+                <div class="prep-stat-value">{{ $stats['total_tasks'] }}</div>
+                <div class="prep-stat-label">Prep Tasks</div>
+            </div>
+            <div class="prep-stat">
+                <div class="prep-stat-value">{{ $stats['total_hours'] }}h</div>
+                <div class="prep-stat-label">Est. Work Time</div>
+            </div>
+            <div class="prep-stat">
+                <div class="prep-stat-value">{{ $stats['unique_products'] }}</div>
+                <div class="prep-stat-label">Products to Make</div>
             </div>
         </div>
-        <div class="prep-body">
-            {{-- Week range --}}
-            @php
-                $dates = $this->getWeekDates();
-                $orders = $this->getOrders();
-                $aggregates = $this->getAggregates();
-            @endphp
-            <p style="color: #6b4c3b; font-weight: 600; margin-bottom: 1rem;">
-                {{ $dates[0]->format('M j') }} — {{ $dates[6]->format('M j, Y') }}
-            </p>
 
-            {{-- Aggregate grocery list --}}
-            @if($aggregates->isNotEmpty())
-                <div class="prep-section">
-                    <div class="prep-section-title">🛒 Weekly Totals — What to Prep</div>
-                    <div class="prep-agg">
-                        @foreach($aggregates as $product => $qty)
-                            <div class="prep-agg-item">
-                                <strong>{{ $qty }}×</strong> {{ $product }}
+        {{-- Timeline by day --}}
+        @php $timeline = $this->prepTimeline; @endphp
+
+        @if(empty($timeline))
+            <div class="prep-day">
+                <div class="prep-empty">
+                    <div class="prep-empty-icon">📋</div>
+                    <div class="prep-empty-text">No prep tasks this week</div>
+                    <div class="prep-empty-sub">
+                        Either no orders are scheduled, or recipes don't have prep stages defined yet.<br>
+                        Add stages to your recipes under Tools → Recipes to see the prep timeline.
+                    </div>
+                </div>
+            </div>
+        @else
+            @for($i = 0; $i < 7; $i++)
+                @php
+                    $date = $weekStartDate->copy()->addDays($i);
+                    $dateStr = $date->toDateString();
+                    $dayTasks = $timeline[$dateStr] ?? [];
+                    $isToday = $dateStr === $today;
+                @endphp
+
+                @if(!empty($dayTasks))
+                    <div class="prep-day {{ $isToday ? 'prep-day-today' : '' }}">
+                        <div class="prep-day-header">
+                            <span>
+                                {{ $date->format('l, M j') }}
+                                @if($isToday) — Today @endif
+                            </span>
+                            <span class="task-count">{{ count($dayTasks) }} {{ str('task')->plural(count($dayTasks)) }}</span>
+                        </div>
+
+                        @foreach($dayTasks as $task)
+                            <div class="prep-task">
+                                <div class="prep-time">
+                                    <div class="prep-time-value">{{ $task['time'] }}</div>
+                                    @if($task['duration'])
+                                        <div class="prep-time-duration">~{{ $task['duration'] }} min</div>
+                                    @endif
+                                </div>
+                                <div class="prep-divider"><div class="prep-dot"></div></div>
+                                <div class="prep-details">
+                                    <div class="prep-stage-name">{{ $task['stage_name'] }}</div>
+                                    <div class="prep-product">
+                                        {{ $task['product_name'] }}
+                                        <span class="qty">×{{ $task['quantity'] }}</span>
+                                    </div>
+                                    <div class="prep-meta">
+                                        <span>📦 {{ $task['order_number'] }}</span>
+                                        <span>👤 {{ $task['customer'] }}</span>
+                                        <span>📅 Due: {{ $task['due'] }}</span>
+                                        <span class="prep-badge prep-badge-{{ $task['fulfillment'] }}">{{ ucfirst($task['fulfillment']) }}</span>
+                                    </div>
+                                    @if($task['instructions'])
+                                        <div class="prep-instructions">{{ $task['instructions'] }}</div>
+                                    @endif
+                                </div>
                             </div>
                         @endforeach
                     </div>
-                </div>
-            @endif
-
-            {{-- Day by day --}}
-            @foreach($dates as $date)
-                @php
-                    $dayOrders = $orders->filter(fn ($o) => $o->requested_date->toDateString() === $date->toDateString());
-                @endphp
-                <div class="prep-day">
-                    <div class="prep-day-header">
-                        <span>{{ $date->format('l, M j') }}</span>
-                        <span>{{ $dayOrders->count() }} order{{ $dayOrders->count() !== 1 ? 's' : '' }}</span>
-                    </div>
-                    @forelse($dayOrders as $order)
-                        <div class="prep-order">
-                            <div class="prep-order-head">
-                                <span>{{ $order->order_number }} — {{ $order->customer_name }}
-                                    @if($order->requested_time) · {{ $order->requested_time }} @endif
-                                    · {{ ucfirst($order->fulfillment_type) }}
-                                </span>
-                                <span class="prep-status status-{{ $order->status }}">{{ $order->status }}</span>
-                            </div>
-                            <div class="prep-items">
-                                @foreach($order->items as $item)
-                                    {{ $item->quantity }}× {{ $item->product_name }}@if(!$loop->last), @endif
-                                @endforeach
-                            </div>
-                        </div>
-                    @empty
-                        <div class="prep-empty">No orders for this day</div>
-                    @endforelse
-                </div>
-            @endforeach
-        </div>
+                @endif
+            @endfor
+        @endif
     </div>
 </x-filament-panels::page>

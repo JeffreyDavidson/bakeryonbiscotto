@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\RecipeResource\Pages;
 use App\Models\Recipe;
 use App\Models\RecipeIngredient;
+use App\Models\RecipeStage;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -88,6 +89,38 @@ class RecipeResource extends Resource
                         ->addActionLabel('Add Ingredient')
                         ->reorderable(false),
                 ]),
+            \Filament\Schemas\Components\Section::make('Prep Stages')
+                ->icon('heroicon-o-clock')
+                ->description('Define each stage working backwards from pickup/delivery time. E.g. "Feed starter" at 36 hours before, "Bake" at 3 hours before.')
+                ->components([
+                    \Filament\Forms\Components\Repeater::make('stages')
+                        ->relationship()
+                        ->schema([
+                            \Filament\Forms\Components\TextInput::make('name')
+                                ->required()
+                                ->placeholder('e.g. Feed starter, Mix dough, Bake'),
+                            \Filament\Forms\Components\TextInput::make('hours_before')
+                                ->label('Hours Before Pickup')
+                                ->required()
+                                ->numeric()
+                                ->step('0.5')
+                                ->minValue(0)
+                                ->suffix('hrs')
+                                ->helperText('How many hours before the order is due'),
+                            \Filament\Forms\Components\TextInput::make('duration_minutes')
+                                ->label('Duration')
+                                ->numeric()
+                                ->default(30)
+                                ->suffix('min'),
+                            \Filament\Forms\Components\TextInput::make('instructions')
+                                ->placeholder('Optional notes for this stage'),
+                        ])
+                        ->columns(4)
+                        ->defaultItems(0)
+                        ->addActionLabel('Add Stage')
+                        ->orderColumn('sort_order')
+                        ->reorderable(),
+                ])->collapsible(),
         ]);
     }
 
