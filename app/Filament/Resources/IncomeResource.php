@@ -48,7 +48,8 @@ class IncomeResource extends Resource
                         ->options(Income::SOURCES)
                         ->required()
                         ->searchable()
-                        ->prefixIcon('heroicon-o-arrow-trending-up'),
+                        ->prefixIcon('heroicon-o-arrow-trending-up')
+                        ->helperText('Where did this revenue come from?'),
                     \Filament\Forms\Components\TextInput::make('amount')
                         ->required()
                         ->numeric()
@@ -59,11 +60,18 @@ class IncomeResource extends Resource
                         ->required()
                         ->default(now())
                         ->prefixIcon('heroicon-o-calendar'),
-                    \Filament\Forms\Components\Textarea::make('notes')
-                        ->rows(2)
-                        ->placeholder('Any additional notes...')
-                        ->columnSpanFull(),
                 ]),
+
+            \Filament\Schemas\Components\Section::make('Notes')
+                ->icon('heroicon-o-chat-bubble-bottom-center-text')
+                ->description('Additional details')
+                ->columnSpanFull()
+                ->components([
+                    \Filament\Forms\Components\Textarea::make('notes')
+                        ->rows(3)
+                        ->placeholder('Any additional notes about this income...')
+                        ->label(''),
+                ])->collapsible(),
         ]);
     }
 
