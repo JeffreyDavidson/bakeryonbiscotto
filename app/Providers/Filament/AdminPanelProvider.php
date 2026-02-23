@@ -50,7 +50,7 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
             ])
             ->font('Inter')
-            ->spa()
+            // ->spa() // temporarily disabled to debug Livewire issues
             ->navigationGroups([
                 \Filament\Navigation\NavigationGroup::make('Shop'),
                 \Filament\Navigation\NavigationGroup::make('Tools'),
