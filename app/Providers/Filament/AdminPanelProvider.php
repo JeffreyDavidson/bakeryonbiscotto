@@ -64,39 +64,43 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook('panels::body.end', fn () => new \Illuminate\Support\HtmlString('
                 <script>
                     (() => {
-                        let sidebarTop = 0;
+                        // Find all scrollable ancestors of sidebar
+                        function getScrollables() {
+                            const results = [];
+                            const sidebar = document.querySelector("aside");
+                            if (!sidebar) return results;
+                            // Check aside itself and all children
+                            const all = [sidebar, ...sidebar.querySelectorAll("*")];
+                            for (const el of all) {
+                                const style = getComputedStyle(el);
+                                const overflowY = style.overflowY;
+                                if ((overflowY === "auto" || overflowY === "scroll") && el.scrollHeight > el.clientHeight) {
+                                    results.push(el);
+                                }
+                            }
+                            // Also check window/body scroll
+                            return results;
+                        }
+
+                        let saved = [];
 
                         document.addEventListener("livewire:navigate", () => {
-                            // Find the actual scrolling container — walk up from nav
-                            const nav = document.querySelector(".fi-sidebar-nav");
-                            if (!nav) return;
-                            let el = nav;
-                            while (el) {
-                                if (el.scrollHeight > el.clientHeight && el.scrollTop > 0) {
-                                    sidebarTop = el.scrollTop;
-                                    break;
-                                }
-                                el = el.parentElement;
-                            }
-                            // Also check nav itself
-                            if (nav.scrollTop > 0) sidebarTop = nav.scrollTop;
+                            saved = getScrollables().map(el => ({ className: el.className, top: el.scrollTop }));
                         });
 
                         document.addEventListener("livewire:navigated", () => {
-                            if (sidebarTop === 0) return;
+                            if (!saved.length) return;
+                            // Use multiple frames to ensure DOM is settled
                             requestAnimationFrame(() => {
-                                // Restore to any scrollable sidebar element
-                                const candidates = [
-                                    document.querySelector(".fi-sidebar-nav"),
-                                    document.querySelector(".fi-sidebar"),
-                                    ...document.querySelectorAll("aside *"),
-                                ];
-                                for (const el of candidates) {
-                                    if (el && el.scrollHeight > el.clientHeight) {
-                                        el.scrollTop = sidebarTop;
-                                        break;
+                                requestAnimationFrame(() => {
+                                    const scrollables = getScrollables();
+                                    // Try matching by class name first, fall back to index
+                                    for (const s of saved) {
+                                        const match = scrollables.find(el => el.className === s.className) || scrollables[0];
+                                        if (match) match.scrollTop = s.top;
                                     }
-                                }
+                                    saved = [];
+                                });
                             });
                         });
                     })();
