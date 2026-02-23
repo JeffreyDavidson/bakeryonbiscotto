@@ -15,10 +15,10 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -67,7 +67,7 @@ class QuickOrder extends Page implements HasForms
         return '';
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $form): Schema
     {
         $products = Product::where('is_available', true)->orderBy('name')->get();
         $productOptions = $products->mapWithKeys(fn ($p) => [$p->id => "{$p->name} (\${$p->price})"])->toArray();
