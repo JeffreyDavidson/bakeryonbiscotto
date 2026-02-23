@@ -69,8 +69,8 @@ class ReviewResource extends Resource
                         str_repeat('<span style="color:#e8d0b0;font-size:1rem;">★</span>', 5 - $state)
                     ))
                     ->sortable(),
-                Tables\Columns\TextColumn::make('body')->limit(50)->wrap(),
-                Tables\Columns\TextColumn::make('favorite_bread')->label('Fav Bread'),
+                Tables\Columns\TextColumn::make('body')->limit(50)->wrap()->toggleable(),
+                Tables\Columns\TextColumn::make('favorite_bread')->label('Fav Bread')->toggleable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -78,8 +78,9 @@ class ReviewResource extends Resource
                         'approved' => 'success',
                         'rejected' => 'danger',
                         default => 'gray',
-                    }),
-                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
+                    })
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([

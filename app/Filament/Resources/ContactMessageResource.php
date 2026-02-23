@@ -50,9 +50,11 @@ class ContactMessageResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('subject')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -60,11 +62,13 @@ class ContactMessageResource extends Resource
                         'read' => 'info',
                         'replied' => 'success',
                         default => 'gray',
-                    }),
+                    })
+                    ->toggleable(),
                 TextColumn::make('created_at')
                     ->label('Received')
                     ->dateTime('M j, g:i A')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([

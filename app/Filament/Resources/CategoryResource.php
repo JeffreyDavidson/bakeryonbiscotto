@@ -59,16 +59,18 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('description')->placeholder('—')->limit(40),
+                Tables\Columns\TextColumn::make('description')->placeholder('—')->limit(40)->toggleable(),
                 Tables\Columns\TextColumn::make('products_count')
                     ->counts('products')
                     ->label('Products')
                     ->sortable()
-                    ->badge(),
+                    ->badge()
+                    ->toggleable(),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Active')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('sort_order')->sortable(),
+                    ->boolean()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('sort_order')->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_active')

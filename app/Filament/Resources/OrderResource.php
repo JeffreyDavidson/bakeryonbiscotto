@@ -99,14 +99,17 @@ class OrderResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('items_count')
                     ->counts('items')
-                    ->label('Items'),
+                    ->label('Items')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('total')
                     ->money('usd')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('fulfillment_type')
                     ->badge()
                     ->color(fn (string $state) => $state === 'delivery' ? 'info' : 'gray')
-                    ->formatStateUsing(fn (string $state) => ucfirst($state)),
+                    ->formatStateUsing(fn (string $state) => ucfirst($state))
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('requested_date')
                     ->label('Requested Date & Time')
                     ->formatStateUsing(function ($record) {
@@ -119,7 +122,8 @@ class OrderResource extends Resource
                         }
                         return $date . ' at ' . $time;
                     })
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state) => match ($state) {
