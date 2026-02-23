@@ -56,7 +56,7 @@ class QuickOrder extends Page
 
     public function getTitle(): string
     {
-        return '🧁 Quick Order';
+        return '🍞 Quick Order';
     }
 
     public function getSubheading(): ?string
