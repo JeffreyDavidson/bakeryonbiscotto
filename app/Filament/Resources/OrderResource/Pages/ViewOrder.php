@@ -4,6 +4,7 @@ namespace App\Filament\Resources\OrderResource\Pages;
 
 use App\Filament\Resources\OrderResource;
 use App\Models\Order;
+use App\Models\OrderNote;
 use BackedEnum;
 use Filament\Actions;
 use Filament\Resources\Pages\Page;
@@ -24,7 +25,7 @@ class ViewOrder extends Page
     public function mount(int|string $record): void
     {
         $this->record = $this->resolveRecord($record);
-        $this->record->load('items');
+        $this->record->load(['items', 'notes.user']);
     }
 
     public function getBreadcrumbs(): array
