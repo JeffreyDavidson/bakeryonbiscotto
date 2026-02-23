@@ -194,6 +194,22 @@ class QuickOrder extends Page
                                     ->columns(3)
                                     ->defaultItems(0)
                                     ->addActionLabel('+ Add Flavor')
+                                    ->addAction(function (\Filament\Actions\Action $action) use ($bundlePickCounts) {
+                                        return $action->disabled(function (Repeater $component) use ($bundlePickCounts): bool {
+                                            // Get the parent item's product_id
+                                            $parentState = $component->getContainer()->getParentComponent()?->getContainer()?->getRawState();
+                                            if (!$parentState) return false;
+                                            
+                                            $productId = $parentState['product_id'] ?? null;
+                                            $maxPicks = $bundlePickCounts[$productId] ?? 0;
+                                            if ($maxPicks === 0) return false;
+
+                                            $totalPicked = collect($component->getRawState() ?? [])
+                                                ->sum(fn ($sel) => (int) ($sel['qty'] ?? 1));
+
+                                            return $totalPicked >= $maxPicks;
+                                        });
+                                    })
                                     ->reorderable(false)
                                     ->live(),
                             ])
