@@ -42,10 +42,12 @@ class ReviewResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
+        return $schema->columns(1)->components([
             \Filament\Schemas\Components\Section::make('Review Details')
                 ->icon('heroicon-o-star')
+                ->description('Customer feedback and moderation')
                 ->columns(2)
+                ->columnSpanFull()
                 ->components([
                     \Filament\Forms\Components\TextInput::make('name')
                         ->required()

@@ -32,11 +32,12 @@ class RecipeResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
+        return $schema->columns(1)->components([
             \Filament\Schemas\Components\Section::make('Recipe Details')
                 ->icon('heroicon-o-beaker')
                 ->description('Basic recipe information')
                 ->columns(2)
+                ->columnSpanFull()
                 ->components([
                     \Filament\Forms\Components\TextInput::make('name')
                         ->required()
@@ -76,6 +77,8 @@ class RecipeResource extends Resource
                 ]),
             \Filament\Schemas\Components\Section::make('Ingredients')
                 ->icon('heroicon-o-list-bullet')
+                ->description('What goes into this recipe')
+                ->columnSpanFull()
                 ->components([
                     \Filament\Forms\Components\Repeater::make('ingredients')
                         ->relationship()
@@ -106,7 +109,8 @@ class RecipeResource extends Resource
                 ]),
             \Filament\Schemas\Components\Section::make('Prep Stages')
                 ->icon('heroicon-o-clock')
-                ->description('Define each stage working backwards from pickup/delivery time. E.g. "Feed starter" at 36 hours before, "Bake" at 3 hours before.')
+                ->description('Define each stage working backwards from pickup/delivery time')
+                ->columnSpanFull()
                 ->components([
                     \Filament\Forms\Components\Repeater::make('stages')
                         ->relationship()
