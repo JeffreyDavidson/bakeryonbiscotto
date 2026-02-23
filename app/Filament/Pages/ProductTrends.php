@@ -87,7 +87,7 @@ class ProductTrends extends Page
             ->pluck('total_qty', 'product_id')
             ->toArray();
 
-        $categories = Category::with(['products' => fn ($q) => $q->orderBy('name')])->orderBy('name')->get();
+        $categories = Category::with(['products' => fn ($q) => $q->orderBy('sort_order')->orderBy('name')])->orderBy('sort_order')->get();
 
         $grouped = [];
         foreach ($categories as $category) {
