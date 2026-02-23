@@ -89,9 +89,9 @@
                 </div>
             </div>
 
-            <x-filament::button type="submit" size="lg">
+            <button type="submit" class="quick-order-submit">
                 🧾 Create Order
-            </x-filament::button>
+            </button>
         </form>
     </div>
 </x-filament-panels::page>
