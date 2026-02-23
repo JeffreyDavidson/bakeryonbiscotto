@@ -354,6 +354,7 @@ class QuickOrder extends Page
                     ->components([
                         Select::make('payment_method')
                             ->label('Payment Method')
+                            ->validationAttribute('payment method')
                             ->options([
                                 'cash' => '💵 Cash',
                                 'paypal' => '🅿️ PayPal',
