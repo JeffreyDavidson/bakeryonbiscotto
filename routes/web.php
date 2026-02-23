@@ -47,3 +47,9 @@ Route::get('/gallery-concepts-5', fn() => view('gallery-concepts-5'));
 Route::get('/gallery-finals', fn() => view('gallery-finals'));
 Route::get('/upgrades', fn() => view('upgrades'));
 Route::get('/wow', fn() => view('wow'));
+
+// Admin invoice route
+Route::get('/admin/orders/{order}/invoice', function (\App\Models\Order $order) {
+    $order->load('items');
+    return view('filament.pages.order-invoice', compact('order'));
+})->middleware(['web', 'auth'])->name('admin.orders.invoice');
