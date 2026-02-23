@@ -371,7 +371,7 @@ textarea.fi-textarea-input:focus {
 .fi-fo-repeater {
     border: 1px solid #e8d0b0 !important;
     border-radius: 12px !important;
-    overflow: visible !important;
+    overflow: hidden !important;
 }
 /* Remove gap between repeater items */
 .fi-fo-repeater-items {
