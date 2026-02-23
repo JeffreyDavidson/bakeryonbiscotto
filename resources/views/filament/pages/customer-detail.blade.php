@@ -1,10 +1,10 @@
 <div style="background: #fdf8f2; margin: -1.5rem; padding: 1.5rem; min-height: 100%;">
     {{-- Customer card --}}
     <x-admin.card>
-        <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; background: linear-gradient(135deg, #3d2314, #6b4c3b);">
+        <div data-admin-gradient-header style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.5rem;">
             <x-admin.avatar :name="$customer->customer_name" />
             <div style="flex:1;">
-                <div style="font-weight: 700; font-size: 1rem; color: white;">{{ $customer->customer_name }}</div>
+                <div data-header-title style="font-weight: 700; font-size: 1rem; color: white;">{{ $customer->customer_name }}</div>
                 <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-top: 0.125rem;">Customer since {{ \Carbon\Carbon::parse($stats->first_order_date)->format('M j, Y') }} · Last order {{ $orders->first()?->created_at->diffForHumans() ?? 'N/A' }}</div>
             </div>
             <x-admin.btn variant="primary" href="mailto:{{ $customer->customer_email }}" icon="✉️" style="padding: 0.4rem 0.875rem; font-size: 0.75rem;">Email</x-admin.btn>
