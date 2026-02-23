@@ -122,6 +122,7 @@ class QuickOrder extends Page
                                 'delivery' => 'Delivery',
                             ])
                             ->required()
+                            ->native(false)
                             ->live(),
                         DatePicker::make('requested_date')
                             ->required()
