@@ -48,7 +48,7 @@ class CouponResource extends Resource
                         ->placeholder('e.g. SUMMER20')
                         ->extraInputAttributes(['style' => 'text-transform: uppercase'])
                         ->suffixAction(
-                            \Filament\Forms\Components\Actions\Action::make('generate')
+                            \Filament\Actions\Action::make('generate')
                                 ->icon('heroicon-o-sparkles')
                                 ->action(function ($set) {
                                     $set('code', strtoupper(Str::random(8)));
