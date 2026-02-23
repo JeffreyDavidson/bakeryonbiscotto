@@ -102,20 +102,23 @@ class ProductResource extends Resource
                     ->width(40)
                     ->height(40),
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('category.name')->sortable(),
+                Tables\Columns\TextColumn::make('category.name')->sortable()->toggleable(),
                 Tables\Columns\TextColumn::make('price')
                     ->money('usd')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\IconColumn::make('is_available')
                     ->label('Available')
-                    ->boolean(),
+                    ->boolean()
+                    ->toggleable(),
                 Tables\Columns\IconColumn::make('is_featured')
                     ->label('Featured')
                     ->boolean()
                     ->trueIcon('heroicon-s-star')
                     ->trueColor('warning')
-                    ->falseIcon(''),
-                Tables\Columns\TextColumn::make('sort_order')->sortable(),
+                    ->falseIcon('')
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('sort_order')->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('sort_order')
             ->reorderable('sort_order')

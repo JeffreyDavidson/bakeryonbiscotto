@@ -81,25 +81,29 @@ class CustomerDirectory extends Page implements HasTable
                     ->copyable(),
                 TextColumn::make('customer_phone')
                     ->label('Phone')
-                    ->placeholder('—'),
+                    ->placeholder('—')
+                    ->toggleable(),
                 TextColumn::make('orders_count')
                     ->label('Orders')
                     ->sortable(query: function (Builder $query, string $direction): Builder {
                         return $query->orderBy('orders_count', $direction);
                     })
-                    ->badge(),
+                    ->badge()
+                    ->toggleable(),
                 TextColumn::make('total_spent')
                     ->label('Total Spent')
                     ->money('USD')
                     ->sortable(query: function (Builder $query, string $direction): Builder {
                         return $query->orderBy('total_spent', $direction);
-                    }),
+                    })
+                    ->toggleable(),
                 TextColumn::make('last_order_date')
                     ->label('Last Order')
                     ->dateTime('M j, Y')
                     ->sortable(query: function (Builder $query, string $direction): Builder {
                         return $query->orderBy('last_order_date', $direction);
-                    }),
+                    })
+                    ->toggleable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('order_count')
