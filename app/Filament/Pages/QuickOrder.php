@@ -95,6 +95,7 @@ class QuickOrder extends Page implements HasForms
                                     ->options($productOptions)
                                     ->required()
                                     ->placeholder('Select a product')
+                                    ->native(false)
                                     ->live(),
                                 TextInput::make('quantity')
                                     ->numeric()
