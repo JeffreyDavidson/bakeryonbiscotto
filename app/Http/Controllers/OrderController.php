@@ -6,6 +6,7 @@ use App\Mail\NewOrderNotification;
 use App\Mail\OrderConfirmation;
 use App\Models\CapacityLimit;
 use App\Models\Category;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Product;
 use App\Services\PayPalService;
@@ -42,6 +43,45 @@ class OrderController extends Controller
     }
 
     /**
+     * Validate and apply a coupon code via AJAX.
+     */
+    public function applyCoupon(Request $request)
+    {
+        $request->validate(['code' => 'required|string', 'subtotal' => 'required|numeric|min:0']);
+
+        $code = strtoupper(trim($request->input('code')));
+        $subtotal = (float) $request->input('subtotal');
+
+        $coupon = Coupon::where('code', $code)->first();
+
+        if (!$coupon) {
+            return response()->json(['error' => 'Coupon not found.'], 422);
+        }
+
+        if (!$coupon->isValid()) {
+            return response()->json(['error' => 'This coupon is no longer valid.'], 422);
+        }
+
+        if ($coupon->minimum_order && $subtotal < (float) $coupon->minimum_order) {
+            return response()->json([
+                'error' => 'Minimum order of $' . number_format($coupon->minimum_order, 2) . ' required for this coupon.',
+            ], 422);
+        }
+
+        $discount = $coupon->calculateDiscount($subtotal);
+
+        return response()->json([
+            'success' => true,
+            'coupon_id' => $coupon->id,
+            'code' => $coupon->code,
+            'discount' => $discount,
+            'label' => $coupon->type === 'percentage'
+                ? number_format($coupon->value, 0) . '% off'
+                : '$' . number_format($coupon->value, 2) . ' off',
+        ]);
+    }
+
+    /**
      * Create a PayPal order (called via AJAX before PayPal popup).
      */
     public function createPayPalOrder(Request $request, PayPalService $paypal)
@@ -56,6 +96,19 @@ class OrderController extends Controller
         // Check capacity limits
         if (!CapacityLimit::isAvailable($validated['requested_date'])) {
             return response()->json(['error' => 'Sorry, this date is fully booked. Please choose another date.'], 422);
+        }
+
+        // Apply coupon if provided
+        $couponId = $request->input('coupon_id');
+        $discountAmount = 0;
+        if ($couponId) {
+            $coupon = Coupon::find($couponId);
+            if ($coupon && $coupon->isValid()) {
+                $discountAmount = $coupon->calculateDiscount($calculated['subtotal']);
+                $calculated['discount_amount'] = $discountAmount;
+                $calculated['coupon_id'] = $coupon->id;
+                $calculated['total'] = max(0, $calculated['total'] - $discountAmount);
+            }
         }
 
         // Store pending order data in session
@@ -109,12 +162,19 @@ class OrderController extends Controller
             'notes' => $validated['notes'] ?? null,
             'subtotal' => $calculated['subtotal'],
             'delivery_fee' => $calculated['delivery_fee'],
+            'discount_amount' => $calculated['discount_amount'] ?? 0,
+            'coupon_id' => $calculated['coupon_id'] ?? null,
             'total' => $calculated['total'],
             'status' => 'pending',
             'payment_status' => 'paid',
             'stripe_payment_intent' => $captureId, // Reusing column for PayPal capture ID
             'paid_at' => now(),
         ]);
+
+        // Increment coupon usage
+        if (!empty($calculated['coupon_id'])) {
+            Coupon::where('id', $calculated['coupon_id'])->increment('times_used');
+        }
 
         foreach ($calculated['items'] as $item) {
             $order->items()->create($item);
@@ -148,11 +208,18 @@ class OrderController extends Controller
         $remaining = CapacityLimit::remainingSlots($carbon);
         $limit = CapacityLimit::forDate($carbon);
 
+        $holiday = \App\Models\Holiday::nearDate($carbon, 2);
+
         return response()->json([
             'available' => $available,
             'remaining' => $remaining === PHP_INT_MAX ? null : $remaining,
             'blocked' => $limit?->is_blocked ?? false,
             'max_orders' => $limit?->max_orders ?? null,
+            'holiday' => $holiday ? [
+                'name' => $holiday->name,
+                'deadline' => $holiday->order_deadline->format('M j'),
+                'deadline_passed' => $holiday->isDeadlinePassed(),
+            ] : null,
         ]);
     }
 

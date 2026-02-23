@@ -1075,6 +1075,14 @@
                                                 <span style="font-weight: 400; font-size: 0.75rem; opacity: 0.7;"> — <span x-text="capacityInfo.remaining"></span> slots left</span>
                                             </template>
                                         </p>
+                                        <template x-if="capacityInfo && capacityInfo.holiday">
+                                            <p style="font-size: 0.8rem; color: var(--accent); background: rgba(212,165,116,0.12); padding: 8px 12px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid var(--golden);">
+                                                Holiday orders may require extra lead time.
+                                                <template x-if="!capacityInfo.holiday.deadline_passed">
+                                                    <span>Order by <span x-text="capacityInfo.holiday.deadline" style="font-weight: 600;"></span> for <span x-text="capacityInfo.holiday.name"></span>.</span>
+                                                </template>
+                                            </p>
+                                        </template>
                                         <div style="display: flex; flex-wrap: wrap; gap: 6px;">
                                             <template x-for="slot in availableSlots" :key="slot.value">
                                                 <button type="button"
