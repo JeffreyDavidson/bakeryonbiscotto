@@ -13,7 +13,6 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\EmbeddedSchema;
 use Filament\Schemas\Components\Form;
 use Filament\Schemas\Components\Section;
@@ -59,17 +58,9 @@ class QuickOrder extends Page
     {
         return $schema
             ->components([
-                $this->getFormContentComponent(),
-            ]);
-    }
-
-    public function getFormContentComponent(): Component
-    {
-        return Form::make([EmbeddedSchema::make('form')])
-            ->id('form')
-            ->livewireSubmitHandler('submit')
-            ->footer([
-                \Filament\Schemas\Components\Actions::make($this->getFormActions()),
+                Form::make([EmbeddedSchema::make('form')])
+                    ->id('form')
+                    ->livewireSubmitHandler('submit'),
             ]);
     }
 
