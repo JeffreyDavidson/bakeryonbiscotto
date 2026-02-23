@@ -356,6 +356,7 @@ class QuickOrder extends Page
                                 'paypal' => '🅿️ PayPal',
                             ])
                             ->required()
+                            ->native(false)
                             ->live()
                             ->placeholder('Select payment method...'),
                         Placeholder::make('payment_deadline_display')
