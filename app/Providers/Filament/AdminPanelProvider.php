@@ -51,6 +51,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->font('Inter')
             ->spa()
+            ->databaseNotifications()
             ->renderHook('panels::head.end', fn () => new \Illuminate\Support\HtmlString(
                 '<link rel="stylesheet" href="' . asset('css/filament-custom.css') . '">'
             ))
