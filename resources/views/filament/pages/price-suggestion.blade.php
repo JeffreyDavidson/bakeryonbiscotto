@@ -6,9 +6,12 @@
         .price-input-group input:focus { outline: none; border-color: #6b4c3b; box-shadow: 0 0 0 2px rgba(107,76,59,0.15); }
         .price-input-group input[type=range] { padding: 0; height: 8px; -webkit-appearance: none; appearance: none; background: #e8d0b0; border: none; border-radius: 4px; }
         .price-input-group input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #6b4c3b; cursor: pointer; }
+        .price-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media (min-width: 1024px) { .price-grid { grid-template-columns: 1fr 1fr; } }
+        .price-grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     </style>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="price-grid">
         {{-- Inputs --}}
         <x-admin.card title="🧮 Cost Inputs">
             <div style="padding: 1.5rem;">
@@ -16,7 +19,7 @@
                     <label>Ingredient Cost ($)</label>
                     <input type="number" wire:model.live="ingredientCost" step="0.01" min="0" placeholder="0.00">
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="price-grid-2col">
                     <div class="price-input-group">
                         <label>Labor Time (minutes)</label>
                         <input type="number" wire:model.live="laborMinutes" step="1" min="0" placeholder="0">
