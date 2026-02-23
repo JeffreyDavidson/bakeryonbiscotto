@@ -382,21 +382,21 @@ textarea.fi-textarea-input:focus {
 .fi-fo-repeater-item:last-child {
     border-bottom: none !important;
 }
-/* Repeater item content — make room for inline delete button */
-.fi-fo-repeater-item-content {
-    padding-right: 2.5rem !important;
+/* Repeater item — use flex to put header inline with content */
+.fi-fo-repeater-item {
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    align-items: center !important;
 }
-/* Repeater item header — inline delete button */
+.fi-fo-repeater-item-content {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
 .fi-fo-repeater-item-header {
-    position: absolute !important;
-    top: 50% !important;
-    right: 0.5rem !important;
-    transform: translateY(-50%) !important;
+    flex-shrink: 0 !important;
     background: transparent !important;
     border-bottom: none !important;
-    z-index: 10 !important;
-    padding: 0 !important;
-    width: auto !important;
+    padding: 0 0.5rem !important;
     min-height: unset !important;
 }
 /* Repeater item actions */
