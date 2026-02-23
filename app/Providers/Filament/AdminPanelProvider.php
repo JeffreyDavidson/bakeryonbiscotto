@@ -50,6 +50,7 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
             ])
             ->font('Inter')
+            ->spa()
             ->renderHook('panels::head.end', fn () => new \Illuminate\Support\HtmlString(
                 '<link rel="stylesheet" href="' . asset('css/filament-custom.css') . '">'
             ))
