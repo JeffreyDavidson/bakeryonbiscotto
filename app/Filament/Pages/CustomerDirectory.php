@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Models\CustomerFavorite;
 use App\Models\CustomerNote;
 use App\Models\Order;
 use Filament\Actions\Action;
@@ -172,6 +173,11 @@ class CustomerDirectory extends Page implements HasTable
                         'customerNotes' => CustomerNote::forCustomer($record->customer_email)
                             ->orderByDesc('created_at')
                             ->get(),
+                        'favoriteProducts' => CustomerFavorite::where('customer_email', $record->customer_email)
+                            ->with('product')
+                            ->get()
+                            ->pluck('product')
+                            ->filter(),
                     ]))
                     ->modalWidth('2xl')
                     ->slideOver()

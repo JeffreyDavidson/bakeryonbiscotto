@@ -74,6 +74,19 @@
         </div>
     </x-admin.card>
 
+    {{-- Favorite Products --}}
+    @if($favoriteProducts->count())
+    <x-admin.card title="Favorite Products" :subtitle="(string) $favoriteProducts->count()">
+        <div style="padding: 1rem 1.25rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            @foreach($favoriteProducts as $fp)
+                <span style="display:inline-flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;background:#fef2f2;border:1px solid #fecaca;border-radius:2rem;font-size:0.8rem;color:#991b1b;">
+                    ❤️ {{ $fp->name }}
+                </span>
+            @endforeach
+        </div>
+    </x-admin.card>
+    @endif
+
     {{-- Orders --}}
     <x-admin.card title="Order History" :subtitle="(string) $orders->count()">
         <x-admin.data-table data-admin-table>
