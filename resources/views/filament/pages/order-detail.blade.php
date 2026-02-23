@@ -84,6 +84,12 @@
                             <span class="value">${{ number_format($record->delivery_fee, 2) }}</span>
                         </div>
                     @endif
+                    @if($record->discount_amount > 0)
+                        <div class="summary-row" style="color: #16a34a;">
+                            <span class="label" style="color: #16a34a;">Discount{{ $record->coupon ? ' (' . $record->coupon->code . ')' : '' }}</span>
+                            <span class="value" style="color: #16a34a;">-${{ number_format($record->discount_amount, 2) }}</span>
+                        </div>
+                    @endif
                     <div class="summary-row total">
                         <span class="label">Total</span>
                         <span class="value">${{ number_format($record->total, 2) }}</span>

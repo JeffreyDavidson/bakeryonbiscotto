@@ -934,6 +934,10 @@
                                     <span>Delivery Fee</span>
                                     <span x-text="deliveryFee() === 0 ? 'Free' : '$' + deliveryFee().toFixed(2)"></span>
                                 </div>
+                                <div class="cart-row" x-show="couponDiscount > 0" style="color: #16a34a;">
+                                    <span>Discount <span x-show="couponLabel" x-text="'(' + couponLabel + ')'" style="font-size: 0.78rem;"></span></span>
+                                    <span x-text="'-$' + couponDiscount.toFixed(2)"></span>
+                                </div>
                                 <div class="cart-row total">
                                     <span>Total</span>
                                     <span x-text="'$' + total().toFixed(2)"></span>
@@ -1129,6 +1133,32 @@
                     <input type="hidden" name="requested_date" :value="form.requested_date">
                     <input type="hidden" name="requested_time" :value="form.requested_time">
                     <input type="hidden" name="notes" :value="form.notes">
+
+                    {{-- Coupon Code --}}
+                    <div style="margin-top: 20px; border-top: 1px solid rgba(139,94,60,0.1); padding-top: 16px;">
+                        <button type="button" @click="couponOpen = !couponOpen" style="background: none; border: none; cursor: pointer; font-family: 'Playfair Display', serif; font-size: 0.9rem; color: var(--warm); display: flex; align-items: center; gap: 6px; padding: 0;">
+                            <span x-text="couponOpen ? '▾' : '▸'"></span>
+                            Have a coupon code?
+                        </button>
+                        <div x-show="couponOpen" x-transition style="margin-top: 10px;">
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" class="form-input" x-model="couponCode" placeholder="Enter code" style="flex: 1; text-transform: uppercase;" :disabled="couponApplied">
+                                <button type="button" x-show="!couponApplied" @click="applyCoupon()" :disabled="couponLoading || !couponCode.trim()" style="padding: 10px 18px; background: var(--dark); color: var(--cream); border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; opacity: 1; transition: opacity 0.2s;" :style="(couponLoading || !couponCode.trim()) ? 'opacity: 0.5; cursor: not-allowed;' : ''">
+                                    <span x-show="!couponLoading">Apply</span>
+                                    <span x-show="couponLoading">...</span>
+                                </button>
+                                <button type="button" x-show="couponApplied" @click="removeCoupon()" style="padding: 10px 18px; background: #dc2626; color: white; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
+                                    Remove
+                                </button>
+                            </div>
+                            <p x-show="couponError" x-text="couponError" style="color: #dc2626; font-size: 0.8rem; margin-top: 6px;"></p>
+                            <p x-show="couponApplied" style="color: #16a34a; font-size: 0.8rem; margin-top: 6px;">
+                                ✓ Coupon <strong x-text="couponCode"></strong> applied — <span x-text="couponLabel"></span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="coupon_id" :value="couponId">
 
                     <div x-show="formValid()" x-transition style="margin-top: 16px;">
                         <p style="font-size: 0.85rem; color: var(--warm); text-align: center; margin-bottom: 12px;">Pay securely with PayPal to complete your order</p>
@@ -1376,6 +1406,14 @@
                 bundlePickCount: 4,
                 bundleOptions: [],
                 bundlePicks: {},
+                couponOpen: false,
+                couponCode: '',
+                couponId: null,
+                couponDiscount: 0,
+                couponLabel: '',
+                couponApplied: false,
+                couponLoading: false,
+                couponError: '',
                 form: {
                     customer_name: '',
                     customer_email: '',
@@ -1439,7 +1477,48 @@
                 },
 
                 total() {
-                    return this.subtotal() + this.deliveryFee();
+                    return Math.max(0, this.subtotal() + this.deliveryFee() - this.couponDiscount);
+                },
+
+                async applyCoupon() {
+                    if (!this.couponCode.trim()) return;
+                    this.couponLoading = true;
+                    this.couponError = '';
+                    try {
+                        const resp = await fetch('{{ route("order.apply-coupon") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            body: JSON.stringify({
+                                code: this.couponCode.trim(),
+                                subtotal: this.subtotal(),
+                            }),
+                        });
+                        const data = await resp.json();
+                        if (data.error) {
+                            this.couponError = data.error;
+                        } else {
+                            this.couponId = data.coupon_id;
+                            this.couponDiscount = data.discount;
+                            this.couponLabel = data.label;
+                            this.couponCode = data.code;
+                            this.couponApplied = true;
+                        }
+                    } catch (e) {
+                        this.couponError = 'Something went wrong. Please try again.';
+                    }
+                    this.couponLoading = false;
+                },
+
+                removeCoupon() {
+                    this.couponId = null;
+                    this.couponDiscount = 0;
+                    this.couponLabel = '';
+                    this.couponApplied = false;
+                    this.couponCode = '';
+                    this.couponError = '';
                 },
 
                 openBundlePicker(id, name, price) {
@@ -1540,6 +1619,7 @@
                         requested_date: this.form.requested_date,
                         requested_time: this.form.requested_time,
                         notes: this.form.notes,
+                        coupon_id: this.couponId,
                         items: this.cart.map(item => ({
                             product_id: item.id,
                             quantity: item.qty,
