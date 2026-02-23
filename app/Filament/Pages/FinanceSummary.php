@@ -73,8 +73,9 @@ class FinanceSummary extends Page
             $otherIncome = Income::whereBetween('date', [$start, $end])
                 ->sum('amount');
 
-            $expenses = Expense::whereBetween('date', [$start, $end])
-                ->sum('amount');
+            $expenses = (float) Expense::whereBetween('date', [$start, $end])
+                ->get()
+                ->sum(fn ($e) => $e->deductible_amount);
 
             $months[] = [
                 'month' => $start->format('M'),
@@ -103,7 +104,8 @@ class FinanceSummary extends Page
             ->sum('amount');
 
         $expenses = (float) Expense::whereBetween('date', [$start, $end])
-            ->sum('amount');
+            ->get()
+            ->sum(fn ($e) => $e->deductible_amount);
 
         return [
             'order_income' => $orderIncome,
@@ -120,15 +122,15 @@ class FinanceSummary extends Page
         $end = $start->copy()->endOfYear();
 
         return Expense::whereBetween('date', [$start, $end])
-            ->selectRaw('category, SUM(amount) as total')
-            ->groupBy('category')
-            ->orderByDesc('total')
             ->get()
-            ->map(fn ($row) => [
-                'category' => $row->category,
-                'label' => Expense::CATEGORIES[$row->category] ?? ucfirst($row->category),
-                'total' => (float) $row->total,
+            ->groupBy('category')
+            ->map(fn ($items, $category) => [
+                'category' => $category,
+                'label' => Expense::CATEGORIES[$category] ?? ucfirst($category),
+                'total' => $items->sum(fn ($e) => $e->deductible_amount),
             ])
+            ->sortByDesc('total')
+            ->values()
             ->toArray();
     }
 
@@ -156,6 +158,7 @@ class FinanceSummary extends Page
 
         return (float) Expense::whereBetween('date', [$start, $end])
             ->whereIn('category', Expense::TAX_GROUPS['cogs'])
-            ->sum('amount');
+            ->get()
+            ->sum(fn ($e) => $e->deductible_amount);
     }
 }

@@ -10,8 +10,8 @@ class Expense extends Model
     use HasFactory;
 
     protected $fillable = [
-        'category', 'description', 'vendor', 'amount', 'date',
-        'receipt', 'notes', 'is_recurring', 'recurring_frequency',
+        'category', 'description', 'vendor', 'amount', 'business_percentage',
+        'date', 'receipt', 'notes', 'is_recurring', 'recurring_frequency',
     ];
 
     protected function casts(): array
@@ -47,5 +47,10 @@ class Expense extends Model
     public function getCategoryLabelAttribute(): string
     {
         return self::CATEGORIES[$this->category] ?? ucfirst($this->category);
+    }
+
+    public function getDeductibleAmountAttribute(): float
+    {
+        return round((float) $this->amount * ($this->business_percentage / 100), 2);
     }
 }

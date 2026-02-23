@@ -54,6 +54,14 @@ class ExpenseResource extends Resource
                     \Filament\Forms\Components\DatePicker::make('date')
                         ->required()
                         ->default(now()),
+                    \Filament\Forms\Components\TextInput::make('business_percentage')
+                        ->label('Business Use %')
+                        ->numeric()
+                        ->default(100)
+                        ->minValue(1)
+                        ->maxValue(100)
+                        ->suffix('%')
+                        ->helperText('For shared purchases (e.g. groceries used for both bakery and personal). Default 100% = fully business.'),
                     \Filament\Forms\Components\FileUpload::make('receipt')
                         ->image()
                         ->disk('public')
@@ -108,8 +116,20 @@ class ExpenseResource extends Resource
                     ->searchable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('amount')
+                    ->label('Total')
                     ->money('usd')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('business_percentage')
+                    ->label('Biz %')
+                    ->formatStateUsing(fn ($state) => $state . '%')
+                    ->color(fn ($state) => $state < 100 ? 'warning' : 'gray')
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('deductible_amount')
+                    ->label('Deductible')
+                    ->money('usd')
+                    ->getStateUsing(fn ($record) => $record->deductible_amount)
+                    ->color(fn ($record) => $record->business_percentage < 100 ? 'success' : null)
+                    ->toggleable(),
                 Tables\Columns\IconColumn::make('is_recurring')
                     ->label('Recurring')
                     ->boolean()
