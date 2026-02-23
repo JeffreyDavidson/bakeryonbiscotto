@@ -285,6 +285,7 @@ class QuickOrder extends Page
                     ->components([
                         Select::make('fulfillment_type')
                             ->label('Fulfillment Type')
+                            ->validationAttribute('fulfillment type')
                             ->options([
                                 'pickup' => '📦 Pickup',
                                 'delivery' => '🚚 Delivery',
@@ -295,6 +296,7 @@ class QuickOrder extends Page
                             ->placeholder('Select fulfillment type...'),
                         DatePicker::make('requested_date')
                             ->label('Requested Date')
+                            ->validationAttribute('requested date')
                             ->required()
                             ->native(true)
                             ->minDate(now())
