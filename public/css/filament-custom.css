@@ -72,48 +72,50 @@
 .fi-modal[id*="database-notifications"] .fi-link:hover {
     color: #e8d0b0 !important;
 }
-/* Notification items */
-.fi-no-notification {
-    background: #FFFFFF !important;
-    border: 1px solid #e8d0b0 !important;
-    border-radius: 10px !important;
-    margin: 0.5rem 0 !important;
-    padding: 0.875rem 1rem !important;
-    --tw-ring-shadow: none !important;
-    box-shadow: 0 1px 3px rgba(61,35,20,0.05) !important;
+/* Notification list — replace gray dividers with tan */
+.fi-no-database .fi-modal-content {
+    --tw-divide-color: #e8d0b0 !important;
+    border-color: #e8d0b0 !important;
 }
-/* Unread notification — subtle left accent */
-.fi-no-notification-unread-ctn {
-    border-left: 3px solid #8b5e3c !important;
+/* Individual notification rows */
+.fi-no-database .fi-modal-content > * {
+    padding: 0.875rem 1.5rem !important;
+    background: #FFFFFF !important;
+}
+.fi-no-database .fi-modal-content > *:nth-child(even) {
+    background: #fdf8f2 !important;
+}
+/* Unread indicator — bakery brown left bar */
+.fi-no-notification-unread-ctn::before {
+    background: #8b5e3c !important;
+    width: 3px !important;
+}
+/* Hide the Filament outline icon — the emoji in the title is enough */
+.fi-no-database .fi-no-notification-icon {
+    display: none !important;
 }
 /* Notification title */
-.fi-no-notification .fi-no-notification-title {
+.fi-no-database .fi-no-notification-title {
     color: #3d2314 !important;
     font-weight: 600 !important;
+    font-size: 0.875rem !important;
 }
 /* Notification body text */
-.fi-no-notification .fi-no-notification-body {
+.fi-no-database .fi-no-notification-body {
     color: #6b4c3b !important;
+    font-size: 0.8125rem !important;
 }
 /* Notification date/time */
-.fi-no-notification .fi-no-notification-date {
+.fi-no-database .fi-no-notification-date {
     color: #a08060 !important;
     font-size: 0.75rem !important;
 }
-/* Notification icon */
-.fi-no-notification .fi-no-notification-icon {
-    color: #8b5e3c !important;
-}
 /* Dismiss button */
-.fi-no-notification .fi-icon-btn {
+.fi-no-database .fi-icon-btn {
     color: #c4a882 !important;
 }
-.fi-no-notification .fi-icon-btn:hover {
+.fi-no-database .fi-icon-btn:hover {
     color: #3d2314 !important;
-}
-/* Remove default dividers between notifications */
-.fi-no-database-notifications-ctn > * + * {
-    border-top: none !important;
 }
 /* Badge in header */
 .fi-no-database-notifications-modal .fi-badge,
