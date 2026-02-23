@@ -189,26 +189,15 @@ class QuickOrder extends Page
                                             ->default(1)
                                             ->minValue(1)
                                             ->required()
-                                            ->columnSpan(1),
+                                            ->columnSpan(1)
+                                            ->live(),
                                     ])
                                     ->columns(3)
                                     ->defaultItems(0)
                                     ->addActionLabel('+ Add Flavor')
-                                    ->addAction(function (\Filament\Actions\Action $action) use ($bundlePickCounts) {
-                                        return $action->disabled(function (Repeater $component) use ($bundlePickCounts): bool {
-                                            // Get the parent item's product_id
-                                            $parentState = $component->getContainer()->getParentComponent()?->getContainer()?->getRawState();
-                                            if (!$parentState) return false;
-                                            
-                                            $productId = $parentState['product_id'] ?? null;
-                                            $maxPicks = $bundlePickCounts[$productId] ?? 0;
-                                            if ($maxPicks === 0) return false;
-
-                                            $totalPicked = collect($component->getRawState() ?? [])
-                                                ->sum(fn ($sel) => (int) ($sel['qty'] ?? 1));
-
-                                            return $totalPicked >= $maxPicks;
-                                        });
+                                    ->maxItems(function (Get $get) use ($bundlePickCounts): ?int {
+                                        $productId = $get('product_id');
+                                        return $bundlePickCounts[$productId] ?? null;
                                     })
                                     ->reorderable(false)
                                     ->live(),
