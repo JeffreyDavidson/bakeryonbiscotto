@@ -32,11 +32,12 @@ class CategoryResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
+        return $schema->columns(1)->components([
             \Filament\Schemas\Components\Section::make('Category Details')
                 ->icon('heroicon-o-tag')
                 ->description('Name and URL for this category')
                 ->columns(2)
+                ->columnSpanFull()
                 ->components([
                     \Filament\Forms\Components\TextInput::make('name')
                         ->required()
@@ -58,6 +59,7 @@ class CategoryResource extends Resource
             \Filament\Schemas\Components\Section::make('Settings')
                 ->icon('heroicon-o-cog-6-tooth')
                 ->columns(2)
+                ->columnSpanFull()
                 ->components([
                     \Filament\Forms\Components\Toggle::make('is_active')
                         ->label('Active')
