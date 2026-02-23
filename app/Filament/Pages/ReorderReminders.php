@@ -58,7 +58,7 @@ class ReorderReminders extends Page
             ->orderBy(DB::raw('MAX(requested_date)'), 'asc')
             ->get()
             ->map(function ($customer) {
-                $customer->days_since = Carbon::parse($customer->last_order_date)->diffInDays(now());
+                $customer->days_since = (int) floor(Carbon::parse($customer->last_order_date)->diffInDays(now()));
                 return $customer;
             });
     }
