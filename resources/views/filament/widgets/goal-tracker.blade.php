@@ -1,7 +1,7 @@
 <x-filament-widgets::widget>
     <div style="background: #fff; border: 1px solid #e8d0b0; border-radius: 12px; overflow: hidden;">
         <div style="background: linear-gradient(135deg, #3d2314, #6b4c3b); color: #fff; padding: 0.75rem 1.25rem; font-weight: 700; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
-            <span>🎯 Monthly Revenue Goal</span>
+            <span>🎯 Yearly Revenue Goal</span>
             <button wire:click="openEditModal" type="button" style="background: rgba(255,255,255,0.2); border: none; color: #fff; border-radius: 6px; padding: 0.25rem 0.75rem; cursor: pointer; font-size: 0.75rem; font-weight: 600;">
                 Edit
             </button>
@@ -11,7 +11,7 @@
 
         <div style="padding: 1.25rem;">
             <div style="font-size: 0.8rem; color: #8b5e3c; font-weight: 600; margin-bottom: 0.5rem;">
-                {{ $data['month'] }}
+                {{ $data['year'] }}
             </div>
 
             {{-- Progress bar --}}
@@ -41,7 +41,7 @@
     @if ($showEditModal)
         <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 50; display: flex; align-items: center; justify-content: center;" wire:click.self="closeEditModal">
             <div style="background: #fff; border-radius: 12px; border: 1px solid #e8d0b0; padding: 1.5rem; width: 360px; max-width: 90vw;">
-                <div style="font-weight: 700; color: #3d2314; font-size: 1rem; margin-bottom: 1rem;">Edit Monthly Goal</div>
+                <div style="font-weight: 700; color: #3d2314; font-size: 1rem; margin-bottom: 1rem;">Edit Yearly Goal</div>
                 <label style="font-size: 0.8rem; color: #6b4c3b; font-weight: 600; display: block; margin-bottom: 0.25rem;">Goal Amount ($)</label>
                 <input type="number" wire:model="newGoal" step="100" min="0" style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #e8d0b0; border-radius: 8px; font-size: 0.9rem; margin-bottom: 1rem; outline: none;">
                 <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">

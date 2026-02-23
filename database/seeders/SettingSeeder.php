@@ -10,8 +10,8 @@ class SettingSeeder extends Seeder
     public function run(): void
     {
         Setting::updateOrCreate(
-            ['key' => 'monthly_revenue_goal'],
-            ['value' => '5000']
+            ['key' => 'yearly_revenue_goal'],
+            ['value' => '50000']
         );
     }
 }
