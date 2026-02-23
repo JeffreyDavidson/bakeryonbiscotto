@@ -15,7 +15,7 @@
     .quick-order-header h1 {
         font-size: 1.375rem;
         font-weight: 800;
-        color: white;
+        color: #FFFFFF !important;
         margin: 0;
     }
     .quick-order-header .subtitle {

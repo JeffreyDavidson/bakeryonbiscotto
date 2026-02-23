@@ -74,7 +74,7 @@
 }
 
 /* ===== PAGE HEADINGS ===== */
-h1, .fi-header-heading {
+.fi-header-heading {
     font-family: "Playfair Display", serif !important;
     color: #3D2314 !important;
 }
