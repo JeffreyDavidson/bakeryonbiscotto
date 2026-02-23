@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\CapacityLimit;
 use App\Models\Order;
+use App\Models\WaitlistEntry;
 use Carbon\Carbon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -38,6 +39,15 @@ class StatsOverview extends BaseWidget
             Stat::make('Total Customers', Order::distinct('customer_email')->count('customer_email'))
                 ->icon('heroicon-o-users')
                 ->color('info'),
+
+            ...collect([WaitlistEntry::waiting()->where('requested_date', '>=', $today)->count()])
+                ->filter()
+                ->map(fn (int $count) => Stat::make('Waitlist', $count . ' ' . str('person')->plural($count))
+                    ->icon('heroicon-o-queue-list')
+                    ->color('warning')
+                    ->description('Waiting for upcoming dates')
+                    ->url(route('filament.admin.resources.waitlist-entries.index')))
+                ->all(),
 
             ...collect([$today, $today->copy()->addDay()])
                 ->map(function (Carbon $date) {

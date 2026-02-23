@@ -1066,9 +1066,37 @@
                                 </template>
                                 <template x-if="pendingDate && dateFull && !dateBlocked">
                                     <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(139,94,60,0.1);">
-                                        <p style="font-size: 0.9rem; font-weight: 600; color: #dc2626; text-align: center; padding: 12px; background: #fef2f2; border-radius: 8px;">
-                                            FULL — This date has reached its order limit. Please pick another day.
+                                        <p style="font-size: 0.9rem; font-weight: 600; color: #dc2626; text-align: center; padding: 12px; background: #fef2f2; border-radius: 8px; margin-bottom: 12px;">
+                                            FULL — This date has reached its order limit.
                                         </p>
+                                        <template x-if="!waitlistSubmitted">
+                                            <div style="background: #fffbf5; border: 1px solid rgba(139,94,60,0.15); border-radius: 10px; padding: 16px;">
+                                                <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 10px; text-align: center;">
+                                                    Want us to let you know if a spot opens up?
+                                                </p>
+                                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                                    <input type="text" x-model="waitlistName" placeholder="Your name" style="padding: 8px 12px; border: 1px solid rgba(139,94,60,0.2); border-radius: 6px; font-size: 0.85rem; font-family: inherit;">
+                                                    <input type="email" x-model="waitlistEmail" placeholder="Email address" style="padding: 8px 12px; border: 1px solid rgba(139,94,60,0.2); border-radius: 6px; font-size: 0.85rem; font-family: inherit;">
+                                                    <input type="text" x-model="waitlistPhone" placeholder="Phone (optional)" style="padding: 8px 12px; border: 1px solid rgba(139,94,60,0.2); border-radius: 6px; font-size: 0.85rem; font-family: inherit;">
+                                                    <textarea x-model="waitlistInterest" placeholder="What were you hoping to order?" rows="2" style="padding: 8px 12px; border: 1px solid rgba(139,94,60,0.2); border-radius: 6px; font-size: 0.85rem; font-family: inherit; resize: vertical;"></textarea>
+                                                    <button type="button" @click="submitWaitlist()" :disabled="!waitlistName || !waitlistEmail || waitlistSubmitting"
+                                                        style="padding: 10px; background: var(--warm); color: white; border: none; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; font-family: inherit;"
+                                                        :style="(!waitlistName || !waitlistEmail) && 'opacity: 0.5; cursor: not-allowed'">
+                                                        <span x-text="waitlistSubmitting ? 'Joining...' : 'Join Waitlist'"></span>
+                                                    </button>
+                                                </div>
+                                                <template x-if="waitlistError">
+                                                    <p style="color: #dc2626; font-size: 0.8rem; margin-top: 8px; text-align: center;" x-text="waitlistError"></p>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <template x-if="waitlistSubmitted">
+                                            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; text-align: center;">
+                                                <p style="font-size: 0.9rem; font-weight: 600; color: #16a34a;">
+                                                    You're on the waitlist! We'll email you if a spot opens up.
+                                                </p>
+                                            </div>
+                                        </template>
                                     </div>
                                 </template>
                                 <template x-if="pendingDate && !dateBlocked && !dateFull">
@@ -1269,6 +1297,13 @@
                 dateBlocked: false,
                 dateFull: false,
                 capacityInfo: null,
+                waitlistName: '',
+                waitlistEmail: '',
+                waitlistPhone: '',
+                waitlistInterest: '',
+                waitlistSubmitting: false,
+                waitlistSubmitted: false,
+                waitlistError: '',
                 selectedTime: null,
 
                 init() {
@@ -1345,6 +1380,8 @@
                     this.dateBlocked = false;
                     this.dateFull = false;
                     this.capacityInfo = null;
+                    this.waitlistSubmitted = false;
+                    this.waitlistError = '';
 
                     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
                     const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -1370,6 +1407,37 @@
                         });
                 },
 
+                async submitWaitlist() {
+                    this.waitlistSubmitting = true;
+                    this.waitlistError = '';
+                    try {
+                        const res = await fetch('/order/waitlist', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                customer_name: this.waitlistName,
+                                customer_email: this.waitlistEmail,
+                                customer_phone: this.waitlistPhone || null,
+                                product_interest: this.waitlistInterest || null,
+                                requested_date: this.pendingDate,
+                            }),
+                        });
+                        const data = await res.json();
+                        if (!res.ok) {
+                            this.waitlistError = data.message || data.error || 'Something went wrong. Please try again.';
+                        } else {
+                            this.waitlistSubmitted = true;
+                        }
+                    } catch (e) {
+                        this.waitlistError = 'Something went wrong. Please try again.';
+                    } finally {
+                        this.waitlistSubmitting = false;
+                    }
+                },
                 selectTime(slot) {
                     this.selectedTime = slot.value;
 
