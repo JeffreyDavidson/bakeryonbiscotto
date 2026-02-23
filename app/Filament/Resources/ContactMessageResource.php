@@ -155,7 +155,10 @@ class ContactMessageResource extends Resource
                         'replied_at' => now(),
                     ]))
                     ->visible(fn (ContactMessage $record) => $record->status !== 'replied'),
-            ]);
+            ])
+            ->emptyStateHeading('No messages')
+            ->emptyStateDescription('Contact form messages will appear here. 📬')
+            ->emptyStateIcon('heroicon-o-envelope');
     }
 
     public static function infolist(Schema $schema): Schema

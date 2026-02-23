@@ -34,26 +34,33 @@ class ExpenseResource extends Resource
         return $schema->components([
             \Filament\Schemas\Components\Section::make('Expense Details')
                 ->icon('heroicon-o-banknotes')
+                ->columns(2)
                 ->components([
-                    \Filament\Forms\Components\Select::make('category')
-                        ->options(Expense::CATEGORIES)
-                        ->required()
-                        ->searchable(),
                     \Filament\Forms\Components\TextInput::make('description')
                         ->required()
                         ->maxLength(255)
-                        ->placeholder('e.g. Flour, sugar, butter from Publix'),
+                        ->placeholder('e.g. Flour, sugar, butter from Publix')
+                        ->prefixIcon('heroicon-o-document-text')
+                        ->columnSpanFull(),
+                    \Filament\Forms\Components\Select::make('category')
+                        ->options(Expense::CATEGORIES)
+                        ->required()
+                        ->searchable()
+                        ->prefixIcon('heroicon-o-folder'),
                     \Filament\Forms\Components\TextInput::make('vendor')
                         ->maxLength(255)
-                        ->placeholder('e.g. Publix, Amazon, Costco'),
+                        ->placeholder('e.g. Publix, Amazon, Costco')
+                        ->prefixIcon('heroicon-o-building-storefront'),
                     \Filament\Forms\Components\TextInput::make('amount')
                         ->required()
                         ->numeric()
                         ->prefix('$')
-                        ->step('0.01'),
+                        ->step('0.01')
+                        ->placeholder('0.00'),
                     \Filament\Forms\Components\DatePicker::make('date')
                         ->required()
-                        ->default(now()),
+                        ->default(now())
+                        ->prefixIcon('heroicon-o-calendar'),
                     \Filament\Forms\Components\TextInput::make('business_percentage')
                         ->label('Business Use %')
                         ->numeric()
@@ -61,7 +68,7 @@ class ExpenseResource extends Resource
                         ->minValue(1)
                         ->maxValue(100)
                         ->suffix('%')
-                        ->helperText('For shared purchases (e.g. groceries used for both bakery and personal). Default 100% = fully business.'),
+                        ->helperText('100% = fully business. Lower for shared purchases.'),
                     \Filament\Forms\Components\FileUpload::make('receipt')
                         ->image()
                         ->disk('public')
@@ -71,6 +78,8 @@ class ExpenseResource extends Resource
                 ]),
 
             \Filament\Schemas\Components\Section::make('Additional')
+                ->icon('heroicon-o-cog-6-tooth')
+                ->columns(2)
                 ->components([
                     \Filament\Forms\Components\Toggle::make('is_recurring')
                         ->label('Recurring expense')
@@ -82,9 +91,11 @@ class ExpenseResource extends Resource
                             'quarterly' => 'Quarterly',
                             'yearly' => 'Yearly',
                         ])
-                        ->visible(fn ($get) => $get('is_recurring')),
+                        ->visible(fn ($get) => $get('is_recurring'))
+                        ->prefixIcon('heroicon-o-arrow-path'),
                     \Filament\Forms\Components\Textarea::make('notes')
                         ->rows(2)
+                        ->placeholder('Any additional notes...')
                         ->columnSpanFull(),
                 ])->collapsible(),
         ]);
@@ -173,7 +184,10 @@ class ExpenseResource extends Resource
             ->actions([
                 EditAction::make()->slideOver()->modalWidth('2xl'),
             ])
-            ->bulkActions([]);
+            ->bulkActions([])
+            ->emptyStateHeading('No expenses recorded')
+            ->emptyStateDescription('Track your bakery expenses here for easy tax time. 💰')
+            ->emptyStateIcon('heroicon-o-banknotes');
     }
 
     public static function getPages(): array

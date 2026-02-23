@@ -43,16 +43,38 @@ class ReviewResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            \Filament\Forms\Components\TextInput::make('name')->required()->maxLength(100),
-            \Filament\Forms\Components\TextInput::make('email')->email()->maxLength(255),
-            \Filament\Forms\Components\Select::make('rating')
-                ->options([5 => '5 Stars', 4 => '4 Stars', 3 => '3 Stars', 2 => '2 Stars', 1 => '1 Star'])
-                ->required(),
-            \Filament\Forms\Components\Textarea::make('body')->required()->maxLength(1000)->columnSpanFull(),
-            \Filament\Forms\Components\TextInput::make('favorite_bread')->maxLength(100),
-            \Filament\Forms\Components\Select::make('status')
-                ->options(['pending' => 'Pending', 'approved' => 'Approved', 'rejected' => 'Rejected'])
-                ->required(),
+            \Filament\Schemas\Components\Section::make('Review Details')
+                ->icon('heroicon-o-star')
+                ->columns(2)
+                ->components([
+                    \Filament\Forms\Components\TextInput::make('name')
+                        ->required()
+                        ->maxLength(100)
+                        ->prefixIcon('heroicon-o-user')
+                        ->placeholder('Customer name'),
+                    \Filament\Forms\Components\TextInput::make('email')
+                        ->email()
+                        ->maxLength(255)
+                        ->prefixIcon('heroicon-o-envelope')
+                        ->placeholder('customer@email.com'),
+                    \Filament\Forms\Components\Select::make('rating')
+                        ->options([5 => '⭐⭐⭐⭐⭐ 5 Stars', 4 => '⭐⭐⭐⭐ 4 Stars', 3 => '⭐⭐⭐ 3 Stars', 2 => '⭐⭐ 2 Stars', 1 => '⭐ 1 Star'])
+                        ->required(),
+                    \Filament\Forms\Components\Select::make('status')
+                        ->options(['pending' => '⏳ Pending', 'approved' => '✅ Approved', 'rejected' => '❌ Rejected'])
+                        ->required(),
+                    \Filament\Forms\Components\Textarea::make('body')
+                        ->required()
+                        ->maxLength(1000)
+                        ->rows(4)
+                        ->placeholder('What the customer said...')
+                        ->columnSpanFull(),
+                    \Filament\Forms\Components\TextInput::make('favorite_bread')
+                        ->maxLength(100)
+                        ->prefixIcon('heroicon-o-heart')
+                        ->placeholder('Their favorite product')
+                        ->columnSpanFull(),
+                ]),
         ]);
     }
 
@@ -132,7 +154,10 @@ class ReviewResource extends Resource
                     ->action(fn (Review $record) => $record->update(['status' => 'rejected'])),
                 EditAction::make()->slideOver()->modalWidth('2xl'),
             ])
-            ->bulkActions([]);
+            ->bulkActions([])
+            ->emptyStateHeading('No reviews yet')
+            ->emptyStateDescription('Reviews will show up here as customers submit them. ⭐')
+            ->emptyStateIcon('heroicon-o-star');
     }
 
     public static function getPages(): array

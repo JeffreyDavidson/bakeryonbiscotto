@@ -43,32 +43,61 @@ class OrderResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make('Customer Info')->components([
-                \Filament\Forms\Components\TextInput::make('customer_name')->required(),
-                \Filament\Forms\Components\TextInput::make('customer_email')->email()->required(),
-                \Filament\Forms\Components\TextInput::make('customer_phone'),
-            ])->columns(3),
+            Section::make('Customer Info')
+                ->icon('heroicon-o-user')
+                ->components([
+                    \Filament\Forms\Components\TextInput::make('customer_name')
+                        ->required()
+                        ->placeholder('Jane Smith')
+                        ->prefixIcon('heroicon-o-user'),
+                    \Filament\Forms\Components\TextInput::make('customer_email')
+                        ->email()
+                        ->required()
+                        ->placeholder('jane@example.com')
+                        ->prefixIcon('heroicon-o-envelope'),
+                    \Filament\Forms\Components\TextInput::make('customer_phone')
+                        ->placeholder('(555) 123-4567')
+                        ->prefixIcon('heroicon-o-phone'),
+                ])->columns(3),
 
-            Section::make('Fulfillment')->components([
-                \Filament\Forms\Components\Select::make('fulfillment_type')
-                    ->options(['pickup' => 'Pickup', 'delivery' => 'Delivery'])
-                    ->required()
-                    ->live(),
-                \Filament\Forms\Components\DatePicker::make('requested_date')->required(),
-                \Filament\Forms\Components\TextInput::make('requested_time')->label('Requested Time'),
-                \Filament\Forms\Components\Textarea::make('delivery_address')
-                    ->visible(fn ($get) => $get('fulfillment_type') === 'delivery')
-                    ->columnSpanFull(),
-                \Filament\Forms\Components\TextInput::make('delivery_zip')
-                    ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
-                \Filament\Forms\Components\TextInput::make('delivery_fee')
-                    ->numeric()->prefix('$')->default(0)
-                    ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
-            ])->columns(3),
+            Section::make('Fulfillment')
+                ->icon('heroicon-o-truck')
+                ->components([
+                    \Filament\Forms\Components\Select::make('fulfillment_type')
+                        ->options(['pickup' => '📦 Pickup', 'delivery' => '🚗 Delivery'])
+                        ->required()
+                        ->default('pickup')
+                        ->live(),
+                    \Filament\Forms\Components\DatePicker::make('requested_date')
+                        ->required()
+                        ->default(now())
+                        ->prefixIcon('heroicon-o-calendar'),
+                    \Filament\Forms\Components\TextInput::make('requested_time')
+                        ->label('Requested Time')
+                        ->placeholder('e.g. 2:00 PM')
+                        ->prefixIcon('heroicon-o-clock'),
+                    \Filament\Forms\Components\Textarea::make('delivery_address')
+                        ->visible(fn ($get) => $get('fulfillment_type') === 'delivery')
+                        ->placeholder('Full delivery address')
+                        ->rows(2)
+                        ->columnSpanFull(),
+                    \Filament\Forms\Components\TextInput::make('delivery_zip')
+                        ->visible(fn ($get) => $get('fulfillment_type') === 'delivery')
+                        ->placeholder('33837'),
+                    \Filament\Forms\Components\TextInput::make('delivery_fee')
+                        ->numeric()->prefix('$')->default(0)
+                        ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
+                ])->columns(3),
 
-            Section::make('Notes')->components([
-                \Filament\Forms\Components\Textarea::make('notes')->hiddenLabel()->rows(3)->columnSpanFull(),
-            ])->collapsible(),
+            Section::make('Notes')
+                ->icon('heroicon-o-chat-bubble-bottom-center-text')
+                ->components([
+                    \Filament\Forms\Components\Textarea::make('notes')
+                        ->hiddenLabel()
+                        ->rows(3)
+                        ->placeholder('Special instructions, allergies, etc.')
+                        ->columnSpanFull(),
+                ])->collapsible(),
         ]);
     }
 
@@ -82,7 +111,7 @@ class OrderResource extends Resource
                     ->sortable()
                     ->weight('bold'),
                 Tables\Columns\TextColumn::make('customer_name')
-                    ->searchable()
+                    ->searchable(['customer_name', 'customer_email'])
                     ->sortable(),
                 Tables\Columns\TextColumn::make('is_repeat')
                     ->label('')
@@ -175,24 +204,36 @@ class OrderResource extends Resource
                 TableAction::make('confirm')
                     ->icon('heroicon-o-check')
                     ->color('info')
+                    ->requiresConfirmation()
+                    ->modalHeading('Confirm Order')
+                    ->modalDescription(fn (Order $record) => "Confirm order {$record->order_number} for {$record->customer_name}?")
                     ->visible(fn (Order $record) => $record->status === 'pending')
                     ->action(fn (Order $record) => $record->update(['status' => 'confirmed'])),
                 TableAction::make('baking')
                     ->icon('heroicon-o-fire')
                     ->color('primary')
                     ->label('Start Baking')
+                    ->requiresConfirmation()
+                    ->modalHeading('Start Baking')
+                    ->modalDescription(fn (Order $record) => "Mark order {$record->order_number} as baking?")
                     ->visible(fn (Order $record) => $record->status === 'confirmed')
                     ->action(fn (Order $record) => $record->update(['status' => 'baking'])),
                 TableAction::make('ready')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->label('Mark Ready')
+                    ->requiresConfirmation()
+                    ->modalHeading('Mark Ready')
+                    ->modalDescription(fn (Order $record) => "Mark order {$record->order_number} as ready for {$record->fulfillment_type}?")
                     ->visible(fn (Order $record) => $record->status === 'baking')
                     ->action(fn (Order $record) => $record->update(['status' => 'ready'])),
                 TableAction::make('complete')
                     ->label('Mark Delivered')
                     ->icon('heroicon-o-check-badge')
                     ->color('gray')
+                    ->requiresConfirmation()
+                    ->modalHeading('Mark Delivered')
+                    ->modalDescription(fn (Order $record) => "Mark order {$record->order_number} as delivered?")
                     ->visible(fn (Order $record) => $record->status === 'ready')
                     ->action(fn (Order $record) => $record->update([
                         'status' => 'delivered',
@@ -201,7 +242,10 @@ class OrderResource extends Resource
                 \Filament\Actions\ViewAction::make()
                     ->url(fn (Order $record) => static::getUrl('view', ['record' => $record])),
             ])
-            ->bulkActions([]);
+            ->bulkActions([])
+            ->emptyStateHeading('No orders yet')
+            ->emptyStateDescription('Orders will appear here when customers place them. 🧁')
+            ->emptyStateIcon('heroicon-o-clipboard-document-list');
     }
 
     public static function getPages(): array
