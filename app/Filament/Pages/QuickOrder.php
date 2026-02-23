@@ -104,18 +104,18 @@ class QuickOrder extends Page
                             ->required()
                             ->label('Name')
                             ->placeholder('Jane Smith')
-                            ->prefixIcon('heroicon-o-user'),
+                            ,
                         TextInput::make('customer_email')
                             ->email()
                             ->required()
                             ->label('Email')
                             ->placeholder('jane@example.com')
-                            ->prefixIcon('heroicon-o-envelope'),
+                            ,
                         TextInput::make('customer_phone')
                             ->tel()
                             ->label('Phone')
                             ->placeholder('(555) 123-4567')
-                            ->prefixIcon('heroicon-o-phone'),
+                            ,
                     ]),
 
                 Section::make('Order Items')
@@ -249,7 +249,7 @@ class QuickOrder extends Page
                             ->required()
                             ->native(false)
                             ->minDate(now())
-                            ->prefixIcon('heroicon-o-calendar'),
+                            ,
                         Select::make('requested_time')
                             ->label('Time Slot')
                             ->options([
@@ -267,7 +267,6 @@ class QuickOrder extends Page
                         TextInput::make('delivery_address')
                             ->label('Delivery Address')
                             ->placeholder('123 Main St, Davenport, FL')
-                            ->prefixIcon('heroicon-o-map-pin')
                             ->columnSpan(2)
                             ->visible(fn (Get $get) => $get('fulfillment_type') === 'delivery'),
                         TextInput::make('delivery_zip')
