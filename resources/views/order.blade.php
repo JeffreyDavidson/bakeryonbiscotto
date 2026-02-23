@@ -1053,10 +1053,27 @@
                                 </div>
 
                                 {{-- Time Slots --}}
-                                <template x-if="pendingDate">
+                                <template x-if="pendingDate && dateBlocked">
+                                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(139,94,60,0.1);">
+                                        <p style="font-size: 0.9rem; font-weight: 600; color: #dc2626; text-align: center; padding: 12px; background: #fef2f2; border-radius: 8px;">
+                                            This date is unavailable for orders. Please choose another day.
+                                        </p>
+                                    </div>
+                                </template>
+                                <template x-if="pendingDate && dateFull && !dateBlocked">
+                                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(139,94,60,0.1);">
+                                        <p style="font-size: 0.9rem; font-weight: 600; color: #dc2626; text-align: center; padding: 12px; background: #fef2f2; border-radius: 8px;">
+                                            FULL — This date has reached its order limit. Please pick another day.
+                                        </p>
+                                    </div>
+                                </template>
+                                <template x-if="pendingDate && !dateBlocked && !dateFull">
                                     <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(139,94,60,0.1);">
                                         <p style="font-size: 0.82rem; font-weight: 600; color: var(--warm); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">
                                             🕐 Pick a time for <span x-text="pendingDayLabel" style="color: var(--dark);"></span>
+                                            <template x-if="capacityInfo && capacityInfo.remaining !== null">
+                                                <span style="font-weight: 400; font-size: 0.75rem; opacity: 0.7;"> — <span x-text="capacityInfo.remaining"></span> slots left</span>
+                                            </template>
                                         </p>
                                         <div style="display: flex; flex-wrap: wrap; gap: 6px;">
                                             <template x-for="slot in availableSlots" :key="slot.value">
@@ -1284,12 +1301,32 @@
 
                     this.pendingDate = y + '-' + m + '-' + d;
                     this.selectedTime = null;
+                    this.dateBlocked = false;
+                    this.dateFull = false;
+                    this.capacityInfo = null;
 
                     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
                     const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
                     this.pendingDayLabel = dayNames[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate();
 
-                    this.availableSlots = getSlotsForDay(date.getDay());
+                    // Check capacity
+                    fetch('/order/capacity/' + this.pendingDate)
+                        .then(r => r.json())
+                        .then(data => {
+                            this.capacityInfo = data;
+                            if (data.blocked) {
+                                this.dateBlocked = true;
+                                this.availableSlots = [];
+                            } else if (!data.available) {
+                                this.dateFull = true;
+                                this.availableSlots = [];
+                            } else {
+                                this.availableSlots = getSlotsForDay(date.getDay());
+                            }
+                        })
+                        .catch(() => {
+                            this.availableSlots = getSlotsForDay(date.getDay());
+                        });
                 },
 
                 selectTime(slot) {

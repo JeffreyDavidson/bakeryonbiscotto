@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Models\CustomerNote;
 use App\Models\Order;
 use App\Models\Product;
 use BackedEnum;
@@ -31,6 +32,8 @@ class QuickOrder extends Page
     protected static ?int $navigationSort = 10;
 
     public ?array $data = [];
+
+    public array $importantCustomerNotes = [];
 
     public static function getNavigationGroup(): ?string
     {
@@ -125,7 +128,18 @@ class QuickOrder extends Page
                             ->required()
                             ->label('Email')
                             ->placeholder('jane@example.com')
-                            ,
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(function (?string $state) {
+                                $this->importantCustomerNotes = [];
+                                if ($state && filter_var($state, FILTER_VALIDATE_EMAIL)) {
+                                    $this->importantCustomerNotes = CustomerNote::forCustomer($state)
+                                        ->important()
+                                        ->latest()
+                                        ->get()
+                                        ->map(fn ($n) => ['note' => $n->note, 'created_at' => $n->created_at->format('M j, Y')])
+                                        ->toArray();
+                                }
+                            }),
                         TextInput::make('customer_phone')
                             ->tel()
                             ->required()
@@ -133,6 +147,22 @@ class QuickOrder extends Page
                             ->placeholder('(555) 123-4567')
                             ,
                     ]),
+
+                Placeholder::make('important_customer_notes')
+                    ->label('')
+                    ->visible(fn () => !empty($this->importantCustomerNotes))
+                    ->content(function () {
+                        $html = '<div style="background:#fffbeb;border:1px solid #f59e0b;border-radius:0.5rem;padding:0.75rem 1rem;">';
+                        foreach ($this->importantCustomerNotes as $n) {
+                            $html .= '<div style="display:flex;align-items:start;gap:0.5rem;margin-bottom:0.25rem;">'
+                                . '<span style="color:#d97706;">&#9888;&#65039;</span>'
+                                . '<span style="color:#92400e;font-weight:600;font-size:0.875rem;">Customer note: </span>'
+                                . '<span style="color:#92400e;font-size:0.875rem;">' . e($n['note']) . '</span>'
+                                . '</div>';
+                        }
+                        $html .= '</div>';
+                        return new \Illuminate\Support\HtmlString($html);
+                    }),
 
                 Section::make('Order Items')
                     ->description('Add products and quantities')
