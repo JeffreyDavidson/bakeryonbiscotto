@@ -37,51 +37,47 @@
 
         {{-- Customer table --}}
         <x-admin.card title="📋 Inactive Customers" :subtitle="$customers->count() . ' ' . Str::plural('customer', $customers->count())">
-            <table style="width: 100%; border-collapse: collapse;">
-                <thead>
+            <x-admin.data-table data-admin-table>
+                <x-slot:head>
+                    <th>Customer</th>
+                    <th>Last Order</th>
+                    <th>Days Inactive</th>
+                    <th style="text-align: center;">Orders</th>
+                    <th style="text-align: right;">Total Spent</th>
+                    <th style="text-align: right;">Action</th>
+                </x-slot:head>
+                @foreach($customers as $customer)
+                    @php
+                        $urgency = $customer->days_since >= 120 ? 'cancelled' : ($customer->days_since >= 90 ? 'pending' : 'confirmed');
+                    @endphp
                     <tr>
-                        <th style="text-align: left; padding: 0.75rem 1rem; background: #f5e6d0; color: #3d2314; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; border-bottom: 2px solid #d4a574;">Customer</th>
-                        <th style="text-align: left; padding: 0.75rem 1rem; background: #f5e6d0; color: #3d2314; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; border-bottom: 2px solid #d4a574;">Last Order</th>
-                        <th style="text-align: left; padding: 0.75rem 1rem; background: #f5e6d0; color: #3d2314; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; border-bottom: 2px solid #d4a574;">Days Inactive</th>
-                        <th style="text-align: center; padding: 0.75rem 1rem; background: #f5e6d0; color: #3d2314; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; border-bottom: 2px solid #d4a574;">Orders</th>
-                        <th style="text-align: right; padding: 0.75rem 1rem; background: #f5e6d0; color: #3d2314; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; border-bottom: 2px solid #d4a574;">Total Spent</th>
-                        <th style="text-align: right; padding: 0.75rem 1rem; background: #f5e6d0; color: #3d2314; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; border-bottom: 2px solid #d4a574;">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($customers as $customer)
-                        @php
-                            $urgency = $customer->days_since >= 120 ? 'cancelled' : ($customer->days_since >= 90 ? 'pending' : 'confirmed');
-                        @endphp
-                        <tr style="border-bottom: 1px solid #f3ebe0;" onmouseover="this.style.background='rgba(245,230,208,0.3)'" onmouseout="this.style.background='none'">
-                            <td style="padding: 0.75rem 1rem;">
-                                <div style="display: flex; align-items: center; gap: 0.625rem;">
-                                    <x-admin.avatar :name="$customer->customer_name" size="sm" />
-                                    <div>
-                                        <div style="font-weight: 600; color: #3d2314; font-size: 0.875rem;">{{ $customer->customer_name }}</div>
-                                        <div style="font-size: 0.75rem; color: #a08060;">{{ $customer->customer_email }}</div>
-                                    </div>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 0.625rem;">
+                                <x-admin.avatar :name="$customer->customer_name" size="sm" />
+                                <div>
+                                    <div style="font-weight: 600; color: #3d2314; font-size: 0.875rem;">{{ $customer->customer_name }}</div>
+                                    <div style="font-size: 0.75rem; color: #a08060;">{{ $customer->customer_email }}</div>
                                 </div>
-                            </td>
-                            <td style="padding: 0.75rem 1rem; color: #3d2314; font-size: 0.85rem;">{{ \Carbon\Carbon::parse($customer->last_order_date)->format('M j, Y') }}</td>
-                            <td style="padding: 0.75rem 1rem;">
-                                <x-admin.badge :type="$urgency" :label="$customer->days_since . ' days'" />
-                            </td>
-                            <td style="padding: 0.75rem 1rem; text-align: center; font-weight: 600; color: #3d2314;">{{ $customer->total_orders }}</td>
-                            <td style="padding: 0.75rem 1rem; text-align: right; font-weight: 700; color: #3d2314;">${{ number_format($customer->total_spent, 2) }}</td>
-                            <td style="padding: 0.75rem 1rem; text-align: right;">
-                                @php
-                                    $subject = rawurlencode('We miss you at Bakery on Biscotto!');
-                                    $body = rawurlencode("Hi {$customer->customer_name},\n\nIt's been a while since your last visit and we miss you! We've been baking up some amazing new treats and would love to see you again.\n\nVisit us at bakeryonbiscotto.com to place your next order.\n\nWarmly,\nBakery on Biscotto 🍪");
-                                @endphp
-                                <x-admin.btn variant="primary" :href="'mailto:' . $customer->customer_email . '?subject=' . $subject . '&body=' . $body" icon="✉️" size="sm">
-                                    Send Reminder
-                                </x-admin.btn>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                            </div>
+                        </td>
+                        <td style="color: #3d2314; font-size: 0.85rem;">{{ \Carbon\Carbon::parse($customer->last_order_date)->format('M j, Y') }}</td>
+                        <td>
+                            <x-admin.badge :type="$urgency" :label="$customer->days_since . ' days'" />
+                        </td>
+                        <td style="text-align: center; font-weight: 600; color: #3d2314;">{{ $customer->total_orders }}</td>
+                        <td style="text-align: right; font-weight: 700; color: #3d2314;">${{ number_format($customer->total_spent, 2) }}</td>
+                        <td style="text-align: right;">
+                            @php
+                                $subject = rawurlencode('We miss you at Bakery on Biscotto!');
+                                $body = rawurlencode("Hi {$customer->customer_name},\n\nIt's been a while since your last visit and we miss you! We've been baking up some amazing new treats and would love to see you again.\n\nVisit us at bakeryonbiscotto.com to place your next order.\n\nWarmly,\nBakery on Biscotto 🍪");
+                            @endphp
+                            <x-admin.btn variant="primary" :href="'mailto:' . $customer->customer_email . '?subject=' . $subject . '&body=' . $body" icon="✉️" size="sm">
+                                Send Reminder
+                            </x-admin.btn>
+                        </td>
+                    </tr>
+                @endforeach
+            </x-admin.data-table>
         </x-admin.card>
     @endif
 </x-filament-panels::page>
