@@ -93,10 +93,10 @@
     background: #FFFFFF !important;
 }
 
-/* Table header — dark brown gradient matching custom page headers */
+/* Table header */
 .fi-ta-header-cell {
-    background: transparent !important;
-    color: #FFFFFF !important;
+    background: #F5E6D0 !important;
+    color: #3D2314 !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
     font-size: 0.7rem !important;
@@ -105,20 +105,12 @@
 }
 /* Also target th directly */
 table thead th {
-    background: transparent !important;
-    color: #FFFFFF !important;
+    background: #F5E6D0 !important;
+    color: #3D2314 !important;
 }
-/* Dark brown gradient on the header row */
+/* Full-width border under entire header row */
 table thead tr {
-    background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
-    border-bottom: none !important;
-}
-/* Round top corners of first/last header cells to match table border-radius */
-table thead tr th:first-child {
-    border-top-left-radius: 11px !important;
-}
-table thead tr th:last-child {
-    border-top-right-radius: 11px !important;
+    border-bottom: 2px solid #D4A574 !important;
 }
 
 /* Table rows */
