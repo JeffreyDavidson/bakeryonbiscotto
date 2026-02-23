@@ -188,6 +188,17 @@ class QuickOrder extends Page
                                             ->numeric()
                                             ->default(1)
                                             ->minValue(1)
+                                            ->maxValue(function (Get $get) use ($bundlePickCounts): ?int {
+                                                $productId = $get('../../product_id');
+                                                $maxPicks = $bundlePickCounts[$productId] ?? null;
+                                                if (!$maxPicks) return null;
+
+                                                $selections = $get('../../selections') ?? [];
+                                                $currentQty = (int) ($get('qty') ?? 0);
+                                                $othersTotal = collect($selections)->sum(fn ($sel) => (int) ($sel['qty'] ?? 1)) - $currentQty;
+
+                                                return max(1, $maxPicks - $othersTotal);
+                                            })
                                             ->required()
                                             ->columnSpan(1)
                                             ->live(),
@@ -195,9 +206,17 @@ class QuickOrder extends Page
                                     ->columns(3)
                                     ->defaultItems(0)
                                     ->addActionLabel('+ Add Flavor')
-                                    ->maxItems(function (Get $get) use ($bundlePickCounts): ?int {
-                                        $productId = $get('product_id');
-                                        return $bundlePickCounts[$productId] ?? null;
+                                    ->addAction(function (\Filament\Actions\Action $action) use ($bundlePickCounts) {
+                                        return $action->hidden(function (Get $get) use ($bundlePickCounts): bool {
+                                            $productId = $get('../../product_id');
+                                            $maxPicks = $bundlePickCounts[$productId] ?? 0;
+                                            if ($maxPicks === 0) return false;
+
+                                            $selections = $get('../../selections') ?? [];
+                                            $totalPicked = collect($selections)->sum(fn ($sel) => (int) ($sel['qty'] ?? 1));
+
+                                            return $totalPicked >= $maxPicks;
+                                        });
                                     })
                                     ->reorderable(false)
                                     ->live(),
