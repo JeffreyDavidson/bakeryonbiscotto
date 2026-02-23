@@ -601,6 +601,11 @@ input[type="date"][value=""] {
 }
 
 /* ===== HIDE SELECT CLEAR/X BUTTON (Quick Order repeater) ===== */
+/* Hide clear X on all non-native selects (payment method, fulfillment type) */
+.fi-select-input-value-remove-btn {
+    display: none !important;
+}
+
 .fi-fo-repeater .fi-select-input-value-remove-btn {
     display: none !important;
 }
