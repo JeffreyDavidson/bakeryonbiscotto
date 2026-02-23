@@ -331,9 +331,13 @@ table thead tr {
     border-inline-start: 1px solid #e8d0b0 !important;
     border-left: 1px solid #e8d0b0 !important;
 }
-/* Input field inside wrapper — no rounded corners on the prefix side */
+/* Input field inside wrapper — no border or rounding, wrapper handles it */
 .fi-input-wrp .fi-input {
     border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    --tw-ring-shadow: 0 0 0 0 transparent !important;
+    outline: none !important;
 }
 .fi-section-content {
     border-top: none !important;
