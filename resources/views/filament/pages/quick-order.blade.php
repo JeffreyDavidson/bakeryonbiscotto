@@ -77,21 +77,19 @@
             </div>
         </div>
 
-        <form wire:submit="submit">
-            <div class="quick-order-form-card">
-                {{ $this->form }}
-            </div>
+        <div class="quick-order-form-card">
+            {{ $this->form }}
+        </div>
 
-            <div class="quick-order-totals">
-                <div class="total-row">
-                    <span>Subtotal</span>
-                    <span>Calculated on submit</span>
-                </div>
+        <div class="quick-order-totals">
+            <div class="total-row">
+                <span>Subtotal</span>
+                <span>Calculated on submit</span>
             </div>
+        </div>
 
-            <button type="submit" class="quick-order-submit">
-                🧾 Create Order
-            </button>
-        </form>
+        <button type="button" wire:click="submit" class="quick-order-submit">
+            🧾 Create Order
+        </button>
     </div>
 </x-filament-panels::page>
