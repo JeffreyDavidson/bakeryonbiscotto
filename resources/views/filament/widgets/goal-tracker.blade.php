@@ -3,8 +3,7 @@
         .goal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         @media (max-width: 768px) { .goal-grid { grid-template-columns: 1fr; } }
         .goal-card { background: #fff; border: 1px solid #e8d0b0; border-radius: 12px; overflow: hidden; }
-        .goal-card-header { background: linear-gradient(135deg, #3d2314, #6b4c3b); color: #fff; padding: 0.75rem 1.25rem; font-weight: 700; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; }
-        .goal-card-header button { background: rgba(255,255,255,0.2); border: none; color: #fff; border-radius: 6px; padding: 0.25rem 0.75rem; cursor: pointer; font-size: 0.75rem; font-weight: 600; }
+        [data-admin-gradient-header] button { background: rgba(255,255,255,0.2); border: none; color: #fff; border-radius: 6px; padding: 0.25rem 0.75rem; cursor: pointer; font-size: 0.75rem; font-weight: 600; }
         .goal-card-body { padding: 1.25rem; }
         .goal-label { font-size: 0.8rem; color: #8b5e3c; font-weight: 600; margin-bottom: 0.5rem; }
         .goal-bar { background: #f5e6d0; border-radius: 999px; height: 24px; overflow: hidden; margin-bottom: 0.75rem; }
@@ -21,8 +20,8 @@
     <div class="goal-grid">
         {{-- Monthly --}}
         <div class="goal-card">
-            <div class="goal-card-header">
-                <span>🎯 Monthly Goal</span>
+            <div data-admin-gradient-header>
+                <span data-header-title>🎯 Monthly Goal</span>
                 <button wire:click="openEditModal('monthly')" type="button">Edit</button>
             </div>
             <div class="goal-card-body">
@@ -44,8 +43,8 @@
 
         {{-- Yearly --}}
         <div class="goal-card">
-            <div class="goal-card-header">
-                <span>🎯 Yearly Goal</span>
+            <div data-admin-gradient-header>
+                <span data-header-title>🎯 Yearly Goal</span>
                 <button wire:click="openEditModal('yearly')" type="button">Edit</button>
             </div>
             <div class="goal-card-body">
