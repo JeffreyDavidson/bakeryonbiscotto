@@ -12,7 +12,7 @@ class TodaysOrdersWidget extends BaseWidget
 {
     protected static ?int $sort = 2;
 
-    protected static ?string $heading = "📋 Today's Orders";
+    protected static ?string $heading = "Today's Orders";
 
     protected int|string|array $columnSpan = 'full';
 

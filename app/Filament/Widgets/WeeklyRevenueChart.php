@@ -12,7 +12,7 @@ class WeeklyRevenueChart extends ChartWidget
 {
     protected static ?int $sort = 5;
 
-    protected ?string $heading = '💰 Weekly Financial Overview';
+    protected ?string $heading = 'Weekly Financial Overview';
 
     protected int|string|array $columnSpan = 'full';
 

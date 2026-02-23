@@ -46,7 +46,7 @@
         @php $revCap = $this->revCap; @endphp
         <div class="finance-section" style="margin-bottom: 1.5rem;">
             <div data-admin-gradient-header style="{{ $revCap['danger'] ? 'background: linear-gradient(135deg, #991b1b, #dc2626);' : ($revCap['warning'] ? 'background: linear-gradient(135deg, #92400e, #d97706);' : '') }}">
-                <span data-header-title>🏠 Florida Cottage Food Revenue Cap — {{ $this->year }}</span>
+                <span data-header-title>Florida Cottage Food Revenue Cap — {{ $this->year }}</span>
             </div>
             <div style="padding: 1.25rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
@@ -66,7 +66,7 @@
                     </div>
                 @elseif($revCap['warning'])
                     <div style="margin-top: 0.75rem; padding: 0.75rem; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; font-size: 0.8rem; color: #92400e;">
-                        📊 <strong>Heads up:</strong> You've passed 80% of the cottage food revenue cap. Great year!
+                        ⚠️ <strong>Heads up:</strong> You've passed 80% of the cottage food revenue cap. Great year!
                     </div>
                 @endif
             </div>
@@ -75,7 +75,7 @@
         {{-- Monthly breakdown --}}
         <div class="finance-section">
             <div data-admin-gradient-header>
-                <span data-header-title>📊 Monthly Breakdown</span>
+                <span data-header-title>Monthly Breakdown</span>
             </div>
             <x-admin.data-table data-admin-table>
                 <x-slot:head>
@@ -114,7 +114,7 @@
         {{-- Expense categories --}}
         <div class="finance-section">
             <div data-admin-gradient-header>
-                <span data-header-title>📂 Expenses by Category</span>
+                <span data-header-title>Expenses by Category</span>
             </div>
             @if(count($this->expenseByCategory) > 0)
                 <div class="category-grid">

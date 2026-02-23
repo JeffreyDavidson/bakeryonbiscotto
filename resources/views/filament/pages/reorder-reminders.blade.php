@@ -8,7 +8,7 @@
     @endphp
 
     {{-- Page banner --}}
-    <x-admin.page-banner title="🔔 Customer Reorder Reminders">
+    <x-admin.page-banner title="Customer Reorder Reminders">
         <div style="display: flex; align-items: center; gap: 0.625rem;">
             <span style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">Inactive for</span>
             <select wire:model.live="threshold" style="appearance: none; -webkit-appearance: none; padding: 0.4rem 2rem 0.4rem 0.875rem; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.15) url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22white%22 stroke-width=%222.5%22><polyline points=%226 9 12 15 18 9%22/></svg>') no-repeat right 0.625rem center; background-size: 0.75rem; color: white; font-size: 0.8rem; font-weight: 600; cursor: pointer; min-width: 7rem;">
@@ -36,7 +36,7 @@
         </x-admin.stat-grid>
 
         {{-- Customer table --}}
-        <x-admin.card title="📋 Inactive Customers" :subtitle="$customers->count() . ' ' . Str::plural('customer', $customers->count())">
+        <x-admin.card title="Inactive Customers" :subtitle="$customers->count() . ' ' . Str::plural('customer', $customers->count())">
             <x-admin.data-table data-admin-table>
                 <x-slot:head>
                     <th>Customer</th>
