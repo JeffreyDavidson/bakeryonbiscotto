@@ -437,7 +437,7 @@ input[type="date"][value=""] {
 /* Custom repeater grid: give trash column minimal width */
 .fi-fo-repeater-item-content > .fi-sc {
     grid-template-columns: 3fr 1fr 1fr 1fr 3rem !important;
-    align-items: center !important;
+    align-items: start !important;
 }
 /* Repeater item actions */
 .fi-fo-repeater-item-header .fi-icon-btn {
