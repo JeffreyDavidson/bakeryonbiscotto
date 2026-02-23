@@ -247,6 +247,24 @@ table thead tr {
     border-top: 1px solid rgba(212,165,116,0.1) !important;
 }
 
+/* Swap per-page dropdown and page numbers */
+.fi-pagination {
+    grid-template-columns: 1fr auto auto !important;
+}
+.fi-pagination-records-per-page-select-ctn {
+    order: 3 !important;
+    justify-self: end !important;
+    grid-column: auto !important;
+}
+.fi-pagination-items {
+    order: 2 !important;
+    justify-self: center !important;
+}
+.fi-pagination-next-btn {
+    order: 2 !important;
+    grid-column: auto !important;
+}
+
 /* ===== FORMS ===== */
 .fi-fo-field-wrp label {
     color: #3D2314 !important;
