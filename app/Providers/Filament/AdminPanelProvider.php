@@ -52,8 +52,8 @@ class AdminPanelProvider extends PanelProvider
             ->font('Inter')
             ->spa()
             ->navigationGroups([
-                \Filament\Navigation\NavigationGroup::make('Tools'),
                 \Filament\Navigation\NavigationGroup::make('Shop'),
+                \Filament\Navigation\NavigationGroup::make('Tools'),
                 \Filament\Navigation\NavigationGroup::make('Finances'),
                 \Filament\Navigation\NavigationGroup::make('Communication'),
             ])
