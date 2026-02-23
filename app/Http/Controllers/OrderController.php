@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\NewOrderNotification;
 use App\Mail\OrderConfirmation;
+use App\Models\CapacityLimit;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
@@ -50,6 +51,11 @@ class OrderController extends Controller
 
         if (empty($calculated['items'])) {
             return response()->json(['error' => 'No valid items in order.'], 422);
+        }
+
+        // Check capacity limits
+        if (!CapacityLimit::isAvailable($validated['requested_date'])) {
+            return response()->json(['error' => 'Sorry, this date is fully booked. Please choose another date.'], 422);
         }
 
         // Store pending order data in session
