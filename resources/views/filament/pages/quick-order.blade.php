@@ -77,7 +77,7 @@
             </div>
         </div>
 
-        <x-filament-panels::form wire:submit="submit">
+        <form wire:submit="submit">
             <div class="quick-order-form-card">
                 {{ $this->form }}
             </div>
@@ -92,6 +92,6 @@
             <x-filament::button type="submit" size="lg">
                 🧾 Create Order
             </x-filament::button>
-        </x-filament-panels::form>
+        </form>
     </div>
 </x-filament-panels::page>
