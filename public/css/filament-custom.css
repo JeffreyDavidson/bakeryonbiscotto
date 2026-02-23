@@ -93,11 +93,21 @@
     background: #FFFFFF !important;
 }
 
-/* Dark brown gradient title bar (heading only, not toolbar) */
-.fi-ta-header {
+/* Dark brown gradient bar — contains heading + toolbar in one row */
+.fi-ta-header-ctn {
     background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
     border-radius: 11px 11px 0 0 !important;
     padding: 0.75rem 1.25rem !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+.fi-ta-header {
+    background: transparent !important;
+    padding: 0 !important;
+    flex: 1 !important;
+    min-width: 0 !important;
 }
 .fi-ta-header-heading {
     color: #FFFFFF !important;
@@ -164,25 +174,45 @@ table thead tr {
     font-size: 0.8rem !important;
 }
 
-/* Toolbar area (search + filters) — below dark header, cream background */
+/* Toolbar (search + filters) — inside dark bar, right-aligned */
 .fi-ta-header-toolbar {
-    background: rgba(245,230,208,0.3) !important;
-    border-bottom: 1px solid rgba(212,165,116,0.1) !important;
-    padding: 0.75rem 1rem !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
 }
 
-/* Search input */
+/* Search input — translucent white on dark */
 .fi-ta-search-field input {
-    border: none !important;
+    border: 1px solid rgba(255,255,255,0.25) !important;
     border-radius: 8px !important;
-    background: transparent !important;
+    background: rgba(255,255,255,0.1) !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: #FFFFFF !important;
+}
+.fi-ta-search-field input::placeholder {
+    color: rgba(255,255,255,0.5) !important;
+}
+.fi-ta-search-field input:focus {
+    border-color: rgba(255,255,255,0.4) !important;
+    background: rgba(255,255,255,0.15) !important;
     box-shadow: none !important;
     outline: none !important;
 }
-.fi-ta-search-field input:focus {
-    border: none !important;
-    box-shadow: none !important;
-    outline: none !important;
+/* Icons inside dark header bar */
+.fi-ta-header-ctn .fi-icon {
+    color: rgba(255,255,255,0.7) !important;
+}
+.fi-ta-header-ctn .fi-icon-btn {
+    color: rgba(255,255,255,0.8) !important;
+}
+.fi-ta-header-ctn .fi-icon-btn:hover {
+    background: rgba(255,255,255,0.1) !important;
+}
+.fi-ta-header-ctn .fi-badge {
+    background: rgba(245,213,168,0.3) !important;
+    color: #FFFFFF !important;
 }
 
 /* Pagination footer */
