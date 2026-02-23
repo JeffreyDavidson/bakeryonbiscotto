@@ -186,6 +186,12 @@ class ViewOrder extends Page
                 ->url(fn () => route('admin.orders.invoice', $this->record))
                 ->openUrlInNewTab(),
 
+            Actions\Action::make('reorder')
+                ->label('Reorder')
+                ->icon('heroicon-o-arrow-path')
+                ->color('gray')
+                ->url(fn () => \App\Filament\Pages\QuickOrder::getUrl() . '?reorder=' . $this->record->id),
+
             Actions\Action::make('edit')
                 ->label('Edit Order')
                 ->icon('heroicon-o-pencil')

@@ -83,7 +83,7 @@
                 <th>Type</th>
                 <th>Date</th>
                 <th style="text-align:right;">Total</th>
-                <th style="width:3.5rem;"></th>
+                <th style="width:8rem;"></th>
             </x-slot:head>
             @foreach($orders as $order)
                 <tr>
@@ -92,7 +92,10 @@
                     <td><x-admin.badge :type="$order->fulfillment_type" /></td>
                     <td style="color:#a08060;font-size:0.8rem;">{{ $order->created_at->format('M j, Y') }}</td>
                     <td style="text-align:right;font-weight:700;color:#3d2314;">${{ number_format($order->total, 2) }}</td>
-                    <td style="text-align:right;"><x-admin.btn variant="ghost" href="/admin/orders/{{ $order->id }}" style="padding:0.3rem 0.625rem;font-size:0.7rem;">View</x-admin.btn></td>
+                    <td style="text-align:right;white-space:nowrap;">
+                        <x-admin.btn variant="ghost" href="/admin/orders/{{ $order->id }}" style="padding:0.3rem 0.625rem;font-size:0.7rem;">View</x-admin.btn>
+                        <x-admin.btn variant="secondary" href="/admin/quick-order?reorder={{ $order->id }}" style="padding:0.3rem 0.625rem;font-size:0.7rem;">Reorder</x-admin.btn>
+                    </td>
                 </tr>
             @endforeach
         </x-admin.data-table>

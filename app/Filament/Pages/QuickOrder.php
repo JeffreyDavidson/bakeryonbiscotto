@@ -40,13 +40,88 @@ class QuickOrder extends Page
         return 'Shop';
     }
 
+    protected ?int $reorderFromId = null;
+
     public function mount(): void
     {
+        $reorderId = request()->query('reorder');
+
+        if ($reorderId) {
+            $this->prefillFromOrder((int) $reorderId);
+            return;
+        }
+
         $this->form->fill([
             'fulfillment_type' => null,
             'payment_method' => null,
             'items' => [['product_id' => null, 'quantity' => 1]],
         ]);
+    }
+
+    public function prefillFromOrder(int $orderId): void
+    {
+        $order = Order::with('items')->find($orderId);
+
+        if (!$order) {
+            $this->form->fill([
+                'fulfillment_type' => null,
+                'payment_method' => null,
+                'items' => [['product_id' => null, 'quantity' => 1]],
+            ]);
+
+            Notification::make()
+                ->title('Order not found')
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        $items = $order->items->map(function ($item) {
+            $entry = [
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+            ];
+
+            // Convert flat selections array back to repeater format
+            if (!empty($item->selections)) {
+                $grouped = collect($item->selections)->countBy()->map(fn ($qty, $flavor) => [
+                    'flavor' => $flavor,
+                    'qty' => $qty,
+                ])->values()->toArray();
+                $entry['selections'] = $grouped;
+            }
+
+            return $entry;
+        })->toArray();
+
+        $this->form->fill([
+            'customer_name' => $order->customer_name,
+            'customer_email' => $order->customer_email,
+            'customer_phone' => $order->customer_phone,
+            'fulfillment_type' => $order->fulfillment_type,
+            'delivery_address' => $order->delivery_address,
+            'delivery_zip' => $order->delivery_zip,
+            'payment_method' => $order->payment_method,
+            'notes' => $order->getRawOriginal('notes'),
+            'items' => $items,
+        ]);
+
+        // Load important customer notes
+        if ($order->customer_email) {
+            $this->importantCustomerNotes = CustomerNote::forCustomer($order->customer_email)
+                ->important()
+                ->latest()
+                ->get()
+                ->map(fn ($n) => ['note' => $n->note, 'created_at' => $n->created_at->format('M j, Y')])
+                ->toArray();
+        }
+
+        Notification::make()
+            ->title('Reorder from ' . $order->order_number)
+            ->body('Form pre-filled with previous order details. Update the date and review before submitting.')
+            ->info()
+            ->send();
     }
 
     public function getBreadcrumbs(): array
