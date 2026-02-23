@@ -9,13 +9,13 @@
 
     {{-- Page banner --}}
     <x-admin.page-banner title="🔔 Customer Reorder Reminders">
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-            <label style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">Inactive for</label>
-            <select wire:model.live="threshold" style="padding: 0.4rem 0.75rem; border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.15); color: white; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
-                <option value="30" style="color: #3d2314;">30+ days</option>
-                <option value="60" style="color: #3d2314;">60+ days</option>
-                <option value="90" style="color: #3d2314;">90+ days</option>
-                <option value="120" style="color: #3d2314;">120+ days</option>
+        <div style="display: flex; align-items: center; gap: 0.625rem;">
+            <span style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">Inactive for</span>
+            <select wire:model.live="threshold" style="appearance: none; -webkit-appearance: none; padding: 0.4rem 2rem 0.4rem 0.875rem; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.15) url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22white%22 stroke-width=%222.5%22><polyline points=%226 9 12 15 18 9%22/></svg>') no-repeat right 0.625rem center; background-size: 0.75rem; color: white; font-size: 0.8rem; font-weight: 600; cursor: pointer; min-width: 7rem;">
+                <option value="30" style="color: #3d2314; background: white;">30+ days</option>
+                <option value="60" style="color: #3d2314; background: white;">60+ days</option>
+                <option value="90" style="color: #3d2314; background: white;">90+ days</option>
+                <option value="120" style="color: #3d2314; background: white;">120+ days</option>
             </select>
         </div>
     </x-admin.page-banner>
