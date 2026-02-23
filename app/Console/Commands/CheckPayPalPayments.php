@@ -48,7 +48,7 @@ class CheckPayPalPayments extends Command
                     $admins = User::all();
                     foreach ($admins as $admin) {
                         Notification::make()
-                            ->title("⚠️ Overdue payment: Order {$order->order_number} - {$order->customer_name} (\${$order->total})")
+                            ->title("Overdue payment: Order {$order->order_number} - {$order->customer_name} (\${$order->total})")
                             ->danger()
                             ->sendToDatabase($admin);
                     }
