@@ -343,6 +343,42 @@ class QuickOrder extends Page
                             ->readOnly(),
                     ]),
 
+                Section::make('Payment')
+                    ->description('How is this order being paid?')
+                    ->icon('heroicon-o-credit-card')
+                    ->columns(3)
+                    ->components([
+                        Select::make('payment_method')
+                            ->label('Payment Method')
+                            ->options([
+                                'cash' => '💵 Cash',
+                                'paypal' => '🅿️ PayPal',
+                            ])
+                            ->required()
+                            ->live()
+                            ->selectablePlaceholder(false)
+                            ->default('cash'),
+                        Placeholder::make('payment_deadline_display')
+                            ->label('Payment Deadline')
+                            ->visible(fn (Get $get) => $get('payment_method') === 'paypal' && $get('requested_date'))
+                            ->content(function (Get $get) {
+                                $date = \Carbon\Carbon::parse($get('requested_date'))->subDays(2);
+                                return new \Illuminate\Support\HtmlString(
+                                    '<div style="padding:0.5rem 0.75rem;background:#fdf8f2;border:1px solid #e8d0b0;border-radius:8px;color:#3d2314;font-weight:600;">'
+                                    . '📅 Must be paid by ' . $date->format('M j, Y')
+                                    . '</div>'
+                                );
+                            }),
+                        Placeholder::make('cash_note')
+                            ->label('')
+                            ->visible(fn (Get $get) => $get('payment_method') === 'cash')
+                            ->content(new \Illuminate\Support\HtmlString(
+                                '<div style="padding:0.5rem 0.75rem;background:#d4edda;border:1px solid #c3e6cb;border-radius:8px;color:#155724;font-weight:500;">'
+                                . '✅ Cash payment — will be marked as paid on creation'
+                                . '</div>'
+                            )),
+                    ]),
+
                 Section::make('Special Instructions')
                     ->icon('heroicon-o-chat-bubble-bottom-center-text')
                     ->collapsed()
@@ -432,7 +468,10 @@ class QuickOrder extends Page
         $deliveryFee = $data['fulfillment_type'] === 'delivery' ? 5.00 : 0;
         $total = $subtotal + $deliveryFee;
 
-        $order = Order::create([
+        $paymentMethod = $data['payment_method'] ?? 'cash';
+        $isCash = $paymentMethod === 'cash';
+
+        $orderData = [
             'order_number' => 'BOB-' . strtoupper(Str::random(8)),
             'customer_name' => $data['customer_name'],
             'customer_email' => $data['customer_email'],
@@ -447,11 +486,36 @@ class QuickOrder extends Page
             'subtotal' => $subtotal,
             'total' => $total,
             'status' => 'pending',
-            'payment_status' => 'pending',
-        ]);
+            'payment_method' => $paymentMethod,
+            'payment_status' => $isCash ? 'paid' : 'unpaid',
+            'paid_at' => $isCash ? now() : null,
+            'payment_deadline' => !$isCash ? \Carbon\Carbon::parse($data['requested_date'])->subDays(2)->toDateString() : null,
+        ];
+
+        $order = Order::create($orderData);
 
         foreach ($itemsData as $item) {
             $order->items()->create($item);
+        }
+
+        // Send PayPal invoice if payment method is PayPal
+        if ($paymentMethod === 'paypal') {
+            try {
+                $order->load('items');
+                $paypalService = app(\App\Services\PayPalService::class);
+                $invoiceResult = $paypalService->createAndSendInvoice($order);
+
+                Notification::make()
+                    ->title('PayPal invoice sent to ' . $data['customer_email'])
+                    ->success()
+                    ->send();
+            } catch (\Exception $e) {
+                \Log::error('PayPal invoice error', ['error' => $e->getMessage(), 'order' => $order->order_number]);
+                Notification::make()
+                    ->title('Order created but PayPal invoice failed: ' . $e->getMessage())
+                    ->warning()
+                    ->send();
+            }
         }
 
         Notification::make()

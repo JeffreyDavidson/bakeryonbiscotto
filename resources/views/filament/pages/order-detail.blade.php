@@ -76,13 +76,42 @@
             {{-- Payment --}}
             <x-admin.card title="Payment" headerStyle="flat">
                 <x-slot:subtitle>
-                    <x-admin.badge :type="$record->payment_status ?? 'paid'" rounded />
+                    @if($record->is_overdue)
+                        <span style="display:inline-flex;align-items:center;gap:0.25rem;padding:0.25rem 0.625rem;border-radius:9999px;font-size:0.75rem;font-weight:600;background:#fee2e2;color:#991b1b;">⚠️ Overdue</span>
+                    @elseif($record->payment_status === 'unpaid')
+                        <span style="display:inline-flex;align-items:center;gap:0.25rem;padding:0.25rem 0.625rem;border-radius:9999px;font-size:0.75rem;font-weight:600;background:#fef3c7;color:#92400e;">Unpaid</span>
+                    @else
+                        <x-admin.badge :type="$record->payment_status ?? 'paid'" rounded />
+                    @endif
                 </x-slot:subtitle>
+                @if($record->is_overdue)
+                    <div style="padding:0.75rem 1.25rem;background:#fee2e2;border-bottom:1px solid #fecaca;color:#991b1b;font-size:0.85rem;font-weight:600;">
+                        ⚠️ Payment was due {{ $record->payment_deadline->format('M j, Y') }} and is overdue!
+                    </div>
+                @endif
                 <div style="padding: 1rem 1.25rem;">
+                    @if($record->payment_method)
+                        <x-admin.info-row label="Method">
+                            @if($record->payment_method === 'cash')
+                                <span style="font-weight:600;">💵 Cash</span>
+                            @elseif($record->payment_method === 'paypal')
+                                <span style="font-weight:600;">🅿️ PayPal</span>
+                            @else
+                                <span style="font-weight:600;">{{ ucfirst($record->payment_method) }}</span>
+                            @endif
+                        </x-admin.info-row>
+                    @endif
                     <x-admin.info-row label="Paid at" :value="$record->paid_at?->format('M j, Y g:i A') ?? '—'" />
-                    @if($record->stripe_payment_intent)
-                        <x-admin.info-row label="PayPal ID">
-                            <span style="font-family:monospace;font-size:0.8rem;">{{ $record->stripe_payment_intent }}</span>
+                    @if($record->payment_deadline)
+                        <x-admin.info-row label="Due by" :value="$record->payment_deadline->format('M j, Y')" />
+                    @endif
+                    @if($record->paypal_invoice_id)
+                        <x-admin.info-row label="PayPal Invoice">
+                            @if($record->paypal_invoice_url)
+                                <a href="{{ $record->paypal_invoice_url }}" target="_blank" style="color:#8b5e3c;font-weight:600;text-decoration:underline;font-size:0.8rem;">View Invoice ↗</a>
+                            @else
+                                <span style="font-family:monospace;font-size:0.8rem;">{{ $record->paypal_invoice_id }}</span>
+                            @endif
                         </x-admin.info-row>
                     @endif
                 </div>

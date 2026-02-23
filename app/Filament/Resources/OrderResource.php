@@ -154,6 +154,19 @@ class OrderResource extends Resource
                     })
                     ->sortable()
                     ->toggleable(),
+                Tables\Columns\TextColumn::make('payment_status')
+                    ->label('Payment')
+                    ->badge()
+                    ->color(fn (string $state, Order $record) => match (true) {
+                        $record->is_overdue => 'danger',
+                        $state === 'paid' => 'success',
+                        $state === 'unpaid' => 'warning',
+                        $state === 'cancelled' => 'gray',
+                        $state === 'refunded' => 'info',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state, Order $record) => $record->is_overdue ? '⚠️ Overdue' : ucfirst($state))
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state) => match ($state) {
