@@ -304,31 +304,34 @@ table thead tr {
     background: #FFFFFF !important;
     overflow: hidden !important;
 }
-/* Section header — warm cream with brown accent */
+/* Section header — dark brown gradient matching table headers */
 .fi-section-header {
-    background: #fdf8f2 !important;
-    border-bottom: 1px solid #e8d0b0 !important;
-    padding: 1rem 1.25rem !important;
+    background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
+    border-bottom: none !important;
+    padding: 0.875rem 1.25rem !important;
 }
 .fi-section-header-heading {
-    color: #3d2314 !important;
+    color: #FFFFFF !important;
     font-weight: 700 !important;
     font-size: 0.95rem !important;
 }
 .fi-section-header-description {
-    color: #a08060 !important;
+    color: rgba(255,255,255,0.6) !important;
 }
 /* Section icon */
 .fi-section-header .fi-icon {
-    color: #8b5e3c !important;
+    color: rgba(255,255,255,0.7) !important;
 }
 /* Collapsed section hover */
 .fi-section-header:hover {
-    background: #f5e6d0 !important;
+    background: linear-gradient(135deg, #4a2a1a, #7a5a49) !important;
 }
 /* Section collapse trigger */
 .fi-section-header button {
-    color: #8b5e3c !important;
+    color: rgba(255,255,255,0.7) !important;
+}
+.fi-section-header button:hover {
+    color: #FFFFFF !important;
 }
 
 /* ===== TOGGLE ===== */
