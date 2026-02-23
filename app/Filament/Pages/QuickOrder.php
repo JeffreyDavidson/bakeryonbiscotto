@@ -295,21 +295,41 @@ class QuickOrder extends Page
                             ->label('Requested Date')
                             ->required()
                             ->native(true)
-                            ->minDate(now()),
+                            ->minDate(now())
+                            ->live(),
                         Select::make('requested_time')
                             ->label('Time Slot')
-                            ->options([
-                                '09:00' => '9:00 AM',
-                                '10:00' => '10:00 AM',
-                                '11:00' => '11:00 AM',
-                                '12:00' => '12:00 PM',
-                                '13:00' => '1:00 PM',
-                                '14:00' => '2:00 PM',
-                                '15:00' => '3:00 PM',
-                                '16:00' => '4:00 PM',
-                                '17:00' => '5:00 PM',
-                            ])
-                            ->placeholder('Select a time...'),
+                            ->options(function (Get $get) {
+                                $date = $get('requested_date');
+                                if (!$date) return [];
+
+                                $dayOfWeek = \Carbon\Carbon::parse($date)->dayOfWeek;
+
+                                // Same schedule as storefront: 0=Sun, 1=Mon, etc.
+                                $scheduleByDay = [
+                                    0 => ['start' => 10, 'end' => 19], // Sunday 10am-7pm
+                                    1 => ['start' => 12, 'end' => 19], // Monday 12pm-7pm
+                                    2 => ['start' => 12, 'end' => 19], // Tuesday 12pm-7pm
+                                    3 => ['start' => 10, 'end' => 19], // Wednesday 10am-7pm
+                                    4 => ['start' => 10, 'end' => 16], // Thursday 10am-4pm
+                                    5 => ['start' => 10, 'end' => 19], // Friday 10am-7pm
+                                    6 => ['start' => 14, 'end' => 19], // Saturday 2pm-7pm
+                                ];
+
+                                $schedule = $scheduleByDay[$dayOfWeek] ?? null;
+                                if (!$schedule) return [];
+
+                                $slots = [];
+                                for ($h = $schedule['start']; $h < $schedule['end']; $h++) {
+                                    $value = str_pad($h, 2, '0', STR_PAD_LEFT) . ':00';
+                                    $label = ($h > 12 ? ($h - 12) : $h) . ':00 ' . ($h >= 12 ? 'PM' : 'AM');
+                                    $slots[$value] = $label;
+                                }
+
+                                return $slots;
+                            })
+                            ->placeholder('Select a time...')
+                            ->disabled(fn (Get $get) => !$get('requested_date')),
                         ViewField::make('delivery_address')
                             ->label('Delivery Address')
                             ->view('forms.components.address-autocomplete')
