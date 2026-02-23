@@ -322,10 +322,10 @@ table thead tr {
     --tw-ring-color: transparent !important;
 }
 /* Tan divider between prefix icon and input */
-.fi-input-wrp-prefix,
-.fi-input-wrp .fi-input-wrp-prefix {
+.fi-input-wrp .fi-input-wrp-prefix.fi-input-wrp-prefix-has-content {
     border-inline-end: 1px solid #e8d0b0 !important;
     border-right: 1px solid #e8d0b0 !important;
+    padding-inline-end: 0.75rem !important;
 }
 .fi-input-wrp .fi-input-wrp-suffix {
     border-inline-start: 1px solid #e8d0b0 !important;
