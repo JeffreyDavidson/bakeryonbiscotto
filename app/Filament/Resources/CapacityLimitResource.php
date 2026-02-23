@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CapacityLimitResource\Pages;
 use App\Models\CapacityLimit;
 use BackedEnum;
+use Filament\Actions;
 use Filament\Actions\EditAction;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -140,10 +141,10 @@ class CapacityLimitResource extends Resource
             ->defaultSort('day_of_week')
             ->actions([
                 EditAction::make()->slideOver()->modalWidth('2xl'),
-                Tables\Actions\DeleteAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Actions\DeleteBulkAction::make(),
             ]);
     }
 
