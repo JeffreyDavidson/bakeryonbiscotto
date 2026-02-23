@@ -24,7 +24,7 @@
 
         <x-admin.nav-controls :label="$weekStartDate->format('M j') . ' — ' . $weekEndDate->format('M j, Y')" prevClick="previousWeek" nextClick="nextWeek" prevLabel="← Prev" nextLabel="Next →">
             <x-slot:before>
-                <x-admin.action-btn variant="secondary" wire:click="thisWeek">This Week</x-admin.action-btn>
+                <x-admin.btn variant="secondary" wire:click="thisWeek">This Week</x-admin.btn>
             </x-slot:before>
         </x-admin.nav-controls>
 

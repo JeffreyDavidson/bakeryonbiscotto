@@ -3,8 +3,10 @@
 @php
     $variants = match($variant) {
         'primary' => 'background: linear-gradient(135deg, #8b5e3c, #6b4c3b); color: white; border: none;',
-        'secondary' => 'background: white; color: #6b4c3b; border: 1px solid #e8d0b0;',
+        'secondary' => 'background: #e8d0b0; color: #3d2314; border: none;',
         'ghost' => 'background: #fdf8f2; color: #6b4c3b; border: 1px solid #e8d0b0;',
+        'dark' => 'background: linear-gradient(135deg, #3d2314, #6b4c3b); color: white; border: none;',
+        'danger' => 'background: #ef4444; color: white; border: none;',
         default => 'background: linear-gradient(135deg, #8b5e3c, #6b4c3b); color: white; border: none;',
     };
     $sizing = match($size) {

@@ -53,9 +53,9 @@
                                 $subject = rawurlencode('We miss you at Bakery on Biscotto!');
                                 $body = rawurlencode("Hi {$customer->customer_name},\n\nIt's been a while since your last visit and we miss you! We've been baking up some amazing new treats and would love to see you again.\n\nVisit us at bakeryonbiscotto.com to place your next order.\n\nWarmly,\nBakery on Biscotto 🍪");
                             @endphp
-                            <x-admin.action-btn variant="primary" href="mailto:{{ $customer->customer_email }}?subject={{ $subject }}&body={{ $body }}" icon="✉️" style="padding:0.4rem 0.85rem;font-size:0.8rem;">
+                            <x-admin.btn variant="primary" href="mailto:{{ $customer->customer_email }}?subject={{ $subject }}&body={{ $body }}" icon="✉️" style="padding:0.4rem 0.85rem;font-size:0.8rem;">
                                 Send Reminder
-                            </x-admin.action-btn>
+                            </x-admin.btn>
                         </td>
                     </tr>
                 @endforeach
