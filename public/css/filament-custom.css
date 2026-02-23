@@ -558,42 +558,44 @@ input[type="date"][value=""] {
     border-top: 1px solid #e8d0b0 !important;
     padding: 1rem 1.5rem !important;
 }
-/* Save button in slide-over */
-.fi-modal-slide-over .fi-modal-footer-actions .fi-btn:not(.fi-color-gray),
-.fi-modal-slide-over .fi-modal-footer .fi-btn:not(.fi-color-gray) {
-    background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
-    color: #FFFFFF !important;
-    border: none !important;
-    font-weight: 600 !important;
-    padding: 0.5rem 1.5rem !important;
-    border-radius: 8px !important;
-    transition: all 0.2s !important;
-}
-.fi-modal-slide-over .fi-modal-footer-actions .fi-btn:not(.fi-color-gray):hover,
-.fi-modal-slide-over .fi-modal-footer .fi-btn:not(.fi-color-gray):hover {
-    background: linear-gradient(135deg, #4a2a1a, #7a5a49) !important;
-    box-shadow: 0 4px 12px rgba(61,35,20,0.2) !important;
-}
-/* Cancel button in slide-over — target by color class AND by being the second button */
-.fi-modal-slide-over .fi-modal-footer-actions .fi-btn.fi-color-gray,
-.fi-modal-slide-over .fi-modal-footer .fi-btn.fi-color-gray,
-.fi-modal-slide-over .fi-modal-footer-actions .fi-btn + .fi-btn {
-    border: 1px solid #e8d0b0 !important;
-    color: #6b4c3b !important;
-    background: #FFFFFF !important;
-    border-radius: 8px !important;
-}
-.fi-modal-slide-over .fi-modal-footer-actions .fi-btn.fi-color-gray:hover,
-.fi-modal-slide-over .fi-modal-footer .fi-btn.fi-color-gray:hover,
-.fi-modal-slide-over .fi-modal-footer-actions .fi-btn + .fi-btn:hover {
-    background: #f5e6d0 !important;
-}
-/* Footer area spacing */
+/* Footer area */
 .fi-modal-slide-over .fi-modal-footer-actions {
+    display: flex !important;
     gap: 0.75rem !important;
     padding: 1rem 1.5rem !important;
     border-top: 1px solid #e8d0b0 !important;
     background: #fdf8f2 !important;
+    justify-content: flex-start !important;
+}
+/* All buttons in slide-over footer — reset to normal size */
+.fi-modal-slide-over .fi-modal-footer-actions .fi-btn {
+    flex: none !important;
+    width: auto !important;
+    padding: 0.5rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+}
+/* Save button in slide-over */
+.fi-modal-slide-over .fi-modal-footer-actions .fi-btn:first-child {
+    background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
+    color: #FFFFFF !important;
+    border: none !important;
+}
+.fi-modal-slide-over .fi-modal-footer-actions .fi-btn:first-child:hover {
+    background: linear-gradient(135deg, #4a2a1a, #7a5a49) !important;
+    box-shadow: 0 4px 12px rgba(61,35,20,0.2) !important;
+}
+/* Cancel button in slide-over */
+.fi-modal-slide-over .fi-modal-footer-actions .fi-btn + .fi-btn,
+.fi-modal-slide-over .fi-modal-footer-actions .fi-btn.fi-color-gray {
+    border: 1px solid #e8d0b0 !important;
+    color: #6b4c3b !important;
+    background: #FFFFFF !important;
+}
+.fi-modal-slide-over .fi-modal-footer-actions .fi-btn + .fi-btn:hover,
+.fi-modal-slide-over .fi-modal-footer-actions .fi-btn.fi-color-gray:hover {
+    background: #f5e6d0 !important;
 }
 /* Form inputs inside slide-overs */
 .fi-modal-slide-over .fi-input-wrp {
