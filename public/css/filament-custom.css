@@ -389,6 +389,10 @@ textarea.fi-textarea-input:focus {
 .fi-fo-repeater-item-has-header > .fi-fo-repeater-item-content {
     border-top: none !important;
 }
+/* Custom repeater grid: give trash column minimal width */
+.fi-fo-repeater-item-content > .fi-sc {
+    grid-template-columns: 3fr 1fr 1fr 1fr 2.5rem !important;
+}
 /* Repeater item actions */
 .fi-fo-repeater-item-header .fi-icon-btn {
     color: #c4a882 !important;

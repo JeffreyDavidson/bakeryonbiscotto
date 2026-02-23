@@ -144,7 +144,7 @@ class QuickOrder extends Page
                                     ->options($productOptions)
                                     ->required()
                                     ->placeholder('Choose a product...')
-                                    ->columnSpan(3)
+                                    ->columnSpan(1)
                                     ->live(),
                                 TextInput::make('quantity')
                                     ->numeric()
@@ -258,7 +258,7 @@ class QuickOrder extends Page
                                     ->reorderable(false)
                                     ->live(),
                             ])
-                            ->columns(7)
+                            ->columns(5)
                             ->defaultItems(1)
                             ->deleteAction(fn (\Filament\Actions\Action $action) => $action->hidden())
                             ->addActionLabel('+ Add Another Product')
