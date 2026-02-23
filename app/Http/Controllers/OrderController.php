@@ -136,6 +136,26 @@ class OrderController extends Controller
         ]);
     }
 
+    public function checkCapacity(string $date)
+    {
+        try {
+            $carbon = \Carbon\Carbon::parse($date);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Invalid date'], 422);
+        }
+
+        $available = CapacityLimit::isAvailable($carbon);
+        $remaining = CapacityLimit::remainingSlots($carbon);
+        $limit = CapacityLimit::forDate($carbon);
+
+        return response()->json([
+            'available' => $available,
+            'remaining' => $remaining === PHP_INT_MAX ? null : $remaining,
+            'blocked' => $limit?->is_blocked ?? false,
+            'max_orders' => $limit?->max_orders ?? null,
+        ]);
+    }
+
     public function confirmation(string $orderNumber)
     {
         $order = Order::where('order_number', $orderNumber)->with('items')->firstOrFail();

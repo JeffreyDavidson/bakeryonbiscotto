@@ -28,6 +28,7 @@ Route::get('/order', [OrderController::class, 'index'])->name('order');
 Route::post('/order/paypal/create', [OrderController::class, 'createPayPalOrder'])->name('order.paypal.create');
 Route::post('/order/paypal/capture', [OrderController::class, 'capturePayPalOrder'])->name('order.paypal.capture');
 Route::get('/order/confirmation/{orderNumber}', [OrderController::class, 'confirmation'])->name('order.confirmation');
+Route::get('/order/capacity/{date}', [OrderController::class, 'checkCapacity'])->name('order.capacity');
 Route::get('/about', fn() => view('about'));
 Route::get('/review', fn() => view('review'));
 Route::get('/gallery', fn() => view('gallery'));

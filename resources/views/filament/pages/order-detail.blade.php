@@ -32,6 +32,24 @@
         </x-slot:title>
     </x-admin.page-banner>
 
+    {{-- Important Customer Notes Banner --}}
+    @php
+        $importantNotes = \App\Models\CustomerNote::forCustomer($record->customer_email)->important()->get();
+    @endphp
+    @if($importantNotes->isNotEmpty())
+        <div style="margin-bottom:1rem;">
+            @foreach($importantNotes as $cn)
+                <div style="padding:0.75rem 1.25rem;background:#fffbeb;border:1px solid #f59e0b;border-radius:0.5rem;margin-bottom:0.5rem;display:flex;align-items:start;gap:0.5rem;">
+                    <span style="color:#d97706;font-size:1.1rem;line-height:1;">&#9888;&#65039;</span>
+                    <div>
+                        <span style="font-weight:700;color:#92400e;font-size:0.875rem;">Customer note:</span>
+                        <span style="color:#92400e;font-size:0.875rem;">{{ $cn->note }}</span>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
+
     <div class="order-layout">
         {{-- LEFT COLUMN --}}
         <div>
