@@ -1228,6 +1228,9 @@
                 pendingDate: null,
                 pendingDayLabel: '',
                 availableSlots: [],
+                dateBlocked: false,
+                dateFull: false,
+                capacityInfo: null,
                 selectedTime: null,
 
                 init() {
