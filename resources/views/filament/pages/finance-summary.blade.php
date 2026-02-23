@@ -13,14 +13,8 @@
         .text-brown { color: #3d2314; }
 
         .finance-section { background: #fff; border: 1px solid #e8d0b0; border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; }
-        .finance-section-header { background: linear-gradient(135deg, #3d2314, #6b4c3b); color: #fff; padding: 0.75rem 1.25rem; font-weight: 700; font-size: 0.9rem; }
-        .finance-table { width: 100%; border-collapse: collapse; }
-        .finance-table th { background: #f5e6d0; color: #3d2314; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; padding: 0.625rem 1rem; text-align: left; border-bottom: 2px solid #d4a574; }
-        .finance-table th.text-right, .finance-table td.text-right { text-align: right; }
-        .finance-table td { padding: 0.625rem 1rem; border-bottom: 1px solid #f3ebe0; color: #3d2314; font-size: 0.85rem; }
-        .finance-table tr:last-child td { border-bottom: none; }
-        .finance-table tr:hover { background: rgba(245,230,208,0.3); }
-        .finance-table .total-row td { background: #fdf8f2; font-weight: 700; border-top: 2px solid #d4a574; }
+        [data-admin-table] .text-right { text-align: right; }
+        [data-admin-table] .total-row td { background: #fdf8f2; font-weight: 700; border-top: 2px solid #d4a574; }
 
         .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; padding: 1.25rem; }
         @media (max-width: 768px) { .category-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -51,8 +45,8 @@
         {{-- Revenue cap tracker --}}
         @php $revCap = $this->revCap; @endphp
         <div class="finance-section" style="margin-bottom: 1.5rem;">
-            <div class="finance-section-header" style="{{ $revCap['danger'] ? 'background: linear-gradient(135deg, #991b1b, #dc2626);' : ($revCap['warning'] ? 'background: linear-gradient(135deg, #92400e, #d97706);' : '') }}">
-                🏠 Florida Cottage Food Revenue Cap — {{ $this->year }}
+            <div data-admin-gradient-header style="{{ $revCap['danger'] ? 'background: linear-gradient(135deg, #991b1b, #dc2626);' : ($revCap['warning'] ? 'background: linear-gradient(135deg, #92400e, #d97706);' : '') }}">
+                <span data-header-title>🏠 Florida Cottage Food Revenue Cap — {{ $this->year }}</span>
             </div>
             <div style="padding: 1.25rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
@@ -80,48 +74,48 @@
 
         {{-- Monthly breakdown --}}
         <div class="finance-section">
-            <div class="finance-section-header">📊 Monthly Breakdown</div>
-            <table class="finance-table">
-                <thead>
+            <div data-admin-gradient-header>
+                <span data-header-title>📊 Monthly Breakdown</span>
+            </div>
+            <x-admin.data-table data-admin-table>
+                <x-slot:head>
+                    <th style="text-align:left;">Month</th>
+                    <th class="text-right" style="text-align:right;">Orders</th>
+                    <th class="text-right" style="text-align:right;">Other Income</th>
+                    <th class="text-right" style="text-align:right;">Total Income</th>
+                    <th class="text-right" style="text-align:right;">Expenses</th>
+                    <th class="text-right" style="text-align:right;">Profit</th>
+                </x-slot:head>
+                @foreach($this->monthlyData as $month)
                     <tr>
-                        <th>Month</th>
-                        <th class="text-right">Orders</th>
-                        <th class="text-right">Other Income</th>
-                        <th class="text-right">Total Income</th>
-                        <th class="text-right">Expenses</th>
-                        <th class="text-right">Profit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($this->monthlyData as $month)
-                        <tr>
-                            <td>{{ $month['month_full'] }}</td>
-                            <td class="text-right">${{ number_format($month['order_income'], 2) }}</td>
-                            <td class="text-right">${{ number_format($month['other_income'], 2) }}</td>
-                            <td class="text-right" style="font-weight:600;">${{ number_format($month['total_income'], 2) }}</td>
-                            <td class="text-right text-red">${{ number_format($month['expenses'], 2) }}</td>
-                            <td class="text-right {{ $month['profit'] >= 0 ? 'text-green' : 'text-red' }}" style="font-weight:700;">
-                                {{ $month['profit'] >= 0 ? '' : '-' }}${{ number_format(abs($month['profit']), 2) }}
-                            </td>
-                        </tr>
-                    @endforeach
-                    <tr class="total-row">
-                        <td>Total</td>
-                        <td class="text-right">${{ number_format($this->yearTotals['order_income'], 2) }}</td>
-                        <td class="text-right">${{ number_format($this->yearTotals['other_income'], 2) }}</td>
-                        <td class="text-right">${{ number_format($this->yearTotals['total_income'], 2) }}</td>
-                        <td class="text-right text-red">${{ number_format($this->yearTotals['expenses'], 2) }}</td>
-                        <td class="text-right {{ $this->yearTotals['profit'] >= 0 ? 'text-green' : 'text-red' }}">
-                            {{ $this->yearTotals['profit'] >= 0 ? '' : '-' }}${{ number_format(abs($this->yearTotals['profit']), 2) }}
+                        <td>{{ $month['month_full'] }}</td>
+                        <td style="text-align:right;">${{ number_format($month['order_income'], 2) }}</td>
+                        <td style="text-align:right;">${{ number_format($month['other_income'], 2) }}</td>
+                        <td style="text-align:right; font-weight:600;">${{ number_format($month['total_income'], 2) }}</td>
+                        <td style="text-align:right; color:#dc2626;">${{ number_format($month['expenses'], 2) }}</td>
+                        <td style="text-align:right; font-weight:700; color:{{ $month['profit'] >= 0 ? '#16a34a' : '#dc2626' }};">
+                            {{ $month['profit'] >= 0 ? '' : '-' }}${{ number_format(abs($month['profit']), 2) }}
                         </td>
                     </tr>
-                </tbody>
-            </table>
+                @endforeach
+                <tr class="total-row">
+                    <td>Total</td>
+                    <td style="text-align:right;">${{ number_format($this->yearTotals['order_income'], 2) }}</td>
+                    <td style="text-align:right;">${{ number_format($this->yearTotals['other_income'], 2) }}</td>
+                    <td style="text-align:right;">${{ number_format($this->yearTotals['total_income'], 2) }}</td>
+                    <td style="text-align:right; color:#dc2626;">${{ number_format($this->yearTotals['expenses'], 2) }}</td>
+                    <td style="text-align:right; color:{{ $this->yearTotals['profit'] >= 0 ? '#16a34a' : '#dc2626' }};">
+                        {{ $this->yearTotals['profit'] >= 0 ? '' : '-' }}${{ number_format(abs($this->yearTotals['profit']), 2) }}
+                    </td>
+                </tr>
+            </x-admin.data-table>
         </div>
 
         {{-- Expense categories --}}
         <div class="finance-section">
-            <div class="finance-section-header">📂 Expenses by Category</div>
+            <div data-admin-gradient-header>
+                <span data-header-title>📂 Expenses by Category</span>
+            </div>
             @if(count($this->expenseByCategory) > 0)
                 <div class="category-grid">
                     @foreach($this->expenseByCategory as $cat)
