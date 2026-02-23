@@ -435,6 +435,10 @@ li.fi-fo-repeater-item {
     border-radius: 8px !important;
     padding: 0.5rem 1.25rem !important;
     font-size: 0.85rem !important;
+    box-shadow: none !important;
+    --tw-ring-shadow: 0 0 0 0 transparent !important;
+    --tw-shadow: 0 0 0 0 transparent !important;
+    border: none !important;
 }
 .fi-fo-repeater-add .fi-btn:hover {
     background: linear-gradient(135deg, #6b4c3b, #3d2314) !important;
