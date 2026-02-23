@@ -74,6 +74,28 @@ class ContactMessageResource extends Resource
                         'read' => 'Read',
                         'replied' => 'Replied',
                     ]),
+                \Filament\Tables\Filters\Filter::make('date_range')
+                    ->form([
+                        \Filament\Forms\Components\DatePicker::make('from')->label('From'),
+                        \Filament\Forms\Components\DatePicker::make('until')->label('Until'),
+                    ])
+                    ->query(function (\Illuminate\Database\Eloquent\Builder $query, array $data): \Illuminate\Database\Eloquent\Builder {
+                        return $query
+                            ->when($data['from'] ?? null, fn ($q, $date) => $q->whereDate('created_at', '>=', $date))
+                            ->when($data['until'] ?? null, fn ($q, $date) => $q->whereDate('created_at', '<=', $date));
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        if ($data['from'] ?? null) $indicators[] = 'From ' . \Carbon\Carbon::parse($data['from'])->format('M j, Y');
+                        if ($data['until'] ?? null) $indicators[] = 'Until ' . \Carbon\Carbon::parse($data['until'])->format('M j, Y');
+                        return $indicators;
+                    }),
+                \Filament\Tables\Filters\TernaryFilter::make('has_orders')
+                    ->label('Has Orders')
+                    ->queries(
+                        true: fn ($query) => $query->whereIn('email', \App\Models\Order::select('customer_email')),
+                        false: fn ($query) => $query->whereNotIn('email', \App\Models\Order::select('customer_email')),
+                    ),
             ])
             ->actions([
                 Actions\Action::make('view')

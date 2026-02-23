@@ -101,6 +101,51 @@ class CustomerDirectory extends Page implements HasTable
                         return $query->orderBy('last_order_date', $direction);
                     }),
             ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('order_count')
+                    ->label('Order Count')
+                    ->options([
+                        '1' => 'One-time (1 order)',
+                        '2+' => 'Repeat (2+ orders)',
+                        '5+' => 'Loyal (5+ orders)',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return match ($data['value'] ?? null) {
+                            '1' => $query->having('orders_count', '=', 1),
+                            '2+' => $query->having('orders_count', '>=', 2),
+                            '5+' => $query->having('orders_count', '>=', 5),
+                            default => $query,
+                        };
+                    }),
+                Tables\Filters\Filter::make('last_order')
+                    ->form([
+                        \Filament\Forms\Components\Select::make('period')
+                            ->label('Last Ordered')
+                            ->options([
+                                '7' => 'Last 7 days',
+                                '30' => 'Last 30 days',
+                                '90' => 'Last 90 days',
+                                'inactive' => 'Inactive (90+ days)',
+                            ]),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        $period = $data['period'] ?? null;
+                        if (!$period) return $query;
+                        if ($period === 'inactive') {
+                            return $query->having('last_order_date', '<', now()->subDays(90));
+                        }
+                        return $query->having('last_order_date', '>=', now()->subDays((int) $period));
+                    })
+                    ->indicateUsing(function (array $data): ?string {
+                        return match ($data['period'] ?? null) {
+                            '7' => 'Last 7 days',
+                            '30' => 'Last 30 days',
+                            '90' => 'Last 90 days',
+                            'inactive' => 'Inactive (90+ days)',
+                            default => null,
+                        };
+                    }),
+            ])
             ->defaultSort('last_order_date', 'desc')
             ->actions([
                 \Filament\Actions\Action::make('view')
