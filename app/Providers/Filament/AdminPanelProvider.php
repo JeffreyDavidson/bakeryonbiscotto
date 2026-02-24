@@ -50,10 +50,65 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
             ])
             ->font('Inter')
+            ->spa()
+            ->navigationGroups([
+                \Filament\Navigation\NavigationGroup::make('Shop'),
+                \Filament\Navigation\NavigationGroup::make('Tools'),
+                \Filament\Navigation\NavigationGroup::make('Finances'),
+                \Filament\Navigation\NavigationGroup::make('Communication'),
+            ])
+            ->databaseNotifications()
             ->renderHook('panels::head.end', fn () => new \Illuminate\Support\HtmlString(
-                '<link rel="stylesheet" href="' . asset('css/filament-custom.css') . '">'
+                '<link rel="stylesheet" href="' . asset('css/filament-custom.css') . '?v=' . filemtime(public_path('css/filament-custom.css')) . '">'
+                . '<style>.fi-fo-repeater .fi-fo-repeater-items .fi-fo-repeater-item{border-radius:0!important;box-shadow:none!important;background:transparent!important;outline:none!important;--tw-ring-shadow:0 0 0 0 transparent!important;--tw-shadow:0 0 0 0 transparent!important;--tw-inset-shadow:0 0 0 0 transparent!important;--tw-inset-ring-shadow:0 0 0 0 transparent!important;--tw-ring-offset-shadow:0 0 0 0 transparent!important;--tw-ring-color:transparent!important;border:none!important;border-bottom:1px solid #f3ebe0!important}.fi-fo-repeater .fi-fo-repeater-items .fi-fo-repeater-item:last-child{border-bottom:none!important}.fi-fo-repeater .fi-fo-repeater-items{gap:0!important}.fi-input-wrp{box-shadow:0 0 0 1px #e8d0b0!important;border:none!important;border-radius:8px!important;outline:none!important}.fi-input-wrp:focus-within{box-shadow:0 0 0 2px #8b5e3c!important}</style>'
             ))
+            ->renderHook('panels::body.end', fn () => new \Illuminate\Support\HtmlString('
+                <script>
+                    (() => {
+                        // Find all scrollable ancestors of sidebar
+                        function getScrollables() {
+                            const results = [];
+                            const sidebar = document.querySelector("aside");
+                            if (!sidebar) return results;
+                            // Check aside itself and all children
+                            const all = [sidebar, ...sidebar.querySelectorAll("*")];
+                            for (const el of all) {
+                                const style = getComputedStyle(el);
+                                const overflowY = style.overflowY;
+                                if ((overflowY === "auto" || overflowY === "scroll") && el.scrollHeight > el.clientHeight) {
+                                    results.push(el);
+                                }
+                            }
+                            // Also check window/body scroll
+                            return results;
+                        }
+
+                        let saved = [];
+
+                        document.addEventListener("livewire:navigate", () => {
+                            saved = getScrollables().map(el => ({ className: el.className, top: el.scrollTop }));
+                        });
+
+                        document.addEventListener("livewire:navigated", () => {
+                            if (!saved.length) return;
+                            // Use multiple frames to ensure DOM is settled
+                            requestAnimationFrame(() => {
+                                requestAnimationFrame(() => {
+                                    const scrollables = getScrollables();
+                                    // Try matching by class name first, fall back to index
+                                    for (const s of saved) {
+                                        const match = scrollables.find(el => el.className === s.className) || scrollables[0];
+                                        if (match) match.scrollTop = s.top;
+                                    }
+                                    saved = [];
+                                });
+                            });
+                        });
+                    })();
+                </script>
+            '))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->middleware([
                 EncryptCookies::class,

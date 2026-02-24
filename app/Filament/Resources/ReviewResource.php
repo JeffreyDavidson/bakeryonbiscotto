@@ -25,6 +25,11 @@ class ReviewResource extends Resource
         return 'heroicon-o-star';
     }
 
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Communication';
+    }
+
     public static function getNavigationBadge(): ?string
     {
         return (string) Review::pending()->count() ?: null;
@@ -37,23 +42,48 @@ class ReviewResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
-            \Filament\Forms\Components\TextInput::make('name')->required()->maxLength(100),
-            \Filament\Forms\Components\TextInput::make('email')->email()->maxLength(255),
-            \Filament\Forms\Components\Select::make('rating')
-                ->options([5 => '5 Stars', 4 => '4 Stars', 3 => '3 Stars', 2 => '2 Stars', 1 => '1 Star'])
-                ->required(),
-            \Filament\Forms\Components\Textarea::make('body')->required()->maxLength(1000)->columnSpanFull(),
-            \Filament\Forms\Components\TextInput::make('favorite_bread')->maxLength(100),
-            \Filament\Forms\Components\Select::make('status')
-                ->options(['pending' => 'Pending', 'approved' => 'Approved', 'rejected' => 'Rejected'])
-                ->required(),
+        return $schema->columns(1)->components([
+            \Filament\Schemas\Components\Section::make('Review Details')
+                ->icon('heroicon-o-star')
+                ->description('Customer feedback and moderation')
+                ->columns(2)
+                ->columnSpanFull()
+                ->components([
+                    \Filament\Forms\Components\TextInput::make('name')
+                        ->required()
+                        ->maxLength(100)
+                        ->prefixIcon('heroicon-o-user')
+                        ->placeholder('Customer name'),
+                    \Filament\Forms\Components\TextInput::make('email')
+                        ->email()
+                        ->maxLength(255)
+                        ->prefixIcon('heroicon-o-envelope')
+                        ->placeholder('customer@email.com'),
+                    \Filament\Forms\Components\Select::make('rating')
+                        ->options([5 => '⭐⭐⭐⭐⭐ 5 Stars', 4 => '⭐⭐⭐⭐ 4 Stars', 3 => '⭐⭐⭐ 3 Stars', 2 => '⭐⭐ 2 Stars', 1 => '⭐ 1 Star'])
+                        ->required(),
+                    \Filament\Forms\Components\Select::make('status')
+                        ->options(['pending' => '⏳ Pending', 'approved' => '✅ Approved', 'rejected' => '❌ Rejected'])
+                        ->required(),
+                    \Filament\Forms\Components\Textarea::make('body')
+                        ->required()
+                        ->maxLength(1000)
+                        ->rows(4)
+                        ->placeholder('What the customer said...')
+                        ->columnSpanFull(),
+                    \Filament\Forms\Components\TextInput::make('favorite_bread')
+                        ->maxLength(100)
+                        ->prefixIcon('heroicon-o-heart')
+                        ->placeholder('Their favorite product')
+                        ->columnSpanFull(),
+                ]),
         ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->heading("Reviews")
             ->columns([
                 Tables\Columns\IconColumn::make('is_featured')
                     ->label('')
@@ -64,10 +94,13 @@ class ReviewResource extends Resource
                     ->width('1rem'),
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('rating')
-                    ->formatStateUsing(fn ($state) => str_repeat('⭐', $state))
+                    ->formatStateUsing(fn ($state) => new \Illuminate\Support\HtmlString(
+                        str_repeat('<span style="color:#d97706;font-size:1rem;">★</span>', $state) .
+                        str_repeat('<span style="color:#e8d0b0;font-size:1rem;">★</span>', 5 - $state)
+                    ))
                     ->sortable(),
-                Tables\Columns\TextColumn::make('body')->limit(50)->wrap(),
-                Tables\Columns\TextColumn::make('favorite_bread')->label('Fav Bread'),
+                Tables\Columns\TextColumn::make('body')->limit(50)->wrap()->toggleable(),
+                Tables\Columns\TextColumn::make('favorite_bread')->label('Fav Bread')->toggleable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -75,13 +108,24 @@ class ReviewResource extends Resource
                         'approved' => 'success',
                         'rejected' => 'danger',
                         default => 'gray',
-                    }),
-                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
+                    })
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options(['pending' => 'Pending', 'approved' => 'Approved', 'rejected' => 'Rejected']),
+                Tables\Filters\SelectFilter::make('rating')
+                    ->options([
+                        5 => '5 Stars',
+                        4 => '4 Stars',
+                        3 => '3 Stars',
+                        2 => '2 Stars',
+                        1 => '1 Star',
+                    ]),
+                Tables\Filters\TernaryFilter::make('is_featured')
+                    ->label('Featured'),
             ])
             ->actions([
                 Action::make('feature')
@@ -111,16 +155,18 @@ class ReviewResource extends Resource
                     ->requiresConfirmation()
                     ->visible(fn (Review $record) => $record->status !== 'rejected')
                     ->action(fn (Review $record) => $record->update(['status' => 'rejected'])),
-                EditAction::make(),
+                EditAction::make()->slideOver()->modalWidth('2xl'),
             ])
-            ->bulkActions([]);
+            ->bulkActions([])
+            ->emptyStateHeading('No reviews yet')
+            ->emptyStateDescription('Reviews will show up here as customers submit them. ⭐')
+            ->emptyStateIcon('heroicon-o-star');
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListReviews::route('/'),
-            'edit' => Pages\EditReview::route('/{record}/edit'),
         ];
     }
 }

@@ -231,6 +231,13 @@
             </div>
             @endif
 
+            @if($order->discount_amount > 0)
+            <div class="item-row" style="font-size: 0.9rem; color: #16a34a;">
+                <span class="detail-label">Discount{{ $order->coupon ? ' (' . $order->coupon->code . ')' : '' }}</span>
+                <span class="item-price">-${{ number_format($order->discount_amount, 2) }}</span>
+            </div>
+            @endif
+
             <div class="total-divider"></div>
             <div class="total-row">
                 <span>Total</span>

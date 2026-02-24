@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
@@ -21,13 +22,19 @@ Route::get('/', function() {
 
     return view('home', compact('featuredReview', 'approvedReviews', 'categories'));
 });
+Route::post('/favorites/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+Route::get('/favorites/{email}', [FavoriteController::class, 'index'])->name('favorites.index');
+
 Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/order', [OrderController::class, 'index'])->name('order');
+Route::post('/order/apply-coupon', [OrderController::class, 'applyCoupon'])->name('order.apply-coupon');
 Route::post('/order/paypal/create', [OrderController::class, 'createPayPalOrder'])->name('order.paypal.create');
 Route::post('/order/paypal/capture', [OrderController::class, 'capturePayPalOrder'])->name('order.paypal.capture');
 Route::get('/order/confirmation/{orderNumber}', [OrderController::class, 'confirmation'])->name('order.confirmation');
+Route::get('/order/capacity/{date}', [OrderController::class, 'checkCapacity'])->name('order.capacity');
+Route::post('/order/waitlist', [OrderController::class, 'joinWaitlist'])->name('order.waitlist');
 Route::get('/about', fn() => view('about'));
 Route::get('/review', fn() => view('review'));
 Route::get('/gallery', fn() => view('gallery'));
@@ -47,3 +54,9 @@ Route::get('/gallery-concepts-5', fn() => view('gallery-concepts-5'));
 Route::get('/gallery-finals', fn() => view('gallery-finals'));
 Route::get('/upgrades', fn() => view('upgrades'));
 Route::get('/wow', fn() => view('wow'));
+
+// Admin invoice route
+Route::get('/admin/orders/{order}/invoice', function (\App\Models\Order $order) {
+    $order->load('items');
+    return view('filament.pages.order-invoice', compact('order'));
+})->middleware(['web', 'auth'])->name('admin.orders.invoice');

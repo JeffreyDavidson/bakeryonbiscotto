@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Order | Bakery on Biscotto</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -155,6 +156,42 @@
             overflow: hidden;
             transition: all 0.3s ease;
             box-shadow: 0 2px 12px rgba(61,35,20,0.06);
+            position: relative;
+        }
+        .product-card.is-favorite {
+            border-color: rgba(220,38,38,0.25);
+            box-shadow: 0 2px 12px rgba(220,38,38,0.08);
+        }
+        .favorite-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 10;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            line-height: 1;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .favorite-btn:hover {
+            transform: scale(1.15);
+            background: rgba(255,255,255,0.95);
+        }
+        .favorite-btn.active {
+            color: #dc2626;
+            background: rgba(255,255,255,0.95);
+        }
+        .favorite-btn.active:hover {
+            background: #fef2f2;
         }
         .product-card:hover {
             transform: translateY(-2px);
@@ -852,7 +889,14 @@
                     <h2 class="category-title">{{ $category->name }}</h2>
                     <div class="product-grid">
                         @foreach($category->products as $product)
-                        <div class="product-card">
+                        <div class="product-card" :class="{ 'is-favorite': isFavorite({{ $product->id }}) }">
+                            <button class="favorite-btn"
+                                :class="{ 'active': isFavorite({{ $product->id }}) }"
+                                @click="toggleFavorite({{ $product->id }})"
+                                :title="isFavorite({{ $product->id }}) ? 'Remove from favorites' : 'Add to favorites'"
+                                aria-label="Toggle favorite">
+                                <span x-text="isFavorite({{ $product->id }}) ? '❤️' : '🤍'"></span>
+                            </button>
                             @if($product->image_url)
                                 <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="product-img">
                             @else
@@ -933,6 +977,10 @@
                                 <div class="cart-row" x-show="fulfillment === 'delivery' && deliveryTier">
                                     <span>Delivery Fee</span>
                                     <span x-text="deliveryFee() === 0 ? 'Free' : '$' + deliveryFee().toFixed(2)"></span>
+                                </div>
+                                <div class="cart-row" x-show="couponDiscount > 0" style="color: #16a34a;">
+                                    <span>Discount <span x-show="couponLabel" x-text="'(' + couponLabel + ')'" style="font-size: 0.78rem;"></span></span>
+                                    <span x-text="'-$' + couponDiscount.toFixed(2)"></span>
                                 </div>
                                 <div class="cart-row total">
                                     <span>Total</span>
@@ -1053,11 +1101,64 @@
                                 </div>
 
                                 {{-- Time Slots --}}
-                                <template x-if="pendingDate">
+                                <template x-if="pendingDate && dateBlocked">
+                                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(139,94,60,0.1);">
+                                        <p style="font-size: 0.9rem; font-weight: 600; color: #dc2626; text-align: center; padding: 12px; background: #fef2f2; border-radius: 8px;">
+                                            This date is unavailable for orders. Please choose another day.
+                                        </p>
+                                    </div>
+                                </template>
+                                <template x-if="pendingDate && dateFull && !dateBlocked">
+                                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(139,94,60,0.1);">
+                                        <p style="font-size: 0.9rem; font-weight: 600; color: #dc2626; text-align: center; padding: 12px; background: #fef2f2; border-radius: 8px; margin-bottom: 12px;">
+                                            FULL — This date has reached its order limit.
+                                        </p>
+                                        <template x-if="!waitlistSubmitted">
+                                            <div style="background: #fffbf5; border: 1px solid rgba(139,94,60,0.15); border-radius: 10px; padding: 16px;">
+                                                <p style="font-size: 0.85rem; font-weight: 600; color: var(--dark); margin-bottom: 10px; text-align: center;">
+                                                    Want us to let you know if a spot opens up?
+                                                </p>
+                                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                                    <input type="text" x-model="waitlistName" placeholder="Your name" style="padding: 8px 12px; border: 1px solid rgba(139,94,60,0.2); border-radius: 6px; font-size: 0.85rem; font-family: inherit;">
+                                                    <input type="email" x-model="waitlistEmail" placeholder="Email address" style="padding: 8px 12px; border: 1px solid rgba(139,94,60,0.2); border-radius: 6px; font-size: 0.85rem; font-family: inherit;">
+                                                    <input type="text" x-model="waitlistPhone" placeholder="Phone (optional)" style="padding: 8px 12px; border: 1px solid rgba(139,94,60,0.2); border-radius: 6px; font-size: 0.85rem; font-family: inherit;">
+                                                    <textarea x-model="waitlistInterest" placeholder="What were you hoping to order?" rows="2" style="padding: 8px 12px; border: 1px solid rgba(139,94,60,0.2); border-radius: 6px; font-size: 0.85rem; font-family: inherit; resize: vertical;"></textarea>
+                                                    <button type="button" @click="submitWaitlist()" :disabled="!waitlistName || !waitlistEmail || waitlistSubmitting"
+                                                        style="padding: 10px; background: var(--warm); color: white; border: none; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; font-family: inherit;"
+                                                        :style="(!waitlistName || !waitlistEmail) && 'opacity: 0.5; cursor: not-allowed'">
+                                                        <span x-text="waitlistSubmitting ? 'Joining...' : 'Join Waitlist'"></span>
+                                                    </button>
+                                                </div>
+                                                <template x-if="waitlistError">
+                                                    <p style="color: #dc2626; font-size: 0.8rem; margin-top: 8px; text-align: center;" x-text="waitlistError"></p>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <template x-if="waitlistSubmitted">
+                                            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; text-align: center;">
+                                                <p style="font-size: 0.9rem; font-weight: 600; color: #16a34a;">
+                                                    You're on the waitlist! We'll email you if a spot opens up.
+                                                </p>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                                <template x-if="pendingDate && !dateBlocked && !dateFull">
                                     <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(139,94,60,0.1);">
                                         <p style="font-size: 0.82rem; font-weight: 600; color: var(--warm); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;">
                                             🕐 Pick a time for <span x-text="pendingDayLabel" style="color: var(--dark);"></span>
+                                            <template x-if="capacityInfo && capacityInfo.remaining !== null">
+                                                <span style="font-weight: 400; font-size: 0.75rem; opacity: 0.7;"> — <span x-text="capacityInfo.remaining"></span> slots left</span>
+                                            </template>
                                         </p>
+                                        <template x-if="capacityInfo && capacityInfo.holiday">
+                                            <p style="font-size: 0.8rem; color: var(--accent); background: rgba(212,165,116,0.12); padding: 8px 12px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid var(--golden);">
+                                                Holiday orders may require extra lead time.
+                                                <template x-if="!capacityInfo.holiday.deadline_passed">
+                                                    <span>Order by <span x-text="capacityInfo.holiday.deadline" style="font-weight: 600;"></span> for <span x-text="capacityInfo.holiday.name"></span>.</span>
+                                                </template>
+                                            </p>
+                                        </template>
                                         <div style="display: flex; flex-wrap: wrap; gap: 6px;">
                                             <template x-for="slot in availableSlots" :key="slot.value">
                                                 <button type="button"
@@ -1104,6 +1205,32 @@
                     <input type="hidden" name="requested_date" :value="form.requested_date">
                     <input type="hidden" name="requested_time" :value="form.requested_time">
                     <input type="hidden" name="notes" :value="form.notes">
+
+                    {{-- Coupon Code --}}
+                    <div style="margin-top: 20px; border-top: 1px solid rgba(139,94,60,0.1); padding-top: 16px;">
+                        <button type="button" @click="couponOpen = !couponOpen" style="background: none; border: none; cursor: pointer; font-family: 'Playfair Display', serif; font-size: 0.9rem; color: var(--warm); display: flex; align-items: center; gap: 6px; padding: 0;">
+                            <span x-text="couponOpen ? '▾' : '▸'"></span>
+                            Have a coupon code?
+                        </button>
+                        <div x-show="couponOpen" x-transition style="margin-top: 10px;">
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" class="form-input" x-model="couponCode" placeholder="Enter code" style="flex: 1; text-transform: uppercase;" :disabled="couponApplied">
+                                <button type="button" x-show="!couponApplied" @click="applyCoupon()" :disabled="couponLoading || !couponCode.trim()" style="padding: 10px 18px; background: var(--dark); color: var(--cream); border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; opacity: 1; transition: opacity 0.2s;" :style="(couponLoading || !couponCode.trim()) ? 'opacity: 0.5; cursor: not-allowed;' : ''">
+                                    <span x-show="!couponLoading">Apply</span>
+                                    <span x-show="couponLoading">...</span>
+                                </button>
+                                <button type="button" x-show="couponApplied" @click="removeCoupon()" style="padding: 10px 18px; background: #dc2626; color: white; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
+                                    Remove
+                                </button>
+                            </div>
+                            <p x-show="couponError" x-text="couponError" style="color: #dc2626; font-size: 0.8rem; margin-top: 6px;"></p>
+                            <p x-show="couponApplied" style="color: #16a34a; font-size: 0.8rem; margin-top: 6px;">
+                                ✓ Coupon <strong x-text="couponCode"></strong> applied — <span x-text="couponLabel"></span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="coupon_id" :value="couponId">
 
                     <div x-show="formValid()" x-transition style="margin-top: 16px;">
                         <p style="font-size: 0.85rem; color: var(--warm); text-align: center; margin-bottom: 12px;">Pay securely with PayPal to complete your order</p>
@@ -1211,6 +1338,16 @@
                 pendingDate: null,
                 pendingDayLabel: '',
                 availableSlots: [],
+                dateBlocked: false,
+                dateFull: false,
+                capacityInfo: null,
+                waitlistName: '',
+                waitlistEmail: '',
+                waitlistPhone: '',
+                waitlistInterest: '',
+                waitlistSubmitting: false,
+                waitlistSubmitted: false,
+                waitlistError: '',
                 selectedTime: null,
 
                 init() {
@@ -1284,14 +1421,67 @@
 
                     this.pendingDate = y + '-' + m + '-' + d;
                     this.selectedTime = null;
+                    this.dateBlocked = false;
+                    this.dateFull = false;
+                    this.capacityInfo = null;
+                    this.waitlistSubmitted = false;
+                    this.waitlistError = '';
 
                     const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
                     const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
                     this.pendingDayLabel = dayNames[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate();
 
-                    this.availableSlots = getSlotsForDay(date.getDay());
+                    // Check capacity
+                    fetch('/order/capacity/' + this.pendingDate)
+                        .then(r => r.json())
+                        .then(data => {
+                            this.capacityInfo = data;
+                            if (data.blocked) {
+                                this.dateBlocked = true;
+                                this.availableSlots = [];
+                            } else if (!data.available) {
+                                this.dateFull = true;
+                                this.availableSlots = [];
+                            } else {
+                                this.availableSlots = getSlotsForDay(date.getDay());
+                            }
+                        })
+                        .catch(() => {
+                            this.availableSlots = getSlotsForDay(date.getDay());
+                        });
                 },
 
+                async submitWaitlist() {
+                    this.waitlistSubmitting = true;
+                    this.waitlistError = '';
+                    try {
+                        const res = await fetch('/order/waitlist', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                customer_name: this.waitlistName,
+                                customer_email: this.waitlistEmail,
+                                customer_phone: this.waitlistPhone || null,
+                                product_interest: this.waitlistInterest || null,
+                                requested_date: this.pendingDate,
+                            }),
+                        });
+                        const data = await res.json();
+                        if (!res.ok) {
+                            this.waitlistError = data.message || data.error || 'Something went wrong. Please try again.';
+                        } else {
+                            this.waitlistSubmitted = true;
+                        }
+                    } catch (e) {
+                        this.waitlistError = 'Something went wrong. Please try again.';
+                    } finally {
+                        this.waitlistSubmitting = false;
+                    }
+                },
                 selectTime(slot) {
                     this.selectedTime = slot.value;
 
@@ -1313,6 +1503,8 @@
         function orderPage() {
             return {
                 cart: [],
+                favorites: [],
+                favoritesEmail: localStorage.getItem('bob_customer_email') || '',
                 fulfillment: 'pickup',
                 deliveryTier: null,
                 deliveryDistance: null,
@@ -1328,6 +1520,14 @@
                 bundlePickCount: 4,
                 bundleOptions: [],
                 bundlePicks: {},
+                couponOpen: false,
+                couponCode: '',
+                couponId: null,
+                couponDiscount: 0,
+                couponLabel: '',
+                couponApplied: false,
+                couponLoading: false,
+                couponError: '',
                 form: {
                     customer_name: '',
                     customer_email: '',
@@ -1337,6 +1537,64 @@
                     requested_date: '',
                     requested_time: '',
                     notes: '',
+                },
+
+                init() {
+                    // Load favorites if we have a stored email
+                    if (this.favoritesEmail) {
+                        this.loadFavorites(this.favoritesEmail);
+                    }
+                    // Watch for email changes to load favorites
+                    this.$watch('form.customer_email', (val) => {
+                        if (val && val.includes('@') && val.includes('.')) {
+                            localStorage.setItem('bob_customer_email', val);
+                            this.favoritesEmail = val;
+                            this.loadFavorites(val);
+                        }
+                    });
+                },
+
+                async loadFavorites(email) {
+                    try {
+                        const res = await fetch(`/favorites/${encodeURIComponent(email)}`);
+                        const data = await res.json();
+                        this.favorites = data.favorites || [];
+                    } catch (e) {
+                        console.warn('Could not load favorites', e);
+                    }
+                },
+
+                isFavorite(productId) {
+                    return this.favorites.includes(productId);
+                },
+
+                async toggleFavorite(productId) {
+                    let email = this.favoritesEmail || this.form.customer_email;
+                    if (!email || !email.includes('@')) {
+                        email = prompt('Enter your email to save favorites:');
+                        if (!email || !email.includes('@')) return;
+                        this.favoritesEmail = email;
+                        localStorage.setItem('bob_customer_email', email);
+                        await this.loadFavorites(email);
+                    }
+                    try {
+                        const res = await fetch('/favorites/toggle', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}',
+                            },
+                            body: JSON.stringify({ email, product_id: productId }),
+                        });
+                        const data = await res.json();
+                        if (data.favorited) {
+                            if (!this.favorites.includes(productId)) this.favorites.push(productId);
+                        } else {
+                            this.favorites = this.favorites.filter(id => id !== productId);
+                        }
+                    } catch (e) {
+                        console.warn('Could not toggle favorite', e);
+                    }
                 },
 
                 get minDate() {
@@ -1391,7 +1649,48 @@
                 },
 
                 total() {
-                    return this.subtotal() + this.deliveryFee();
+                    return Math.max(0, this.subtotal() + this.deliveryFee() - this.couponDiscount);
+                },
+
+                async applyCoupon() {
+                    if (!this.couponCode.trim()) return;
+                    this.couponLoading = true;
+                    this.couponError = '';
+                    try {
+                        const resp = await fetch('{{ route("order.apply-coupon") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            body: JSON.stringify({
+                                code: this.couponCode.trim(),
+                                subtotal: this.subtotal(),
+                            }),
+                        });
+                        const data = await resp.json();
+                        if (data.error) {
+                            this.couponError = data.error;
+                        } else {
+                            this.couponId = data.coupon_id;
+                            this.couponDiscount = data.discount;
+                            this.couponLabel = data.label;
+                            this.couponCode = data.code;
+                            this.couponApplied = true;
+                        }
+                    } catch (e) {
+                        this.couponError = 'Something went wrong. Please try again.';
+                    }
+                    this.couponLoading = false;
+                },
+
+                removeCoupon() {
+                    this.couponId = null;
+                    this.couponDiscount = 0;
+                    this.couponLabel = '';
+                    this.couponApplied = false;
+                    this.couponCode = '';
+                    this.couponError = '';
                 },
 
                 openBundlePicker(id, name, price) {
@@ -1492,6 +1791,7 @@
                         requested_date: this.form.requested_date,
                         requested_time: this.form.requested_time,
                         notes: this.form.notes,
+                        coupon_id: this.couponId,
                         items: this.cart.map(item => ({
                             product_id: item.id,
                             quantity: item.qty,
@@ -1520,23 +1820,28 @@
                     }
 
                     try {
-                        const resp = await fetch('https://photon.komoot.io/api/?q=' + encodeURIComponent(q) + '&limit=5&lat=28.317&lon=-81.652&lang=en');
+                        const resp = await fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(q) + '&format=json&addressdetails=1&countrycodes=us&viewbox=-82.2,28.7,-81.2,27.9&bounded=1&limit=5', {
+                            headers: { 'Accept': 'application/json' }
+                        });
                         const data = await resp.json();
 
-                        this.suggestions = data.features
-                            .filter(f => f.properties.country === 'United States' && f.properties.state === 'Florida')
-                            .map(f => {
-                                const p = f.properties;
-                                const parts = [p.housenumber, p.street, p.city, p.state, p.postcode].filter(Boolean);
+                        this.suggestions = data
+                            .filter(r => r.address && r.address.state === 'Florida')
+                            .map(r => {
+                                const a = r.address;
+                                const street = [a.house_number, a.road].filter(Boolean).join(' ');
+                                const city = a.city || a.town || a.village || a.hamlet || '';
+                                const parts = [street, city, a.state, a.postcode].filter(Boolean);
                                 return {
                                     display: parts.join(', '),
-                                    lat: f.geometry.coordinates[1],
-                                    lon: f.geometry.coordinates[0],
-                                    street: [p.housenumber, p.street].filter(Boolean).join(' '),
-                                    city: p.city || '',
-                                    zip: p.postcode || '',
+                                    lat: parseFloat(r.lat),
+                                    lon: parseFloat(r.lon),
+                                    street: street,
+                                    city: city,
+                                    zip: a.postcode || '',
                                 };
-                            });
+                            })
+                            .filter(s => s.street.length > 0);
                     } catch (e) {
                         this.suggestions = [];
                     }
