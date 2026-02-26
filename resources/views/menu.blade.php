@@ -484,9 +484,7 @@
             .bundle-callout { margin: 40px -20px 8px; }
             .bundle-inner { padding: 28px 24px; flex-wrap: wrap; justify-content: center; text-align: center; }
             .bundle-ribbon { display: none; }
-            .main-nav { top: 38px; padding: 6px 8px; gap: 2px; }
-            .main-nav a { padding: 8px 14px; font-size: 12px; }
-        }
+}
         @media (max-width: 480px) {
             .parchment { padding: 48px 24px 40px; }
             .menu-item-name { font-size: 1.35rem; white-space: normal; }

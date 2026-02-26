@@ -80,6 +80,9 @@
             border: 1px solid rgba(212,165,116,0.15);
             box-shadow: 0 8px 32px rgba(0,0,0,0.2);
         }
+        .nav-links {
+            display: flex; align-items: center; gap: 4px;
+        }
         .main-nav a {
             font-family: 'Playfair Display', serif;
             font-size: 14px; font-weight: 500;
@@ -89,6 +92,36 @@
         }
         .main-nav a:hover { background: rgba(212,165,116,0.2); color: var(--golden); }
         .main-nav a.active { background: var(--golden); color: var(--dark); font-weight: 600; }
+        .nav-hamburger {
+            display: none; background: none; border: none; cursor: pointer;
+            padding: 8px; flex-direction: column; gap: 5px;
+        }
+        .nav-hamburger span {
+            display: block; width: 24px; height: 2px;
+            background: var(--cream); border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .main-nav {
+                top: 8px; left: 12px; right: 12px;
+                transform: none; border-radius: 16px;
+                padding: 12px 16px;
+                flex-wrap: wrap; justify-content: flex-end;
+            }
+            .nav-links {
+                display: none; width: 100%;
+                flex-direction: column; gap: 0; padding-top: 12px;
+            }
+            .nav-open .nav-links { display: flex; }
+            .main-nav a {
+                padding: 12px 16px; border-radius: 12px;
+                font-size: 15px; width: 100%; text-align: center;
+            }
+            .nav-hamburger { display: flex; }
+            .nav-open .nav-hamburger span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+            .nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
+            .nav-open .nav-hamburger span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        }
 
         /* ═══ HERO — Full-width parchment banner ═══ */
         .hero {
