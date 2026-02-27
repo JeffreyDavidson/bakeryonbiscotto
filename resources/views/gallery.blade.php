@@ -10,7 +10,7 @@
         .gallery-hero {
             position: relative;
             padding: 160px 20px 80px;
-            background: #1c1410;
+            background: var(--brand-900);
             text-align: center;
             overflow: hidden;
         }
@@ -46,7 +46,7 @@
             gap: 12px;
             flex-wrap: wrap;
             padding: 40px 20px 0;
-            background: #1c1410;
+            background: var(--brand-900);
         }
         .filter-btn {
             font-family: 'Cormorant Garamond', serif;
@@ -91,7 +91,7 @@
         .fresh-oven {
             padding: 40px 20px 100px;
             position: relative; overflow: hidden;
-            background: #1c1410;
+            background: var(--brand-900);
         }
         .fresh-oven::before {
             content: '';

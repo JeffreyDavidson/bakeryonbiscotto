@@ -169,7 +169,7 @@
             box-shadow: 0 4px 12px rgba(24,119,242,0.3);
         }
         .form-error {
-            color: #c0392b;
+            color: var(--status-danger);
             font-size: 12px;
             margin-top: -16px;
             margin-bottom: 12px;

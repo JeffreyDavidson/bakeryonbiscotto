@@ -1,6 +1,6 @@
 @extends('layouts.storefront', ['title' => 'Menu | Bakery on Biscotto', 'active' => 'menu'])
 
-@section('body_attrs')style="background: #1a0f08;"@endsection
+@section('body_attrs')style="background: var(--brand-900);"@endsection
 
 @section('styles')
     <style>
@@ -35,7 +35,7 @@
                 radial-gradient(ellipse at 50% 0%, rgba(244,200,122,0.06) 0%, transparent 50%),
                 radial-gradient(ellipse at 20% 30%, rgba(139,94,60,0.05) 0%, transparent 40%),
                 radial-gradient(ellipse at 80% 70%, rgba(139,94,60,0.04) 0%, transparent 40%),
-                linear-gradient(180deg, #1a0f08 0%, #241508 10%, #1e1209 90%, #1a0f08 100%);
+                linear-gradient(180deg, var(--brand-900) 0%, var(--brand-900) 10%, var(--brand-900) 90%, var(--brand-900) 100%);
             overflow: hidden;
         }
         .menu-scene::before {
@@ -296,7 +296,7 @@
         }
         .bundle-callout {
             margin: 48px -34px 8px; padding: 0; position: relative;
-            background: linear-gradient(135deg, var(--dark) 0%, #4a2a18 100%);
+            background: linear-gradient(135deg, var(--dark) 0%, var(--brand-800) 100%);
             overflow: hidden; border-radius: 3px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.15), 0 0 0 1px rgba(212,165,116,0.15);
         }

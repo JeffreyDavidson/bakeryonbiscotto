@@ -6,7 +6,7 @@
         .faq-hero {
             padding: 140px 20px 60px;
             text-align: center;
-            background: linear-gradient(180deg, var(--dark) 0%, #5a3420 100%);
+            background: linear-gradient(180deg, var(--dark) 0%, var(--brand-800) 100%);
         }
         .faq-hero h1 {
             font-family: 'Playfair Display', serif;
