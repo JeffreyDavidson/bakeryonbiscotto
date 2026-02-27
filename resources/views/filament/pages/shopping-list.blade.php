@@ -6,60 +6,60 @@
         }
         .sl-date-wrap {
             display: flex; align-items: stretch; border-radius: 0.5rem;
-            box-shadow: 0 0 0 1px #e8d0b0; overflow: hidden; background: white;
+            box-shadow: 0 0 0 1px var(--brand-200); overflow: hidden; background: white;
             transition: box-shadow 0.15s;
         }
         .sl-date-wrap:focus-within {
-            box-shadow: 0 0 0 1px #D4A574, 0 0 0 4px rgba(212,165,116,0.15);
+            box-shadow: 0 0 0 1px var(--brand-300), 0 0 0 4px rgba(212,165,116,0.15);
         }
         .sl-date-prefix {
             display: flex; align-items: center; padding: 0 0.625rem;
-            background: #fdf8f2; color: #a08060; font-size: 0.7rem; font-weight: 700;
+            background: var(--brand-50); color: var(--brand-500); font-size: 0.7rem; font-weight: 700;
             text-transform: uppercase; letter-spacing: 0.05em;
-            border-right: 1px solid #e8d0b0; white-space: nowrap;
+            border-right: 1px solid var(--brand-200); white-space: nowrap;
         }
         .sl-date-input {
             border: none; outline: none; padding: 0.5rem 0.75rem;
-            font-size: 0.875rem; color: #3d2314; background: transparent; box-shadow: none;
+            font-size: 0.875rem; color: var(--brand-900); background: transparent; box-shadow: none;
         }
         .sl-quick-btns { display: flex; gap: 0.375rem; }
         .sl-quick-btn {
             padding: 0.375rem 0.75rem; border-radius: 0.375rem;
-            border: 1px solid #e8d0b0; background: white; color: #4a3225;
+            border: 1px solid var(--brand-200); background: white; color: var(--brand-800);
             font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.15s;
         }
-        .sl-quick-btn:hover { background: #fdf8f2; border-color: #d4a574; }
+        .sl-quick-btn:hover { background: var(--brand-50); border-color: var(--brand-300); }
         .sl-range-label {
-            font-size: 1rem; font-weight: 700; color: #3d2314;
+            font-size: 1rem; font-weight: 700; color: var(--brand-900);
         }
         .sl-actions { margin-left: auto; display: flex; gap: 0.5rem; }
         .sl-group-title {
-            font-size: 0.7rem; font-weight: 700; color: #a08060;
+            font-size: 0.7rem; font-weight: 700; color: var(--brand-500);
             text-transform: uppercase; letter-spacing: 0.08em;
-            padding: 0.75rem 1.25rem; background: #fdf8f2;
-            border-bottom: 1px solid #f3ebe0;
+            padding: 0.75rem 1.25rem; background: var(--brand-50);
+            border-bottom: 1px solid var(--brand-150);
         }
         .sl-item {
             display: flex; align-items: center; gap: 0.75rem;
-            padding: 0.625rem 1.25rem; border-bottom: 1px solid #f3ebe0;
+            padding: 0.625rem 1.25rem; border-bottom: 1px solid var(--brand-150);
             transition: background 0.1s;
         }
-        .sl-item:hover { background: #fdf8f2; }
+        .sl-item:hover { background: var(--brand-50); }
         .sl-item:last-child { border-bottom: none; }
         .sl-item-check {
-            width: 1.125rem; height: 1.125rem; accent-color: #6b4c3b;
+            width: 1.125rem; height: 1.125rem; accent-color: var(--brand-700);
             border-radius: 0.25rem; cursor: pointer; flex-shrink: 0;
         }
         .sl-item-qty {
-            font-weight: 800; color: #3d2314; font-size: 0.875rem;
+            font-weight: 800; color: var(--brand-900); font-size: 0.875rem;
             min-width: 4rem; text-align: right;
         }
         .sl-item-unit {
-            color: #a08060; font-size: 0.8rem; font-weight: 500;
+            color: var(--brand-500); font-size: 0.8rem; font-weight: 500;
             min-width: 3rem;
         }
         .sl-item-name {
-            font-weight: 600; color: #4a3225; font-size: 0.875rem; flex: 1;
+            font-weight: 600; color: var(--brand-800); font-size: 0.875rem; flex: 1;
         }
 
         @media print {
@@ -75,12 +75,12 @@
     </style>
 
     {{-- Print header --}}
-    <div class="print-header" style="display: none; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 3px solid #3d2314;">
+    <div class="print-header" style="display: none; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 3px solid var(--brand-900);">
         <div>
-            <div style="font-size: 1.5rem; font-weight: 800; color: #3d2314;">Shopping List</div>
-            <div style="font-size: 1rem; color: #4a3225; font-weight: 600;">{{ $this->formattedRange }}</div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: var(--brand-900);">Shopping List</div>
+            <div style="font-size: 1rem; color: var(--brand-800); font-weight: 600;">{{ $this->formattedRange }}</div>
         </div>
-        <div style="text-align: right; font-size: 0.875rem; color: #a08060;">
+        <div style="text-align: right; font-size: 0.875rem; color: var(--brand-500);">
             <div style="font-weight: 700; font-size: 1rem;">{{ $this->stats->total_items }} items</div>
             <div>{{ $this->stats->total_orders }} orders, {{ $this->stats->unique_products }} products</div>
         </div>
@@ -107,8 +107,8 @@
             <span class="sl-range-label">{{ $this->formattedRange }}</span>
 
             <div class="sl-actions">
-                <x-admin.btn onclick="copyShoppingList()" style="background: white; color: #4a3225; border: 1px solid #e8d0b0;">Copy to Clipboard</x-admin.btn>
-                <x-admin.btn onclick="window.print()" style="background: linear-gradient(135deg, #3d2314, #6b4c3b); color: white; border: none;">Print</x-admin.btn>
+                <x-admin.btn onclick="copyShoppingList()" style="background: white; color: var(--brand-800); border: 1px solid var(--brand-200);">Copy to Clipboard</x-admin.btn>
+                <x-admin.btn onclick="window.print()" style="background: linear-gradient(135deg, var(--brand-900), var(--brand-700)); color: white; border: none;">Print</x-admin.btn>
             </div>
         </div>
     </x-admin.card>
@@ -119,8 +119,8 @@
         {{-- Stats --}}
         <x-admin.stat-grid :cols="3" data-stat-grid class="no-print">
             <x-admin.stat-card label="Orders" :value="$this->stats->total_orders" />
-            <x-admin.stat-card label="Total Items" :value="$this->stats->total_items" color="#6b4c3b" />
-            <x-admin.stat-card label="Unique Products" :value="$this->stats->unique_products" color="#8b5e3c" />
+            <x-admin.stat-card label="Total Items" :value="$this->stats->total_items" color="var(--brand-700)" />
+            <x-admin.stat-card label="Unique Products" :value="$this->stats->unique_products" color="var(--brand-600)" />
         </x-admin.stat-grid>
 
         {{-- Shopping list --}}

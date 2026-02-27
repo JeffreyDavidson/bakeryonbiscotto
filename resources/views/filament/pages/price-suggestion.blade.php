@@ -5,64 +5,64 @@
         .ps-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         .ps-field { margin-bottom: 1rem; }
         .ps-label {
-            display: block; font-size: 0.7rem; font-weight: 700; color: #a08060;
+            display: block; font-size: 0.7rem; font-weight: 700; color: var(--brand-500);
             text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.375rem;
         }
         .ps-input {
             display: block; width: 100%; border-radius: 0.5rem;
-            padding: 0.5rem 0.75rem; font-size: 0.875rem; color: #3d2314;
-            background: white; box-shadow: 0 0 0 1px #e8d0b0;
+            padding: 0.5rem 0.75rem; font-size: 0.875rem; color: var(--brand-900);
+            background: white; box-shadow: 0 0 0 1px var(--brand-200);
             border: none; outline: none; transition: box-shadow 0.15s;
         }
         .ps-input:focus {
-            box-shadow: 0 0 0 1px #D4A574, 0 0 0 4px rgba(212,165,116,0.15);
+            box-shadow: 0 0 0 1px var(--brand-300), 0 0 0 4px rgba(212,165,116,0.15);
         }
         .ps-input-wrap {
             display: flex; align-items: stretch; border-radius: 0.5rem;
-            box-shadow: 0 0 0 1px #e8d0b0; overflow: hidden;
+            box-shadow: 0 0 0 1px var(--brand-200); overflow: hidden;
             transition: box-shadow 0.15s; background: white;
         }
         .ps-input-wrap:focus-within {
-            box-shadow: 0 0 0 1px #D4A574, 0 0 0 4px rgba(212,165,116,0.15);
+            box-shadow: 0 0 0 1px var(--brand-300), 0 0 0 4px rgba(212,165,116,0.15);
         }
         .ps-input-prefix {
             display: flex; align-items: center; padding: 0 0.625rem;
-            background: #fdf8f2; color: #a08060; font-size: 0.875rem; font-weight: 600;
-            border-right: 1px solid #e8d0b0;
+            background: var(--brand-50); color: var(--brand-500); font-size: 0.875rem; font-weight: 600;
+            border-right: 1px solid var(--brand-200);
         }
         .ps-input-inner {
             flex: 1; border: none; outline: none; padding: 0.5rem 0.75rem;
-            font-size: 0.875rem; color: #3d2314; background: transparent;
+            font-size: 0.875rem; color: var(--brand-900); background: transparent;
             box-shadow: none;
         }
         .ps-range-track {
             width: 100%; height: 8px; -webkit-appearance: none; appearance: none;
-            background: linear-gradient(90deg, #d4a574 {{ $margin }}%, #f3ebe0 {{ $margin }}%);
+            background: linear-gradient(90deg, var(--brand-300) {{ $margin }}%, var(--brand-150) {{ $margin }}%);
             border: none; border-radius: 4px; outline: none; cursor: pointer;
         }
         .ps-range-track::-webkit-slider-thumb {
             -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
-            background: #3d2314; border: 3px solid #fdf8f2;
+            background: var(--brand-900); border: 3px solid var(--brand-50);
             box-shadow: 0 2px 6px rgba(61,35,20,0.3); cursor: pointer;
         }
         .ps-range-track::-moz-range-thumb {
             width: 22px; height: 22px; border-radius: 50%;
-            background: #3d2314; border: 3px solid #fdf8f2;
+            background: var(--brand-900); border: 3px solid var(--brand-50);
             box-shadow: 0 2px 6px rgba(61,35,20,0.3); cursor: pointer;
         }
         .ps-quick-btns { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; }
         .ps-quick-btn {
             padding: 0.375rem 0.875rem; border-radius: 0.375rem; font-size: 0.8rem;
-            font-weight: 600; cursor: pointer; transition: all 0.15s; border: 1px solid #e8d0b0;
-            background: white; color: #4a3225;
+            font-weight: 600; cursor: pointer; transition: all 0.15s; border: 1px solid var(--brand-200);
+            background: white; color: var(--brand-800);
         }
-        .ps-quick-btn:hover { background: #fdf8f2; }
+        .ps-quick-btn:hover { background: var(--brand-50); }
         .ps-quick-btn.active {
-            background: #3d2314; color: #fdf8f2; border-color: #3d2314;
+            background: var(--brand-900); color: var(--brand-50); border-color: var(--brand-900);
         }
         .ps-results-card {
-            background: linear-gradient(135deg, #3d2314, #6b4c3b);
-            border-radius: 0.75rem; padding: 1.5rem; color: #fdf8f2;
+            background: linear-gradient(135deg, var(--brand-900), var(--brand-700));
+            border-radius: 0.75rem; padding: 1.5rem; color: var(--brand-50);
         }
         .ps-result-row {
             display: flex; justify-content: space-between; align-items: center;
@@ -75,13 +75,13 @@
             padding: 0.875rem 0 0; border-top: 2px solid rgba(253,248,242,0.25); margin-top: 0.5rem;
         }
         .ps-result-total-label { font-size: 1.1rem; font-weight: 600; }
-        .ps-result-total-value { font-size: 2rem; font-weight: 800; color: #f5e6d0; }
+        .ps-result-total-value { font-size: 2rem; font-weight: 800; color: var(--brand-100); }
         .ps-breakdown-row {
             display: flex; justify-content: space-between; padding: 0.5rem 0;
-            border-bottom: 1px solid #f3ebe0; font-size: 0.875rem; color: #4a3225;
+            border-bottom: 1px solid var(--brand-150); font-size: 0.875rem; color: var(--brand-800);
         }
         .ps-breakdown-row:last-child { border-bottom: none; font-weight: 700; }
-        .ps-breakdown-detail { font-size: 0.75rem; color: #a08060; }
+        .ps-breakdown-detail { font-size: 0.75rem; color: var(--brand-500); }
     </style>
 
     <div class="ps-grid">
@@ -137,7 +137,7 @@
                 <div class="ps-field">
                     <label class="ps-label">
                         Desired Profit Margin
-                        <span style="float: right; font-size: 0.875rem; font-weight: 800; color: #3d2314; text-transform: none; letter-spacing: normal;">{{ number_format($margin, 0) }}%</span>
+                        <span style="float: right; font-size: 0.875rem; font-weight: 800; color: var(--brand-900); text-transform: none; letter-spacing: normal;">{{ number_format($margin, 0) }}%</span>
                     </label>
                     <input type="range" wire:model.live="margin" min="0" max="95" step="1" class="ps-range-track">
                     <div class="ps-quick-btns">

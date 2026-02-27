@@ -1,8 +1,8 @@
 <x-filament-panels::page>
     <style>
-        .trend-up { color: #16a34a; font-weight: 700; }
-        .trend-down { color: #dc2626; font-weight: 700; }
-        .trend-flat { color: #8b5e3c; font-weight: 600; }
+        .trend-up { color: var(--status-success); font-weight: 700; }
+        .trend-down { color: var(--status-danger); font-weight: 700; }
+        .trend-flat { color: var(--brand-600); font-weight: 600; }
     </style>
 
     <div style="max-width: 1200px; margin: 0 auto;">
