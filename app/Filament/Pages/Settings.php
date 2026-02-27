@@ -53,6 +53,7 @@ class Settings extends Page
             'send_order_emails' => Setting::get('send_order_emails', '1') === '1',
             'send_review_followup_emails' => Setting::get('send_review_followup_emails', '1') === '1',
             'admin_notification_email' => Setting::get('admin_notification_email', ''),
+            'send_repeat_reminders' => Setting::get('send_repeat_reminders', '0') === '1',
 
             // PayPal Invoice Settings
             'paypal_template_id' => Setting::get('paypal_template_id', ''),
@@ -194,6 +195,9 @@ class Settings extends Page
                         Toggle::make('send_review_followup_emails')
                             ->label('Send review follow-up emails')
                             ->helperText('Send customers a follow-up email asking for a review after order completion.'),
+                        Toggle::make('send_repeat_reminders')
+                            ->label('Send repeat order reminders')
+                            ->helperText('Automatically email customers ~30 days after their last order with a friendly reorder reminder.'),
                         TextInput::make('admin_notification_email')
                             ->label('Admin Notification Email')
                             ->email()
@@ -236,6 +240,7 @@ class Settings extends Page
         Setting::set('send_order_emails', ($data['send_order_emails'] ?? true) ? '1' : '0');
         Setting::set('send_review_followup_emails', ($data['send_review_followup_emails'] ?? true) ? '1' : '0');
         Setting::set('admin_notification_email', $data['admin_notification_email'] ?? '');
+        Setting::set('send_repeat_reminders', ($data['send_repeat_reminders'] ?? false) ? '1' : '0');
 
         Notification::make()
             ->title('Settings saved')

@@ -978,6 +978,32 @@
                         <label class="form-label" for="order-phone">Phone</label>
                         <input type="tel" id="order-phone" class="form-input" x-model="form.customer_phone" @input="formatPhone" placeholder="(555) 123-4567" required>
                     </div>
+                    <div class="form-group">
+                        <label class="form-label" for="order-birthday">Birthday <span style="font-weight: 400; text-transform: none; opacity: 0.6;">(optional — for special treats! 🎂)</span></label>
+                        <div style="display: flex; gap: 8px;">
+                            <select id="order-birthday-month" class="form-input" x-model="form.birthday_month" style="flex: 1;">
+                                <option value="">Month</option>
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                            <select id="order-birthday-day" class="form-input" x-model="form.birthday_day" style="flex: 1;">
+                                <option value="">Day</option>
+                                <template x-for="d in 31" :key="d">
+                                    <option :value="String(d).padStart(2, '0')" x-text="d"></option>
+                                </template>
+                            </select>
+                        </div>
+                    </div>
 
                     <h3 class="form-section-title" style="margin-top: 24px;">Fulfillment</h3>
 
@@ -1162,6 +1188,7 @@
                     <input type="hidden" name="customer_name" :value="form.customer_name">
                     <input type="hidden" name="customer_email" :value="form.customer_email">
                     <input type="hidden" name="customer_phone" :value="form.customer_phone">
+                    <input type="hidden" name="birthday" :value="(form.birthday_month && form.birthday_day) ? ('2000-' + form.birthday_month + '-' + form.birthday_day) : ''">
                     <input type="hidden" name="fulfillment_type" :value="fulfillment">
                     <input type="hidden" name="delivery_address" :value="form.delivery_address">
                     <input type="hidden" name="delivery_zip" :value="form.delivery_zip">
@@ -1496,6 +1523,8 @@
                     customer_name: '',
                     customer_email: '',
                     customer_phone: '',
+                    birthday_month: '',
+                    birthday_day: '',
                     delivery_address: '',
                     delivery_zip: '',
                     requested_date: '',
@@ -1504,6 +1533,13 @@
                 },
 
                 init() {
+                    // Check for reorder param
+                    const params = new URLSearchParams(window.location.search);
+                    const reorderId = params.get('reorder');
+                    if (reorderId) {
+                        this.loadReorder(reorderId);
+                    }
+
                     // Load favorites if we have a stored email
                     if (this.favoritesEmail) {
                         this.loadFavorites(this.favoritesEmail);
@@ -1516,6 +1552,32 @@
                             this.loadFavorites(val);
                         }
                     });
+                },
+
+                async loadReorder(orderId) {
+                    try {
+                        const res = await fetch(`/order/reorder/${orderId}`);
+                        if (!res.ok) return;
+                        const data = await res.json();
+
+                        // Prefill customer info
+                        this.form.customer_name = data.customer_name || '';
+                        this.form.customer_email = data.customer_email || '';
+                        this.form.customer_phone = data.customer_phone || '';
+
+                        // Add items to cart
+                        for (const item of data.items) {
+                            this.cart.push({
+                                id: item.product_id,
+                                name: item.product_name,
+                                price: parseFloat(item.unit_price),
+                                quantity: item.quantity,
+                                selections: item.selections || null,
+                            });
+                        }
+                    } catch (e) {
+                        console.warn('Could not load reorder data', e);
+                    }
                 },
 
                 async loadFavorites(email) {
@@ -1748,6 +1810,7 @@
                         customer_name: this.form.customer_name,
                         customer_email: this.form.customer_email,
                         customer_phone: this.form.customer_phone,
+                        birthday: (this.form.birthday_month && this.form.birthday_day) ? ('2000-' + this.form.birthday_month + '-' + this.form.birthday_day) : null,
                         fulfillment_type: this.fulfillment,
                         delivery_address: this.form.delivery_address,
                         delivery_zip: this.form.delivery_zip,

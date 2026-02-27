@@ -39,6 +39,37 @@
             color: rgba(245,230,208,0.35);
         }
 
+        /* ═══ CATEGORY FILTERS ═══ */
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 40px 20px 0;
+            background: #1c1410;
+        }
+        .filter-btn {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 15px;
+            padding: 8px 24px;
+            border-radius: 24px;
+            border: 1px solid rgba(212,165,116,0.25);
+            background: transparent;
+            color: rgba(245,230,208,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: capitalize;
+        }
+        .filter-btn:hover {
+            border-color: rgba(212,165,116,0.5);
+            color: var(--cream);
+        }
+        .filter-btn.active {
+            background: rgba(212,165,116,0.15);
+            border-color: var(--golden);
+            color: var(--golden);
+        }
+
         /* ═══ SECTION HEAD ═══ */
         .section-head {
             text-align: center; margin-bottom: 60px;
@@ -58,7 +89,7 @@
 
         /* ═══ FRESH FROM THE OVEN ═══ */
         .fresh-oven {
-            padding: 80px 20px 100px;
+            padding: 40px 20px 100px;
             position: relative; overflow: hidden;
             background: #1c1410;
         }
@@ -70,13 +101,6 @@
                 repeating-linear-gradient(88deg, transparent, rgba(60,40,25,0.04) 2px, transparent 5px),
                 radial-gradient(ellipse at 50% 50%, rgba(244,200,122,0.04), transparent 50%);
             pointer-events: none;
-        }
-        .fresh-subtitle {
-            text-align: center;
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic; font-size: 17px;
-            color: rgba(245,230,208,0.35);
-            margin-top: -32px; margin-bottom: 56px;
         }
 
         .ft-container {
@@ -271,6 +295,7 @@
             overflow: hidden;
             position: relative;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
         }
         .ft-item:hover {
             transform: scale(1.03); z-index: 5;
@@ -285,11 +310,6 @@
             align-items: center; justify-content: center; gap: 6px;
             background: radial-gradient(circle, rgba(212,165,116,0.04), transparent 60%), #1a1208;
         }
-        .ft-item .ft-ph .ph-emoji { font-size: 40px; }
-        .ft-item .ft-ph .ph-text {
-            font-family: 'Caveat', cursive; font-size: 14px;
-            color: rgba(245,230,208,0.25);
-        }
         .ft-item .ft-overlay {
             position: absolute; bottom: 0; left: 0; right: 0;
             padding: 32px 14px 12px;
@@ -299,6 +319,55 @@
             font-family: 'Caveat', cursive; font-size: 18px; color: var(--cream);
         }
         .ft-item.ft-hero { grid-row: span 2; }
+
+        /* ═══ LIGHTBOX ═══ */
+        .lightbox-overlay {
+            position: fixed; inset: 0;
+            background: rgba(10, 6, 3, 0.92);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            cursor: pointer;
+        }
+        .lightbox-overlay img {
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            cursor: default;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px; right: 24px;
+            font-size: 32px;
+            color: rgba(245,230,208,0.6);
+            cursor: pointer;
+            background: none; border: none;
+            font-family: 'Cormorant Garamond', serif;
+            transition: color 0.2s;
+        }
+        .lightbox-close:hover { color: var(--cream); }
+        .lightbox-caption {
+            position: absolute;
+            bottom: 24px; left: 0; right: 0;
+            text-align: center;
+            font-family: 'Caveat', cursive;
+            font-size: 22px;
+            color: rgba(245,230,208,0.6);
+        }
+
+        /* ═══ EMPTY STATE ═══ */
+        .gallery-empty {
+            text-align: center;
+            padding: 80px 20px;
+            color: rgba(245,230,208,0.3);
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 18px;
+        }
 
         /* ═══ SCROLL REVEAL ═══ */
         .reveal {
@@ -327,65 +396,98 @@
         <p class="hero-sub">A peek into our kitchen and what's baking today.</p>
     </section>
 
-    {{-- ═══ GALLERY ═══ --}}
-    <section class="fresh-oven">
-        <div class="ft-container reveal">
-            <div class="flour-patch fp1"></div>
-            <div class="flour-patch fp2"></div>
-            <div class="flour-patch fp3"></div>
-            <div class="flour-patch fp4"></div>
-            <div class="flour-patch fp5"></div>
-
-            <div class="flour-specks">
-                <span></span><span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span><span></span>
-            </div>
-
-            <div class="flour-trail"></div>
-            <div class="flour-swipe"></div>
-            <div class="flour-handprint"></div>
-
-            <div class="ft-grid">
-                <div class="ft-item ft-hero">
-                    <img src="/images/product-sourdough-boule.jpg" alt="Sourdough Boule">
-                    <div class="ft-overlay"><span class="ft-caption">The signature boule</span></div>
-                </div>
-                <div class="ft-item">
-                    <img src="/images/product-chocolate-sourdough.jpg" alt="Chocolate Sourdough Loaf">
-                    <div class="ft-overlay"><span class="ft-caption">Dark chocolate sourdough</span></div>
-                </div>
-                <div class="ft-item">
-                    <img src="/images/product-chocolate-chip.jpg" alt="Chocolate Chip Sourdough">
-                    <div class="ft-overlay"><span class="ft-caption">Chocolate chip</span></div>
-                </div>
-                <div class="ft-item">
-                    <img src="/images/product-chocolate-almond-chip.jpg" alt="Chocolate Almond Chip Sourdough">
-                    <div class="ft-overlay"><span class="ft-caption">Chocolate almond chip</span></div>
-                </div>
-                <div class="ft-item">
-                    <img src="/images/product-honey-wheat-sandwich.jpg" alt="Honey Wheat Sandwich Loaf">
-                    <div class="ft-overlay"><span class="ft-caption">Honey wheat sandwich</span></div>
-                </div>
-                <div class="ft-item">
-                    <img src="/images/product-4pack-sourdough-loaves.jpg" alt="4-Pack Sourdough Loaves">
-                    <div class="ft-overlay"><span class="ft-caption">The 4-pack</span></div>
-                </div>
-                <div class="ft-item">
-                    <img src="/images/product-cheddar-cheese-loaf.jpg" alt="Cheddar Cheese Loaf">
-                    <div class="ft-overlay"><span class="ft-caption">Cheddar cheese loaf</span></div>
-                </div>
-                <div class="ft-item">
-                    <img src="/images/product-banana-bread.jpg" alt="Banana Bread">
-                    <div class="ft-overlay"><span class="ft-caption">Banana bread</span></div>
-                </div>
-            </div>
+    {{-- ═══ CATEGORY FILTERS ═══ --}}
+    @if($categories->count() > 1)
+        <div class="gallery-filters" x-data>
+            <button class="filter-btn active" @click="$dispatch('filter-gallery', { category: 'all' }); document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); $el.classList.add('active')">All</button>
+            @foreach($categories as $cat)
+                <button class="filter-btn" @click="$dispatch('filter-gallery', { category: '{{ $cat }}' }); document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); $el.classList.add('active')">{{ ucfirst($cat) }}</button>
+            @endforeach
         </div>
+    @endif
+
+    {{-- ═══ GALLERY ═══ --}}
+    <section class="fresh-oven" x-data="galleryApp()">
+        @if($photos->count())
+            <div class="ft-container reveal">
+                <div class="flour-patch fp1"></div>
+                <div class="flour-patch fp2"></div>
+                <div class="flour-patch fp3"></div>
+                <div class="flour-patch fp4"></div>
+                <div class="flour-patch fp5"></div>
+
+                <div class="flour-specks">
+                    <span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+
+                <div class="flour-trail"></div>
+                <div class="flour-swipe"></div>
+                <div class="flour-handprint"></div>
+
+                <div class="ft-grid">
+                    @foreach($photos as $index => $photo)
+                        <div
+                            class="ft-item {{ $index === 0 ? 'ft-hero' : '' }}"
+                            data-category="{{ $photo->category }}"
+                            @click="openLightbox('{{ $photo->image_path ? Storage::disk('public')->url($photo->image_path) : '' }}', '{{ addslashes($photo->title ?? '') }}')"
+                            x-show="activeCategory === 'all' || activeCategory === '{{ $photo->category }}'"
+                            x-transition
+                        >
+                            @if($photo->image_path)
+                                <img src="{{ Storage::disk('public')->url($photo->image_path) }}" alt="{{ $photo->title ?? 'Gallery photo' }}">
+                            @else
+                                <div class="ft-ph">
+                                    <span class="ph-text">Photo coming soon</span>
+                                </div>
+                            @endif
+                            @if($photo->title)
+                                <div class="ft-overlay"><span class="ft-caption">{{ $photo->title }}</span></div>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @else
+            <div class="gallery-empty">
+                <p>Photos coming soon&hellip;</p>
+            </div>
+        @endif
+
+        {{-- ═══ LIGHTBOX ═══ --}}
+        <template x-if="lightboxOpen">
+            <div class="lightbox-overlay" @click.self="lightboxOpen = false" @keydown.escape.window="lightboxOpen = false">
+                <button class="lightbox-close" @click="lightboxOpen = false">&times;</button>
+                <img :src="lightboxSrc" :alt="lightboxCaption">
+                <div class="lightbox-caption" x-text="lightboxCaption" x-show="lightboxCaption"></div>
+            </div>
+        </template>
     </section>
 @endsection
 
 @section('scripts')
     <script>
+        function galleryApp() {
+            return {
+                activeCategory: 'all',
+                lightboxOpen: false,
+                lightboxSrc: '',
+                lightboxCaption: '',
+                init() {
+                    window.addEventListener('filter-gallery', (e) => {
+                        this.activeCategory = e.detail.category;
+                    });
+                },
+                openLightbox(src, caption) {
+                    if (!src) return;
+                    this.lightboxSrc = src;
+                    this.lightboxCaption = caption;
+                    this.lightboxOpen = true;
+                }
+            };
+        }
+
         // Scroll reveal
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
