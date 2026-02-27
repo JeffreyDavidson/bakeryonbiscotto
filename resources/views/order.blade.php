@@ -487,6 +487,56 @@
         .form-input::placeholder { color: #8b7355; }
         textarea.form-input { resize: vertical; min-height: 80px; }
 
+        .coupon-field {
+            display: flex;
+            border: 1.5px solid var(--golden);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .coupon-field input {
+            flex: 1;
+            padding: 12px 16px;
+            border: none !important;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: var(--dark);
+            background: var(--light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 0;
+        }
+        .coupon-field input::placeholder {
+            text-transform: none;
+            color: #8b7355;
+        }
+        .coupon-field button {
+            padding: 12px 24px;
+            background: var(--dark);
+            color: var(--cream);
+            border: none;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+        .coupon-field button:hover:not(:disabled) {
+            background: var(--warm);
+        }
+        .coupon-field button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .coupon-field .coupon-remove {
+            background: #dc2626;
+            color: white;
+        }
+        .coupon-field .coupon-remove:hover {
+            background: #b91c1c;
+        }
+
         .toggle-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1246,13 +1296,13 @@
                             Have a coupon code?
                         </button>
                         <div x-show="couponOpen" x-transition style="margin-top: 10px;">
-                            <div style="display: flex; gap: 0; border: 1px solid var(--golden); border-radius: 10px; overflow: hidden;">
-                                <input type="text" x-model="couponCode" placeholder="Enter coupon code" style="flex: 1; padding: 12px 16px; border: none; outline: none; font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--dark); background: var(--light); text-transform: uppercase; letter-spacing: 0.5px;" :disabled="couponApplied">
-                                <button type="button" x-show="!couponApplied" @click="applyCoupon()" :disabled="couponLoading || !couponCode.trim()" style="padding: 12px 24px; background: var(--dark); color: var(--cream); border: none; font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.2s;" :style="(couponLoading || !couponCode.trim()) ? 'opacity: 0.5; cursor: not-allowed;' : ''" onmouseover="if(!this.disabled)this.style.background='var(--warm)'" onmouseout="this.style.background='var(--dark)'">
+                            <div class="coupon-field">
+                                <input type="text" x-model="couponCode" placeholder="Enter coupon code" :disabled="couponApplied">
+                                <button type="button" x-show="!couponApplied" @click="applyCoupon()" :disabled="couponLoading || !couponCode.trim()">
                                     <span x-show="!couponLoading">Apply</span>
                                     <span x-show="couponLoading">...</span>
                                 </button>
-                                <button type="button" x-show="couponApplied" @click="removeCoupon()" style="padding: 12px 24px; background: #dc2626; color: white; border: none; font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
+                                <button type="button" class="coupon-remove" x-show="couponApplied" @click="removeCoupon()">
                                     Remove
                                 </button>
                             </div>
