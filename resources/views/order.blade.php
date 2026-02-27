@@ -495,7 +495,7 @@
         }
         .coupon-field input {
             flex: 1;
-            padding: 12px 16px;
+            padding: 10px 12px;
             border: none !important;
             outline: none;
             font-family: 'Inter', sans-serif;
