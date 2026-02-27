@@ -4,7 +4,7 @@
     $initial = strtoupper(substr($name, 0, 1));
     $bg = $context === 'dark'
         ? 'rgba(255,255,255,0.15)'
-        : 'linear-gradient(135deg, #8b5e3c, #6b4c3b)';
+        : 'linear-gradient(135deg, var(--brand-600), var(--brand-700))';
     $border = $context === 'dark'
         ? '2px solid rgba(255,255,255,0.3)'
         : 'none';

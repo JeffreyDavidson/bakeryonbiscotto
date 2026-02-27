@@ -2,12 +2,12 @@
 
 @php
     $variants = match($variant) {
-        'primary' => 'background: linear-gradient(135deg, #8b5e3c, #6b4c3b); color: white; border: none;',
-        'secondary' => 'background: #e8d0b0; color: #3d2314; border: none;',
-        'ghost' => 'background: #fdf8f2; color: #6b4c3b; border: 1px solid #e8d0b0;',
-        'dark' => 'background: linear-gradient(135deg, #3d2314, #6b4c3b); color: white; border: none;',
+        'primary' => 'background: linear-gradient(135deg, var(--brand-600), var(--brand-700)); color: white; border: none;',
+        'secondary' => 'background: var(--brand-200); color: var(--brand-900); border: none;',
+        'ghost' => 'background: var(--brand-50); color: var(--brand-700); border: 1px solid var(--brand-200);',
+        'dark' => 'background: linear-gradient(135deg, var(--brand-900), var(--brand-700)); color: white; border: none;',
         'danger' => 'background: #ef4444; color: white; border: none;',
-        default => 'background: linear-gradient(135deg, #8b5e3c, #6b4c3b); color: white; border: none;',
+        default => 'background: linear-gradient(135deg, var(--brand-600), var(--brand-700)); color: white; border: none;',
     };
     $sizing = match($size) {
         'lg' => 'padding: 0.625rem 1.25rem; font-size: 0.875rem;',
