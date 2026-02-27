@@ -11,6 +11,7 @@ Route::get('/', function() {
     $approvedReviews = \App\Models\Review::approved()
         ->when($featuredReview, fn($q) => $q->where('id', '!=', $featuredReview->id))
         ->inRandomOrder()
+        ->take(4)
         ->get();
     if (!$featuredReview && $approvedReviews->count()) {
         $featuredReview = $approvedReviews->shift();
