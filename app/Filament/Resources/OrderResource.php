@@ -167,6 +167,15 @@ class OrderResource extends Resource
                     })
                     ->formatStateUsing(fn (string $state, Order $record) => $record->is_overdue ? '⚠️ Overdue' : ucfirst($state))
                     ->toggleable(),
+                Tables\Columns\TextColumn::make('paypal_invoice_url')
+                    ->label('Invoice')
+                    ->formatStateUsing(fn () => 'View Invoice')
+                    ->url(fn (Order $record) => $record->paypal_invoice_url, shouldOpenInNewTab: true)
+                    ->color('primary')
+                    ->icon('heroicon-o-document-text')
+                    ->visible(fn () => true)
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state) => match ($state) {
