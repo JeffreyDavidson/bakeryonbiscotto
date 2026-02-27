@@ -166,7 +166,7 @@
                 radial-gradient(ellipse at 50% 0%, rgba(244,200,122,0.06) 0%, transparent 50%),
                 radial-gradient(ellipse at 20% 30%, rgba(139,94,60,0.05) 0%, transparent 40%),
                 radial-gradient(ellipse at 80% 70%, rgba(139,94,60,0.04) 0%, transparent 40%),
-                linear-gradient(180deg, #1a0f08 0%, #241508 10%, #1e1209 90%, #1a0f08 100%);
+                linear-gradient(180deg, var(--brand-900) 0%, var(--brand-900) 10%, var(--brand-900) 90%, var(--brand-900) 100%);
             overflow: hidden;
         }
         .menu-scene::before {

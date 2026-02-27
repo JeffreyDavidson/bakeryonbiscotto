@@ -138,7 +138,7 @@
             background-color: var(--white);
             background: var(--white);
         }
-        .form-input::placeholder { color: #8b7355; }
+        .form-input::placeholder { color: var(--brand-500); }
         textarea.form-input { resize: vertical; min-height: 130px; }
         .custom-select {
             user-select: none;
@@ -236,7 +236,7 @@
         }
 
         .error-msg {
-            color: #c0392b;
+            color: var(--status-danger);
             font-size: 0.8rem;
             margin-top: 4px;
         }

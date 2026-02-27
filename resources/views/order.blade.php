@@ -103,7 +103,7 @@
             background: rgba(255,255,255,0.95);
         }
         .favorite-btn.active {
-            color: #dc2626;
+            color: var(--status-danger);
             background: rgba(255,255,255,0.95);
         }
         .favorite-btn.active:hover {
@@ -298,7 +298,7 @@
             padding: 4px;
             transition: color 0.2s;
         }
-        .cart-item-remove:hover { color: #c0392b; }
+        .cart-item-remove:hover { color: var(--status-danger); }
 
         .cart-divider {
             height: 1px;
@@ -367,7 +367,7 @@
             border-color: var(--golden);
             box-shadow: 0 0 0 3px rgba(212,165,116,0.15);
         }
-        .form-input::placeholder { color: #8b7355; }
+        .form-input::placeholder { color: var(--brand-500); }
         textarea.form-input { resize: vertical; min-height: 80px; }
 
         .coupon-field {
@@ -392,7 +392,7 @@
         }
         .coupon-field input::placeholder {
             text-transform: none;
-            color: #8b7355;
+            color: var(--brand-500);
         }
         .coupon-field button {
             padding: 12px 24px;
@@ -414,7 +414,7 @@
             cursor: not-allowed;
         }
         .coupon-field .coupon-remove {
-            background: #dc2626;
+            background: var(--status-danger);
             color: white;
         }
         .coupon-field .coupon-remove:hover {
@@ -504,7 +504,7 @@
         .notice-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
 
         .error-msg {
-            color: #c0392b;
+            color: var(--status-danger);
             font-size: 0.82rem;
             margin-top: 4px;
         }
@@ -941,7 +941,7 @@
                                     <span>Delivery Fee</span>
                                     <span x-text="deliveryFee() === 0 ? 'Free' : '$' + deliveryFee().toFixed(2)"></span>
                                 </div>
-                                <div class="cart-row" x-show="couponDiscount > 0" style="color: #16a34a;">
+                                <div class="cart-row" x-show="couponDiscount > 0" style="color: var(--status-success);">
                                     <span>Discount <span x-show="couponLabel" x-text="'(' + couponLabel + ')'" style="font-size: 0.78rem;"></span></span>
                                     <span x-text="'-$' + couponDiscount.toFixed(2)"></span>
                                 </div>
@@ -1038,7 +1038,7 @@
                             </div>
                             <div x-show="deliveryError" class="notice" style="background: rgba(192,57,43,0.1);">
                                 <span class="notice-icon">⚠️</span>
-                                <span x-text="deliveryError" style="color: #c0392b;"></span>
+                                <span x-text="deliveryError" style="color: var(--status-danger);"></span>
                             </div>
                             <div x-show="deliveryTier && !deliveryCalcing && !deliveryError" class="notice">
                                 <span class="notice-icon">🚗</span>
@@ -1092,14 +1092,14 @@
                                 {{-- Time Slots --}}
                                 <template x-if="pendingDate && dateBlocked">
                                     <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(139,94,60,0.1);">
-                                        <p style="font-size: 0.9rem; font-weight: 600; color: #dc2626; text-align: center; padding: 12px; background: #fef2f2; border-radius: 8px;">
+                                        <p style="font-size: 0.9rem; font-weight: 600; color: var(--status-danger); text-align: center; padding: 12px; background: #fef2f2; border-radius: 8px;">
                                             This date is unavailable for orders. Please choose another day.
                                         </p>
                                     </div>
                                 </template>
                                 <template x-if="pendingDate && dateFull && !dateBlocked">
                                     <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(139,94,60,0.1);">
-                                        <p style="font-size: 0.9rem; font-weight: 600; color: #dc2626; text-align: center; padding: 12px; background: #fef2f2; border-radius: 8px; margin-bottom: 12px;">
+                                        <p style="font-size: 0.9rem; font-weight: 600; color: var(--status-danger); text-align: center; padding: 12px; background: #fef2f2; border-radius: 8px; margin-bottom: 12px;">
                                             FULL — This date has reached its order limit.
                                         </p>
                                         <template x-if="!waitlistSubmitted">
@@ -1119,13 +1119,13 @@
                                                     </button>
                                                 </div>
                                                 <template x-if="waitlistError">
-                                                    <p style="color: #dc2626; font-size: 0.8rem; margin-top: 8px; text-align: center;" x-text="waitlistError"></p>
+                                                    <p style="color: var(--status-danger); font-size: 0.8rem; margin-top: 8px; text-align: center;" x-text="waitlistError"></p>
                                                 </template>
                                             </div>
                                         </template>
                                         <template x-if="waitlistSubmitted">
                                             <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; text-align: center;">
-                                                <p style="font-size: 0.9rem; font-weight: 600; color: #16a34a;">
+                                                <p style="font-size: 0.9rem; font-weight: 600; color: var(--status-success);">
                                                     You're on the waitlist! We'll email you if a spot opens up.
                                                 </p>
                                             </div>
@@ -1213,8 +1213,8 @@
                                     Remove
                                 </button>
                             </div>
-                            <p x-show="couponError" x-text="couponError" style="color: #dc2626; font-size: 0.8rem; margin-top: 6px;"></p>
-                            <p x-show="couponApplied" style="color: #16a34a; font-size: 0.8rem; margin-top: 6px;">
+                            <p x-show="couponError" x-text="couponError" style="color: var(--status-danger); font-size: 0.8rem; margin-top: 6px;"></p>
+                            <p x-show="couponApplied" style="color: var(--status-success); font-size: 0.8rem; margin-top: 6px;">
                                 ✓ Coupon <strong x-text="couponCode"></strong> applied — <span x-text="couponLabel"></span>
                             </p>
                         </div>
