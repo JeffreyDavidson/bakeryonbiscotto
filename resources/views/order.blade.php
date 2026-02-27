@@ -497,11 +497,12 @@
             flex: 1;
             padding: 10px 12px;
             border: none !important;
+            border-right: 1.5px solid var(--golden) !important;
             outline: none;
             font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
             color: var(--dark);
-            background: var(--light);
+            background: var(--cream);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             border-radius: 0;
