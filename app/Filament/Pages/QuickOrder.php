@@ -383,6 +383,8 @@ class QuickOrder extends Page
                             ->minItems(1),
                         Placeholder::make('order_total_display')
                             ->label('')
+                            ->hiddenLabel()
+                            ->extraAttributes(['style' => 'margin-top:-3.25rem;pointer-events:none;'])
                             ->content(function (Get $get) use ($productPrices) {
                                 $items = $get('items') ?? [];
                                 $subtotal = 0;
