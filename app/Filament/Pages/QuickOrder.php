@@ -394,12 +394,12 @@ class QuickOrder extends Page
                                 }
                                 $itemCount = collect($items)->filter(fn ($i) => !empty($i['product_id']))->count();
                                 return new \Illuminate\Support\HtmlString(
-                                    '<div style="background:linear-gradient(135deg,#3d2314,#6b4c3b);border-radius:12px;padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;">'
-                                    . '<span style="color:#e8d0b0;font-size:0.875rem;font-weight:500;">'
+                                    '<div style="display:flex;justify-content:flex-end;align-items:center;gap:0.75rem;">'
+                                    . '<span style="color:#6b4c3b;font-size:0.875rem;">'
                                     . $itemCount . ' ' . ($itemCount === 1 ? 'item' : 'items')
                                     . '</span>'
-                                    . '<span style="color:white;font-size:1.5rem;font-weight:700;font-family:\'Playfair Display\',serif;">'
-                                    . 'Subtotal: $' . number_format($subtotal, 2)
+                                    . '<span style="background:linear-gradient(135deg,#3d2314,#6b4c3b);color:white;font-weight:700;font-size:1.25rem;padding:0.5rem 1.25rem;border-radius:10px;font-family:\'Playfair Display\',serif;">'
+                                    . '$' . number_format($subtotal, 2)
                                     . '</span>'
                                     . '</div>'
                                 );
