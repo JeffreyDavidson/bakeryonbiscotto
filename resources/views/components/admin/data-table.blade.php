@@ -3,7 +3,7 @@
 <table style="width: 100%; border-collapse: collapse;" {{ $attributes }}>
     @if(isset($head))
         <thead>
-            <tr style="background: #fdf8f2;">
+            <tr style="background: var(--brand-50);">
                 {{ $head }}
             </tr>
         </thead>
@@ -25,31 +25,31 @@
         text-align: left;
         font-size: 0.7rem;
         font-weight: 700;
-        color: #a08060;
+        color: var(--brand-500);
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        border-bottom: 1px solid #f3ebe0;
-        background: #fdf8f2;
+        border-bottom: 1px solid var(--brand-150);
+        background: var(--brand-50);
     }
     [data-admin-table] tbody td {
         padding: 0.75rem 1rem;
         vertical-align: middle;
         font-size: 0.875rem;
-        color: #4a3225;
+        color: var(--brand-800);
     }
     [data-admin-table] tbody tr {
-        border-bottom: 1px solid #f3ebe0;
+        border-bottom: 1px solid var(--brand-150);
         transition: background 0.1s;
     }
     [data-admin-table] tbody tr:last-child {
         border-bottom: none;
     }
     [data-admin-table] tbody tr:hover {
-        background: #fdf8f2;
+        background: var(--brand-50);
     }
     [data-admin-table] tfoot td {
         padding: 1rem;
-        border-top: 2px solid #e8d0b0;
+        border-top: 2px solid var(--brand-200);
     }
 </style>
 @endonce

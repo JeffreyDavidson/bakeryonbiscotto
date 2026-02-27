@@ -1,3 +1,25 @@
+:root {
+  --brand-900: #3d2314;    /* darkest brown - primary text, backgrounds */
+  --brand-800: #4a3225;    /* hover states */
+  --brand-700: #6b4c3b;    /* secondary brown */
+  --brand-600: #8b5e3c;    /* medium brown */
+  --brand-500: #a08060;    /* muted text */
+  --brand-400: #c4a882;    /* borders, lighter accents */
+  --brand-300: #d4a574;    /* accent/gold */
+  --brand-200: #e8d0b0;    /* light borders, dividers */
+  --brand-150: #f3ebe0;    /* subtle backgrounds */
+  --brand-100: #f5e6d0;    /* light fill */
+  --brand-50: #fdf8f2;     /* lightest background */
+  --brand-white: #FFFFFF;
+  --accent-gold: #d4a574;
+  --accent-gold-light: #f5e6d0;
+  --status-success: #16a34a;
+  --status-danger: #dc2626;
+  --status-warning: #d97706;
+  --status-warning-dark: #92400e;
+  --status-danger-dark: #991b1b;
+}
+
 /* Bakery on Biscotto - Filament Admin Theme */
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap");
 
@@ -9,10 +31,10 @@
 .fi-topbar-database-notifications-btn .fi-icon {
     width: 1.75rem !important;
     height: 1.75rem !important;
-    color: #6b4c3b !important;
+    color: var(--brand-700) !important;
 }
 .fi-topbar-database-notifications-btn:hover .fi-icon {
-    color: #3d2314 !important;
+    color: var(--brand-900) !important;
 }
 /* Badge — small, high-contrast */
 .fi-topbar-database-notifications-btn .fi-badge {
@@ -27,9 +49,9 @@
     line-height: 1.1rem !important;
     text-align: center !important;
     border-radius: 9999px !important;
-    background: #3d2314 !important;
+    background: var(--brand-900) !important;
     color: #FFFFFF !important;
-    border: 1.5px solid #fdf8f2 !important;
+    border: 1.5px solid var(--brand-50) !important;
     box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
     --tw-ring-shadow: none !important;
 }
@@ -38,12 +60,12 @@
 /* Panel background */
 .fi-no-database-notifications-modal .fi-modal-window,
 .fi-modal[id*="database-notifications"] .fi-modal-window {
-    background: #fdf8f2 !important;
+    background: var(--brand-50) !important;
 }
 /* Panel header — dark brown gradient */
 .fi-no-database-notifications-modal .fi-modal-header,
 .fi-modal[id*="database-notifications"] .fi-modal-header {
-    background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
+    background: linear-gradient(135deg, var(--brand-900), var(--brand-700)) !important;
     border-bottom: none !important;
     padding: 1rem 1.25rem !important;
 }
@@ -64,18 +86,18 @@
 /* Mark all as read / Clear links */
 .fi-no-database-notifications-modal .fi-link,
 .fi-modal[id*="database-notifications"] .fi-link {
-    color: #d4a574 !important;
+    color: var(--accent-gold) !important;
     font-weight: 600 !important;
     font-size: 0.8rem !important;
 }
 .fi-no-database-notifications-modal .fi-link:hover,
 .fi-modal[id*="database-notifications"] .fi-link:hover {
-    color: #e8d0b0 !important;
+    color: var(--brand-200) !important;
 }
 /* Notification list — replace gray dividers with tan */
 .fi-no-database .fi-modal-content {
-    --tw-divide-color: #e8d0b0 !important;
-    border-color: #e8d0b0 !important;
+    --tw-divide-color: var(--brand-200) !important;
+    border-color: var(--brand-200) !important;
 }
 /* Individual notification rows — ALL same color */
 .fi-no-database .fi-modal-content > * {
@@ -94,45 +116,45 @@
 }
 /* Kill color-tinted ring */
 .fi-no-notification.fi-color {
-    --tw-ring-color: #e8d0b0 !important;
+    --tw-ring-color: var(--brand-200) !important;
 }
 /* Unread indicator — bakery brown left bar */
 .fi-no-notification-unread-ctn::before {
-    background: #8b5e3c !important;
+    background: var(--brand-600) !important;
     width: 3px !important;
 }
 /* Notification icon — bakery brown */
 .fi-no-database .fi-no-notification-icon {
-    color: #8b5e3c !important;
+    color: var(--brand-600) !important;
 }
 /* Notification title */
 .fi-no-database .fi-no-notification-title {
-    color: #3d2314 !important;
+    color: var(--brand-900) !important;
     font-weight: 600 !important;
     font-size: 0.875rem !important;
 }
 /* Notification body text */
 .fi-no-database .fi-no-notification-body {
-    color: #6b4c3b !important;
+    color: var(--brand-700) !important;
     font-size: 0.8125rem !important;
 }
 /* Notification date/time */
 .fi-no-database .fi-no-notification-date {
-    color: #a08060 !important;
+    color: var(--brand-500) !important;
     font-size: 0.75rem !important;
 }
 /* Dismiss button */
 .fi-no-database .fi-icon-btn {
-    color: #c4a882 !important;
+    color: var(--brand-400) !important;
 }
 .fi-no-database .fi-icon-btn:hover {
-    color: #3d2314 !important;
+    color: var(--brand-900) !important;
 }
 /* Badge in header */
 .fi-no-database-notifications-modal .fi-badge,
 .fi-modal[id*="database-notifications"] .fi-modal-header .fi-badge {
-    background: #d4a574 !important;
-    color: #3d2314 !important;
+    background: var(--accent-gold) !important;
+    color: var(--brand-900) !important;
     font-weight: 700 !important;
     --tw-ring-shadow: none !important;
 }
@@ -140,7 +162,7 @@
 /* ===== GLOBAL ACTION BUTTONS ===== */
 /* Primary action buttons — dark brown gradient */
 .fi-btn.fi-color-primary {
-    background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
+    background: linear-gradient(135deg, var(--brand-900), var(--brand-700)) !important;
     color: #FFFFFF !important;
     border: none !important;
     --tw-ring-shadow: 0 0 0 0 transparent !important;
@@ -152,23 +174,23 @@
 }
 /* Gray/secondary action buttons — white with tan border */
 .fi-btn.fi-color-gray {
-    border: 1px solid #e8d0b0 !important;
-    color: #6b4c3b !important;
+    border: 1px solid var(--brand-200) !important;
+    color: var(--brand-700) !important;
     background: #FFFFFF !important;
     --tw-ring-shadow: 0 0 0 0 transparent !important;
     box-shadow: none !important;
 }
 .fi-btn.fi-color-gray:hover {
-    background: #f5e6d0 !important;
+    background: var(--brand-100) !important;
     box-shadow: none !important;
 }
 
 /* ===== SHARED: Dark gradient header bar ===== */
 /* Used by: Filament tables (.fi-ta-header-ctn), x-admin.card, x-admin.card-header */
 [data-admin-gradient-header] {
-    background: linear-gradient(135deg, #3d2314, #6b4c3b);
+    background: linear-gradient(135deg, var(--brand-900), var(--brand-700));
     padding: 1rem 1.5rem;
-    border-bottom: 1px solid #e8d0b0;
+    border-bottom: 1px solid var(--brand-200);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -182,7 +204,7 @@
 
 /* Login page */
 .fi-simple-layout {
-    background: #FDF8F2 !important;
+    background: var(--brand-50) !important;
 }
 .fi-simple-main {
     border: 1px solid rgba(212,165,116,0.2) !important;
@@ -192,12 +214,12 @@
 
 /* Main content area */
 .fi-main {
-    background: #FDF8F2 !important;
+    background: var(--brand-50) !important;
 }
 
 /* Sidebar */
 .fi-sidebar {
-    background: #3D2314 !important;
+    background: var(--brand-900) !important;
     border-right: 1px solid rgba(212,165,116,0.1) !important;
 }
 .fi-sidebar-header {
@@ -237,29 +259,29 @@
     border-color: #F5D5A8 !important;
 }
 .fi-sidebar-item-badge-ctn .fi-badge span {
-    color: #3D2314 !important;
+    color: var(--brand-900) !important;
     font-weight: 700 !important;
 }
 
 /* Sidebar group labels */
 .fi-sidebar-group-label {
-    color: #D4A574 !important;
+    color: var(--accent-gold) !important;
 }
 
 /* ===== TOPBAR ===== */
 .fi-topbar, .fi-topbar nav {
-    background: #FDF8F2 !important;
+    background: var(--brand-50) !important;
     border-bottom: 1px solid rgba(212,165,116,0.15) !important;
 }
 
 /* ===== PAGE HEADINGS ===== */
 .fi-header-heading {
     font-family: "Playfair Display", serif !important;
-    color: #3D2314 !important;
+    color: var(--brand-900) !important;
 }
 .fi-breadcrumbs-item span,
 .fi-breadcrumbs-item a {
-    color: #8B5E3C !important;
+    color: var(--brand-600) !important;
 }
 
 /* ===== TABLE ===== */
@@ -275,14 +297,14 @@
 /* Dark brown gradient — single row: title left, search+filters right */
 /* Matches x-admin.card gradient header: 1rem 1.5rem padding, same gradient */
 .fi-ta-header-ctn {
-    background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
+    background: linear-gradient(135deg, var(--brand-900), var(--brand-700)) !important;
     border-radius: 11px 11px 0 0 !important;
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
     padding: 1rem 1.5rem !important;
     gap: 1rem !important;
-    border-bottom: 1px solid #e8d0b0 !important;
+    border-bottom: 1px solid var(--brand-200) !important;
 }
 .fi-ta-header {
     background: transparent !important;
@@ -318,8 +340,8 @@
 
 /* Table header */
 .fi-ta-header-cell {
-    background: #F5E6D0 !important;
-    color: #3D2314 !important;
+    background: var(--brand-100) !important;
+    color: var(--brand-900) !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
     font-size: 0.7rem !important;
@@ -328,12 +350,12 @@
 }
 /* Also target th directly */
 table thead th {
-    background: #F5E6D0 !important;
-    color: #3D2314 !important;
+    background: var(--brand-100) !important;
+    color: var(--brand-900) !important;
 }
 /* Full-width border under entire header row */
 table thead tr {
-    border-bottom: 2px solid #D4A574 !important;
+    border-bottom: 2px solid var(--accent-gold) !important;
 }
 
 /* Table rows */
@@ -347,7 +369,7 @@ table thead tr {
 
 /* Table cell text */
 .fi-ta-text {
-    color: #3D2314 !important;
+    color: var(--brand-900) !important;
 }
 
 /* Status badges in table */
@@ -379,7 +401,7 @@ table thead tr {
     background: rgba(255,255,255,0.95) !important;
     box-shadow: none !important;
     outline: none !important;
-    color: #3D2314 !important;
+    color: var(--brand-900) !important;
 }
 .fi-ta-search-field input:focus {
     border-color: rgba(255,255,255,0.5) !important;
@@ -388,7 +410,7 @@ table thead tr {
 }
 /* Search icon */
 .fi-ta-header-ctn .fi-ta-search-field .fi-icon {
-    color: #8B5E3C !important;
+    color: var(--brand-600) !important;
 }
 /* Filter/column toggle icons — white on dark */
 .fi-ta-header-ctn .fi-icon-btn {
@@ -399,8 +421,8 @@ table thead tr {
 }
 /* Filter count badge */
 .fi-ta-header-ctn .fi-badge {
-    background: #D4A574 !important;
-    color: #3D2314 !important;
+    background: var(--accent-gold) !important;
+    color: var(--brand-900) !important;
 }
 
 /* Pagination footer */
@@ -438,7 +460,7 @@ table thead tr {
 
 /* ===== FORMS ===== */
 .fi-fo-field-wrp label {
-    color: #3D2314 !important;
+    color: var(--brand-900) !important;
     font-weight: 600 !important;
 }
 .fi-input {
@@ -446,26 +468,26 @@ table thead tr {
     border-radius: 8px !important;
 }
 .fi-input:focus-within {
-    border-color: #D4A574 !important;
+    border-color: var(--accent-gold) !important;
     box-shadow: 0 0 0 3px rgba(212,165,116,0.15) !important;
 }
 
 /* Helper text */
 .fi-fo-field-wrp .fi-fo-field-wrp-helper-text {
-    color: #a08060 !important;
+    color: var(--brand-500) !important;
 }
 
 /* Placeholder text */
 .fi-input input::placeholder,
 .fi-input textarea::placeholder {
-    color: #c4a882 !important;
+    color: var(--brand-400) !important;
 }
 
 /* ===== SECTIONS (Form Panels) ===== */
 .fi-section {
     background: #FFFFFF !important;
     overflow: hidden !important;
-    border-color: #e8d0b0 !important;
+    border-color: var(--brand-200) !important;
     --tw-ring-color: rgba(232,208,176,1) !important;
     --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color) !important;
     --tw-shadow: none !important;
@@ -475,23 +497,23 @@ table thead tr {
     --tw-ring-shadow: 0 0 0 0 transparent !important;
     --tw-ring-color: transparent !important;
     --tw-shadow: 0 0 #0000 !important;
-    box-shadow: 0 0 0 1px #e8d0b0 !important;
+    box-shadow: 0 0 0 1px var(--brand-200) !important;
     border: none !important;
 }
 .fi-input-wrp:focus-within {
-    box-shadow: 0 0 0 1px #D4A574, 0 0 0 4px rgba(212,165,116,0.15) !important;
+    box-shadow: 0 0 0 1px var(--accent-gold), 0 0 0 4px rgba(212,165,116,0.15) !important;
     --tw-ring-shadow: 0 0 0 0 transparent !important;
     --tw-ring-color: transparent !important;
 }
 /* Tan divider between prefix icon and input */
 .fi-input-wrp .fi-input-wrp-prefix.fi-input-wrp-prefix-has-content {
-    border-inline-end: 1px solid #e8d0b0 !important;
-    border-right: 1px solid #e8d0b0 !important;
+    border-inline-end: 1px solid var(--brand-200) !important;
+    border-right: 1px solid var(--brand-200) !important;
     padding-inline-end: 0.75rem !important;
 }
 .fi-input-wrp .fi-input-wrp-suffix {
-    border-inline-start: 1px solid #e8d0b0 !important;
-    border-left: 1px solid #e8d0b0 !important;
+    border-inline-start: 1px solid var(--brand-200) !important;
+    border-left: 1px solid var(--brand-200) !important;
 }
 /* Input field inside wrapper — no border or rounding, wrapper handles it */
 .fi-input-wrp .fi-input {
@@ -510,7 +532,7 @@ table thead tr {
 }
 /* Section header — dark brown gradient matching table headers */
 .fi-section-header {
-    background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
+    background: linear-gradient(135deg, var(--brand-900), var(--brand-700)) !important;
     border-bottom: none !important;
     padding: 0.875rem 1.25rem !important;
 }
@@ -541,18 +563,18 @@ table thead tr {
 /* ===== TOGGLE ===== */
 /* Active toggle — bakery brown instead of blue */
 .fi-toggle-input:checked {
-    background-color: #8b5e3c !important;
-    border-color: #8b5e3c !important;
+    background-color: var(--brand-600) !important;
+    border-color: var(--brand-600) !important;
 }
 .fi-toggle-input:checked:hover {
-    background-color: #6b4c3b !important;
+    background-color: var(--brand-700) !important;
 }
 .fi-toggle-input:focus {
     box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.2) !important;
 }
 /* Unchecked toggle */
 .fi-toggle-input {
-    border-color: #e8d0b0 !important;
+    border-color: var(--brand-200) !important;
 }
 
 /* ===== SELECT ===== */
@@ -567,13 +589,13 @@ textarea.fi-textarea-input {
     border-radius: 8px !important;
 }
 textarea.fi-textarea-input:focus {
-    border-color: #D4A574 !important;
+    border-color: var(--accent-gold) !important;
     box-shadow: 0 0 0 3px rgba(212,165,116,0.15) !important;
 }
 
 /* ===== REPEATER ===== */
 .fi-fo-repeater {
-    border: 1px solid #e8d0b0 !important;
+    border: 1px solid var(--brand-200) !important;
     border-radius: 12px !important;
     overflow: hidden !important;
 }
@@ -590,7 +612,7 @@ li.fi-fo-repeater-item {
     box-shadow: none !important;
     outline: none !important;
     border: none !important;
-    border-bottom: 1px solid #f3ebe0 !important;
+    border-bottom: 1px solid var(--brand-150) !important;
 }
 /* Kill Filament's ring on repeater items at every specificity level */
 .fi-fo-repeater-item {
@@ -618,7 +640,7 @@ input[type="date"][value=""] {
     color: #9ca3af;
 }
 .fi-fo-repeater select:not(:has(option[value=""]:checked)) {
-    color: #3d2314;
+    color: var(--brand-900);
 }
 
 /* Hide default repeater item header (delete button is inline in schema) */
@@ -630,13 +652,13 @@ input[type="date"][value=""] {
 }
 /* Clean up ALL input wrappers — single ring via box-shadow only */
 .fi-input-wrp {
-    box-shadow: 0 0 0 1px #e8d0b0 !important;
+    box-shadow: 0 0 0 1px var(--brand-200) !important;
     border: none !important;
     border-radius: 8px !important;
     outline: none !important;
 }
 .fi-input-wrp:focus-within {
-    box-shadow: 0 0 0 2px #8b5e3c !important;
+    box-shadow: 0 0 0 2px var(--brand-600) !important;
 }
 /* Custom repeater grid: give trash column minimal width */
 .fi-fo-repeater-item-content > .fi-sc {
@@ -645,7 +667,7 @@ input[type="date"][value=""] {
 }
 /* Repeater item actions */
 .fi-fo-repeater-item-header .fi-icon-btn {
-    color: #c4a882 !important;
+    color: var(--brand-400) !important;
 }
 .fi-fo-repeater-item-header .fi-icon-btn:hover {
     color: #fff !important;
@@ -655,13 +677,13 @@ input[type="date"][value=""] {
 /* Repeater add button */
 .fi-fo-repeater-add {
     padding: 0.75rem 1rem !important;
-    background: #fdf8f2 !important;
-    border-top: 1px solid #f3ebe0 !important;
+    background: var(--brand-50) !important;
+    border-top: 1px solid var(--brand-150) !important;
     justify-content: flex-start !important;
 }
 .fi-fo-repeater-add .fi-btn {
     color: #FFFFFF !important;
-    background: linear-gradient(135deg, #8b5e3c, #6b4c3b) !important;
+    background: linear-gradient(135deg, var(--brand-600), var(--brand-700)) !important;
     font-weight: 600 !important;
     border-radius: 8px !important;
     padding: 0.5rem 1.25rem !important;
@@ -672,23 +694,23 @@ input[type="date"][value=""] {
     border: none !important;
 }
 .fi-fo-repeater-add .fi-btn:hover {
-    background: linear-gradient(135deg, #6b4c3b, #3d2314) !important;
+    background: linear-gradient(135deg, var(--brand-700), var(--brand-900)) !important;
 }
 
 /* ===== FILE UPLOAD ===== */
 .fi-fo-file-upload .filepond--panel-root {
-    background: #fdf8f2 !important;
-    border: 2px dashed #e8d0b0 !important;
+    background: var(--brand-50) !important;
+    border: 2px dashed var(--brand-200) !important;
     border-radius: 12px !important;
 }
 .fi-fo-file-upload .filepond--drop-label label {
-    color: #8b5e3c !important;
+    color: var(--brand-600) !important;
     font-weight: 500 !important;
 }
 .fi-fo-file-upload .filepond--label-action {
-    color: #6b4c3b !important;
+    color: var(--brand-700) !important;
     font-weight: 600 !important;
-    text-decoration-color: #d4a574 !important;
+    text-decoration-color: var(--accent-gold) !important;
 }
 
 /* ===== DATE PICKER ===== */
@@ -697,38 +719,38 @@ input[type="date"][value=""] {
     border-radius: 8px !important;
 }
 .fi-date-time-picker-btn:focus {
-    border-color: #D4A574 !important;
+    border-color: var(--accent-gold) !important;
     box-shadow: 0 0 0 3px rgba(212,165,116,0.15) !important;
 }
 
 /* ===== FORM ACTIONS (Save/Cancel buttons) ===== */
 .fi-form-actions {
-    background: #fdf8f2 !important;
-    border-top: 1px solid #e8d0b0 !important;
+    background: var(--brand-50) !important;
+    border-top: 1px solid var(--brand-200) !important;
     padding: 1rem 1.5rem !important;
     border-radius: 0 0 12px 12px !important;
 }
 
 /* ===== TABS (used in some forms) ===== */
 .fi-tabs-tab {
-    color: #a08060 !important;
+    color: var(--brand-500) !important;
     font-weight: 600 !important;
 }
 .fi-tabs-tab[aria-selected="true"],
 .fi-tabs-tab.fi-active {
-    color: #3d2314 !important;
-    border-color: #8b5e3c !important;
+    color: var(--brand-900) !important;
+    border-color: var(--brand-600) !important;
 }
 
 /* ===== SLIDE-OVER ===== */
 .fi-modal-slide-over .fi-modal-window {
     border-left: none !important;
-    background: #fdf8f2 !important;
+    background: var(--brand-50) !important;
 }
 .fi-modal-slide-over .fi-modal-window .fi-modal-header,
 .fi-modal-slide-over.fi-modal-has-sticky-header .fi-modal-window > .fi-modal-header,
 .fi-modal.fi-modal-slide-over .fi-modal-header {
-    background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
+    background: linear-gradient(135deg, var(--brand-900), var(--brand-700)) !important;
     border-bottom: none !important;
     padding: 1.25rem 1.5rem !important;
     border-color: transparent !important;
@@ -753,21 +775,21 @@ input[type="date"][value=""] {
 }
 /* Slide-over content area */
 .fi-modal-slide-over .fi-modal-content {
-    background: #fdf8f2 !important;
+    background: var(--brand-50) !important;
     padding: 1.25rem !important;
 }
 /* Slide-over footer with save/cancel */
 .fi-modal-slide-over .fi-modal-footer-actions {
-    background: #fdf8f2 !important;
-    border-top: 1px solid #e8d0b0 !important;
+    background: var(--brand-50) !important;
+    border-top: 1px solid var(--brand-200) !important;
     padding: 1rem 1.5rem !important;
 }
 /* Footer wrapper — single border, no extra lines */
 .fi-modal-slide-over .fi-modal-footer {
     padding: 0.75rem 1.25rem !important;
-    border-top: 1px solid #e8d0b0 !important;
+    border-top: 1px solid var(--brand-200) !important;
     border-bottom: none !important;
-    background: #fdf8f2 !important;
+    background: var(--brand-50) !important;
 }
 /* Footer actions container — no extra borders */
 .fi-modal-slide-over .fi-modal-footer-actions {
@@ -794,7 +816,7 @@ input[type="date"][value=""] {
 }
 /* Save button in slide-over */
 .fi-modal-slide-over .fi-modal-footer-actions .fi-btn:first-child {
-    background: linear-gradient(135deg, #3d2314, #6b4c3b) !important;
+    background: linear-gradient(135deg, var(--brand-900), var(--brand-700)) !important;
     color: #FFFFFF !important;
     border: none !important;
 }
@@ -805,8 +827,8 @@ input[type="date"][value=""] {
 /* Cancel button in slide-over */
 .fi-modal-slide-over .fi-modal-footer-actions .fi-btn + .fi-btn,
 .fi-modal-slide-over .fi-modal-footer-actions .fi-btn.fi-color-gray {
-    border: 1px solid #e8d0b0 !important;
-    color: #6b4c3b !important;
+    border: 1px solid var(--brand-200) !important;
+    color: var(--brand-700) !important;
     background: #FFFFFF !important;
     --tw-ring-shadow: none !important;
     --tw-shadow: none !important;
@@ -814,19 +836,19 @@ input[type="date"][value=""] {
 }
 .fi-modal-slide-over .fi-modal-footer-actions .fi-btn + .fi-btn:hover,
 .fi-modal-slide-over .fi-modal-footer-actions .fi-btn.fi-color-gray:hover {
-    background: #f5e6d0 !important;
+    background: var(--brand-100) !important;
     box-shadow: none !important;
 }
 /* Form inputs inside slide-overs */
 .fi-modal-slide-over .fi-input-wrp {
-    border-color: #e8d0b0 !important;
+    border-color: var(--brand-200) !important;
     border-radius: 8px !important;
     background: #FFFFFF !important;
     --tw-ring-shadow: none !important;
     --tw-shadow: none !important;
 }
 .fi-modal-slide-over .fi-input-wrp:focus-within {
-    border-color: #D4A574 !important;
+    border-color: var(--accent-gold) !important;
     box-shadow: 0 0 0 3px rgba(212,165,116,0.15) !important;
     --tw-ring-shadow: none !important;
 }
@@ -837,53 +859,53 @@ input[type="date"][value=""] {
 }
 /* Textarea inside slide-overs */
 .fi-modal-slide-over textarea {
-    border-color: #e8d0b0 !important;
+    border-color: var(--brand-200) !important;
     border-radius: 8px !important;
     background: #FFFFFF !important;
 }
 .fi-modal-slide-over textarea:focus {
-    border-color: #D4A574 !important;
+    border-color: var(--accent-gold) !important;
     box-shadow: 0 0 0 3px rgba(212,165,116,0.15) !important;
 }
 /* Select dropdowns inside slide-overs */
 .fi-modal-slide-over .fi-select-wrp .fi-input-wrp {
-    border-color: #e8d0b0 !important;
+    border-color: var(--brand-200) !important;
 }
 /* Prefix icons inside slide-overs */
 .fi-modal-slide-over .fi-input-wrp .fi-input-wrp-prefix {
-    color: #8b5e3c !important;
+    color: var(--brand-600) !important;
 }
 /* Helper text */
 .fi-modal-slide-over .fi-fo-field-wrp-helper-text {
-    color: #a08060 !important;
+    color: var(--brand-500) !important;
 }
 /* Labels */
 .fi-modal-slide-over .fi-fo-field-wrp-label label {
-    color: #4a3225 !important;
+    color: var(--brand-800) !important;
     font-weight: 600 !important;
 }
 /* Section inside slide-over — subtle card look */
 .fi-modal-slide-over .fi-section {
     background: #FFFFFF !important;
-    border: 1px solid #e8d0b0 !important;
+    border: 1px solid var(--brand-200) !important;
     border-radius: 12px !important;
     overflow: hidden !important;
 }
 /* File upload drop zone */
 .fi-modal-slide-over .fi-fo-file-upload {
-    background: #fdf8f2 !important;
-    border-color: #e8d0b0 !important;
+    background: var(--brand-50) !important;
+    border-color: var(--brand-200) !important;
     border-style: dashed !important;
     border-radius: 8px !important;
 }
 .fi-modal-slide-over .fi-fo-file-upload:hover {
-    border-color: #d4a574 !important;
-    background: #f5e6d0 !important;
+    border-color: var(--accent-gold) !important;
+    background: var(--brand-100) !important;
 }
 
 /* ===== BUTTONS ===== */
 .fi-btn-primary {
-    background: #8B5E3C !important;
+    background: var(--brand-600) !important;
 }
 .fi-btn-primary:hover {
     background: #6B4A2E !important;
@@ -897,13 +919,13 @@ input[type="date"][value=""] {
     box-shadow: 0 2px 12px rgba(61,35,20,0.04) !important;
 }
 .fi-wi-stats-overview-stat-label {
-    color: #8B5E3C !important;
+    color: var(--brand-600) !important;
     text-transform: uppercase !important;
     font-size: 0.7rem !important;
     letter-spacing: 0.05em !important;
 }
 .fi-wi-stats-overview-stat-value {
-    color: #3D2314 !important;
+    color: var(--brand-900) !important;
     font-family: "Playfair Display", serif !important;
 }
 
@@ -916,7 +938,7 @@ input[type="date"][value=""] {
 
 /* ===== PAGINATION ===== */
 .fi-pagination-item-btn.fi-active {
-    background: #8B5E3C !important;
+    background: var(--brand-600) !important;
     color: #FFFFFF !important;
 }
 
@@ -926,7 +948,7 @@ input[type="date"][value=""] {
     box-shadow: 0 25px 60px rgba(61,35,20,0.15) !important;
 }
 .fi-modal-heading {
-    color: #3D2314 !important;
+    color: var(--brand-900) !important;
     font-weight: 700 !important;
 }
 .fi-modal-description {
@@ -935,11 +957,11 @@ input[type="date"][value=""] {
 /* Cancel button */
 .fi-modal .fi-btn.fi-color-gray {
     border: 1px solid rgba(212,165,116,0.3) !important;
-    color: #3D2314 !important;
+    color: var(--brand-900) !important;
     border-radius: 8px !important;
 }
 .fi-modal .fi-btn.fi-color-gray:hover {
-    background: #FDF8F2 !important;
+    background: var(--brand-50) !important;
 }
 /* All modal action buttons */
 .fi-modal .fi-btn {
@@ -964,8 +986,8 @@ input[type="date"][value=""] {
 
 /* ===== EMPTY STATE ===== */
 .fi-ta-empty-state-heading {
-    color: #3D2314 !important;
+    color: var(--brand-900) !important;
 }
 .fi-ta-empty-state-description {
-    color: #8B5E3C !important;
+    color: var(--brand-600) !important;
 }
