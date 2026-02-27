@@ -158,6 +158,23 @@ class Settings extends Page
                     ])
                     ->columns(2),
 
+                Section::make('PayPal Invoice Settings')
+                    ->description('Customize text that appears on PayPal invoices sent to customers.')
+                    ->icon('heroicon-o-document-text')
+                    ->schema([
+                        Textarea::make('invoice_seller_note')
+                            ->label('Seller Note to Customer')
+                            ->rows(3)
+                            ->maxLength(2000)
+                            ->helperText('Allergy disclaimers, special notes, etc. Shows on every invoice.'),
+                        Textarea::make('invoice_terms')
+                            ->label('Terms & Conditions')
+                            ->rows(5)
+                            ->maxLength(4000)
+                            ->helperText('Payment terms, cancellation/refund policy, etc.'),
+                    ])
+                    ->columns(1),
+
                 Section::make('Notification Settings')
                     ->description('Configure email notifications.')
                     ->schema([
