@@ -28,8 +28,24 @@ class SettingSeeder extends Seeder
             'store_city' => 'Davenport',
             'store_state' => 'FL',
             'store_state_full' => 'Florida',
+            'store_timezone' => 'America/New_York',
             'revenue_cap' => '250000',
             'revenue_cap_label' => 'FL Cottage Food Annual Cap',
+
+            // Branding
+            'brand_color_900' => '#3d2314',
+            'brand_color_800' => '#4a3225',
+            'brand_color_700' => '#6b4c3b',
+            'brand_color_600' => '#8b5e3c',
+            'brand_color_500' => '#a08060',
+            'brand_color_400' => '#c4a882',
+            'brand_color_300' => '#d4a574',
+            'brand_color_200' => '#e8d0b0',
+            'brand_color_150' => '#f3ebe0',
+            'brand_color_100' => '#f5e6d0',
+            'brand_color_50' => '#fdf8f2',
+            'store_logo' => '',
+            'store_favicon' => '',
 
             // Order Settings
             'minimum_order_amount' => '0',

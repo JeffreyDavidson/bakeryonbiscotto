@@ -4,6 +4,9 @@ namespace App\Filament\Pages;
 
 use App\Models\Setting;
 use Filament\Actions;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -36,6 +39,30 @@ class Settings extends Page
             'social_instagram' => Setting::get('social_instagram', ''),
             'social_facebook' => Setting::get('social_facebook', ''),
             'social_tiktok' => Setting::get('social_tiktok', ''),
+            'owner_name' => Setting::get('owner_name', 'Cassie'),
+            'store_city' => Setting::get('store_city', 'Davenport'),
+            'store_state' => Setting::get('store_state', 'FL'),
+            'store_state_full' => Setting::get('store_state_full', 'Florida'),
+            'store_timezone' => Setting::get('store_timezone', 'America/New_York'),
+
+            // Branding
+            'brand_color_900' => Setting::get('brand_color_900', '#3d2314'),
+            'brand_color_800' => Setting::get('brand_color_800', '#4a3225'),
+            'brand_color_700' => Setting::get('brand_color_700', '#6b4c3b'),
+            'brand_color_600' => Setting::get('brand_color_600', '#8b5e3c'),
+            'brand_color_500' => Setting::get('brand_color_500', '#a08060'),
+            'brand_color_400' => Setting::get('brand_color_400', '#c4a882'),
+            'brand_color_300' => Setting::get('brand_color_300', '#d4a574'),
+            'brand_color_200' => Setting::get('brand_color_200', '#e8d0b0'),
+            'brand_color_150' => Setting::get('brand_color_150', '#f3ebe0'),
+            'brand_color_100' => Setting::get('brand_color_100', '#f5e6d0'),
+            'brand_color_50' => Setting::get('brand_color_50', '#fdf8f2'),
+            'store_logo' => Setting::get('store_logo', ''),
+            'store_favicon' => Setting::get('store_favicon', ''),
+
+            // Compliance
+            'revenue_cap' => Setting::get('revenue_cap', '250000'),
+            'revenue_cap_label' => Setting::get('revenue_cap_label', 'FL Cottage Food Annual Cap'),
 
             // Order Settings
             'minimum_order_amount' => Setting::get('minimum_order_amount', '0'),
@@ -81,6 +108,9 @@ class Settings extends Page
                             ->label('Tagline')
                             ->maxLength(255)
                             ->placeholder('e.g. Freshly baked with love'),
+                        TextInput::make('owner_name')
+                            ->label('Owner/Baker Name')
+                            ->helperText('Used in email signatures and the About page'),
                         TextInput::make('store_phone')
                             ->label('Phone')
                             ->tel()
@@ -93,6 +123,25 @@ class Settings extends Page
                             ->label('Address')
                             ->rows(2)
                             ->maxLength(500),
+                        TextInput::make('store_city')
+                            ->label('City'),
+                        TextInput::make('store_state')
+                            ->label('State Abbreviation')
+                            ->maxLength(2)
+                            ->placeholder('FL'),
+                        TextInput::make('store_state_full')
+                            ->label('State Full Name')
+                            ->placeholder('Florida'),
+                        Select::make('store_timezone')
+                            ->label('Timezone')
+                            ->options([
+                                'America/New_York' => 'Eastern (America/New_York)',
+                                'America/Chicago' => 'Central (America/Chicago)',
+                                'America/Denver' => 'Mountain (America/Denver)',
+                                'America/Los_Angeles' => 'Pacific (America/Los_Angeles)',
+                                'America/Anchorage' => 'Alaska (America/Anchorage)',
+                                'Pacific/Honolulu' => 'Hawaii (Pacific/Honolulu)',
+                            ]),
                         Textarea::make('operating_hours')
                             ->label('Operating Hours')
                             ->rows(3)
@@ -113,6 +162,66 @@ class Settings extends Page
                             ->url()
                             ->maxLength(255)
                             ->prefix('🔗'),
+                    ])
+                    ->columns(2),
+
+                Section::make('Store Branding')
+                    ->description('Customize your store\'s color palette. Changes apply to both the admin panel and your storefront.')
+                    ->icon('heroicon-o-paint-brush')
+                    ->schema([
+                        ColorPicker::make('brand_color_900')
+                            ->label('Primary (Darkest)')
+                            ->helperText('Main headings, dark backgrounds'),
+                        ColorPicker::make('brand_color_700')
+                            ->label('Secondary')
+                            ->helperText('Secondary text, borders'),
+                        ColorPicker::make('brand_color_300')
+                            ->label('Accent')
+                            ->helperText('Buttons, highlights, gold accents'),
+                        ColorPicker::make('brand_color_50')
+                            ->label('Background')
+                            ->helperText('Page backgrounds, light fills'),
+                        Section::make('Advanced Colors')
+                            ->description('Fine-tune the full palette.')
+                            ->collapsed()
+                            ->schema([
+                                ColorPicker::make('brand_color_800')->label('Hover State'),
+                                ColorPicker::make('brand_color_600')->label('Medium'),
+                                ColorPicker::make('brand_color_500')->label('Muted Text'),
+                                ColorPicker::make('brand_color_400')->label('Light Border'),
+                                ColorPicker::make('brand_color_200')->label('Divider'),
+                                ColorPicker::make('brand_color_150')->label('Subtle Background'),
+                                ColorPicker::make('brand_color_100')->label('Light Fill'),
+                            ])
+                            ->columns(4),
+                        FileUpload::make('store_logo')
+                            ->label('Store Logo')
+                            ->image()
+                            ->directory('branding')
+                            ->helperText('Displayed in the admin sidebar, emails, and storefront header.')
+                            ->columnSpanFull(),
+                        FileUpload::make('store_favicon')
+                            ->label('Favicon')
+                            ->image()
+                            ->directory('branding')
+                            ->helperText('Browser tab icon. Recommended: square, at least 192×192px.')
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(4),
+
+                Section::make('Compliance')
+                    ->description('State-specific cottage food regulations.')
+                    ->icon('heroicon-o-shield-check')
+                    ->schema([
+                        TextInput::make('revenue_cap')
+                            ->label('Annual Revenue Cap ($)')
+                            ->numeric()
+                            ->prefix('$')
+                            ->helperText('Your state\'s cottage food revenue limit. Leave 0 for no limit.'),
+                        TextInput::make('revenue_cap_label')
+                            ->label('Revenue Cap Label')
+                            ->placeholder('FL Cottage Food Annual Cap')
+                            ->helperText('Displayed on the Finance Summary dashboard.'),
                     ])
                     ->columns(2),
 
@@ -244,6 +353,27 @@ class Settings extends Page
         Setting::set('social_instagram', $data['social_instagram'] ?? '');
         Setting::set('social_facebook', $data['social_facebook'] ?? '');
         Setting::set('social_tiktok', $data['social_tiktok'] ?? '');
+        Setting::set('owner_name', $data['owner_name'] ?? '');
+        Setting::set('store_city', $data['store_city'] ?? '');
+        Setting::set('store_state', $data['store_state'] ?? '');
+        Setting::set('store_state_full', $data['store_state_full'] ?? '');
+        Setting::set('store_timezone', $data['store_timezone'] ?? 'America/New_York');
+
+        // Compliance
+        Setting::set('revenue_cap', $data['revenue_cap'] ?? '250000');
+        Setting::set('revenue_cap_label', $data['revenue_cap_label'] ?? '');
+
+        // Branding colors
+        foreach (['900','800','700','600','500','400','300','200','150','100','50'] as $shade) {
+            $key = "brand_color_{$shade}";
+            if (isset($data[$key])) {
+                Setting::set($key, $data[$key]);
+            }
+        }
+
+        // Logo/Favicon
+        if (isset($data['store_logo'])) Setting::set('store_logo', $data['store_logo']);
+        if (isset($data['store_favicon'])) Setting::set('store_favicon', $data['store_favicon']);
 
         // Order Settings
         Setting::set('minimum_order_amount', $data['minimum_order_amount'] ?? '0');
@@ -256,6 +386,11 @@ class Settings extends Page
         Setting::set('delivery_radius_miles', $data['delivery_radius_miles'] ?? '10');
         Setting::set('delivery_fee_tiers', $data['delivery_fee_tiers'] ?? '');
         Setting::set('free_delivery_minimum', $data['free_delivery_minimum'] ?? '50');
+
+        // PayPal Invoice Settings
+        Setting::set('paypal_template_id', $data['paypal_template_id'] ?? '');
+        Setting::set('invoice_seller_note', $data['invoice_seller_note'] ?? '');
+        Setting::set('invoice_terms', $data['invoice_terms'] ?? '');
 
         // Notification Settings
         Setting::set('send_order_emails', ($data['send_order_emails'] ?? true) ? '1' : '0');
@@ -288,7 +423,6 @@ class Settings extends Page
                 return;
             }
 
-            // Use the first template (or the default one)
             $template = $templates[0];
             $templateId = $template['id'] ?? '';
             $note = $template['detail']['note'] ?? '';
@@ -325,7 +459,6 @@ class Settings extends Page
             $templateId = $this->data['paypal_template_id'] ?? '';
 
             if ($templateId) {
-                // Update existing template
                 $paypal->updateTemplate($templateId, $note, $terms);
                 Notification::make()
                     ->title('PayPal template updated')
@@ -333,7 +466,6 @@ class Settings extends Page
                     ->success()
                     ->send();
             } else {
-                // Create new template
                 $result = $paypal->createTemplate(\App\Models\Setting::get('business_name', 'Bakery on Biscotto'), $note, $terms);
                 $newId = $result['id'] ?? '';
                 if ($newId) {
@@ -347,7 +479,6 @@ class Settings extends Page
                     ->send();
             }
 
-            // Also save locally
             Setting::set('invoice_seller_note', $note);
             Setting::set('invoice_terms', $terms);
         } catch (\Exception $e) {

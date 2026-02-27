@@ -14,18 +14,18 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         :root {
-            --brand-900: #3d2314;
-            --brand-800: #4a3225;
-            --brand-700: #6b4c3b;
-            --brand-600: #8b5e3c;
-            --brand-500: #a08060;
-            --brand-400: #c4a882;
-            --brand-300: #d4a574;
-            --brand-200: #e8d0b0;
-            --brand-150: #f3ebe0;
-            --brand-100: #f5e6d0;
-            --brand-50: #fdf8f2;
-            --accent-gold: #d4a574;
+            --brand-900: {{ Setting::get('brand_color_900', '#3d2314') }};
+            --brand-800: {{ Setting::get('brand_color_800', '#4a3225') }};
+            --brand-700: {{ Setting::get('brand_color_700', '#6b4c3b') }};
+            --brand-600: {{ Setting::get('brand_color_600', '#8b5e3c') }};
+            --brand-500: {{ Setting::get('brand_color_500', '#a08060') }};
+            --brand-400: {{ Setting::get('brand_color_400', '#c4a882') }};
+            --brand-300: {{ Setting::get('brand_color_300', '#d4a574') }};
+            --brand-200: {{ Setting::get('brand_color_200', '#e8d0b0') }};
+            --brand-150: {{ Setting::get('brand_color_150', '#f3ebe0') }};
+            --brand-100: {{ Setting::get('brand_color_100', '#f5e6d0') }};
+            --brand-50: {{ Setting::get('brand_color_50', '#fdf8f2') }};
+            --accent-gold: {{ Setting::get('brand_color_300', '#d4a574') }};
             --status-success: #16a34a;
             --status-danger: #dc2626;
             --status-warning: #d97706;
