@@ -18,6 +18,16 @@ We've received your order and we're getting started on your fresh-baked goodies!
 | **Total** | | **${{ number_format($order->total, 2) }}** |
 </x-mail::table>
 
+@if($order->payment_method === 'paypal' && $order->paypal_invoice_url)
+**Payment:** A PayPal invoice has been sent to your email. You can also pay directly here:
+
+<x-mail::button :url="$order->paypal_invoice_url">
+Pay Invoice
+</x-mail::button>
+
+Please complete payment by **{{ $order->payment_deadline?->format('l, F j, Y') ?? 'your pickup date' }}**.
+@endif
+
 @if($order->requested_date)
 **Requested Date:** {{ $order->requested_date->format('l, F j, Y') }}@if($order->requested_time) at {{ $order->requested_time }}@endif
 
