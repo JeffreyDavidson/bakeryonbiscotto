@@ -190,6 +190,23 @@ class OrderController extends Controller
             $order->items()->create($item);
         }
 
+        // Upsert customer profile
+        try {
+            $profileData = [
+                'name' => $validated['customer_name'],
+            ];
+            $birthday = $pendingOrder['validated']['birthday'] ?? null;
+            if ($birthday) {
+                $profileData['birthday'] = $birthday;
+            }
+            \App\Models\CustomerProfile::updateOrCreate(
+                ['email' => $validated['customer_email']],
+                $profileData
+            );
+        } catch (\Exception $e) {
+            report($e);
+        }
+
         // Send emails
         try {
             Mail::to($order->customer_email)->send(new OrderConfirmation($order->load('items')));
@@ -252,6 +269,7 @@ class OrderController extends Controller
             'requested_date' => 'required|date|after_or_equal:' . now('America/New_York')->addDays(2)->toDateString(),
             'requested_time' => 'required|string|max:20',
             'delivery_tier' => 'required_if:fulfillment_type,delivery|nullable|in:under5,5to10,over10',
+            'birthday' => 'nullable|date',
             'notes' => 'nullable|string|max:500',
             'items' => 'required|array|min:1',
             'items.*.product_id' => 'required|exists:products,id',
@@ -298,6 +316,24 @@ class OrderController extends Controller
             'delivery_fee' => $deliveryFee,
             'total' => $subtotal + $deliveryFee,
         ];
+    }
+
+    public function reorderData(Order $order)
+    {
+        $order->load('items');
+
+        return response()->json([
+            'customer_name' => $order->customer_name,
+            'customer_email' => $order->customer_email,
+            'customer_phone' => $order->customer_phone ?? '',
+            'items' => $order->items->map(fn ($item) => [
+                'product_id' => $item->product_id,
+                'product_name' => $item->product_name,
+                'quantity' => $item->quantity,
+                'unit_price' => $item->unit_price,
+                'selections' => $item->selections,
+            ])->toArray(),
+        ]);
     }
 
     public function joinWaitlist(Request $request)

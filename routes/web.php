@@ -33,12 +33,17 @@ Route::get('/order', [OrderController::class, 'index'])->name('order');
 Route::post('/order/apply-coupon', [OrderController::class, 'applyCoupon'])->name('order.apply-coupon');
 Route::post('/order/paypal/create', [OrderController::class, 'createPayPalOrder'])->name('order.paypal.create');
 Route::post('/order/paypal/capture', [OrderController::class, 'capturePayPalOrder'])->name('order.paypal.capture');
+Route::get('/order/reorder/{order}', [OrderController::class, 'reorderData'])->name('order.reorder');
 Route::get('/order/confirmation/{orderNumber}', [OrderController::class, 'confirmation'])->name('order.confirmation');
 Route::get('/order/capacity/{date}', [OrderController::class, 'checkCapacity'])->name('order.capacity');
 Route::post('/order/waitlist', [OrderController::class, 'joinWaitlist'])->name('order.waitlist');
 Route::get('/about', fn() => view('about'));
 Route::get('/review', fn() => view('review'));
-Route::get('/gallery', fn() => view('gallery'));
+Route::get('/gallery', function () {
+    $photos = \App\Models\GalleryPhoto::visible()->ordered()->get();
+    $categories = $photos->pluck('category')->filter()->unique()->values();
+    return view('gallery', compact('photos', 'categories'));
+});
 Route::get('/faq', fn() => view('faq'));
 Route::get('/menu', function() {
     $categories = \App\Models\Category::with(['products' => function($q) {
