@@ -1246,13 +1246,13 @@
                             Have a coupon code?
                         </button>
                         <div x-show="couponOpen" x-transition style="margin-top: 10px;">
-                            <div style="display: flex; gap: 8px;">
-                                <input type="text" class="form-input" x-model="couponCode" placeholder="Enter code" style="flex: 1; text-transform: uppercase;" :disabled="couponApplied">
-                                <button type="button" x-show="!couponApplied" @click="applyCoupon()" :disabled="couponLoading || !couponCode.trim()" style="padding: 10px 18px; background: var(--dark); color: var(--cream); border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; opacity: 1; transition: opacity 0.2s;" :style="(couponLoading || !couponCode.trim()) ? 'opacity: 0.5; cursor: not-allowed;' : ''">
+                            <div style="display: flex; gap: 0; border: 1px solid var(--golden); border-radius: 10px; overflow: hidden;">
+                                <input type="text" x-model="couponCode" placeholder="Enter coupon code" style="flex: 1; padding: 12px 16px; border: none; outline: none; font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--dark); background: var(--light); text-transform: uppercase; letter-spacing: 0.5px;" :disabled="couponApplied">
+                                <button type="button" x-show="!couponApplied" @click="applyCoupon()" :disabled="couponLoading || !couponCode.trim()" style="padding: 12px 24px; background: var(--dark); color: var(--cream); border: none; font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.2s;" :style="(couponLoading || !couponCode.trim()) ? 'opacity: 0.5; cursor: not-allowed;' : ''" onmouseover="if(!this.disabled)this.style.background='var(--warm)'" onmouseout="this.style.background='var(--dark)'">
                                     <span x-show="!couponLoading">Apply</span>
                                     <span x-show="couponLoading">...</span>
                                 </button>
-                                <button type="button" x-show="couponApplied" @click="removeCoupon()" style="padding: 10px 18px; background: #dc2626; color: white; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
+                                <button type="button" x-show="couponApplied" @click="removeCoupon()" style="padding: 12px 24px; background: #dc2626; color: white; border: none; font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
                                     Remove
                                 </button>
                             </div>
