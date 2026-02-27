@@ -334,7 +334,7 @@ class Settings extends Page
                     ->send();
             } else {
                 // Create new template
-                $result = $paypal->createTemplate('Bakery on Biscotto', $note, $terms);
+                $result = $paypal->createTemplate(\App\Models\Setting::get('business_name', 'Bakery on Biscotto'), $note, $terms);
                 $newId = $result['id'] ?? '';
                 if ($newId) {
                     $this->data['paypal_template_id'] = $newId;

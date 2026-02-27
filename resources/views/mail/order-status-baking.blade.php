@@ -26,7 +26,7 @@ Great news — your order is in the oven! We're carefully preparing everything f
 We'll let you know as soon as everything is ready!
 
 With love from the oven,<br>
-Cassie — Bakery on Biscotto
+{{ \App\Models\Setting::get('owner_name', 'Cassie') }} — {{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }}
 
 <x-mail::subcopy>
 Questions? Reply to this email or call us anytime.

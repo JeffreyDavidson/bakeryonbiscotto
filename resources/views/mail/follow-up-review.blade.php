@@ -11,8 +11,8 @@ Leave a Review
 
 It only takes a minute, and we truly appreciate it. ❤️
 
-Thank you for supporting Bakery on Biscotto!
+Thank you for supporting {{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }}!
 
 With love and flour dust,<br>
-Cassie
+{{ \App\Models\Setting::get('owner_name', 'Cassie') }}
 </x-mail::message>

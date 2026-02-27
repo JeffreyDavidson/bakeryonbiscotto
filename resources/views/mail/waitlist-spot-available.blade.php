@@ -16,5 +16,5 @@ Order Now
 </x-mail::button>
 
 Thanks for your patience,<br>
-Cassie
+{{ \App\Models\Setting::get('owner_name', 'Cassie') }}
 </x-mail::message>

@@ -1,4 +1,4 @@
-@extends('layouts.storefront', ['title' => 'Contact | Bakery on Biscotto', 'active' => 'contact'])
+@extends('layouts.storefront', ['title' => 'Contact | ' . \App\Models\Setting::get('business_name', 'Bakery on Biscotto'), 'active' => 'contact'])
 
 @section('styles')
     <style>
@@ -476,7 +476,7 @@
                         <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
                         <div>
                             <div class="info-label">Location</div>
-                            <div class="info-value">Davenport, FL<br>Four Corners & Greater Orlando</div>
+                            <div class="info-value">{{ \App\Models\Setting::get('store_city', 'Davenport') }}, {{ \App\Models\Setting::get('store_state', 'FL') }}<br>Four Corners & Greater Orlando</div>
                         </div>
                     </div>
 
@@ -514,7 +514,7 @@
                         <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M3 9l4-4 4 4"/><path d="M7 5v14"/><path d="M21 15l-4 4-4-4"/><path d="M17 19V5"/></svg></div>
                         <div>
                             <div class="info-label">Pickup & Delivery</div>
-                            <div class="info-value">Pickup in Davenport. Delivery in greater Orlando area.</div>
+                            <div class="info-value">Pickup in {{ \App\Models\Setting::get('store_city', 'Davenport') }}. Delivery in greater Orlando area.</div>
                         </div>
                     </div>
                 </div>
@@ -530,7 +530,7 @@
 
                 <div class="handwritten-note">
                     <p>Every loaf is made with care, from feeding the starter to pulling it out of the oven. I love what I do, and I'd love to bake for you.</p>
-                    <div class="sig">- Cassie</div>
+                    <div class="sig">- {{ \App\Models\Setting::get('owner_name', 'Cassie') }}</div>
                 </div>
             </div>
         </div>

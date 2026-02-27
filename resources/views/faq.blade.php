@@ -1,4 +1,4 @@
-@extends('layouts.storefront', ['title' => 'FAQ | Bakery on Biscotto', 'active' => 'faq'])
+@extends('layouts.storefront', ['title' => 'FAQ | ' . \App\Models\Setting::get('business_name', 'Bakery on Biscotto'), 'active' => 'faq'])
 
 @section('styles')
     <style>
@@ -141,7 +141,7 @@
             <div class="faq-item" :class="{ 'open': open === 3 }">
                 <button class="faq-question" :aria-expanded="open === 3 ? 'true' : 'false'" aria-controls="faq-answer-3" @click="open = open === 3 ? null : 3" @keydown.enter.prevent="open = open === 3 ? null : 3" @keydown.space.prevent="open = open === 3 ? null : 3">Do you deliver?</button>
                 <div class="faq-answer" id="faq-answer-3" role="region"><div class="faq-answer-inner">
-                    <p>Yes! Pickup is in Davenport, FL and we deliver throughout the Four Corners and greater Orlando area for a fee based on mileage.</p>
+                    <p>Yes! Pickup is in {{ \App\Models\Setting::get('store_city', 'Davenport') }}, {{ \App\Models\Setting::get('store_state', 'FL') }} and we deliver throughout the Four Corners and greater Orlando area for a fee based on mileage.</p>
                 </div></div>
             </div>
             <div class="faq-item" :class="{ 'open': open === 4 }">

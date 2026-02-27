@@ -46,7 +46,7 @@
         @php $revCap = $this->revCap; @endphp
         <div class="finance-section" style="margin-bottom: 1.5rem;">
             <div data-admin-gradient-header style="{{ $revCap['danger'] ? 'background: linear-gradient(135deg, var(--status-danger-dark), var(--status-danger));' : ($revCap['warning'] ? 'background: linear-gradient(135deg, var(--status-warning-dark), var(--status-warning));' : '') }}">
-                <span data-header-title>Florida Cottage Food Revenue Cap — {{ $this->year }}</span>
+                <span data-header-title>{{ \App\Models\Setting::get('store_state_full', 'Florida') }} Cottage Food Revenue Cap — {{ $this->year }}</span>
             </div>
             <div style="padding: 1.25rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
@@ -62,7 +62,7 @@
                 </div>
                 @if($revCap['danger'])
                     <div style="margin-top: 0.75rem; padding: 0.75rem; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; font-size: 0.8rem; color: var(--status-danger-dark);">
-                        ⚠️ <strong>Warning:</strong> You're approaching the Florida cottage food annual revenue cap of $250,000. Exceeding this requires a food establishment license.
+                        ⚠️ <strong>Warning:</strong> You're approaching the {{ \App\Models\Setting::get('store_state_full', 'Florida') }} cottage food annual revenue cap of ${{ number_format((int) \App\Models\Setting::get('revenue_cap', 250000)) }}. Exceeding this requires a food establishment license.
                     </div>
                 @elseif($revCap['warning'])
                     <div style="margin-top: 0.75rem; padding: 0.75rem; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; font-size: 0.8rem; color: var(--status-warning-dark);">

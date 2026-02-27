@@ -20,7 +20,7 @@ class PaymentReminderMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Payment Reminder - Bakery on Biscotto Order {$this->order->order_number}",
+            subject: "Payment Reminder - " . \App\Models\Setting::get('business_name', 'Bakery on Biscotto') . " Order {$this->order->order_number}",
         );
     }
 

@@ -19,5 +19,5 @@ In the meantime, feel free to check out our menu and place an order!
 Visit Our Website
 </x-mail::button>
 
-Cassie
+{{ \App\Models\Setting::get('owner_name', 'Cassie') }}
 </x-mail::message>
