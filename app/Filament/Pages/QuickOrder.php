@@ -383,6 +383,30 @@ class QuickOrder extends Page
                             ->minItems(1),
                     ]),
 
+                Placeholder::make('order_total_display')
+                    ->label('')
+                    ->content(function (Get $get) use ($productPrices) {
+                        $items = $get('items') ?? [];
+                        $subtotal = 0;
+                        foreach ($items as $item) {
+                            $productId = $item['product_id'] ?? null;
+                            $price = $productPrices[$productId] ?? 0;
+                            $qty = (int) ($item['quantity'] ?: 1);
+                            $subtotal += $price * $qty;
+                        }
+                        $itemCount = collect($items)->filter(fn ($i) => !empty($i['product_id']))->count();
+                        return new \Illuminate\Support\HtmlString(
+                            '<div style="background:linear-gradient(135deg,#3d2314,#6b4c3b);border-radius:12px;padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;">'
+                            . '<span style="color:#e8d0b0;font-size:0.875rem;font-weight:500;">'
+                            . $itemCount . ' ' . ($itemCount === 1 ? 'item' : 'items')
+                            . '</span>'
+                            . '<span style="color:white;font-size:1.5rem;font-weight:700;font-family:\'Playfair Display\',serif;">'
+                            . 'Subtotal: $' . number_format($subtotal, 2)
+                            . '</span>'
+                            . '</div>'
+                        );
+                    }),
+
                 Section::make('Fulfillment Details')
                     ->description('When and how should this order be fulfilled?')
                     ->icon('heroicon-o-truck')
