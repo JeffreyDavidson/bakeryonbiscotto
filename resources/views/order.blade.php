@@ -2040,9 +2040,15 @@
                         throw new Error('Non-JSON response from server');
                     }
 
-                    if (result.error) {
-                        data.paymentError = result.error;
-                        throw new Error(result.error);
+                    if (!response.ok || result.error) {
+                        // Handle Laravel validation errors
+                        if (result.errors) {
+                            const firstError = Object.values(result.errors).flat()[0];
+                            data.paymentError = firstError || result.message || 'Validation error.';
+                        } else {
+                            data.paymentError = result.error || result.message || 'Something went wrong.';
+                        }
+                        throw new Error(data.paymentError);
                     }
 
                     return result.id;
