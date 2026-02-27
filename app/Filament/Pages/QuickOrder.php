@@ -240,7 +240,21 @@ class QuickOrder extends Page
                     }),
 
                 Section::make('Order Items')
-                    ->description('Add products and quantities')
+                    ->description(function (Get $get) use ($productPrices) {
+                        $items = $get('items') ?? [];
+                        $subtotal = 0;
+                        foreach ($items as $item) {
+                            $productId = $item['product_id'] ?? null;
+                            $price = $productPrices[$productId] ?? 0;
+                            $qty = (int) ($item['quantity'] ?: 1);
+                            $subtotal += $price * $qty;
+                        }
+                        $itemCount = collect($items)->filter(fn ($i) => !empty($i['product_id']))->count();
+                        if ($subtotal > 0) {
+                            return $itemCount . ' ' . ($itemCount === 1 ? 'item' : 'items') . '  ·  Subtotal: $' . number_format($subtotal, 2);
+                        }
+                        return 'Add products and quantities';
+                    })
                     ->icon('heroicon-o-shopping-cart')
                     ->components([
                         Repeater::make('items')
@@ -381,31 +395,6 @@ class QuickOrder extends Page
                             })
                             ->reorderable(false)
                             ->minItems(1),
-                        Placeholder::make('order_total_display')
-                            ->label('')
-                            ->hiddenLabel()
-                            ->extraAttributes(['style' => 'margin-top:-3.25rem;pointer-events:none;'])
-                            ->content(function (Get $get) use ($productPrices) {
-                                $items = $get('items') ?? [];
-                                $subtotal = 0;
-                                foreach ($items as $item) {
-                                    $productId = $item['product_id'] ?? null;
-                                    $price = $productPrices[$productId] ?? 0;
-                                    $qty = (int) ($item['quantity'] ?: 1);
-                                    $subtotal += $price * $qty;
-                                }
-                                $itemCount = collect($items)->filter(fn ($i) => !empty($i['product_id']))->count();
-                                return new \Illuminate\Support\HtmlString(
-                                    '<div style="display:flex;justify-content:flex-end;align-items:center;gap:0.75rem;">'
-                                    . '<span style="color:#6b4c3b;font-size:0.875rem;">'
-                                    . $itemCount . ' ' . ($itemCount === 1 ? 'item' : 'items')
-                                    . '</span>'
-                                    . '<span style="background:linear-gradient(135deg,#3d2314,#6b4c3b);color:white;font-weight:700;font-size:1.25rem;padding:0.5rem 1.25rem;border-radius:10px;font-family:\'Playfair Display\',serif;">'
-                                    . '$' . number_format($subtotal, 2)
-                                    . '</span>'
-                                    . '</div>'
-                                );
-                            }),
                     ]),
 
                 Section::make('Fulfillment Details')
