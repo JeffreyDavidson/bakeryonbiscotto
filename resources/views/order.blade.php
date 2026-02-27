@@ -1,129 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <x-favicons />
+@extends('layouts.storefront', ['title' => 'Order | Bakery on Biscotto', 'active' => 'order'])
+
+@section('meta')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Order | Bakery on Biscotto</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+@endsection
+
+@section('styles')
     <style>
-        :root {
-            --dark: #3D2314;
-            --brown: #8B5E3C;
-            --cream: #F5E6D0;
-            --golden: #D4A574;
-            --accent: #C17F4E;
-            --light: #FDF8F2;
-            --white: #FFFFFF;
-            --warm: #6B4C3B;
-            --parchment: #f0e0c8;
-            --ink: #2a1a0e;
-        }
-
-        /* Skip to main content link */
-        .skip-to-main {
-            position: absolute;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--dark);
-            color: var(--cream);
-            padding: 12px 24px;
-            border-radius: 0 0 8px 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            z-index: 10000;
-            transition: top 0.3s ease;
-        }
-        .skip-to-main:focus {
-            top: 0;
-            outline: 2px solid var(--golden);
-            outline-offset: 2px;
-        }
-
-        /* Focus styles for all interactive elements */
-        a:focus-visible,
-        button:focus-visible,
-        input:focus-visible,
-        textarea:focus-visible,
-        select:focus-visible,
-        [tabindex]:focus-visible {
-            outline: 2px solid var(--golden);
-            outline-offset: 2px;
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--dark);
-            background: var(--light);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* ═══ NAV ═══ */
-        .main-nav {
-            position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
-            z-index: 1000;
-            display: flex; align-items: center; gap: 4px;
-            padding: 8px 12px;
-            background: rgba(61,35,20,0.75);
-            backdrop-filter: blur(24px) saturate(1.6);
-            -webkit-backdrop-filter: blur(24px) saturate(1.6);
-            border-radius: 100px;
-            border: 1px solid rgba(212,165,116,0.15);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-        }
-        .nav-links {
-            display: flex; align-items: center; gap: 4px;
-        }
-        .main-nav a {
-            font-family: 'Playfair Display', serif;
-            font-size: 14px; font-weight: 500;
-            color: var(--cream); text-decoration: none;
-            padding: 10px 24px; border-radius: 100px;
-            transition: all 0.3s ease;
-        }
-        .main-nav a:hover { background: rgba(212,165,116,0.2); color: var(--golden); }
-        .main-nav a.active { background: var(--golden); color: var(--dark); font-weight: 600; }
-        .nav-hamburger {
-            display: none; background: none; border: none; cursor: pointer;
-            padding: 8px; flex-direction: column; gap: 5px;
-        }
-        .nav-hamburger span {
-            display: block; width: 24px; height: 2px;
-            background: var(--cream); border-radius: 2px;
-            transition: all 0.3s ease;
-        }
-        @media (max-width: 768px) {
-            .main-nav {
-                top: 8px; left: 12px; right: 12px;
-                transform: none; border-radius: 16px;
-                padding: 12px 16px;
-                flex-wrap: wrap; justify-content: flex-end;
-            }
-            .nav-links {
-                display: none; width: 100%;
-                flex-direction: column; gap: 0; padding-top: 12px;
-            }
-            .nav-open .nav-links { display: flex; }
-            .main-nav a {
-                padding: 12px 16px; border-radius: 12px;
-                font-size: 15px; width: 100%; text-align: center;
-            }
-            .nav-hamburger { display: flex; }
-            .nav-open .nav-hamburger span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-            .nav-open .nav-hamburger span:nth-child(2) { opacity: 0; }
-            .nav-open .nav-hamburger span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-        }
-
         /* ═══ HERO ═══ */
         .order-hero {
             padding: 140px 24px 60px;
@@ -952,13 +834,9 @@
             }
         }
     </style>
-</head>
-<body>
-    {{-- NAV --}}
-    <x-main-nav active="order" />
+@endsection
 
-    {{-- HERO --}}
-    <main id="main-content">
+@section('content')
     <section class="order-hero">
         <h1>Place Your Order</h1>
         <p>Everything baked fresh to order. Please allow at least 2 days for your handcrafted sourdough.</p>
@@ -1376,8 +1254,9 @@
     </main>
 
     {{-- FOOTER --}}
-    <x-site-footer />
+@endsection
 
+@section('scripts')
     <script>
         const bundleConfig = @json($bundles);
 
@@ -2098,5 +1977,4 @@
             }).render('#paypal-button-container');
         }
     </script>
-</body>
-</html>
+@endsection
