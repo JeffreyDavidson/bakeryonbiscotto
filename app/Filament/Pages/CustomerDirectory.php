@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\CustomerFavorite;
 use App\Models\CustomerNote;
+use App\Models\CustomerProfile;
 use App\Models\Order;
 use Filament\Actions\Action;
 use Filament\Pages\Page;
@@ -106,6 +107,14 @@ class CustomerDirectory extends Page implements HasTable
                         return $query->orderBy('last_order_date', $direction);
                     })
                     ->toggleable(),
+                TextColumn::make('birthday')
+                    ->label('Birthday')
+                    ->getStateUsing(function ($record) {
+                        $profile = CustomerProfile::where('email', $record->customer_email)->first();
+                        return $profile?->birthday?->format('M j');
+                    })
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('order_count')
@@ -173,6 +182,7 @@ class CustomerDirectory extends Page implements HasTable
                         'customerNotes' => CustomerNote::forCustomer($record->customer_email)
                             ->orderByDesc('created_at')
                             ->get(),
+                        'customerProfile' => CustomerProfile::where('email', $record->customer_email)->first(),
                         'favoriteProducts' => CustomerFavorite::where('customer_email', $record->customer_email)
                             ->with('product')
                             ->get()

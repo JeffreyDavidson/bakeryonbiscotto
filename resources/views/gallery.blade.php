@@ -1,106 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery | Bakery on Biscotto</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+@extends('layouts.storefront', ['title' => 'Gallery | Bakery on Biscotto', 'active' => 'gallery'])
+
+@section('extra_fonts')
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+@endsection
+
+@section('styles')
     <style>
-        :root {
-            --dark: #3D2314;
-            --brown: #8B5E3C;
-            --cream: #F5E6D0;
-            --golden: #D4A574;
-            --accent: #C17F4E;
-            --light: #FDF8F2;
-            --white: #FFFFFF;
-            --warm: #6B4C3B;
-        }
-
-        /* Navigation */
-        .main-nav {
-            position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
-            z-index: 1000;
-            display: flex; align-items: center; gap: 4px;
-            padding: 8px 12px;
-            background: rgba(61,35,20,0.75);
-            backdrop-filter: blur(24px) saturate(1.6);
-            -webkit-backdrop-filter: blur(24px) saturate(1.6);
-            border-radius: 100px;
-            border: 1px solid rgba(212,165,116,0.15);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-        }
-        .main-nav a {
-            font-family: 'Playfair Display', serif;
-            font-size: 14px; font-weight: 500;
-            color: var(--cream); text-decoration: none;
-            padding: 10px 24px; border-radius: 100px;
-            transition: all 0.3s ease;
-        }
-        .main-nav a:hover { background: rgba(212,165,116,0.2); color: var(--golden); }
-        .main-nav a.active { background: var(--golden); color: var(--dark); font-weight: 600; }
-
-        .skip-to-main {
-            position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
-            background: var(--dark); color: var(--cream); padding: 12px 24px;
-            border-radius: 0 0 8px 8px; font-family: 'Inter', sans-serif;
-            font-size: 14px; font-weight: 600; text-decoration: none;
-            z-index: 10000; transition: top 0.3s ease;
-        }
-        .skip-to-main:focus { top: 0; outline: 2px solid var(--golden); outline-offset: 2px; }
-
-        a:focus-visible, button:focus-visible { outline: 2px solid var(--golden); outline-offset: 2px; }
-
-        /* Footer */
-        .footer {
-            background: var(--dark); position: relative; overflow: hidden;
-            padding: 0 20px 40px; text-align: center;
-        }
-        .footer-gradient {
-            height: 3px;
-            background: linear-gradient(90deg, transparent 5%, var(--golden), var(--accent), var(--golden), transparent 95%);
-            margin-bottom: 60px;
-        }
-        .footer h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--cream); margin-bottom: 8px; }
-        .footer .tagline { font-family: 'Dancing Script', cursive; font-size: 1.15rem; color: var(--golden); margin-bottom: 24px; }
-        .footer-badge {
-            display: inline-block; padding: 10px 28px;
-            border: 1.5px solid rgba(212,165,116,0.25); border-radius: 100px;
-            font-size: 13px; font-weight: 500; color: rgba(245,230,208,0.6);
-            margin-bottom: 28px; letter-spacing: 0.5px;
-        }
-        .footer-info { font-size: 14px; color: rgba(245,230,208,0.4); line-height: 2.2; }
-        .footer-info a { color: var(--golden); text-decoration: none; transition: color 0.3s; }
-        .footer-info a:hover { color: var(--cream); }
-        .footer-allergen {
-            margin-top: 24px; font-size: 11px; color: rgba(245,230,208,0.35);
-            max-width: 600px; margin-left: auto; margin-right: auto;
-            line-height: 1.5; font-style: italic;
-        }
-        .footer-bottom {
-            margin-top: 20px; padding-top: 20px;
-            border-top: 1px solid rgba(245,230,208,0.06);
-            font-size: 12px; color: rgba(245,230,208,0.2);
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--dark);
-            background: var(--light);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
-            outline: 2px solid var(--golden);
-            outline-offset: 2px;
-        }
-
         /* ═══ HERO ═══ */
         .gallery-hero {
             position: relative;
@@ -134,6 +39,37 @@
             color: rgba(245,230,208,0.35);
         }
 
+        /* ═══ CATEGORY FILTERS ═══ */
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 40px 20px 0;
+            background: #1c1410;
+        }
+        .filter-btn {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 15px;
+            padding: 8px 24px;
+            border-radius: 24px;
+            border: 1px solid rgba(212,165,116,0.25);
+            background: transparent;
+            color: rgba(245,230,208,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: capitalize;
+        }
+        .filter-btn:hover {
+            border-color: rgba(212,165,116,0.5);
+            color: var(--cream);
+        }
+        .filter-btn.active {
+            background: rgba(212,165,116,0.15);
+            border-color: var(--golden);
+            color: var(--golden);
+        }
+
         /* ═══ SECTION HEAD ═══ */
         .section-head {
             text-align: center; margin-bottom: 60px;
@@ -153,7 +89,7 @@
 
         /* ═══ FRESH FROM THE OVEN ═══ */
         .fresh-oven {
-            padding: 80px 20px 100px;
+            padding: 40px 20px 100px;
             position: relative; overflow: hidden;
             background: #1c1410;
         }
@@ -165,13 +101,6 @@
                 repeating-linear-gradient(88deg, transparent, rgba(60,40,25,0.04) 2px, transparent 5px),
                 radial-gradient(ellipse at 50% 50%, rgba(244,200,122,0.04), transparent 50%);
             pointer-events: none;
-        }
-        .fresh-subtitle {
-            text-align: center;
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic; font-size: 17px;
-            color: rgba(245,230,208,0.35);
-            margin-top: -32px; margin-bottom: 56px;
         }
 
         .ft-container {
@@ -366,6 +295,7 @@
             overflow: hidden;
             position: relative;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
         }
         .ft-item:hover {
             transform: scale(1.03); z-index: 5;
@@ -380,11 +310,6 @@
             align-items: center; justify-content: center; gap: 6px;
             background: radial-gradient(circle, rgba(212,165,116,0.04), transparent 60%), #1a1208;
         }
-        .ft-item .ft-ph .ph-emoji { font-size: 40px; }
-        .ft-item .ft-ph .ph-text {
-            font-family: 'Caveat', cursive; font-size: 14px;
-            color: rgba(245,230,208,0.25);
-        }
         .ft-item .ft-overlay {
             position: absolute; bottom: 0; left: 0; right: 0;
             padding: 32px 14px 12px;
@@ -394,6 +319,55 @@
             font-family: 'Caveat', cursive; font-size: 18px; color: var(--cream);
         }
         .ft-item.ft-hero { grid-row: span 2; }
+
+        /* ═══ LIGHTBOX ═══ */
+        .lightbox-overlay {
+            position: fixed; inset: 0;
+            background: rgba(10, 6, 3, 0.92);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            cursor: pointer;
+        }
+        .lightbox-overlay img {
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            cursor: default;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px; right: 24px;
+            font-size: 32px;
+            color: rgba(245,230,208,0.6);
+            cursor: pointer;
+            background: none; border: none;
+            font-family: 'Cormorant Garamond', serif;
+            transition: color 0.2s;
+        }
+        .lightbox-close:hover { color: var(--cream); }
+        .lightbox-caption {
+            position: absolute;
+            bottom: 24px; left: 0; right: 0;
+            text-align: center;
+            font-family: 'Caveat', cursive;
+            font-size: 22px;
+            color: rgba(245,230,208,0.6);
+        }
+
+        /* ═══ EMPTY STATE ═══ */
+        .gallery-empty {
+            text-align: center;
+            padding: 80px 20px;
+            color: rgba(245,230,208,0.3);
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 18px;
+        }
 
         /* ═══ SCROLL REVEAL ═══ */
         .reveal {
@@ -413,76 +387,107 @@
             .flour-swipe { display: none; }
         }
     </style>
-</head>
-<body>
+@endsection
 
-    <x-main-nav active="gallery" />
-
+@section('content')
     {{-- ═══ HERO ═══ --}}
     <section class="gallery-hero">
         <h1>Fresh from the Oven</h1>
         <p class="hero-sub">A peek into our kitchen and what's baking today.</p>
     </section>
 
-    {{-- ═══ GALLERY ═══ --}}
-    <section class="fresh-oven">
-        <div class="ft-container reveal">
-            <div class="flour-patch fp1"></div>
-            <div class="flour-patch fp2"></div>
-            <div class="flour-patch fp3"></div>
-            <div class="flour-patch fp4"></div>
-            <div class="flour-patch fp5"></div>
-
-            <div class="flour-specks">
-                <span></span><span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span><span></span>
-                <span></span><span></span><span></span><span></span><span></span>
-            </div>
-
-            <div class="flour-trail"></div>
-            <div class="flour-swipe"></div>
-            <div class="flour-handprint"></div>
-
-            <div class="ft-grid">
-                <div class="ft-item ft-hero">
-                    <img src="/images/product-sourdough-boule.jpg" alt="Sourdough Boule">
-                    <div class="ft-overlay"><span class="ft-caption">The signature boule</span></div>
-                </div>
-                <div class="ft-item">
-                    <img src="/images/product-chocolate-sourdough.jpg" alt="Chocolate Sourdough Loaf">
-                    <div class="ft-overlay"><span class="ft-caption">Dark chocolate sourdough</span></div>
-                </div>
-                <div class="ft-item">
-                    <img src="/images/product-chocolate-chip.jpg" alt="Chocolate Chip Sourdough">
-                    <div class="ft-overlay"><span class="ft-caption">Chocolate chip</span></div>
-                </div>
-                <div class="ft-item">
-                    <img src="/images/product-chocolate-almond-chip.jpg" alt="Chocolate Almond Chip Sourdough">
-                    <div class="ft-overlay"><span class="ft-caption">Chocolate almond chip</span></div>
-                </div>
-                <div class="ft-item">
-                    <img src="/images/product-honey-wheat-sandwich.jpg" alt="Honey Wheat Sandwich Loaf">
-                    <div class="ft-overlay"><span class="ft-caption">Honey wheat sandwich</span></div>
-                </div>
-                <div class="ft-item">
-                    <img src="/images/product-4pack-sourdough-loaves.jpg" alt="4-Pack Sourdough Loaves">
-                    <div class="ft-overlay"><span class="ft-caption">The 4-pack</span></div>
-                </div>
-                <div class="ft-item">
-                    <img src="/images/product-cheddar-cheese-loaf.jpg" alt="Cheddar Cheese Loaf">
-                    <div class="ft-overlay"><span class="ft-caption">Cheddar cheese loaf</span></div>
-                </div>
-                <div class="ft-item">
-                    <img src="/images/product-banana-bread.jpg" alt="Banana Bread">
-                    <div class="ft-overlay"><span class="ft-caption">Banana bread</span></div>
-                </div>
-            </div>
+    {{-- ═══ CATEGORY FILTERS ═══ --}}
+    @if($categories->count() > 1)
+        <div class="gallery-filters" x-data>
+            <button class="filter-btn active" @click="$dispatch('filter-gallery', { category: 'all' }); document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); $el.classList.add('active')">All</button>
+            @foreach($categories as $cat)
+                <button class="filter-btn" @click="$dispatch('filter-gallery', { category: '{{ $cat }}' }); document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); $el.classList.add('active')">{{ ucfirst($cat) }}</button>
+            @endforeach
         </div>
+    @endif
+
+    {{-- ═══ GALLERY ═══ --}}
+    <section class="fresh-oven" x-data="galleryApp()">
+        @if($photos->count())
+            <div class="ft-container reveal">
+                <div class="flour-patch fp1"></div>
+                <div class="flour-patch fp2"></div>
+                <div class="flour-patch fp3"></div>
+                <div class="flour-patch fp4"></div>
+                <div class="flour-patch fp5"></div>
+
+                <div class="flour-specks">
+                    <span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+
+                <div class="flour-trail"></div>
+                <div class="flour-swipe"></div>
+                <div class="flour-handprint"></div>
+
+                <div class="ft-grid">
+                    @foreach($photos as $index => $photo)
+                        <div
+                            class="ft-item {{ $index === 0 ? 'ft-hero' : '' }}"
+                            data-category="{{ $photo->category }}"
+                            @click="openLightbox('{{ $photo->image_path ? Storage::disk('public')->url($photo->image_path) : '' }}', '{{ addslashes($photo->title ?? '') }}')"
+                            x-show="activeCategory === 'all' || activeCategory === '{{ $photo->category }}'"
+                            x-transition
+                        >
+                            @if($photo->image_path)
+                                <img src="{{ Storage::disk('public')->url($photo->image_path) }}" alt="{{ $photo->title ?? 'Gallery photo' }}">
+                            @else
+                                <div class="ft-ph">
+                                    <span class="ph-text">Photo coming soon</span>
+                                </div>
+                            @endif
+                            @if($photo->title)
+                                <div class="ft-overlay"><span class="ft-caption">{{ $photo->title }}</span></div>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @else
+            <div class="gallery-empty">
+                <p>Photos coming soon&hellip;</p>
+            </div>
+        @endif
+
+        {{-- ═══ LIGHTBOX ═══ --}}
+        <template x-if="lightboxOpen">
+            <div class="lightbox-overlay" @click.self="lightboxOpen = false" @keydown.escape.window="lightboxOpen = false">
+                <button class="lightbox-close" @click="lightboxOpen = false">&times;</button>
+                <img :src="lightboxSrc" :alt="lightboxCaption">
+                <div class="lightbox-caption" x-text="lightboxCaption" x-show="lightboxCaption"></div>
+            </div>
+        </template>
     </section>
+@endsection
 
-    <x-site-footer />
-
+@section('scripts')
     <script>
+        function galleryApp() {
+            return {
+                activeCategory: 'all',
+                lightboxOpen: false,
+                lightboxSrc: '',
+                lightboxCaption: '',
+                init() {
+                    window.addEventListener('filter-gallery', (e) => {
+                        this.activeCategory = e.detail.category;
+                    });
+                },
+                openLightbox(src, caption) {
+                    if (!src) return;
+                    this.lightboxSrc = src;
+                    this.lightboxCaption = caption;
+                    this.lightboxOpen = true;
+                }
+            };
+        }
+
         // Scroll reveal
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -494,5 +499,4 @@
         }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
-</body>
-</html>
+@endsection

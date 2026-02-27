@@ -240,7 +240,21 @@ class QuickOrder extends Page
                     }),
 
                 Section::make('Order Items')
-                    ->description('Add products and quantities')
+                    ->description(function (Get $get) use ($productPrices) {
+                        $items = $get('items') ?? [];
+                        $subtotal = 0;
+                        foreach ($items as $item) {
+                            $productId = $item['product_id'] ?? null;
+                            $price = $productPrices[$productId] ?? 0;
+                            $qty = (int) ($item['quantity'] ?: 1);
+                            $subtotal += $price * $qty;
+                        }
+                        $itemCount = collect($items)->filter(fn ($i) => !empty($i['product_id']))->count();
+                        if ($subtotal > 0) {
+                            return $itemCount . ' ' . ($itemCount === 1 ? 'item' : 'items') . '  ·  Subtotal: $' . number_format($subtotal, 2);
+                        }
+                        return 'Add products and quantities';
+                    })
                     ->icon('heroicon-o-shopping-cart')
                     ->components([
                         Repeater::make('items')

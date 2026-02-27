@@ -139,6 +139,24 @@ class ProductResource extends Resource
                     ->money('usd')
                     ->sortable()
                     ->toggleable(),
+                Tables\Columns\TextColumn::make('recipe.cost_per_serving')
+                    ->label('Cost')
+                    ->money('usd')
+                    ->placeholder('—')
+                    ->sortable(query: fn ($query, string $direction) => $query)
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('recipe.profit_margin')
+                    ->label('Margin')
+                    ->formatStateUsing(fn ($state) => $state !== null ? number_format($state, 1) . '%' : '—')
+                    ->color(fn ($state) => match(true) {
+                        $state === null => 'gray',
+                        $state > 50 => 'success',
+                        $state >= 30 => 'warning',
+                        default => 'danger',
+                    })
+                    ->badge()
+                    ->sortable(query: fn ($query, string $direction) => $query)
+                    ->toggleable(),
                 Tables\Columns\IconColumn::make('is_available')
                     ->label('Available')
                     ->boolean()

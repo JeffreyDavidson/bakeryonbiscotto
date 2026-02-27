@@ -1,74 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu | Bakery on Biscotto</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+@extends('layouts.storefront', ['title' => 'Menu | Bakery on Biscotto', 'active' => 'menu'])
+
+@section('body_attrs')style="background: #1a0f08;"@endsection
+
+@section('styles')
     <style>
-        :root {
-            --dark: #3D2314;
-            --brown: #8B5E3C;
-            --cream: #F5E6D0;
-            --golden: #D4A574;
-            --accent: #C17F4E;
-            --light: #FDF8F2;
-            --white: #FFFFFF;
-            --warm: #6B4C3B;
-            --parchment: #f0e0c8;
-            --ink: #2a1a0e;
-            --candle: #f4c87a;
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--dark);
-            background: #1a0f08;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Skip to main content link */
-        .skip-to-main {
-            position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
-            background: var(--dark); color: var(--cream); padding: 12px 24px;
-            border-radius: 0 0 8px 8px; font-family: 'Inter', sans-serif;
-            font-size: 14px; font-weight: 600; text-decoration: none; z-index: 10000;
-            transition: top 0.3s ease;
-        }
-        .skip-to-main:focus { top: 0; outline: 2px solid var(--golden); outline-offset: 2px; }
-
-        a:focus-visible, button:focus-visible, [tabindex]:focus-visible {
-            outline: 2px solid var(--golden); outline-offset: 2px;
-        }
-
-        /* ═══ MAIN NAV ═══ */
-        .main-nav {
-            position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
-            z-index: 1000;
-            display: flex; align-items: center; gap: 4px;
-            padding: 8px 12px;
-            background: rgba(61,35,20,0.75);
-            backdrop-filter: blur(24px) saturate(1.6);
-            -webkit-backdrop-filter: blur(24px) saturate(1.6);
-            border-radius: 100px;
-            border: 1px solid rgba(212,165,116,0.15);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-        }
-        .main-nav a {
-            font-family: 'Playfair Display', serif;
-            font-size: 14px; font-weight: 500;
-            color: var(--cream); text-decoration: none;
-            padding: 10px 24px; border-radius: 100px;
-            transition: all 0.3s ease;
-        }
-        .main-nav a:hover { background: rgba(212,165,116,0.2); color: var(--golden); }
-
         /* ═══ MENU HERO ═══ */
         .menu-hero {
             padding: 140px 20px 40px;
@@ -423,48 +358,6 @@
             position: absolute; z-index: 1; opacity: 0.04; pointer-events: none;
         }
 
-        /* ═══ FOOTER ═══ */
-        .footer {
-            background: var(--dark); position: relative; overflow: hidden;
-            padding: 0 20px 40px; text-align: center;
-        }
-        .footer-gradient {
-            height: 3px;
-            background: linear-gradient(90deg, transparent 5%, var(--golden), var(--accent), var(--golden), transparent 95%);
-            margin-bottom: 60px;
-        }
-        .footer h3 {
-            font-family: 'Playfair Display', serif; font-size: 1.8rem;
-            color: var(--cream); margin-bottom: 8px;
-        }
-        .footer .tagline {
-            font-family: 'Dancing Script', cursive; font-size: 1.15rem;
-            color: var(--golden); margin-bottom: 24px;
-        }
-        .footer-badge {
-            display: inline-block; padding: 10px 28px;
-            border: 1.5px solid rgba(212,165,116,0.25); border-radius: 100px;
-            font-size: 13px; font-weight: 500; color: rgba(245,230,208,0.6);
-            margin-bottom: 28px; letter-spacing: 0.5px;
-        }
-        .footer-info {
-            font-size: 14px; color: rgba(245,230,208,0.4); line-height: 2.2;
-        }
-        .footer-info a {
-            color: var(--golden); text-decoration: none; transition: color 0.3s;
-        }
-        .footer-info a:hover { color: var(--cream); }
-        .footer-allergen {
-            margin-top: 24px; font-size: 11px; color: rgba(245,230,208,0.35);
-            max-width: 600px; margin-left: auto; margin-right: auto;
-            line-height: 1.5; font-style: italic;
-        }
-        .footer-bottom {
-            margin-top: 20px; padding-top: 20px;
-            border-top: 1px solid rgba(245,230,208,0.06);
-            font-size: 12px; color: rgba(245,230,208,0.2);
-        }
-
         /* ═══ SCROLL ANIMATIONS ═══ */
         .reveal {
             opacity: 0; transform: translateY(28px);
@@ -484,9 +377,7 @@
             .bundle-callout { margin: 40px -20px 8px; }
             .bundle-inner { padding: 28px 24px; flex-wrap: wrap; justify-content: center; text-align: center; }
             .bundle-ribbon { display: none; }
-            .main-nav { top: 38px; padding: 6px 8px; gap: 2px; }
-            .main-nav a { padding: 8px 14px; font-size: 12px; }
-        }
+}
         @media (max-width: 480px) {
             .parchment { padding: 48px 24px 40px; }
             .menu-item-name { font-size: 1.35rem; white-space: normal; }
@@ -500,11 +391,9 @@
             }
         }
     </style>
-</head>
-<body>
+@endsection
 
-    <x-main-nav active="menu" />
-
+@section('content')
     <main id="main-content">
 
     {{-- Menu Hero --}}
@@ -647,9 +536,9 @@
     </section>
 
     </main>
+@endsection
 
-    <x-site-footer />
-
+@section('scripts')
     <script>
         // Scroll reveal
         const observer = new IntersectionObserver((entries) => {
@@ -673,5 +562,4 @@
             });
         }
     </script>
-</body>
-</html>
+@endsection

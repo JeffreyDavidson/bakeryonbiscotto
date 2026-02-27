@@ -1,95 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends('layouts.storefront', ['title' => 'Order | Bakery on Biscotto', 'active' => 'order'])
+
+@section('meta')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Order | Bakery on Biscotto</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+@endsection
+
+@section('styles')
     <style>
-        :root {
-            --dark: #3D2314;
-            --brown: #8B5E3C;
-            --cream: #F5E6D0;
-            --golden: #D4A574;
-            --accent: #C17F4E;
-            --light: #FDF8F2;
-            --white: #FFFFFF;
-            --warm: #6B4C3B;
-            --parchment: #f0e0c8;
-            --ink: #2a1a0e;
-        }
-
-        /* Skip to main content link */
-        .skip-to-main {
-            position: absolute;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--dark);
-            color: var(--cream);
-            padding: 12px 24px;
-            border-radius: 0 0 8px 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            z-index: 10000;
-            transition: top 0.3s ease;
-        }
-        .skip-to-main:focus {
-            top: 0;
-            outline: 2px solid var(--golden);
-            outline-offset: 2px;
-        }
-
-        /* Focus styles for all interactive elements */
-        a:focus-visible,
-        button:focus-visible,
-        input:focus-visible,
-        textarea:focus-visible,
-        select:focus-visible,
-        [tabindex]:focus-visible {
-            outline: 2px solid var(--golden);
-            outline-offset: 2px;
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--dark);
-            background: var(--light);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* ═══ NAV ═══ */
-        .main-nav {
-            position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
-            z-index: 1000;
-            display: flex; align-items: center; gap: 4px;
-            padding: 8px 12px;
-            background: rgba(61,35,20,0.75);
-            backdrop-filter: blur(24px) saturate(1.6);
-            -webkit-backdrop-filter: blur(24px) saturate(1.6);
-            border-radius: 100px;
-            border: 1px solid rgba(212,165,116,0.15);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-        }
-        .main-nav a {
-            font-family: 'Playfair Display', serif;
-            font-size: 14px; font-weight: 500;
-            color: var(--cream); text-decoration: none;
-            padding: 10px 24px; border-radius: 100px;
-            transition: all 0.3s ease;
-        }
-        .main-nav a:hover { background: rgba(212,165,116,0.2); color: var(--golden); }
-        .main-nav a.active { background: var(--golden); color: var(--dark); font-weight: 600; }
-
         /* ═══ HERO ═══ */
         .order-hero {
             padding: 140px 24px 60px;
@@ -453,6 +369,57 @@
         }
         .form-input::placeholder { color: #8b7355; }
         textarea.form-input { resize: vertical; min-height: 80px; }
+
+        .coupon-field {
+            display: flex;
+            border: 1.5px solid var(--golden);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .coupon-field input {
+            flex: 1;
+            padding: 10px 12px;
+            border: none !important;
+            border-right: 1.5px solid var(--golden) !important;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: var(--dark);
+            background: var(--cream);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 0;
+        }
+        .coupon-field input::placeholder {
+            text-transform: none;
+            color: #8b7355;
+        }
+        .coupon-field button {
+            padding: 12px 24px;
+            background: var(--dark);
+            color: var(--cream);
+            border: none;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+        .coupon-field button:hover:not(:disabled) {
+            background: var(--warm);
+        }
+        .coupon-field button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .coupon-field .coupon-remove {
+            background: #dc2626;
+            color: white;
+        }
+        .coupon-field .coupon-remove:hover {
+            background: #b91c1c;
+        }
 
         .toggle-group {
             display: grid;
@@ -867,13 +834,9 @@
             }
         }
     </style>
-</head>
-<body>
-    {{-- NAV --}}
-    <x-main-nav active="order" />
+@endsection
 
-    {{-- HERO --}}
-    <main id="main-content">
+@section('content')
     <section class="order-hero">
         <h1>Place Your Order</h1>
         <p>Everything baked fresh to order. Please allow at least 2 days for your handcrafted sourdough.</p>
@@ -1014,6 +977,32 @@
                     <div class="form-group">
                         <label class="form-label" for="order-phone">Phone</label>
                         <input type="tel" id="order-phone" class="form-input" x-model="form.customer_phone" @input="formatPhone" placeholder="(555) 123-4567" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="order-birthday">Birthday <span style="font-weight: 400; text-transform: none; opacity: 0.6;">(optional — for special treats! 🎂)</span></label>
+                        <div style="display: flex; gap: 8px;">
+                            <select id="order-birthday-month" class="form-input" x-model="form.birthday_month" style="flex: 1;">
+                                <option value="">Month</option>
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                            <select id="order-birthday-day" class="form-input" x-model="form.birthday_day" style="flex: 1;">
+                                <option value="">Day</option>
+                                <template x-for="d in 31" :key="d">
+                                    <option :value="String(d).padStart(2, '0')" x-text="d"></option>
+                                </template>
+                            </select>
+                        </div>
                     </div>
 
                     <h3 class="form-section-title" style="margin-top: 24px;">Fulfillment</h3>
@@ -1199,6 +1188,7 @@
                     <input type="hidden" name="customer_name" :value="form.customer_name">
                     <input type="hidden" name="customer_email" :value="form.customer_email">
                     <input type="hidden" name="customer_phone" :value="form.customer_phone">
+                    <input type="hidden" name="birthday" :value="(form.birthday_month && form.birthday_day) ? ('2000-' + form.birthday_month + '-' + form.birthday_day) : ''">
                     <input type="hidden" name="fulfillment_type" :value="fulfillment">
                     <input type="hidden" name="delivery_address" :value="form.delivery_address">
                     <input type="hidden" name="delivery_zip" :value="form.delivery_zip">
@@ -1213,13 +1203,13 @@
                             Have a coupon code?
                         </button>
                         <div x-show="couponOpen" x-transition style="margin-top: 10px;">
-                            <div style="display: flex; gap: 8px;">
-                                <input type="text" class="form-input" x-model="couponCode" placeholder="Enter code" style="flex: 1; text-transform: uppercase;" :disabled="couponApplied">
-                                <button type="button" x-show="!couponApplied" @click="applyCoupon()" :disabled="couponLoading || !couponCode.trim()" style="padding: 10px 18px; background: var(--dark); color: var(--cream); border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; opacity: 1; transition: opacity 0.2s;" :style="(couponLoading || !couponCode.trim()) ? 'opacity: 0.5; cursor: not-allowed;' : ''">
+                            <div class="coupon-field">
+                                <input type="text" x-model="couponCode" placeholder="Enter coupon code" :disabled="couponApplied">
+                                <button type="button" x-show="!couponApplied" @click="applyCoupon()" :disabled="couponLoading || !couponCode.trim()">
                                     <span x-show="!couponLoading">Apply</span>
                                     <span x-show="couponLoading">...</span>
                                 </button>
-                                <button type="button" x-show="couponApplied" @click="removeCoupon()" style="padding: 10px 18px; background: #dc2626; color: white; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap;">
+                                <button type="button" class="coupon-remove" x-show="couponApplied" @click="removeCoupon()">
                                     Remove
                                 </button>
                             </div>
@@ -1291,8 +1281,9 @@
     </main>
 
     {{-- FOOTER --}}
-    <x-site-footer />
+@endsection
 
+@section('scripts')
     <script>
         const bundleConfig = @json($bundles);
 
@@ -1532,6 +1523,8 @@
                     customer_name: '',
                     customer_email: '',
                     customer_phone: '',
+                    birthday_month: '',
+                    birthday_day: '',
                     delivery_address: '',
                     delivery_zip: '',
                     requested_date: '',
@@ -1540,6 +1533,13 @@
                 },
 
                 init() {
+                    // Check for reorder param
+                    const params = new URLSearchParams(window.location.search);
+                    const reorderId = params.get('reorder');
+                    if (reorderId) {
+                        this.loadReorder(reorderId);
+                    }
+
                     // Load favorites if we have a stored email
                     if (this.favoritesEmail) {
                         this.loadFavorites(this.favoritesEmail);
@@ -1552,6 +1552,32 @@
                             this.loadFavorites(val);
                         }
                     });
+                },
+
+                async loadReorder(orderId) {
+                    try {
+                        const res = await fetch(`/order/reorder/${orderId}`);
+                        if (!res.ok) return;
+                        const data = await res.json();
+
+                        // Prefill customer info
+                        this.form.customer_name = data.customer_name || '';
+                        this.form.customer_email = data.customer_email || '';
+                        this.form.customer_phone = data.customer_phone || '';
+
+                        // Add items to cart
+                        for (const item of data.items) {
+                            this.cart.push({
+                                id: item.product_id,
+                                name: item.product_name,
+                                price: parseFloat(item.unit_price),
+                                quantity: item.quantity,
+                                selections: item.selections || null,
+                            });
+                        }
+                    } catch (e) {
+                        console.warn('Could not load reorder data', e);
+                    }
                 },
 
                 async loadFavorites(email) {
@@ -1784,6 +1810,7 @@
                         customer_name: this.form.customer_name,
                         customer_email: this.form.customer_email,
                         customer_phone: this.form.customer_phone,
+                        birthday: (this.form.birthday_month && this.form.birthday_day) ? ('2000-' + this.form.birthday_month + '-' + this.form.birthday_day) : null,
                         fulfillment_type: this.fulfillment,
                         delivery_address: this.form.delivery_address,
                         delivery_zip: this.form.delivery_zip,
@@ -1941,15 +1968,30 @@
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
                         },
                         body: JSON.stringify(orderData),
                     });
 
-                    const result = await response.json();
+                    const text = await response.text();
+                    let result;
+                    try {
+                        result = JSON.parse(text);
+                    } catch (e) {
+                        console.error('PayPal create response not JSON:', text.substring(0, 500));
+                        data.paymentError = 'Payment service error. Please try again.';
+                        throw new Error('Non-JSON response from server');
+                    }
 
-                    if (result.error) {
-                        data.paymentError = result.error;
-                        throw new Error(result.error);
+                    if (!response.ok || result.error) {
+                        // Handle Laravel validation errors
+                        if (result.errors) {
+                            const firstError = Object.values(result.errors).flat()[0];
+                            data.paymentError = firstError || result.message || 'Validation error.';
+                        } else {
+                            data.paymentError = result.error || result.message || 'Something went wrong.';
+                        }
+                        throw new Error(data.paymentError);
                     }
 
                     return result.id;
@@ -1998,5 +2040,4 @@
             }).render('#paypal-button-container');
         }
     </script>
-</body>
-</html>
+@endsection
