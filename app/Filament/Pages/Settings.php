@@ -53,6 +53,11 @@ class Settings extends Page
             'send_order_emails' => Setting::get('send_order_emails', '1') === '1',
             'send_review_followup_emails' => Setting::get('send_review_followup_emails', '1') === '1',
             'admin_notification_email' => Setting::get('admin_notification_email', ''),
+
+            // PayPal Invoice Settings
+            'paypal_template_id' => Setting::get('paypal_template_id', ''),
+            'invoice_seller_note' => Setting::get('invoice_seller_note', ''),
+            'invoice_terms' => Setting::get('invoice_terms', ''),
         ]);
     }
 
@@ -159,9 +164,14 @@ class Settings extends Page
                     ->columns(2),
 
                 Section::make('PayPal Invoice Settings')
-                    ->description('Customize text that appears on PayPal invoices sent to customers.')
+                    ->description('Customize text that appears on PayPal invoices. Sync pulls from PayPal, Push updates PayPal with what\'s here.')
                     ->icon('heroicon-o-document-text')
                     ->schema([
+                        TextInput::make('paypal_template_id')
+                            ->label('PayPal Template ID')
+                            ->helperText('Auto-detected when you sync. Leave blank to skip template usage.')
+                            ->placeholder('TEMP-XXXX...')
+                            ->columnSpanFull(),
                         Textarea::make('invoice_seller_note')
                             ->label('Seller Note to Customer')
                             ->rows(3)
@@ -233,9 +243,109 @@ class Settings extends Page
             ->send();
     }
 
+    public function syncFromPayPal(): void
+    {
+        try {
+            $paypal = app(\App\Services\PayPalService::class);
+            $templates = $paypal->listTemplates();
+
+            if (empty($templates)) {
+                Notification::make()
+                    ->title('No templates found in PayPal')
+                    ->body('You can create one by filling in the fields below and clicking "Push to PayPal".')
+                    ->warning()
+                    ->send();
+                return;
+            }
+
+            // Use the first template (or the default one)
+            $template = $templates[0];
+            $templateId = $template['id'] ?? '';
+            $note = $template['detail']['note'] ?? '';
+            $terms = $template['detail']['terms_and_conditions'] ?? '';
+
+            $this->data['paypal_template_id'] = $templateId;
+            $this->data['invoice_seller_note'] = $note;
+            $this->data['invoice_terms'] = $terms;
+
+            Setting::set('paypal_template_id', $templateId);
+            Setting::set('invoice_seller_note', $note);
+            Setting::set('invoice_terms', $terms);
+
+            Notification::make()
+                ->title('Synced from PayPal')
+                ->body("Template: {$templateId}")
+                ->success()
+                ->send();
+        } catch (\Exception $e) {
+            Notification::make()
+                ->title('PayPal sync failed')
+                ->body($e->getMessage())
+                ->danger()
+                ->send();
+        }
+    }
+
+    public function pushToPayPal(): void
+    {
+        try {
+            $paypal = app(\App\Services\PayPalService::class);
+            $note = $this->data['invoice_seller_note'] ?? '';
+            $terms = $this->data['invoice_terms'] ?? '';
+            $templateId = $this->data['paypal_template_id'] ?? '';
+
+            if ($templateId) {
+                // Update existing template
+                $paypal->updateTemplate($templateId, $note, $terms);
+                Notification::make()
+                    ->title('PayPal template updated')
+                    ->body("Template {$templateId} has been updated.")
+                    ->success()
+                    ->send();
+            } else {
+                // Create new template
+                $result = $paypal->createTemplate('Bakery on Biscotto', $note, $terms);
+                $newId = $result['id'] ?? '';
+                if ($newId) {
+                    $this->data['paypal_template_id'] = $newId;
+                    Setting::set('paypal_template_id', $newId);
+                }
+                Notification::make()
+                    ->title('PayPal template created')
+                    ->body("New template: {$newId}")
+                    ->success()
+                    ->send();
+            }
+
+            // Also save locally
+            Setting::set('invoice_seller_note', $note);
+            Setting::set('invoice_terms', $terms);
+        } catch (\Exception $e) {
+            Notification::make()
+                ->title('PayPal push failed')
+                ->body($e->getMessage())
+                ->danger()
+                ->send();
+        }
+    }
+
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('syncPayPal')
+                ->label('Sync from PayPal')
+                ->action('syncFromPayPal')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->color('info')
+                ->requiresConfirmation()
+                ->modalDescription('This will pull the seller note and terms from your PayPal template and overwrite what\'s here.'),
+            Actions\Action::make('pushPayPal')
+                ->label('Push to PayPal')
+                ->action('pushToPayPal')
+                ->icon('heroicon-o-arrow-up-tray')
+                ->color('warning')
+                ->requiresConfirmation()
+                ->modalDescription('This will update your PayPal template with the seller note and terms shown here.'),
             Actions\Action::make('save')
                 ->label('Save Settings')
                 ->action('save')
