@@ -2025,11 +2025,20 @@
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
                         },
                         body: JSON.stringify(orderData),
                     });
 
-                    const result = await response.json();
+                    const text = await response.text();
+                    let result;
+                    try {
+                        result = JSON.parse(text);
+                    } catch (e) {
+                        console.error('PayPal create response not JSON:', text.substring(0, 500));
+                        data.paymentError = 'Payment service error. Please try again.';
+                        throw new Error('Non-JSON response from server');
+                    }
 
                     if (result.error) {
                         data.paymentError = result.error;
