@@ -55,6 +55,10 @@ class Settings extends Page
             'admin_notification_email' => Setting::get('admin_notification_email', ''),
             'send_repeat_reminders' => Setting::get('send_repeat_reminders', '0') === '1',
 
+            // Birthday Program
+            'birthday_program_enabled' => Setting::get('birthday_program_enabled', '0') === '1',
+            'birthday_discount_percent' => Setting::get('birthday_discount_percent', '15'),
+
             // PayPal Invoice Settings
             'paypal_template_id' => Setting::get('paypal_template_id', ''),
             'invoice_seller_note' => Setting::get('invoice_seller_note', ''),
@@ -205,6 +209,23 @@ class Settings extends Page
                             ->helperText('New order alerts are sent to this address.'),
                     ])
                     ->columns(2),
+
+                Section::make('Birthday Program')
+                    ->description('Automatically send birthday discount coupons to customers.')
+                    ->icon('heroicon-o-cake')
+                    ->schema([
+                        Toggle::make('birthday_program_enabled')
+                            ->label('Enable Birthday Program')
+                            ->helperText('When enabled, customers with a birthday on file receive a discount coupon on their birthday.'),
+                        TextInput::make('birthday_discount_percent')
+                            ->label('Birthday Discount (%)')
+                            ->numeric()
+                            ->minValue(1)
+                            ->maxValue(100)
+                            ->suffix('%')
+                            ->helperText('Percentage discount for the birthday coupon (default 15%).'),
+                    ])
+                    ->columns(2),
             ])
             ->statePath('data');
     }
@@ -241,6 +262,10 @@ class Settings extends Page
         Setting::set('send_review_followup_emails', ($data['send_review_followup_emails'] ?? true) ? '1' : '0');
         Setting::set('admin_notification_email', $data['admin_notification_email'] ?? '');
         Setting::set('send_repeat_reminders', ($data['send_repeat_reminders'] ?? false) ? '1' : '0');
+
+        // Birthday Program
+        Setting::set('birthday_program_enabled', ($data['birthday_program_enabled'] ?? false) ? '1' : '0');
+        Setting::set('birthday_discount_percent', $data['birthday_discount_percent'] ?? '15');
 
         Notification::make()
             ->title('Settings saved')

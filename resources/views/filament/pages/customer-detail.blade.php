@@ -14,6 +14,9 @@
             @if($customer->customer_phone)
                 <x-admin.info-row label="Phone" :value="$customer->customer_phone" :href="'tel:' . $customer->customer_phone" />
             @endif
+            @if(isset($customerProfile) && $customerProfile?->birthday)
+                <x-admin.info-row label="Birthday" :value="$customerProfile->birthday->format('F j')" />
+            @endif
         </div>
     </x-admin.card>
 
