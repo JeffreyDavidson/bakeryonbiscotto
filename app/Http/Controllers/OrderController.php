@@ -117,9 +117,19 @@ class OrderController extends Controller
             'calculated' => $calculated,
         ]]);
 
-        $result = $paypal->createOrder($calculated['total'], 'Bakery on Biscotto Order');
+        try {
+            $result = $paypal->createOrder($calculated['total'], 'Bakery on Biscotto Order');
 
-        return response()->json(['id' => $result['id']]);
+            if (empty($result['id'])) {
+                \Log::error('PayPal createOrder - no ID returned', ['result' => $result]);
+                return response()->json(['error' => 'PayPal did not return an order ID. Please try again.'], 500);
+            }
+
+            return response()->json(['id' => $result['id']]);
+        } catch (\Exception $e) {
+            \Log::error('PayPal createOrder failed', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Payment service error: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
