@@ -1,7 +1,7 @@
 <x-mail::message>
 # Hi {{ $order->customer_name }}! 👋
 
-It's been about a month since your last order, and we've been baking up a storm over here at Bakery on Biscotto! We thought you might be ready for another round of fresh-baked goodness. 🥖
+It's been about a month since your last order, and we've been baking up a storm over here at {{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }}! We thought you might be ready for another round of fresh-baked goodness. 🥖
 
 **Here's what you ordered last time:**
 
@@ -22,7 +22,7 @@ Ready for More? 🛒
 We're so grateful for your support of our little bakery. Can't wait to bake for you again! ❤️
 
 With love and flour dust,<br>
-Cassie
+{{ \App\Models\Setting::get('owner_name', 'Cassie') }}
 
 <small>Don't want these reminders? Just reply to this email and let us know — no hard feelings!</small>
 </x-mail::message>

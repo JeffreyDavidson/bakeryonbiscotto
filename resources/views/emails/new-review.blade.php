@@ -33,7 +33,7 @@ $brandMid = '#A08060';
     <div class="container">
         <div class="header">
             <h1>New Review Submitted!</h1>
-            <p>Someone left a review on Bakery on Biscotto</p>
+            <p>Someone left a review on {{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }}</p>
         </div>
 
         <div class="card">

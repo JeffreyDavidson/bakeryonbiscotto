@@ -1,4 +1,4 @@
-@extends('layouts.storefront', ['title' => 'Menu | Bakery on Biscotto', 'active' => 'menu'])
+@extends('layouts.storefront', ['title' => 'Menu | ' . \App\Models\Setting::get('business_name', 'Bakery on Biscotto'), 'active' => 'menu'])
 
 @section('body_attrs')style="background: var(--brand-900);"@endsection
 

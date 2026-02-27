@@ -136,7 +136,7 @@ class FinanceSummary extends Page
 
     public function getRevCapProperty(): array
     {
-        $cap = 250000;
+        $cap = (int) \App\Models\Setting::get('revenue_cap', 250000);
         $totalRevenue = $this->yearTotals['total_income'];
         $percentage = min(($totalRevenue / $cap) * 100, 100);
         $remaining = max($cap - $totalRevenue, 0);

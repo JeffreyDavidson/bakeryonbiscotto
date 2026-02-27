@@ -1,4 +1,4 @@
-@extends('layouts.storefront', ['title' => 'Leave a Review | Bakery on Biscotto', 'active' => 'review'])
+@extends('layouts.storefront', ['title' => 'Leave a Review | ' . \App\Models\Setting::get('business_name', 'Bakery on Biscotto'), 'active' => 'review'])
 
 @section('styles')
     <style>

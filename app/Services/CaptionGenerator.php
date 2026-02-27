@@ -167,7 +167,7 @@ class CaptionGenerator
     {
         $bodies = [
             'casual' => [
-                'Made from scratch right here in Florida. {description}.',
+                'Made from scratch right here in ' . \App\Models\Setting::get('store_state_full', 'Florida') . '. {description}.',
                 'Just your friendly cottage baker bringing you {category} goodness.',
                 'Homemade {category} made with real ingredients and zero shortcuts.',
                 'Small batch, big flavor. Every {name} is made with intention.',

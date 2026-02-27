@@ -5,7 +5,7 @@
 <tr>
 <td style="padding: 0;">
 <a href="{{ $url }}" style="display: block;">
-<img src="{{ asset('images/hero-banner.jpg') }}" alt="Bakery on Biscotto" style="width: 100%; max-width: 570px; height: auto; display: block; border-radius: 8px 8px 0 0;">
+<img src="{{ asset('images/hero-banner.jpg') }}" alt="{{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }}" style="width: 100%; max-width: 570px; height: auto; display: block; border-radius: 8px 8px 0 0;">
 </a>
 </td>
 </tr>

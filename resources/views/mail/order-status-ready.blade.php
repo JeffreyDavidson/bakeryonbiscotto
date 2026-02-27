@@ -32,7 +32,7 @@ Come grab your goodies whenever you're ready!
 Can't wait for you to try everything!
 
 With love,<br>
-Cassie — Bakery on Biscotto
+{{ \App\Models\Setting::get('owner_name', 'Cassie') }} — {{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }}
 
 <x-mail::subcopy>
 Questions? Reply to this email or call us anytime.

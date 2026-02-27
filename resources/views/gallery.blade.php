@@ -1,4 +1,4 @@
-@extends('layouts.storefront', ['title' => 'Gallery | Bakery on Biscotto', 'active' => 'gallery'])
+@extends('layouts.storefront', ['title' => 'Gallery | ' . \App\Models\Setting::get('business_name', 'Bakery on Biscotto'), 'active' => 'gallery'])
 
 @section('extra_fonts')
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">

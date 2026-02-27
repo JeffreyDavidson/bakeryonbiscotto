@@ -19,5 +19,5 @@ Order Your Birthday Treats 🎁
 Wishing you the sweetest birthday ever! 🎈
 
 With love and sprinkles,<br>
-Cassie & the Bakery on Biscotto team
+{{ \App\Models\Setting::get('owner_name', 'Cassie') }} & the {{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }} team
 </x-mail::message>

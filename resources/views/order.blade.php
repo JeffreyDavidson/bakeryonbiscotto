@@ -1,4 +1,4 @@
-@extends('layouts.storefront', ['title' => 'Order | Bakery on Biscotto', 'active' => 'order'])
+@extends('layouts.storefront', ['title' => 'Order | ' . \App\Models\Setting::get('business_name', 'Bakery on Biscotto'), 'active' => 'order'])
 
 @section('meta')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -1012,7 +1012,7 @@
                             <button type="button" class="toggle-option" :class="{ active: fulfillment === 'pickup' }" @click="fulfillment = 'pickup'">
                                 <span class="toggle-icon">🏠</span>
                                 <span>Pickup</span>
-                                <span class="toggle-label">Davenport, FL</span>
+                                <span class="toggle-label">{{ \App\Models\Setting::get('store_city', 'Davenport') }}, {{ \App\Models\Setting::get('store_state', 'FL') }}</span>
                             </button>
                             <button type="button" class="toggle-option" :class="{ active: fulfillment === 'delivery' }" @click="fulfillment = 'delivery'">
                                 <span class="toggle-icon">🚗</span>

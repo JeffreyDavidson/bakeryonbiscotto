@@ -118,7 +118,7 @@ class OrderController extends Controller
         ]]);
 
         try {
-            $result = $paypal->createOrder($calculated['total'], 'Bakery on Biscotto Order');
+            $result = $paypal->createOrder($calculated['total'], \App\Models\Setting::get('business_name', 'Bakery on Biscotto') . ' Order');
 
             if (empty($result['id'])) {
                 \Log::error('PayPal createOrder - no ID returned', ['result' => $result]);

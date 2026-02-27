@@ -17,7 +17,7 @@ $brandLight = '#fdf8f2';
     <div style="max-width:600px;margin:0 auto;padding:2rem 1rem;">
         {{-- Header --}}
         <div style="text-align:center;padding:1.5rem;background:linear-gradient(135deg,{{ $brandDark }},{{ $brandWarm }});border-radius:12px 12px 0 0;">
-            <h1 style="margin:0;color:white;font-size:1.5rem;">🧁 Bakery on Biscotto</h1>
+            <h1 style="margin:0;color:white;font-size:1.5rem;">🧁 {{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }}</h1>
         </div>
 
         {{-- Body --}}
@@ -61,13 +61,13 @@ $brandLight = '#fdf8f2';
             @endif
 
             <p style="color:{{ $brandMid }};font-size:0.85rem;line-height:1.5;">
-                If you've already made your payment, please disregard this email. Thank you for choosing Bakery on Biscotto! 🧁
+                If you've already made your payment, please disregard this email. Thank you for choosing {{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }}! 🧁
             </p>
         </div>
 
         {{-- Footer --}}
         <div style="text-align:center;padding:1rem;color:{{ $brandMid }};font-size:0.8rem;">
-            Bakery on Biscotto · Davenport, FL
+            {{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }} · {{ \App\Models\Setting::get('store_city', 'Davenport') }}, {{ \App\Models\Setting::get('store_state', 'FL') }}
         </div>
     </div>
 </body>

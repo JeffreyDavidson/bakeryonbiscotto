@@ -1,4 +1,4 @@
-@extends('layouts.storefront', ['title' => 'Bakery on Biscotto | Handcrafted Sourdough, Davenport FL', 'active' => 'home'])
+@extends('layouts.storefront', ['title' => \App\Models\Setting::get('business_name', 'Bakery on Biscotto') . ' | Handcrafted Sourdough, ' . \App\Models\Setting::get('store_city', 'Davenport') . ' ' . \App\Models\Setting::get('store_state', 'FL'), 'active' => 'home'])
 
 @section('styles')
     <style>
@@ -501,7 +501,7 @@
         <div class="flour-particles" id="flour-particles"></div>
         <div class="hero-content">
             <div class="hero-text">
-                <h1 class="hero-enter hero-enter-d1">Bakery on<br><em>Biscotto</em></h1>
+                <h1 class="hero-enter hero-enter-d1">{{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }}</h1>
                 <div class="tagline-wrap hero-enter hero-enter-d2">
                     <span class="tagline-flourish">✦</span>
                     <p class="tagline">Where Sourdough Dreams Come True</p>

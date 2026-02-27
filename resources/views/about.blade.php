@@ -1,4 +1,4 @@
-@extends('layouts.storefront', ['title' => 'About | Bakery on Biscotto', 'active' => 'about'])
+@extends('layouts.storefront', ['title' => 'About | ' . \App\Models\Setting::get('business_name', 'Bakery on Biscotto'), 'active' => 'about'])
 
 @section('styles')
     <style>
@@ -209,17 +209,17 @@
         <div class="about-inner">
             <div class="about-photo-wrap reveal">
                 <div class="about-photo">
-                    <img src="/images/cassie-portrait.jpg" alt="Cassie, baker and owner of Bakery on Biscotto">
+                    <img src="/images/cassie-portrait.jpg" alt="{{ \App\Models\Setting::get('owner_name', 'Cassie') }}, baker and owner of {{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }}">
                 </div>
                 <div class="annotation annotation-1">That's me! ↑</div>
             </div>
             <div class="about-text reveal" style="transition-delay: 0.15s;">
-                <h2>Meet Cassie</h2>
+                <h2>Meet {{ \App\Models\Setting::get('owner_name', 'Cassie') }}</h2>
                 <p>I've always loved being in the kitchen, but bread changed everything. It started simple: I wanted my family to have bread without all the processed ingredients and preservatives. I began with yeast bread, then curiosity took over. I started experimenting, tweaking, trying new things, and that's when sourdough found me.</p>
                 <p>My approach isn't complicated, and I like it that way. Good ingredients, good technique, something genuinely good to eat. No fuss.</p>
                 <p>What started as care packages for friends turned into something bigger. People kept asking for more, and eventually the question became: could this be a business? Turns out, yes.</p>
                 <p>I bake everything in the same kitchen where I cook dinner for my husband and daughter. Nothing leaves this house that I wouldn't put on our own table. I have a background in music and a love for the arts, and I bring that same creativity to every loaf I shape. Baking is my art form, and every piece is made by hand, with care.</p>
-                <p class="signature">With love and flour dust, Cassie ✨</p>
+                <p class="signature">With love and flour dust, {{ \App\Models\Setting::get('owner_name', 'Cassie') }} ✨</p>
             </div>
         </div>
         <div class="torn-bottom"></div>

@@ -27,7 +27,7 @@ Leave a Review
 Thank you for supporting a small local bakery — it means the world to us. 💛
 
 With love,<br>
-Cassie — Bakery on Biscotto
+{{ \App\Models\Setting::get('owner_name', 'Cassie') }} — {{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }}
 
 <x-mail::subcopy>
 Questions? Reply to this email or call us anytime.

@@ -24,6 +24,12 @@ class SettingSeeder extends Seeder
             'social_instagram' => '',
             'social_facebook' => '',
             'social_tiktok' => '',
+            'owner_name' => 'Cassie',
+            'store_city' => 'Davenport',
+            'store_state' => 'FL',
+            'store_state_full' => 'Florida',
+            'revenue_cap' => '250000',
+            'revenue_cap_label' => 'FL Cottage Food Annual Cap',
 
             // Order Settings
             'minimum_order_amount' => '0',

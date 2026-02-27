@@ -50,7 +50,7 @@
 
     <div class="invoice-header">
         <div class="brand">
-            <h1>🍪 Bakery on Biscotto</h1>
+            <h1>🍪 {{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }}</h1>
             <p>Handcrafted with love</p>
         </div>
         <div class="invoice-meta">
@@ -135,7 +135,7 @@
     </div>
 
     <div class="footer">
-        <p><strong>Bakery on Biscotto</strong></p>
+        <p><strong>{{ \App\Models\Setting::get('business_name', 'Bakery on Biscotto') }}</strong></p>
         <p>Thank you for your order! 🍪</p>
         <p>Payment Status: {{ ucfirst($order->payment_status) }}</p>
     </div>
