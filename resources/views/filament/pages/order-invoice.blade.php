@@ -6,37 +6,37 @@
     <title>Invoice — {{ $order->order_number }}</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Georgia', serif; background: #fff; color: #3d2314; padding: 2rem; max-width: 800px; margin: 0 auto; }
+        body { font-family: 'Georgia', serif; background: #fff; color: var(--brand-900); padding: 2rem; max-width: 800px; margin: 0 auto; }
 
-        .invoice-header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 1.5rem; border-bottom: 3px solid #3d2314; margin-bottom: 1.5rem; }
-        .brand h1 { font-size: 1.8rem; color: #3d2314; margin-bottom: 0.25rem; }
-        .brand p { color: #6b4c3b; font-size: 0.85rem; }
+        .invoice-header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 1.5rem; border-bottom: 3px solid var(--brand-900); margin-bottom: 1.5rem; }
+        .brand h1 { font-size: 1.8rem; color: var(--brand-900); margin-bottom: 0.25rem; }
+        .brand p { color: var(--brand-700); font-size: 0.85rem; }
         .invoice-meta { text-align: right; }
-        .invoice-meta h2 { font-size: 1.4rem; color: #6b4c3b; text-transform: uppercase; letter-spacing: 0.1em; }
-        .invoice-meta p { font-size: 0.85rem; color: #6b4c3b; margin-top: 0.25rem; }
+        .invoice-meta h2 { font-size: 1.4rem; color: var(--brand-700); text-transform: uppercase; letter-spacing: 0.1em; }
+        .invoice-meta p { font-size: 0.85rem; color: var(--brand-700); margin-top: 0.25rem; }
 
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
-        .info-block h3 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: #6b4c3b; margin-bottom: 0.4rem; border-bottom: 1px solid #e8d0b0; padding-bottom: 0.25rem; }
+        .info-block h3 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--brand-700); margin-bottom: 0.4rem; border-bottom: 1px solid var(--brand-200); padding-bottom: 0.25rem; }
         .info-block p { font-size: 0.9rem; line-height: 1.5; }
 
         .items-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
-        .items-table th { background: #3d2314; color: #fdf8f2; padding: 0.6rem 0.75rem; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .items-table th { background: var(--brand-900); color: var(--brand-50); padding: 0.6rem 0.75rem; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
         .items-table th:last-child, .items-table td:last-child { text-align: right; }
         .items-table th:nth-child(3), .items-table td:nth-child(3) { text-align: center; }
-        .items-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid #e8d0b0; font-size: 0.9rem; }
+        .items-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--brand-200); font-size: 0.9rem; }
 
         .totals { margin-left: auto; width: 280px; }
         .totals-row { display: flex; justify-content: space-between; padding: 0.4rem 0; font-size: 0.9rem; }
-        .totals-row.total { border-top: 2px solid #3d2314; font-weight: 700; font-size: 1.1rem; padding-top: 0.6rem; margin-top: 0.25rem; }
+        .totals-row.total { border-top: 2px solid var(--brand-900); font-weight: 700; font-size: 1.1rem; padding-top: 0.6rem; margin-top: 0.25rem; }
 
-        .footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #e8d0b0; text-align: center; color: #6b4c3b; font-size: 0.8rem; }
+        .footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--brand-200); text-align: center; color: var(--brand-700); font-size: 0.8rem; }
         .footer p { margin-bottom: 0.25rem; }
 
-        .notes { background: #fdf8f2; border: 1px solid #e8d0b0; border-radius: 0.4rem; padding: 0.75rem 1rem; margin-bottom: 1.5rem; font-size: 0.85rem; }
-        .notes strong { color: #6b4c3b; }
+        .notes { background: var(--brand-50); border: 1px solid var(--brand-200); border-radius: 0.4rem; padding: 0.75rem 1rem; margin-bottom: 1.5rem; font-size: 0.85rem; }
+        .notes strong { color: var(--brand-700); }
 
-        .print-btn { display: inline-block; padding: 0.6rem 1.5rem; background: #3d2314; color: #fdf8f2; border: none; border-radius: 0.4rem; font-size: 0.9rem; cursor: pointer; margin-bottom: 1.5rem; font-family: inherit; }
-        .print-btn:hover { background: #6b4c3b; }
+        .print-btn { display: inline-block; padding: 0.6rem 1.5rem; background: var(--brand-900); color: var(--brand-50); border: none; border-radius: 0.4rem; font-size: 0.9rem; cursor: pointer; margin-bottom: 1.5rem; font-family: inherit; }
+        .print-btn:hover { background: var(--brand-700); }
 
         @media print {
             .print-btn { display: none !important; }
@@ -123,7 +123,7 @@
             </div>
         @endif
         @if($order->discount_amount > 0)
-            <div class="totals-row" style="color: #16a34a;">
+            <div class="totals-row" style="color: var(--status-success);">
                 <span>Discount{{ $order->coupon ? ' (' . $order->coupon->code . ')' : '' }}</span>
                 <span>-${{ number_format($order->discount_amount, 2) }}</span>
             </div>

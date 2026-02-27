@@ -1,22 +1,22 @@
 <x-filament-panels::page>
     <style>
-        .cal-grid { border-radius: 0.75rem; border: 1px solid #e8d0b0; background: white; overflow: hidden; }
-        .cal-header { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 2px solid #d4a574; background: linear-gradient(135deg, #3d2314, #6b4c3b); }
+        .cal-grid { border-radius: 0.75rem; border: 1px solid var(--brand-200); background: white; overflow: hidden; }
+        .cal-header { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 2px solid var(--brand-300); background: linear-gradient(135deg, var(--brand-900), var(--brand-700)); }
         .cal-header-cell { padding: 0.625rem; text-align: center; font-size: 0.75rem; font-weight: 700; color: white; text-transform: uppercase; letter-spacing: 0.05em; }
-        .cal-week { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid #f3ebe0; }
+        .cal-week { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid var(--brand-150); }
         .cal-week:last-child { border-bottom: none; }
-        .cal-cell { min-height: 6rem; padding: 0.5rem; border-right: 1px solid #f3ebe0; transition: all 0.15s; }
+        .cal-cell { min-height: 6rem; padding: 0.5rem; border-right: 1px solid var(--brand-150); transition: all 0.15s; }
         .cal-cell:last-child { border-right: none; }
-        .cal-cell:hover { background: #fdf8f2; }
+        .cal-cell:hover { background: var(--brand-50); }
         .cal-cell.empty { background: #fafaf8; }
         .cal-cell.empty:hover { background: #fafaf8; }
         .cal-cell.has-orders { cursor: pointer; text-decoration: none; display: block; color: inherit; }
-        .cal-cell.light { background: #fdf8f2; }
-        .cal-cell.busy { background: #f5e6d0; }
-        .cal-cell.light:hover { background: #f5e6d0; }
-        .cal-cell.busy:hover { background: #e8d0b0; }
-        .cal-day { font-size: 0.875rem; font-weight: 500; color: #4a3225; margin-bottom: 0.375rem; }
-        .cal-day.today { display: inline-flex; align-items: center; justify-content: center; width: 1.75rem; height: 1.75rem; border-radius: 9999px; background: #8b5e3c; color: white; font-weight: 700; }
+        .cal-cell.light { background: var(--brand-50); }
+        .cal-cell.busy { background: var(--brand-100); }
+        .cal-cell.light:hover { background: var(--brand-100); }
+        .cal-cell.busy:hover { background: var(--brand-200); }
+        .cal-day { font-size: 0.875rem; font-weight: 500; color: var(--brand-800); margin-bottom: 0.375rem; }
+        .cal-day.today { display: inline-flex; align-items: center; justify-content: center; width: 1.75rem; height: 1.75rem; border-radius: 9999px; background: var(--brand-600); color: white; font-weight: 700; }
     </style>
 
     <x-admin.nav-controls :label="$this->monthLabel" prevClick="previousMonth" nextClick="nextMonth" prevLabel="◀ Prev" nextLabel="Next ▶" />
@@ -68,14 +68,14 @@
                             <div class="cal-day {{ $isToday ? 'today' : '' }}">{{ $cell['day'] }}</div>
                             @if($cell['count'] > 0)
                                 <div style="margin-top:0.25rem;">
-                                    <div style="font-size:0.75rem;font-weight:700;color:#3d2314;">{{ $cell['count'] }} {{ Str::plural('order', $cell['count']) }}</div>
-                                    <div style="font-size:0.7rem;color:#a08060;margin-top:0.125rem;">${{ number_format($cell['revenue'], 0) }}</div>
+                                    <div style="font-size:0.75rem;font-weight:700;color:var(--brand-900);">{{ $cell['count'] }} {{ Str::plural('order', $cell['count']) }}</div>
+                                    <div style="font-size:0.7rem;color:var(--brand-500);margin-top:0.125rem;">${{ number_format($cell['revenue'], 0) }}</div>
                                     <div style="display:flex;gap:0.25rem;margin-top:0.375rem;">
                                         @for($i = 0; $i < min($cell['count'], 5); $i++)
-                                            <div style="width:0.375rem;height:0.375rem;border-radius:9999px;background:#8b5e3c;"></div>
+                                            <div style="width:0.375rem;height:0.375rem;border-radius:9999px;background:var(--brand-600);"></div>
                                         @endfor
                                         @if($cell['count'] > 5)
-                                            <div style="width:0.375rem;height:0.375rem;border-radius:9999px;background:#e8d0b0;"></div>
+                                            <div style="width:0.375rem;height:0.375rem;border-radius:9999px;background:var(--brand-200);"></div>
                                         @endif
                                     </div>
                                 </div>

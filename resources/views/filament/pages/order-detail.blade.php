@@ -5,11 +5,11 @@
     @media (max-width: 1024px) { .order-layout { grid-template-columns: 1fr; } }
 
     .summary-row { display: flex; justify-content: space-between; padding: 0.5rem 1rem; font-size: 0.875rem; }
-    .summary-row .label { color: #a08060; }
-    .summary-row .value { font-weight: 600; color: #3d2314; }
-    .summary-row.total { padding: 0.75rem 1rem; border-top: 2px solid #e8d0b0; background: #fdf8f2; }
-    .summary-row.total .label { font-weight: 700; color: #3d2314; font-size: 1rem; }
-    .summary-row.total .value { font-weight: 800; color: #8b5e3c; font-size: 1.25rem; }
+    .summary-row .label { color: var(--brand-500); }
+    .summary-row .value { font-weight: 600; color: var(--brand-900); }
+    .summary-row.total { padding: 0.75rem 1rem; border-top: 2px solid var(--brand-200); background: var(--brand-50); }
+    .summary-row.total .label { font-weight: 700; color: var(--brand-900); font-size: 1rem; }
+    .summary-row.total .value { font-weight: 800; color: var(--brand-600); font-size: 1.25rem; }
 </style>
 
 <div>
@@ -40,10 +40,10 @@
         <div style="margin-bottom:1rem;">
             @foreach($importantNotes as $cn)
                 <div style="padding:0.75rem 1.25rem;background:#fffbeb;border:1px solid #f59e0b;border-radius:0.5rem;margin-bottom:0.5rem;display:flex;align-items:start;gap:0.5rem;">
-                    <span style="color:#d97706;font-size:1.1rem;line-height:1;">&#9888;&#65039;</span>
+                    <span style="color:var(--status-warning);font-size:1.1rem;line-height:1;">&#9888;&#65039;</span>
                     <div>
-                        <span style="font-weight:700;color:#92400e;font-size:0.875rem;">Customer note:</span>
-                        <span style="color:#92400e;font-size:0.875rem;">{{ $cn->note }}</span>
+                        <span style="font-weight:700;color:var(--status-warning-dark);font-size:0.875rem;">Customer note:</span>
+                        <span style="color:var(--status-warning-dark);font-size:0.875rem;">{{ $cn->note }}</span>
                     </div>
                 </div>
             @endforeach
@@ -65,15 +65,15 @@
                     @foreach($record->items as $item)
                         <tr>
                             <td style="text-align:center;">
-                                <span style="display:inline-flex;align-items:center;justify-content:center;min-width:1.75rem;height:1.75rem;border-radius:0.375rem;background:#fef3c7;font-size:0.8rem;font-weight:700;color:#92400e;">{{ $item->quantity }}</span>
+                                <span style="display:inline-flex;align-items:center;justify-content:center;min-width:1.75rem;height:1.75rem;border-radius:0.375rem;background:#fef3c7;font-size:0.8rem;font-weight:700;color:var(--status-warning-dark);">{{ $item->quantity }}</span>
                             </td>
-                            <td><span style="font-weight:600;color:#3d2314;">{{ $item->product_name }}</span></td>
-                            <td style="color:#a08060;font-size:0.8rem;">${{ number_format($item->unit_price, 2) }}</td>
-                            <td style="text-align:right;font-weight:600;color:#3d2314;">${{ number_format($item->line_total, 2) }}</td>
+                            <td><span style="font-weight:600;color:var(--brand-900);">{{ $item->product_name }}</span></td>
+                            <td style="color:var(--brand-500);font-size:0.8rem;">${{ number_format($item->unit_price, 2) }}</td>
+                            <td style="text-align:right;font-weight:600;color:var(--brand-900);">${{ number_format($item->line_total, 2) }}</td>
                         </tr>
                     @endforeach
                 </x-admin.data-table>
-                <div style="border-top:1px solid #e8d0b0;">
+                <div style="border-top:1px solid var(--brand-200);">
                     <div class="summary-row">
                         <span class="label">Subtotal</span>
                         <span class="value">${{ number_format($record->subtotal, 2) }}</span>
@@ -85,9 +85,9 @@
                         </div>
                     @endif
                     @if($record->discount_amount > 0)
-                        <div class="summary-row" style="color: #16a34a;">
-                            <span class="label" style="color: #16a34a;">Discount{{ $record->coupon ? ' (' . $record->coupon->code . ')' : '' }}</span>
-                            <span class="value" style="color: #16a34a;">-${{ number_format($record->discount_amount, 2) }}</span>
+                        <div class="summary-row" style="color: var(--status-success);">
+                            <span class="label" style="color: var(--status-success);">Discount{{ $record->coupon ? ' (' . $record->coupon->code . ')' : '' }}</span>
+                            <span class="value" style="color: var(--status-success);">-${{ number_format($record->discount_amount, 2) }}</span>
                         </div>
                     @endif
                     <div class="summary-row total">
@@ -101,15 +101,15 @@
             <x-admin.card title="Payment" headerStyle="flat">
                 <x-slot:subtitle>
                     @if($record->is_overdue)
-                        <span style="display:inline-flex;align-items:center;gap:0.25rem;padding:0.25rem 0.625rem;border-radius:9999px;font-size:0.75rem;font-weight:600;background:#fee2e2;color:#991b1b;">⚠️ Overdue</span>
+                        <span style="display:inline-flex;align-items:center;gap:0.25rem;padding:0.25rem 0.625rem;border-radius:9999px;font-size:0.75rem;font-weight:600;background:#fee2e2;color:var(--status-danger-dark);">⚠️ Overdue</span>
                     @elseif($record->payment_status === 'unpaid')
-                        <span style="display:inline-flex;align-items:center;gap:0.25rem;padding:0.25rem 0.625rem;border-radius:9999px;font-size:0.75rem;font-weight:600;background:#fef3c7;color:#92400e;">Unpaid</span>
+                        <span style="display:inline-flex;align-items:center;gap:0.25rem;padding:0.25rem 0.625rem;border-radius:9999px;font-size:0.75rem;font-weight:600;background:#fef3c7;color:var(--status-warning-dark);">Unpaid</span>
                     @else
                         <x-admin.badge :type="$record->payment_status ?? 'paid'" rounded />
                     @endif
                 </x-slot:subtitle>
                 @if($record->is_overdue)
-                    <div style="padding:0.75rem 1.25rem;background:#fee2e2;border-bottom:1px solid #fecaca;color:#991b1b;font-size:0.85rem;font-weight:600;">
+                    <div style="padding:0.75rem 1.25rem;background:#fee2e2;border-bottom:1px solid #fecaca;color:var(--status-danger-dark);font-size:0.85rem;font-weight:600;">
                         ⚠️ Payment was due {{ $record->payment_deadline->format('M j, Y') }} and is overdue!
                     </div>
                 @endif
@@ -132,7 +132,7 @@
                     @if($record->paypal_invoice_id)
                         <x-admin.info-row label="PayPal Invoice">
                             @if($record->paypal_invoice_url)
-                                <a href="{{ $record->paypal_invoice_url }}" target="_blank" style="color:#8b5e3c;font-weight:600;text-decoration:underline;font-size:0.8rem;">View Invoice ↗</a>
+                                <a href="{{ $record->paypal_invoice_url }}" target="_blank" style="color:var(--brand-600);font-weight:600;text-decoration:underline;font-size:0.8rem;">View Invoice ↗</a>
                             @else
                                 <span style="font-family:monospace;font-size:0.8rem;">{{ $record->paypal_invoice_id }}</span>
                             @endif
@@ -145,9 +145,9 @@
             <x-admin.card title="Notes" headerStyle="flat">
                 <div style="padding: 1rem 1.25rem;">
                     @if($record->getRawOriginal('notes'))
-                        <div style="font-size:0.875rem;color:#4a3225;line-height:1.5;white-space:pre-wrap;">{{ $record->getRawOriginal('notes') }}</div>
+                        <div style="font-size:0.875rem;color:var(--brand-800);line-height:1.5;white-space:pre-wrap;">{{ $record->getRawOriginal('notes') }}</div>
                     @else
-                        <div style="font-size:0.875rem;color:#c4a882;font-style:italic;">No notes for this order.</div>
+                        <div style="font-size:0.875rem;color:var(--brand-400);font-style:italic;">No notes for this order.</div>
                     @endif
                 </div>
             </x-admin.card>
@@ -160,7 +160,7 @@
                 <div style="padding: 1rem 1.25rem;">
                     <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;">
                         <x-admin.avatar :name="$record->customer_name" size="2.5rem" context="light" />
-                        <div style="font-weight:700;color:#3d2314;">{{ $record->customer_name }}</div>
+                        <div style="font-weight:700;color:var(--brand-900);">{{ $record->customer_name }}</div>
                     </div>
                     <x-admin.info-row label="Email" :value="$record->customer_email" :href="'mailto:' . $record->customer_email" />
                     @if($record->customer_phone)
@@ -204,7 +204,7 @@
                         <x-admin.timeline-entry label="Paid" :time="$record->paid_at->format('M j, g:i A')" />
                     @endif
                     @if($record->delivered_at)
-                        <x-admin.timeline-entry label="Delivered" :time="$record->delivered_at->format('M j, g:i A')" dotColor="#6b4c3b" />
+                        <x-admin.timeline-entry label="Delivered" :time="$record->delivered_at->format('M j, g:i A')" dotColor="var(--brand-700)" />
                     @endif
                     @if($record->status === 'cancelled')
                         <x-admin.timeline-entry label="Cancelled" dotColor="#ef4444" />
@@ -221,22 +221,22 @@
                     @if($record->orderNotes->count() > 0)
                         <div style="display:flex;flex-direction:column;gap:0;">
                             @foreach($record->orderNotes->sortByDesc('created_at') as $note)
-                                <div style="position:relative;padding-left:1.5rem;padding-bottom:1rem;border-left:2px solid #e8d0b0;margin-left:0.25rem;">
-                                    <div style="position:absolute;left:-0.4375rem;top:0.125rem;width:0.75rem;height:0.75rem;border-radius:9999px;border:2px solid {{ $note->type === 'status_change' ? '#8b5e3c' : ($note->type === 'system' ? '#a08060' : '#6b4c3b') }};background:{{ $note->type === 'status_change' ? '#fef3c7' : ($note->type === 'system' ? '#fdf8f2' : '#fdf8f2') }};"></div>
+                                <div style="position:relative;padding-left:1.5rem;padding-bottom:1rem;border-left:2px solid var(--brand-200);margin-left:0.25rem;">
+                                    <div style="position:absolute;left:-0.4375rem;top:0.125rem;width:0.75rem;height:0.75rem;border-radius:9999px;border:2px solid {{ $note->type === 'status_change' ? 'var(--brand-600)' : ($note->type === 'system' ? 'var(--brand-500)' : 'var(--brand-700)') }};background:{{ $note->type === 'status_change' ? '#fef3c7' : ($note->type === 'system' ? 'var(--brand-50)' : 'var(--brand-50)') }};"></div>
                                     <div style="margin-left:0.5rem;">
                                         @if($note->type === 'status_change')
                                             <x-admin.badge type="pending" label="Status Change" rounded style="font-size:0.675rem;margin-bottom:0.25rem;" />
                                         @elseif($note->type === 'system')
-                                            <x-admin.badge type="default" label="System" rounded style="font-size:0.675rem;margin-bottom:0.25rem;background:#fdf8f2;color:#a08060;" />
+                                            <x-admin.badge type="default" label="System" rounded style="font-size:0.675rem;margin-bottom:0.25rem;background:var(--brand-50);color:var(--brand-500);" />
                                         @endif
-                                        <div style="font-size:0.8125rem;color:#3d2314;line-height:1.4;">{{ $note->content }}</div>
-                                        <div style="font-size:0.7rem;color:#a08060;margin-top:0.25rem;">{{ $note->user?->name ?? 'System' }} · {{ $note->created_at->format('M j, g:i A') }}</div>
+                                        <div style="font-size:0.8125rem;color:var(--brand-900);line-height:1.4;">{{ $note->content }}</div>
+                                        <div style="font-size:0.7rem;color:var(--brand-500);margin-top:0.25rem;">{{ $note->user?->name ?? 'System' }} · {{ $note->created_at->format('M j, g:i A') }}</div>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
                     @else
-                        <div style="font-size:0.8rem;color:#c4a882;font-style:italic;">No activity yet.</div>
+                        <div style="font-size:0.8rem;color:var(--brand-400);font-style:italic;">No activity yet.</div>
                     @endif
                 </div>
             </x-admin.card>

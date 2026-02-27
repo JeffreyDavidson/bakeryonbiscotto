@@ -3,39 +3,39 @@
         .ic-form-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
         @media (min-width: 768px) { .ic-form-grid { grid-template-columns: 1fr 1fr; } }
         .ic-form-full { grid-column: 1 / -1; }
-        .ic-label { display: block; font-size: 0.8rem; font-weight: 700; color: #4a3225; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.375rem; }
-        .ic-label-hint { font-size: 0.75rem; font-weight: 400; color: #a08060; text-transform: none; letter-spacing: normal; }
+        .ic-label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--brand-800); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.375rem; }
+        .ic-label-hint { font-size: 0.75rem; font-weight: 400; color: var(--brand-500); text-transform: none; letter-spacing: normal; }
         .ic-select, .ic-textarea {
             display: block; width: 100%; border-radius: 0.5rem;
-            padding: 0.5rem 0.75rem; font-size: 0.875rem; color: #3d2314;
-            background: white; box-shadow: 0 0 0 1px #e8d0b0;
+            padding: 0.5rem 0.75rem; font-size: 0.875rem; color: var(--brand-900);
+            background: white; box-shadow: 0 0 0 1px var(--brand-200);
             border: none; outline: none; transition: box-shadow 0.15s;
         }
         .ic-select:focus, .ic-textarea:focus {
-            box-shadow: 0 0 0 1px #D4A574, 0 0 0 4px rgba(212,165,116,0.15);
+            box-shadow: 0 0 0 1px var(--brand-300), 0 0 0 4px rgba(212,165,116,0.15);
         }
         .ic-checkbox-wrap { display: flex; align-items: center; gap: 0.5rem; padding-bottom: 0.25rem; cursor: pointer; }
         .ic-checkbox-wrap input[type="checkbox"] {
-            width: 1.125rem; height: 1.125rem; accent-color: #6b4c3b; border-radius: 0.25rem; cursor: pointer;
+            width: 1.125rem; height: 1.125rem; accent-color: var(--brand-700); border-radius: 0.25rem; cursor: pointer;
         }
-        .ic-checkbox-label { font-size: 0.875rem; font-weight: 500; color: #4a3225; }
+        .ic-checkbox-label { font-size: 0.875rem; font-weight: 500; color: var(--brand-800); }
         .ic-actions { display: flex; gap: 0.75rem; margin-top: 1rem; }
         .ic-results-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem; }
         @media (min-width: 1024px) { .ic-results-grid { grid-template-columns: repeat(3, 1fr); } }
-        .ic-caption-text { font-size: 0.875rem; line-height: 1.6; color: #4a3225; white-space: pre-line; }
+        .ic-caption-text { font-size: 0.875rem; line-height: 1.6; color: var(--brand-800); white-space: pre-line; }
         .ic-copy-btn {
             display: inline-flex; align-items: center; gap: 0.375rem;
             padding: 0.25rem 0.625rem; border-radius: 0.375rem;
-            font-size: 0.75rem; font-weight: 600; color: #6b4c3b;
+            font-size: 0.75rem; font-weight: 600; color: var(--brand-700);
             background: transparent; border: none; cursor: pointer;
             transition: background 0.15s;
         }
-        .ic-copy-btn:hover { background: #f3ebe0; }
+        .ic-copy-btn:hover { background: var(--brand-150); }
         .ic-copy-btn svg { width: 1rem; height: 1rem; }
         .ic-empty { text-align: center; padding: 3rem 1rem; }
-        .ic-empty-icon { width: 3rem; height: 3rem; color: #d4a574; margin: 0 auto 0.75rem; }
-        .ic-empty-title { font-size: 0.875rem; font-weight: 700; color: #3d2314; }
-        .ic-empty-sub { font-size: 0.8rem; color: #a08060; margin-top: 0.25rem; }
+        .ic-empty-icon { width: 3rem; height: 3rem; color: var(--brand-300); margin: 0 auto 0.75rem; }
+        .ic-empty-title { font-size: 0.875rem; font-weight: 700; color: var(--brand-900); }
+        .ic-empty-sub { font-size: 0.8rem; color: var(--brand-500); margin-top: 0.25rem; }
     </style>
 
     {{-- Generator Form --}}
@@ -108,12 +108,12 @@
             </div>
 
             <div class="ic-actions">
-                <x-admin.btn wire:click="generate" style="background: linear-gradient(135deg, #3d2314, #6b4c3b); color: white; border: none;">
+                <x-admin.btn wire:click="generate" style="background: linear-gradient(135deg, var(--brand-900), var(--brand-700)); color: white; border: none;">
                     ✨ Generate Captions
                 </x-admin.btn>
 
                 @if ($generated)
-                    <x-admin.btn wire:click="regenerate" style="background: white; color: #4a3225; border: 1px solid #e8d0b0;">
+                    <x-admin.btn wire:click="regenerate" style="background: white; color: var(--brand-800); border: 1px solid var(--brand-200);">
                         ↻ Regenerate
                     </x-admin.btn>
                 @endif

@@ -1,21 +1,21 @@
 <x-filament-panels::page>
     <style>
         .bs-controls { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-        .bs-date-input { padding: 0.5rem 0.75rem; border: 1px solid #e8d0b0; border-radius: 8px; background: #fff; font-size: 0.875rem; color: #3d2314; }
-        .bs-date-input:focus { outline: none; border-color: #D4A574; box-shadow: 0 0 0 3px rgba(212,165,116,0.15); }
+        .bs-date-input { padding: 0.5rem 0.75rem; border: 1px solid var(--brand-200); border-radius: 8px; background: #fff; font-size: 0.875rem; color: var(--brand-900); }
+        .bs-date-input:focus { outline: none; border-color: var(--brand-300); box-shadow: 0 0 0 3px rgba(212,165,116,0.15); }
 
         /* Baking table extras */
-        .bs-product-name { font-weight: 600; color: #3d2314; font-size: 0.95rem; }
+        .bs-product-name { font-weight: 600; color: var(--brand-900); font-size: 0.95rem; }
 
         /* Timeline slot */
-        .bs-timeline-slot { padding: 0.75rem 1.5rem; border-bottom: 1px solid #f3ebe0; }
+        .bs-timeline-slot { padding: 0.75rem 1.5rem; border-bottom: 1px solid var(--brand-150); }
         .bs-timeline-slot:last-child { border-bottom: none; }
-        .bs-timeline-time { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 700; color: #3d2314; margin-bottom: 0.75rem; padding: 0.375rem 0.875rem; background: #fdf8f2; border: 1px solid #e8d0b0; border-radius: 0.5rem; }
+        .bs-timeline-time { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; font-weight: 700; color: var(--brand-900); margin-bottom: 0.75rem; padding: 0.375rem 0.875rem; background: var(--brand-50); border: 1px solid var(--brand-200); border-radius: 0.5rem; }
 
         /* Upcoming days */
         .bs-upcoming { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-        .bs-upcoming-day { display: flex; flex-direction: column; align-items: center; padding: 0.625rem 1rem; border-radius: 0.5rem; background: #fdf8f2; border: 1px solid #e8d0b0; min-width: 4.5rem; cursor: pointer; text-decoration: none; transition: all 0.15s; }
-        .bs-upcoming-day:hover { background: #f5e6d0; border-color: #d4a574; }
+        .bs-upcoming-day { display: flex; flex-direction: column; align-items: center; padding: 0.625rem 1rem; border-radius: 0.5rem; background: var(--brand-50); border: 1px solid var(--brand-200); min-width: 4.5rem; cursor: pointer; text-decoration: none; transition: all 0.15s; }
+        .bs-upcoming-day:hover { background: var(--brand-100); border-color: var(--brand-300); }
 
         @media print {
             .fi-sidebar, .fi-topbar, .fi-header, nav,
@@ -31,12 +31,12 @@
     </style>
 
     {{-- Print header --}}
-    <div class="print-header" style="display: none; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 3px solid #92400e;">
+    <div class="print-header" style="display: none; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 3px solid var(--status-warning-dark);">
         <div>
-            <div style="font-size: 1.5rem; font-weight: 800; color: #3d2314;">Baking Sheet</div>
-            <div style="font-size: 1.125rem; color: #4a3225; font-weight: 600;">{{ $this->formattedDate }}</div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: var(--brand-900);">Baking Sheet</div>
+            <div style="font-size: 1.125rem; color: var(--brand-800); font-weight: 600;">{{ $this->formattedDate }}</div>
         </div>
-        <div style="text-align: right; font-size: 0.875rem; color: #a08060;">
+        <div style="text-align: right; font-size: 0.875rem; color: var(--brand-500);">
             <div style="font-weight: 700; font-size: 1rem;">{{ $this->stats->total_items }} items</div>
             <div>{{ $this->stats->total_orders }} orders — {{ $this->stats->pickup_count }} pickup, {{ $this->stats->delivery_count }} delivery</div>
         </div>
@@ -50,7 +50,7 @@
         @unless($this->isToday)
             <x-admin.btn variant="ghost" wire:click="goToToday">↩ Today</x-admin.btn>
         @endunless
-        <span style="font-size: 1.25rem; font-weight: 700; color: #3d2314;">{{ $this->formattedDate }}</span>
+        <span style="font-size: 1.25rem; font-weight: 700; color: var(--brand-900);">{{ $this->formattedDate }}</span>
         <x-admin.btn variant="primary" size="lg" onclick="window.print()" icon="🖨️" style="margin-left: auto;">Print Baking Sheet</x-admin.btn>
     </div>
 
@@ -63,9 +63,9 @@
                     <div class="bs-upcoming">
                         @foreach($this->upcomingDays as $day)
                             <a href="?date={{ $day->date->format('Y-m-d') }}" class="bs-upcoming-day" wire:click.prevent="$set('date', '{{ $day->date->format('Y-m-d') }}')">
-                                <span style="font-size: 0.7rem; font-weight: 600; color: #a08060; text-transform: uppercase;">{{ $day->date->format('D') }}</span>
-                                <span style="font-size: 0.875rem; font-weight: 700; color: #3d2314;">{{ $day->date->format('M j') }}</span>
-                                <span style="font-size: 0.7rem; color: #8b5e3c; font-weight: 600; margin-top: 0.125rem;">{{ $day->order_count }} {{ Str::plural('order', $day->order_count) }}</span>
+                                <span style="font-size: 0.7rem; font-weight: 600; color: var(--brand-500); text-transform: uppercase;">{{ $day->date->format('D') }}</span>
+                                <span style="font-size: 0.875rem; font-weight: 700; color: var(--brand-900);">{{ $day->date->format('M j') }}</span>
+                                <span style="font-size: 0.7rem; color: var(--brand-600); font-weight: 600; margin-top: 0.125rem;">{{ $day->order_count }} {{ Str::plural('order', $day->order_count) }}</span>
                             </a>
                         @endforeach
                     </div>
@@ -77,11 +77,11 @@
         @php
             $total = $this->stats->total_orders;
             $segments = [
-                ['percent' => $total > 0 ? $this->stats->delivered_count / $total * 100 : 0, 'color' => '#3d2314', 'count' => $this->stats->delivered_count, 'label' => 'Delivered'],
+                ['percent' => $total > 0 ? $this->stats->delivered_count / $total * 100 : 0, 'color' => 'var(--brand-900)', 'count' => $this->stats->delivered_count, 'label' => 'Delivered'],
                 ['percent' => $total > 0 ? $this->stats->ready_count / $total * 100 : 0, 'color' => '#34d399', 'count' => $this->stats->ready_count, 'label' => 'Ready'],
-                ['percent' => $total > 0 ? $this->stats->baking_count / $total * 100 : 0, 'color' => '#6b4c3b', 'count' => $this->stats->baking_count, 'label' => 'Baking'],
-                ['percent' => $total > 0 ? $this->stats->confirmed_count / $total * 100 : 0, 'color' => '#8b5e3c', 'count' => $this->stats->confirmed_count, 'label' => 'Confirmed'],
-                ['percent' => $total > 0 ? $this->stats->pending_count / $total * 100 : 0, 'color' => '#d4a574', 'count' => $this->stats->pending_count, 'label' => 'Pending'],
+                ['percent' => $total > 0 ? $this->stats->baking_count / $total * 100 : 0, 'color' => 'var(--brand-700)', 'count' => $this->stats->baking_count, 'label' => 'Baking'],
+                ['percent' => $total > 0 ? $this->stats->confirmed_count / $total * 100 : 0, 'color' => 'var(--brand-600)', 'count' => $this->stats->confirmed_count, 'label' => 'Confirmed'],
+                ['percent' => $total > 0 ? $this->stats->pending_count / $total * 100 : 0, 'color' => 'var(--brand-300)', 'count' => $this->stats->pending_count, 'label' => 'Pending'],
             ];
         @endphp
         <x-admin.progress-bar :segments="$segments" label="Progress" class="no-print" />
@@ -89,10 +89,10 @@
         {{-- Stats --}}
         <x-admin.stat-grid :cols="5" class="no-print" data-stat-grid>
             <x-admin.stat-card label="Orders" :value="$this->stats->total_orders" />
-            <x-admin.stat-card label="Items to Bake" :value="$this->stats->total_items" color="#6b4c3b" />
-            <x-admin.stat-card label="Pickups" :value="$this->stats->pickup_count" color="#8b5e3c" />
-            <x-admin.stat-card label="Deliveries" :value="$this->stats->delivery_count" color="#6b4c3b" />
-            <x-admin.stat-card label="Revenue" :value="'$' . number_format($this->stats->total_revenue, 0)" color="#8b5e3c" />
+            <x-admin.stat-card label="Items to Bake" :value="$this->stats->total_items" color="var(--brand-700)" />
+            <x-admin.stat-card label="Pickups" :value="$this->stats->pickup_count" color="var(--brand-600)" />
+            <x-admin.stat-card label="Deliveries" :value="$this->stats->delivery_count" color="var(--brand-700)" />
+            <x-admin.stat-card label="Revenue" :value="'$' . number_format($this->stats->total_revenue, 0)" color="var(--brand-600)" />
         </x-admin.stat-grid>
 
         {{-- Baking checklist --}}
@@ -119,9 +119,9 @@
                 <x-slot:foot>
                     <tr>
                         <td class="print-check" style="display: none;"></td>
-                        <td style="font-weight: 700; color: #3d2314; padding: 1rem;">Total</td>
+                        <td style="font-weight: 700; color: var(--brand-900); padding: 1rem;">Total</td>
                         <td style="text-align: center; padding: 1rem;"><x-admin.pill color="dark" size="lg">{{ $this->bakingItems->sum('total_quantity') }}</x-admin.pill></td>
-                        <td style="color: #a08060; font-size: 0.875rem; padding: 1rem;">across {{ $this->stats->total_orders }} orders</td>
+                        <td style="color: var(--brand-500); font-size: 0.875rem; padding: 1rem;">across {{ $this->stats->total_orders }} orders</td>
                     </tr>
                 </x-slot:foot>
             </x-admin.data-table>
@@ -134,7 +134,7 @@
                     <div class="bs-timeline-time">
                         <span>🕐</span>
                         {{ $timeSlot }}
-                        <span style="font-weight: 400; color: #a08060; font-size: 0.8rem;">— {{ $orders->count() }} {{ Str::plural('order', $orders->count()) }}</span>
+                        <span style="font-weight: 400; color: var(--brand-500); font-size: 0.8rem;">— {{ $orders->count() }} {{ Str::plural('order', $orders->count()) }}</span>
                     </div>
                     @foreach($orders as $order)
                         <x-admin.order-card :order="$order" />
@@ -150,9 +150,9 @@
                     <div class="bs-upcoming">
                         @foreach($this->upcomingDays as $day)
                             <a href="?date={{ $day->date->format('Y-m-d') }}" class="bs-upcoming-day" wire:click.prevent="$set('date', '{{ $day->date->format('Y-m-d') }}')">
-                                <span style="font-size: 0.7rem; font-weight: 600; color: #a08060; text-transform: uppercase;">{{ $day->date->format('D') }}</span>
-                                <span style="font-size: 0.875rem; font-weight: 700; color: #3d2314;">{{ $day->date->format('M j') }}</span>
-                                <span style="font-size: 0.7rem; color: #8b5e3c; font-weight: 600; margin-top: 0.125rem;">{{ $day->order_count }} {{ Str::plural('order', $day->order_count) }}</span>
+                                <span style="font-size: 0.7rem; font-weight: 600; color: var(--brand-500); text-transform: uppercase;">{{ $day->date->format('D') }}</span>
+                                <span style="font-size: 0.875rem; font-weight: 700; color: var(--brand-900);">{{ $day->date->format('M j') }}</span>
+                                <span style="font-size: 0.7rem; color: var(--brand-600); font-weight: 600; margin-top: 0.125rem;">{{ $day->order_count }} {{ Str::plural('order', $day->order_count) }}</span>
                             </a>
                         @endforeach
                     </div>

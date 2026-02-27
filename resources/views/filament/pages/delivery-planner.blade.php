@@ -1,14 +1,14 @@
 <x-filament-panels::page>
     <style>
-        .dp-date-input { padding: 0.5rem 0.75rem; border: 1px solid #e8d0b0; border-radius: 8px; background: #fff; font-size: 1rem; color: #3d2314; }
-        .dp-date-input:focus { outline: none; border-color: #D4A574; box-shadow: 0 0 0 3px rgba(212,165,116,0.15); }
+        .dp-date-input { padding: 0.5rem 0.75rem; border: 1px solid var(--brand-200); border-radius: 8px; background: #fff; font-size: 1rem; color: var(--brand-900); }
+        .dp-date-input:focus { outline: none; border-color: var(--brand-300); box-shadow: 0 0 0 3px rgba(212,165,116,0.15); }
     </style>
 
     <div style="display: flex; flex-direction: column; gap: 1.5rem;">
         {{-- Controls --}}
         <x-admin.card :padding="false">
             <div style="padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-                <label style="font-weight: 600; color: #3d2314;">Delivery Date:</label>
+                <label style="font-weight: 600; color: var(--brand-900);">Delivery Date:</label>
                 <input type="date" wire:model.live="date" class="dp-date-input">
                 @if($this->deliveries->count() > 0)
                     <x-admin.btn variant="primary" href="{{ $this->optimizedRouteUrl }}" target="_blank" icon="🗺️" style="margin-left: auto;">
@@ -55,7 +55,7 @@
                     @endforeach
                 </x-admin.data-table>
             @else
-                <div style="text-align: center; color: #6b4c3b; padding: 3rem;">
+                <div style="text-align: center; color: var(--brand-700); padding: 3rem;">
                     🚗 No deliveries scheduled for this date.
                 </div>
             @endif

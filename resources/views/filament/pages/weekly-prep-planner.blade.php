@@ -1,13 +1,13 @@
 <x-filament-panels::page>
     <style>
-        .prep-day-today { border: 2px solid #8b5e3c !important; }
-        .prep-day-today > div:first-child { background: linear-gradient(135deg, #8b5e3c, #6b4c3b) !important; }
+        .prep-day-today { border: 2px solid var(--brand-600) !important; }
+        .prep-day-today > div:first-child { background: linear-gradient(135deg, var(--brand-600), var(--brand-700)) !important; }
 
-        .prep-task { display: flex; gap: 1rem; padding: 1rem 1.25rem; border-bottom: 1px solid #f3ebe0; align-items: flex-start; }
+        .prep-task { display: flex; gap: 1rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--brand-150); align-items: flex-start; }
         .prep-task:last-child { border-bottom: none; }
         .prep-task:hover { background: rgba(245,230,208,0.3); }
-        .prep-divider { width: 3px; background: #e8d0b0; border-radius: 999px; min-height: 50px; flex-shrink: 0; position: relative; }
-        .prep-dot { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); width: 10px; height: 10px; border-radius: 50%; border: 2px solid #8b5e3c; background: #fff; }
+        .prep-divider { width: 3px; background: var(--brand-200); border-radius: 999px; min-height: 50px; flex-shrink: 0; position: relative; }
+        .prep-dot { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--brand-600); background: #fff; }
 
         @media print {
             .fi-sidebar, .fi-topbar, .fi-header, button { display: none !important; }
@@ -53,26 +53,26 @@
                         @foreach($dayTasks as $task)
                             <div class="prep-task">
                                 <div style="min-width: 80px; text-align: right; flex-shrink: 0;">
-                                    <div style="font-weight: 700; color: #3d2314; font-size: 0.9rem;">{{ $task['time'] }}</div>
+                                    <div style="font-weight: 700; color: var(--brand-900); font-size: 0.9rem;">{{ $task['time'] }}</div>
                                     @if($task['duration'])
-                                        <div style="font-size: 0.7rem; color: #a08060; margin-top: 0.125rem;">~{{ $task['duration'] }} min</div>
+                                        <div style="font-size: 0.7rem; color: var(--brand-500); margin-top: 0.125rem;">~{{ $task['duration'] }} min</div>
                                     @endif
                                 </div>
                                 <div class="prep-divider"><div class="prep-dot"></div></div>
                                 <div style="flex: 1;">
-                                    <div style="font-weight: 700; color: #3d2314; font-size: 0.9rem;">{{ $task['stage_name'] }}</div>
-                                    <div style="font-size: 0.85rem; color: #6b4c3b; margin-top: 0.125rem;">
+                                    <div style="font-weight: 700; color: var(--brand-900); font-size: 0.9rem;">{{ $task['stage_name'] }}</div>
+                                    <div style="font-size: 0.85rem; color: var(--brand-700); margin-top: 0.125rem;">
                                         {{ $task['product_name'] }}
-                                        <x-admin.pill bg="#f5e6d0" borderColor="#f5e6d0" color="#3d2314" style="font-weight:600;font-size:0.75rem;padding:0.1rem 0.5rem;">×{{ $task['quantity'] }}</x-admin.pill>
+                                        <x-admin.pill bg="var(--brand-100)" borderColor="var(--brand-100)" color="var(--brand-900)" style="font-weight:600;font-size:0.75rem;padding:0.1rem 0.5rem;">×{{ $task['quantity'] }}</x-admin.pill>
                                     </div>
-                                    <div style="display: flex; gap: 0.75rem; margin-top: 0.375rem; font-size: 0.75rem; color: #a08060; flex-wrap: wrap;">
+                                    <div style="display: flex; gap: 0.75rem; margin-top: 0.375rem; font-size: 0.75rem; color: var(--brand-500); flex-wrap: wrap;">
                                         <span>📦 {{ $task['order_number'] }}</span>
                                         <span>👤 {{ $task['customer'] }}</span>
                                         <span>📅 Due: {{ $task['due'] }}</span>
                                         <x-admin.badge :type="$task['fulfillment']" />
                                     </div>
                                     @if($task['instructions'])
-                                        <div style="font-size: 0.8rem; color: #8b5e3c; margin-top: 0.375rem; font-style: italic; background: #fdf8f2; padding: 0.375rem 0.625rem; border-radius: 6px; border-left: 3px solid #d4a574;">{{ $task['instructions'] }}</div>
+                                        <div style="font-size: 0.8rem; color: var(--brand-600); margin-top: 0.375rem; font-style: italic; background: var(--brand-50); padding: 0.375rem 0.625rem; border-radius: 6px; border-left: 3px solid var(--brand-300);">{{ $task['instructions'] }}</div>
                                     @endif
                                 </div>
                             </div>
