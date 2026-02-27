@@ -48,6 +48,16 @@ class Product extends Model
         return $this->belongsTo(Category::class, 'bundle_category_id');
     }
 
+    public function recipe(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Recipe::class);
+    }
+
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function favorites(): HasMany
     {
         return $this->hasMany(CustomerFavorite::class);

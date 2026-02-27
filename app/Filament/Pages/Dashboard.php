@@ -6,6 +6,7 @@ use App\Filament\Widgets\BakingSheetWidget;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TodaysOrdersWidget;
 use App\Filament\Widgets\GoalTrackerWidget;
+use App\Filament\Widgets\MarginAlertWidget;
 use App\Filament\Widgets\PopularProductsWidget;
 use App\Filament\Widgets\UpcomingHolidayWidget;
 use App\Filament\Widgets\WeeklyRevenueChart;
@@ -19,6 +20,7 @@ class Dashboard extends BaseDashboard
     {
         return [
             StatsOverview::class,
+            MarginAlertWidget::class,
             UpcomingHolidayWidget::class,
             TodaysOrdersWidget::class,
             BakingSheetWidget::class,
