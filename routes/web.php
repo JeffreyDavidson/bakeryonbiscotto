@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__.'/billing.php';
+
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\OrderController;
