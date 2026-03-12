@@ -54,6 +54,17 @@ Route::get('/menu', function() {
     return view('menu', compact('categories'));
 });
 Route::get('/menu-concepts', fn() => view('menu-concepts'));
+
+// SEO
+Route::get('/sitemap.xml', function () {
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>';
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+    foreach (['/' => '1.0', '/menu' => '0.9', '/order' => '0.9', '/about' => '0.8', '/gallery' => '0.7', '/review' => '0.7', '/faq' => '0.6', '/contact' => '0.6'] as $path => $priority) {
+        $xml .= '<url><loc>' . url($path) . '</loc><changefreq>weekly</changefreq><priority>' . $priority . '</priority></url>';
+    }
+    $xml .= '</urlset>';
+    return response($xml, 200, ['Content-Type' => 'application/xml']);
+});
 Route::get('/gallery-concepts', fn() => view('gallery-concepts'));
 Route::get('/gallery-concepts-2', fn() => view('gallery-concepts-2'));
 Route::get('/gallery-concepts-3', fn() => view('gallery-concepts-3'));
