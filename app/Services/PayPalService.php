@@ -104,7 +104,7 @@ class PayPalService
         $templateId = \App\Models\Setting::get('paypal_template_id');
 
         $detail = [
-            'invoice_number' => $order->order_number . '-' . time(),
+            'invoice_number' => substr($order->order_number . '-' . time(), 0, 25),
             'currency_code' => 'USD',
             'note' => \App\Models\Setting::get('invoice_seller_note', 'While certain items may not contain allergens they are produced in an environment where allergens could be present. Please proceed with caution. ' . \App\Models\Setting::get('business_name', 'Bakery on Biscotto') . ' is not responsible for any ill effects.'),
             'terms_and_conditions' => \App\Models\Setting::get('invoice_terms', "Payment must be made in full for an order to be considered placed. Please pay your invoice as soon as possible as some items take more time to complete than others, and your order will not be started until payment is made.\n\nCancellations made at least 48 hours in advance will receive a full refund. Anything between 24 and 48 hours notice will receive a 50% refund. Anything under 24 hours is non-refundable."),
@@ -149,15 +149,22 @@ class PayPalService
         }
 
         $invoiceData = $createResponse->json();
-        $invoiceId = $invoiceData['id'] ?? null;
 
-        // Extract the self link to get invoice URL
-        $invoiceUrl = collect($invoiceData['links'] ?? [])
-            ->firstWhere('rel', 'payer-view')['href'] ?? null;
+        // PayPal returns {"rel":"self","href":"...invoices/INV2-XXX"} — extract ID from href
+        $invoiceId = $invoiceData['id'] ?? null;
+        if (!$invoiceId) {
+            $href = $invoiceData['href'] ?? '';
+            if (preg_match('/invoices\/(INV2-[A-Z0-9-]+)/', $href, $matches)) {
+                $invoiceId = $matches[1];
+            }
+        }
 
         if (!$invoiceId) {
+            Log::error('PayPal invoice ID not found in response', ['body' => $invoiceData]);
             throw new \RuntimeException('PayPal invoice ID not returned');
         }
+
+        $invoiceUrl = null;
 
         // Send the invoice
         $sendResponse = Http::withToken($token)
@@ -171,15 +178,23 @@ class PayPalService
                 'status' => $sendResponse->status(),
                 'body' => $sendResponse->json(),
             ]);
+        } else {
+            // Send response returns {"href":"...","rel":"payer-view",...}
+            $sendData = $sendResponse->json();
+            $invoiceUrl = $sendData['href'] ?? null;
         }
 
-        // If we didn't get payer-view link from creation, fetch the invoice to get it
+        // Fallback: fetch invoice to get payer-view URL
         if (!$invoiceUrl) {
             $detail = Http::withToken($token)
                 ->get("{$this->baseUrl}/v2/invoicing/invoices/{$invoiceId}")
                 ->json();
             $invoiceUrl = collect($detail['links'] ?? [])
                 ->firstWhere('rel', 'payer-view')['href'] ?? null;
+            // Also check metadata
+            if (!$invoiceUrl) {
+                $invoiceUrl = $detail['detail']['metadata']['recipient_view_url'] ?? null;
+            }
         }
 
         // Store on order
