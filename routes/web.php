@@ -41,6 +41,7 @@ Route::get('/order/capacity/{date}', [OrderController::class, 'checkCapacity'])-
 Route::post('/order/waitlist', [OrderController::class, 'joinWaitlist'])->name('order.waitlist');
 Route::get('/about', fn() => view('about'));
 Route::get('/review', fn() => view('review'));
+Route::get('/reviews', fn() => abort(404));
 Route::get('/gallery', function () {
     $photos = \App\Models\GalleryPhoto::visible()->ordered()->get();
     $categories = $photos->pluck('category')->filter()->unique()->values();
