@@ -33,7 +33,7 @@ class OrderController extends Controller
                         ->get(['id', 'name']);
                     $bundles[$product->id] = [
                         'pick_count' => $product->bundle_pick_count,
-                        'options' => $options->map(fn($p) => ['id' => $p->id, 'name' => $p->name])->values(),
+                        'options' => $options->map(fn ($p) => ['id' => $p->id, 'name' => $p->name])->values(),
                     ];
                 }
             }
@@ -54,17 +54,17 @@ class OrderController extends Controller
 
         $coupon = Coupon::where('code', $code)->first();
 
-        if (!$coupon) {
+        if (! $coupon) {
             return response()->json(['error' => 'Coupon not found.'], 422);
         }
 
-        if (!$coupon->isValid()) {
+        if (! $coupon->isValid()) {
             return response()->json(['error' => 'This coupon is no longer valid.'], 422);
         }
 
         if ($coupon->minimum_order && $subtotal < (float) $coupon->minimum_order) {
             return response()->json([
-                'error' => 'Minimum order of $' . number_format($coupon->minimum_order, 2) . ' required for this coupon.',
+                'error' => 'Minimum order of $'.number_format($coupon->minimum_order, 2).' required for this coupon.',
             ], 422);
         }
 
@@ -76,8 +76,8 @@ class OrderController extends Controller
             'code' => $coupon->code,
             'discount' => $discount,
             'label' => $coupon->type === 'percentage'
-                ? number_format($coupon->value, 0) . '% off'
-                : '$' . number_format($coupon->value, 2) . ' off',
+                ? number_format($coupon->value, 0).'% off'
+                : '$'.number_format($coupon->value, 2).' off',
         ]);
     }
 
@@ -94,7 +94,7 @@ class OrderController extends Controller
         }
 
         // Check capacity limits
-        if (!CapacityLimit::isAvailable($validated['requested_date'])) {
+        if (! CapacityLimit::isAvailable($validated['requested_date'])) {
             return response()->json(['error' => 'Sorry, this date is fully booked. Please choose another date.'], 422);
         }
 
@@ -118,17 +118,22 @@ class OrderController extends Controller
         ]]);
 
         try {
-            $result = $paypal->createOrder($calculated['total'], \App\Models\Setting::get('business_name', 'Bakery on Biscotto') . ' Order');
+            $result = $paypal->createOrder($calculated['total'], \App\Models\Setting::get('business_name', 'Bakery on Biscotto').' Order');
 
             if (empty($result['id'])) {
                 \Log::error('PayPal createOrder - no ID returned', ['result' => $result]);
+
                 return response()->json(['error' => 'PayPal did not return an order ID. Please try again.'], 500);
             }
 
             return response()->json(['id' => $result['id']]);
-        } catch (\Exception $e) {
-            \Log::error('PayPal createOrder failed', ['error' => $e->getMessage()]);
-            return response()->json(['error' => 'Payment service error: ' . $e->getMessage()], 500);
+        } catch (\Throwable $e) {
+            \Log::error('PayPal createOrder failed', [
+                'error' => $e->getMessage(),
+                'exception' => $e::class,
+            ]);
+
+            return response()->json(['error' => 'Payment service error: '.$e->getMessage()], 500);
         }
     }
 
@@ -140,7 +145,7 @@ class OrderController extends Controller
         $paypalOrderId = $request->input('paypal_order_id');
         $pendingOrder = session('pending_order');
 
-        if (!$pendingOrder || !$paypalOrderId) {
+        if (! $pendingOrder || ! $paypalOrderId) {
             return response()->json(['error' => 'Invalid order session.'], 422);
         }
 
@@ -150,7 +155,7 @@ class OrderController extends Controller
 
         if (($result['status'] ?? '') !== 'COMPLETED') {
             return response()->json([
-                'error' => 'Payment not completed. Status: ' . ($result['status'] ?? 'unknown'),
+                'error' => 'Payment not completed. Status: '.($result['status'] ?? 'unknown'),
                 'details' => $result['details'] ?? null,
             ], 422);
         }
@@ -182,7 +187,7 @@ class OrderController extends Controller
         ]);
 
         // Increment coupon usage
-        if (!empty($calculated['coupon_id'])) {
+        if (! empty($calculated['coupon_id'])) {
             Coupon::where('id', $calculated['coupon_id'])->increment('times_used');
         }
 
@@ -266,7 +271,7 @@ class OrderController extends Controller
             'fulfillment_type' => 'required|in:pickup,delivery',
             'delivery_address' => 'required_if:fulfillment_type,delivery|nullable|string|max:255',
             'delivery_zip' => 'required_if:fulfillment_type,delivery|nullable|string|max:10',
-            'requested_date' => 'required|date|after_or_equal:' . now('America/New_York')->addDays(2)->toDateString(),
+            'requested_date' => 'required|date|after_or_equal:'.now('America/New_York')->addDays(2)->toDateString(),
             'requested_time' => 'required|string|max:20',
             'delivery_tier' => 'required_if:fulfillment_type,delivery|nullable|in:under5,5to10,over10',
             'birthday' => 'nullable|date',
@@ -285,7 +290,9 @@ class OrderController extends Controller
 
         foreach ($validated['items'] as $item) {
             $product = Product::findOrFail($item['product_id']);
-            if (!$product->is_available) continue;
+            if (! $product->is_available) {
+                continue;
+            }
 
             $lineTotal = $product->price * $item['quantity'];
             $subtotal += $lineTotal;
