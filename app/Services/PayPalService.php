@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Log;
 class PayPalService
 {
     protected string $baseUrl;
+
     protected string $clientId;
+
     protected string $clientSecret;
 
     public function __construct()
@@ -27,7 +29,19 @@ class PayPalService
                 'grant_type' => 'client_credentials',
             ]);
 
-        return $response->json('access_token');
+        $token = $response->json('access_token');
+
+        if (! $token) {
+            Log::error('PayPal access token request failed', [
+                'status' => $response->status(),
+                'body' => $response->json(),
+                'base_url' => $this->baseUrl,
+            ]);
+
+            throw new \RuntimeException('PayPal authentication failed (status '.$response->status().'). Verify PAYPAL_MODE matches credential environment (sandbox vs live).');
+        }
+
+        return $token;
     }
 
     public function createOrder(float $amount, string $description = 'Bakery Order'): array
@@ -104,9 +118,9 @@ class PayPalService
         $templateId = \App\Models\Setting::get('paypal_template_id');
 
         $detail = [
-            'invoice_number' => substr($order->order_number . '-' . time(), 0, 25),
+            'invoice_number' => substr($order->order_number.'-'.time(), 0, 25),
             'currency_code' => 'USD',
-            'note' => \App\Models\Setting::get('invoice_seller_note', 'While certain items may not contain allergens they are produced in an environment where allergens could be present. Please proceed with caution. ' . \App\Models\Setting::get('business_name', 'Bakery on Biscotto') . ' is not responsible for any ill effects.'),
+            'note' => \App\Models\Setting::get('invoice_seller_note', 'While certain items may not contain allergens they are produced in an environment where allergens could be present. Please proceed with caution. '.\App\Models\Setting::get('business_name', 'Bakery on Biscotto').' is not responsible for any ill effects.'),
             'terms_and_conditions' => \App\Models\Setting::get('invoice_terms', "Payment must be made in full for an order to be considered placed. Please pay your invoice as soon as possible as some items take more time to complete than others, and your order will not be started until payment is made.\n\nCancellations made at least 48 hours in advance will receive a full refund. Anything between 24 and 48 hours notice will receive a 50% refund. Anything under 24 hours is non-refundable."),
             'payment_term' => [
                 'due_date' => $order->payment_deadline->format('Y-m-d'),
@@ -140,26 +154,26 @@ class PayPalService
         $createResponse = Http::withToken($token)
             ->post("{$this->baseUrl}/v2/invoicing/invoices", $invoicePayload);
 
-        if (!$createResponse->successful()) {
+        if (! $createResponse->successful()) {
             Log::error('PayPal invoice creation failed', [
                 'status' => $createResponse->status(),
                 'body' => $createResponse->json(),
             ]);
-            throw new \RuntimeException('Failed to create PayPal invoice: ' . $createResponse->body());
+            throw new \RuntimeException('Failed to create PayPal invoice: '.$createResponse->body());
         }
 
         $invoiceData = $createResponse->json();
 
         // PayPal returns {"rel":"self","href":"...invoices/INV2-XXX"} — extract ID from href
         $invoiceId = $invoiceData['id'] ?? null;
-        if (!$invoiceId) {
+        if (! $invoiceId) {
             $href = $invoiceData['href'] ?? '';
             if (preg_match('/invoices\/(INV2-[A-Z0-9-]+)/', $href, $matches)) {
                 $invoiceId = $matches[1];
             }
         }
 
-        if (!$invoiceId) {
+        if (! $invoiceId) {
             Log::error('PayPal invoice ID not found in response', ['body' => $invoiceData]);
             throw new \RuntimeException('PayPal invoice ID not returned');
         }
@@ -172,7 +186,7 @@ class PayPalService
                 'send_to_invoicer' => true,
             ]);
 
-        if (!$sendResponse->successful()) {
+        if (! $sendResponse->successful()) {
             Log::error('PayPal invoice send failed', [
                 'invoice_id' => $invoiceId,
                 'status' => $sendResponse->status(),
@@ -185,14 +199,14 @@ class PayPalService
         }
 
         // Fallback: fetch invoice to get payer-view URL
-        if (!$invoiceUrl) {
+        if (! $invoiceUrl) {
             $detail = Http::withToken($token)
                 ->get("{$this->baseUrl}/v2/invoicing/invoices/{$invoiceId}")
                 ->json();
             $invoiceUrl = collect($detail['links'] ?? [])
                 ->firstWhere('rel', 'payer-view')['href'] ?? null;
             // Also check metadata
-            if (!$invoiceUrl) {
+            if (! $invoiceUrl) {
                 $invoiceUrl = $detail['detail']['metadata']['recipient_view_url'] ?? null;
             }
         }
@@ -258,12 +272,12 @@ class PayPalService
         $response = Http::withToken($token)
             ->put("{$this->baseUrl}/v2/invoicing/templates/{$templateId}", $current);
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             Log::error('PayPal template update failed', [
                 'status' => $response->status(),
                 'body' => $response->json(),
             ]);
-            throw new \RuntimeException('Failed to update PayPal template: ' . $response->body());
+            throw new \RuntimeException('Failed to update PayPal template: '.$response->body());
         }
 
         return $response->json();
@@ -296,12 +310,12 @@ class PayPalService
         $response = Http::withToken($token)
             ->post("{$this->baseUrl}/v2/invoicing/templates", $payload);
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             Log::error('PayPal template creation failed', [
                 'status' => $response->status(),
                 'body' => $response->json(),
             ]);
-            throw new \RuntimeException('Failed to create PayPal template: ' . $response->body());
+            throw new \RuntimeException('Failed to create PayPal template: '.$response->body());
         }
 
         return $response->json();
@@ -324,7 +338,7 @@ class PayPalService
         $response = Http::withToken($token)
             ->post("{$this->baseUrl}/v2/invoicing/invoices/{$invoiceId}/cancel", [
                 'subject' => 'Order cancelled',
-                'note' => 'This invoice has been cancelled by ' . \App\Models\Setting::get('business_name', 'Bakery on Biscotto') . '.',
+                'note' => 'This invoice has been cancelled by '.\App\Models\Setting::get('business_name', 'Bakery on Biscotto').'.',
                 'send_to_invoicer' => true,
                 'send_to_recipient' => true,
             ]);
