@@ -4,13 +4,12 @@ namespace App\Mail;
 
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class PaymentReminderMail extends Mailable implements ShouldQueue
+class PaymentReminderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -21,7 +20,7 @@ class PaymentReminderMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Payment Reminder - Bakery on Biscotto Order {$this->order->order_number}",
+            subject: "Payment Reminder - " . \App\Models\Setting::get('business_name', 'Bakery on Biscotto') . " Order {$this->order->order_number}",
         );
     }
 
