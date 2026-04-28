@@ -49,6 +49,7 @@ class PopularProductsWidget extends BaseWidget
                     ->label('Revenue')
                     ->money('usd'),
             ])
+            ->defaultKeySort(false)
             ->emptyStateHeading('No orders this week yet')
             ->emptyStateIcon('heroicon-o-cake');
     }
