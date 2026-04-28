@@ -51,6 +51,7 @@ class BakingSheetWidget extends BaseWidget
                     ->color('primary'),
             ])
             ->defaultSort('total_quantity', 'desc')
+            ->defaultKeySort(false)
             ->emptyStateHeading('Nothing to bake!')
             ->emptyStateIcon('heroicon-o-cake')
             ->paginated(false);
