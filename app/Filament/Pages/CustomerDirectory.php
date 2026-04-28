@@ -6,14 +6,13 @@ use App\Models\CustomerFavorite;
 use App\Models\CustomerNote;
 use App\Models\CustomerProfile;
 use App\Models\Order;
-use Filament\Actions\Action;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\EmbeddedTable;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +21,7 @@ class CustomerDirectory extends Page implements HasTable
 {
     use InteractsWithTable;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-users';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $navigationLabel = 'Customers';
 
@@ -111,6 +110,7 @@ class CustomerDirectory extends Page implements HasTable
                     ->label('Birthday')
                     ->getStateUsing(function ($record) {
                         $profile = CustomerProfile::where('email', $record->customer_email)->first();
+
                         return $profile?->birthday?->format('M j');
                     })
                     ->placeholder('—')
@@ -145,10 +145,13 @@ class CustomerDirectory extends Page implements HasTable
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         $period = $data['period'] ?? null;
-                        if (!$period) return $query;
+                        if (! $period) {
+                            return $query;
+                        }
                         if ($period === 'inactive') {
                             return $query->having('last_order_date', '<', now()->subDays(90));
                         }
+
                         return $query->having('last_order_date', '>=', now()->subDays((int) $period));
                     })
                     ->indicateUsing(function (array $data): ?string {
@@ -162,6 +165,7 @@ class CustomerDirectory extends Page implements HasTable
                     }),
             ])
             ->defaultSort('last_order_date', 'desc')
+            ->defaultKeySort(false)
             ->actions([
                 \Filament\Actions\Action::make('view')
                     ->label('View')
@@ -198,7 +202,9 @@ class CustomerDirectory extends Page implements HasTable
 
     public function addCustomerNote(string $email, string $name, string $note, bool $isImportant = false): void
     {
-        if (empty(trim($note))) return;
+        if (empty(trim($note))) {
+            return;
+        }
 
         CustomerNote::create([
             'customer_email' => $email,
