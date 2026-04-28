@@ -11,6 +11,8 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Services\PayPalService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
@@ -165,34 +167,52 @@ class OrderController extends Controller
 
         $captureId = $result['purchase_units'][0]['payments']['captures'][0]['id'] ?? null;
 
-        $order = Order::create([
-            'customer_name' => $validated['customer_name'],
-            'customer_email' => $validated['customer_email'],
-            'customer_phone' => $validated['customer_phone'],
-            'fulfillment_type' => $validated['fulfillment_type'],
-            'delivery_address' => $validated['delivery_address'] ?? null,
-            'delivery_zip' => $validated['delivery_zip'] ?? null,
-            'requested_date' => $validated['requested_date'],
-            'requested_time' => $validated['requested_time'],
-            'notes' => $validated['notes'] ?? null,
-            'subtotal' => $calculated['subtotal'],
-            'delivery_fee' => $calculated['delivery_fee'],
-            'discount_amount' => $calculated['discount_amount'] ?? 0,
-            'coupon_id' => $calculated['coupon_id'] ?? null,
-            'total' => $calculated['total'],
-            'status' => 'pending',
-            'payment_status' => 'paid',
-            'stripe_payment_intent' => $captureId, // Reusing column for PayPal capture ID
-            'paid_at' => now(),
-        ]);
+        try {
+            $order = DB::transaction(function () use ($validated, $calculated) {
+                $order = Order::create([
+                    'customer_name' => $validated['customer_name'],
+                    'customer_email' => $validated['customer_email'],
+                    'customer_phone' => $validated['customer_phone'],
+                    'fulfillment_type' => $validated['fulfillment_type'],
+                    'delivery_address' => $validated['delivery_address'] ?? null,
+                    'delivery_zip' => $validated['delivery_zip'] ?? null,
+                    'requested_date' => $validated['requested_date'],
+                    'requested_time' => $validated['requested_time'],
+                    'notes' => $validated['notes'] ?? null,
+                    'subtotal' => $calculated['subtotal'],
+                    'delivery_fee' => $calculated['delivery_fee'],
+                    'discount_amount' => $calculated['discount_amount'] ?? 0,
+                    'coupon_id' => $calculated['coupon_id'] ?? null,
+                    'total' => $calculated['total'],
+                    'status' => 'pending',
+                    'payment_status' => 'paid',
+                    'paid_at' => now(),
+                ]);
 
-        // Increment coupon usage
-        if (! empty($calculated['coupon_id'])) {
-            Coupon::where('id', $calculated['coupon_id'])->increment('times_used');
-        }
+                foreach ($calculated['items'] as $item) {
+                    $order->items()->create($item);
+                }
 
-        foreach ($calculated['items'] as $item) {
-            $order->items()->create($item);
+                if (! empty($calculated['coupon_id'])) {
+                    Coupon::where('id', $calculated['coupon_id'])->increment('times_used');
+                }
+
+                return $order;
+            });
+        } catch (\Throwable $e) {
+            // PayPal already captured, but persistence failed. Refund must be issued manually.
+            Log::critical('Order persistence failed AFTER PayPal capture — manual refund required', [
+                'paypal_capture_id' => $captureId,
+                'paypal_order_id' => $paypalOrderId,
+                'customer_email' => $validated['customer_email'] ?? null,
+                'amount' => $calculated['total'] ?? null,
+                'error' => $e->getMessage(),
+                'exception' => $e::class,
+            ]);
+
+            return response()->json([
+                'error' => 'We received your payment but could not save your order. Please contact us — we have your payment details and will resolve this immediately.',
+            ], 500);
         }
 
         // Upsert customer profile
