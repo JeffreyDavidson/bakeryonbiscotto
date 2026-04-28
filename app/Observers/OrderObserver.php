@@ -19,14 +19,21 @@ class OrderObserver
 {
     public function created(Order $order): void
     {
-        $users = User::all();
+        // Side-effect notifications must never crash the order-creation flow.
+        // A previous incident left an order without items because this observer
+        // threw a fatal (Cashier trait missing on User) before items could insert.
+        try {
+            $users = User::all();
 
-        Notification::make()
-            ->title('New Order Received')
-            ->body("New order {$order->order_number} from {$order->customer_name} — \${$order->total}")
-            ->icon('heroicon-o-shopping-bag')
-            ->success()
-            ->sendToDatabase($users);
+            Notification::make()
+                ->title('New Order Received')
+                ->body("New order {$order->order_number} from {$order->customer_name} — \${$order->total}")
+                ->icon('heroicon-o-shopping-bag')
+                ->success()
+                ->sendToDatabase($users);
+        } catch (\Throwable $e) {
+            report($e);
+        }
     }
 
     public function updated(Order $order): void
@@ -80,18 +87,18 @@ class OrderObserver
                 'order_id' => $order->id,
                 'user_id' => null,
                 'type' => 'system',
-                'content' => 'Email notification sent: Order ' . ucfirst($order->status),
+                'content' => 'Email notification sent: Order '.ucfirst($order->status),
             ]);
 
             $order->updateQuietly(['last_notification_sent_at' => now()]);
 
-            Log::info("Order status email sent", [
+            Log::info('Order status email sent', [
                 'order' => $order->order_number,
                 'status' => $order->status,
                 'email' => $order->customer_email,
             ]);
         } catch (\Throwable $e) {
-            Log::error("Failed to send order status email", [
+            Log::error('Failed to send order status email', [
                 'order' => $order->order_number,
                 'status' => $order->status,
                 'error' => $e->getMessage(),
