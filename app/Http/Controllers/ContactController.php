@@ -7,6 +7,7 @@ use App\Mail\ContactMessage;
 use App\Models\ContactMessage as ContactMessageModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\RateLimiter;
 
 class ContactController extends Controller
 {
@@ -17,13 +18,29 @@ class ContactController extends Controller
 
     public function store(Request $request)
     {
+        if ($request->filled('website') || $request->filled('fax_number')) {
+            return redirect()->route('contact')->with('success', true);
+        }
+
+        $throttleKey = 'contact-form|'.$request->ip();
+
+        if (RateLimiter::tooManyAttempts($throttleKey, 3)) {
+            return redirect()->route('contact')->with('success', true);
+        }
+
+        RateLimiter::hit($throttleKey, 3600);
+
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:20',
             'subject' => 'required|string|max:200',
             'message' => 'required|string|max:2000',
+            'website' => 'nullable|string|max:100',
+            'fax_number' => 'nullable|string|max:100',
         ]);
+
+        unset($validated['website'], $validated['fax_number']);
 
         // Save to database
         ContactMessageModel::create($validated);

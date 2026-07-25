@@ -409,6 +409,12 @@
 
                 <form method="POST" action="{{ route('contact.store') }}">
                     @csrf
+                    <div aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;">
+                        <label for="website">Website</label>
+                        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                        <label for="fax_number">Fax number</label>
+                        <input type="text" id="fax_number" name="fax_number" tabindex="-1" autocomplete="off">
+                    </div>
 
                     <div class="form-row">
                         <div class="form-group">
