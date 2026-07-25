@@ -8,7 +8,6 @@ use App\Models\ContactMessage as ContactMessageModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Str;
 
 class ContactController extends Controller
 {
@@ -23,7 +22,7 @@ class ContactController extends Controller
             return redirect()->route('contact')->with('success', true);
         }
 
-        $throttleKey = Str::lower($request->input('email', 'guest')).'|'.$request->ip();
+        $throttleKey = 'contact-form|'.$request->ip();
 
         if (RateLimiter::tooManyAttempts($throttleKey, 3)) {
             return redirect()->route('contact')->with('success', true);
