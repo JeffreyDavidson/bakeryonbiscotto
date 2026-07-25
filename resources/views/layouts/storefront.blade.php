@@ -11,7 +11,41 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
     @yield('extra_fonts')
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @vite('resources/js/app.js')
+    @php
+        $businessName = Setting::get('business_name', 'Bakery on Biscotto');
+        $storeCity = Setting::get('store_city', 'Davenport');
+        $storeState = Setting::get('store_state', 'FL');
+        $storePhone = Setting::get('store_phone', '');
+        $storeEmail = Setting::get('store_email', '');
+        $canonicalUrl = url()->current();
+        $description = $description ?? "Custom cottage bakery treats for pickup and delivery in {$storeCity}, {$storeState}.";
+        $jsonLd = array_filter([
+            '@context' => 'https://schema.org',
+            '@type' => 'Bakery',
+            'name' => $businessName,
+            'url' => $canonicalUrl,
+            'description' => $description,
+            'telephone' => $storePhone ?: null,
+            'email' => $storeEmail ?: null,
+            'address' => [
+                '@type' => 'PostalAddress',
+                'addressLocality' => $storeCity,
+                'addressRegion' => $storeState,
+                'addressCountry' => 'US',
+            ],
+        ]);
+    @endphp
+    <meta name="description" content="{{ $description }}">
+    <link rel="canonical" href="{{ $canonicalUrl }}">
+    <meta property="og:title" content="{{ $title ?? $businessName }}">
+    <meta property="og:description" content="{{ $description }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $title ?? $businessName }}">
+    <meta name="twitter:description" content="{{ $description }}">
+    <script type="application/ld+json">@json($jsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)</script>
     <style>
         :root {
             --brand-900: {{ Setting::get('brand_color_900', '#3d2314') }};
