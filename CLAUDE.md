@@ -1,10 +1,10 @@
 # CLAUDE.md — Bakery on Biscotto (KneadIt SaaS)
 
 ## Project Overview
-Laravel 12 + Filament 5 bakery management app. Currently powering Bakery on Biscotto, being converted to KneadIt SaaS for cottage food bakers.
+Laravel 13 + Filament 5 bakery management app. Currently powering Bakery on Biscotto, being converted to KneadIt SaaS for cottage food bakers.
 
 ## Tech Stack
-- PHP 8.4, Laravel 12, Filament 5
+- PHP 8.4, Laravel 13, Filament 5
 - MySQL, Tailwind CSS (storefront), inline styles (admin)
 - PayPal Invoicing API v2
 - Nominatim geocoding + OSRM routing (free, no paid APIs)
@@ -85,7 +85,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - php - 8.4.17
 - filament/filament (FILAMENT) - v5
 - laravel/cashier (CASHIER) - v16
-- laravel/framework (LARAVEL) - v12
+- laravel/framework (LARAVEL) - v13
 - laravel/prompts (PROMPTS) - v0
 - livewire/livewire (LIVEWIRE) - v4
 - laravel/boost (BOOST) - v2
@@ -93,15 +93,15 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/pail (PAIL) - v1
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
-- pestphp/pest (PEST) - v4
-- phpunit/phpunit (PHPUNIT) - v12
+- pestphp/pest (PEST) - v5
+- phpunit/phpunit (PHPUNIT) - v13
 - tailwindcss (TAILWINDCSS) - v4
 
 ## Skills Activation
 
 This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
 
-- `pest-testing` — Tests applications using the Pest 4 PHP framework. Activates when writing tests, creating unit or feature tests, adding assertions, testing Livewire components, browser testing, debugging test failures, working with datasets or mocking; or when the user mentions test, spec, TDD, expects, assertion, coverage, or needs to verify functionality works.
+- `pest-testing` — Tests applications using the Pest 5 PHP framework. Activates when writing tests, creating unit or feature tests, adding assertions, testing Livewire components, browser testing, debugging test failures, working with datasets or mocking; or when the user mentions test, spec, TDD, expects, assertion, coverage, or needs to verify functionality works.
 - `tailwindcss-development` — Styles applications using Tailwind CSS v4 utilities. Activates when adding styles, restyling components, working with gradients, spacing, layout, flex, grid, responsive design, dark mode, colors, typography, or borders; or when the user mentions CSS, styling, classes, Tailwind, restyle, hero section, cards, buttons, or any visual/UI changes.
 
 ## Conventions
@@ -263,16 +263,16 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 - If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
 
-=== laravel/v12 rules ===
+=== laravel/v13 rules ===
 
-# Laravel 12
+# Laravel 13
 
 - CRITICAL: ALWAYS use `search-docs` tool for version-specific Laravel documentation and updated code examples.
 - Since Laravel 11, Laravel has a new streamlined file structure which this project uses.
 
-## Laravel 12 Structure
+## Laravel 13 Structure
 
-- In Laravel 12, middleware are no longer registered in `app/Http/Kernel.php`.
+- In Laravel 13, middleware are no longer registered in `app/Http/Kernel.php`.
 - Middleware are configured declaratively in `bootstrap/app.php` using `Application::configure()->withMiddleware()`.
 - `bootstrap/app.php` is the file to register middleware, exceptions, and routing files.
 - `bootstrap/providers.php` contains application specific service providers.
@@ -282,7 +282,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 ## Database
 
 - When modifying a column, the migration must include all of the attributes that were previously defined on the column. Otherwise, they will be dropped and lost.
-- Laravel 12 allows limiting eagerly loaded records natively, without external packages: `$query->latest()->limit(10);`.
+- Laravel 13 allows limiting eagerly loaded records natively, without external packages: `$query->latest()->limit(10);`.
 
 ### Models
 
