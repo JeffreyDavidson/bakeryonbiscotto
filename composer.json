@@ -60,7 +60,8 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
-            "@php artisan filament:upgrade"
+            "@php artisan filament:upgrade",
+            "@php -r \"\\$asset = 'public/js/filament/forms/components/file-upload.js'; file_exists(\\$asset) && file_put_contents(\\$asset, preg_replace('/[ \\\\t]+$/m', '', file_get_contents(\\$asset)));\""
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
