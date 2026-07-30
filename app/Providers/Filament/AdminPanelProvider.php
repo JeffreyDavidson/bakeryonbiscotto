@@ -2,19 +2,21 @@
 
 namespace App\Providers\Filament;
 
+use App\Models\Setting;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use App\Models\Setting;
+use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
@@ -53,31 +55,31 @@ class AdminPanelProvider extends PanelProvider
             ->font('Inter')
             ->spa()
             ->navigationGroups([
-                \Filament\Navigation\NavigationGroup::make('Shop'),
-                \Filament\Navigation\NavigationGroup::make('Tools'),
-                \Filament\Navigation\NavigationGroup::make('Finances'),
-                \Filament\Navigation\NavigationGroup::make('Communication'),
+                NavigationGroup::make('Shop'),
+                NavigationGroup::make('Tools'),
+                NavigationGroup::make('Finances'),
+                NavigationGroup::make('Communication'),
             ])
             ->databaseNotifications()
-            ->renderHook('panels::head.end', fn () => new \Illuminate\Support\HtmlString(
-                '<link rel="stylesheet" href="' . asset('css/filament-custom.css') . '?v=' . filemtime(public_path('css/filament-custom.css')) . '">'
-                . '<style>.fi-fo-repeater .fi-fo-repeater-items .fi-fo-repeater-item{border-radius:0!important;box-shadow:none!important;background:transparent!important;outline:none!important;--tw-ring-shadow:0 0 0 0 transparent!important;--tw-shadow:0 0 0 0 transparent!important;--tw-inset-shadow:0 0 0 0 transparent!important;--tw-inset-ring-shadow:0 0 0 0 transparent!important;--tw-ring-offset-shadow:0 0 0 0 transparent!important;--tw-ring-color:transparent!important;border:none!important;border-bottom:1px solid #f3ebe0!important}.fi-fo-repeater .fi-fo-repeater-items .fi-fo-repeater-item:last-child{border-bottom:none!important}.fi-fo-repeater .fi-fo-repeater-items{gap:0!important}.fi-input-wrp{box-shadow:0 0 0 1px #e8d0b0!important;border:none!important;border-radius:8px!important;outline:none!important}.fi-input-wrp:focus-within{box-shadow:0 0 0 2px #8b5e3c!important}</style>'
-                . '<style>:root{'
-                . '--brand-900:' . Setting::get('brand_color_900', '#3d2314') . ';'
-                . '--brand-800:' . Setting::get('brand_color_800', '#4a3225') . ';'
-                . '--brand-700:' . Setting::get('brand_color_700', '#6b4c3b') . ';'
-                . '--brand-600:' . Setting::get('brand_color_600', '#8b5e3c') . ';'
-                . '--brand-500:' . Setting::get('brand_color_500', '#a08060') . ';'
-                . '--brand-400:' . Setting::get('brand_color_400', '#c4a882') . ';'
-                . '--brand-300:' . Setting::get('brand_color_300', '#d4a574') . ';'
-                . '--brand-200:' . Setting::get('brand_color_200', '#e8d0b0') . ';'
-                . '--brand-150:' . Setting::get('brand_color_150', '#f3ebe0') . ';'
-                . '--brand-100:' . Setting::get('brand_color_100', '#f5e6d0') . ';'
-                . '--brand-50:' . Setting::get('brand_color_50', '#fdf8f2') . ';'
-                . '--accent-gold:' . Setting::get('brand_color_300', '#d4a574') . ';'
-                . '}</style>'
+            ->renderHook('panels::head.end', fn () => new HtmlString(
+                '<link rel="stylesheet" href="'.asset('css/filament-custom.css').'?v='.filemtime(public_path('css/filament-custom.css')).'">'
+                .'<style>.fi-fo-repeater .fi-fo-repeater-items .fi-fo-repeater-item{border-radius:0!important;box-shadow:none!important;background:transparent!important;outline:none!important;--tw-ring-shadow:0 0 0 0 transparent!important;--tw-shadow:0 0 0 0 transparent!important;--tw-inset-shadow:0 0 0 0 transparent!important;--tw-inset-ring-shadow:0 0 0 0 transparent!important;--tw-ring-offset-shadow:0 0 0 0 transparent!important;--tw-ring-color:transparent!important;border:none!important;border-bottom:1px solid #f3ebe0!important}.fi-fo-repeater .fi-fo-repeater-items .fi-fo-repeater-item:last-child{border-bottom:none!important}.fi-fo-repeater .fi-fo-repeater-items{gap:0!important}.fi-input-wrp{box-shadow:0 0 0 1px #e8d0b0!important;border:none!important;border-radius:8px!important;outline:none!important}.fi-input-wrp:focus-within{box-shadow:0 0 0 2px #8b5e3c!important}</style>'
+                .'<style>:root{'
+                .'--brand-900:'.Setting::get('brand_color_900', '#3d2314').';'
+                .'--brand-800:'.Setting::get('brand_color_800', '#4a3225').';'
+                .'--brand-700:'.Setting::get('brand_color_700', '#6b4c3b').';'
+                .'--brand-600:'.Setting::get('brand_color_600', '#8b5e3c').';'
+                .'--brand-500:'.Setting::get('brand_color_500', '#a08060').';'
+                .'--brand-400:'.Setting::get('brand_color_400', '#c4a882').';'
+                .'--brand-300:'.Setting::get('brand_color_300', '#d4a574').';'
+                .'--brand-200:'.Setting::get('brand_color_200', '#e8d0b0').';'
+                .'--brand-150:'.Setting::get('brand_color_150', '#f3ebe0').';'
+                .'--brand-100:'.Setting::get('brand_color_100', '#f5e6d0').';'
+                .'--brand-50:'.Setting::get('brand_color_50', '#fdf8f2').';'
+                .'--accent-gold:'.Setting::get('brand_color_300', '#d4a574').';'
+                .'}</style>'
             ))
-            ->renderHook('panels::body.end', fn () => new \Illuminate\Support\HtmlString('
+            ->renderHook('panels::body.end', fn () => new HtmlString('
                 <script>
                     (() => {
                         // Find all scrollable ancestors of sidebar
@@ -131,7 +133,7 @@ class AdminPanelProvider extends PanelProvider
                 StartSession::class,
                 AuthenticateSession::class,
                 ShareErrorsFromSession::class,
-                VerifyCsrfToken::class,
+                PreventRequestForgery::class,
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
