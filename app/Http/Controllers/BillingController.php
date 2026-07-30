@@ -25,9 +25,9 @@ class BillingController extends Controller
         $request->validate(['plan' => 'in:starter,growth,pro']);
 
         $priceId = match ($plan) {
-            'starter' => env('STRIPE_PRICE_STARTER'),
-            'growth' => env('STRIPE_PRICE_GROWTH'),
-            'pro' => env('STRIPE_PRICE_PRO'),
+            'starter' => config('saas.stripe_prices.starter'),
+            'growth' => config('saas.stripe_prices.growth'),
+            'pro' => config('saas.stripe_prices.pro'),
         };
 
         return $request->user()
@@ -35,7 +35,7 @@ class BillingController extends Controller
             ->trialDays(config('saas.trial_days', 30))
             ->allowPromotionCodes()
             ->checkout([
-                'success_url' => route('billing.success') . '?session_id={CHECKOUT_SESSION_ID}',
+                'success_url' => route('billing.success').'?session_id={CHECKOUT_SESSION_ID}',
                 'cancel_url' => route('billing.plans'),
             ]);
     }
@@ -62,9 +62,9 @@ class BillingController extends Controller
     public function swap(Request $request, string $plan)
     {
         $priceId = match ($plan) {
-            'starter' => env('STRIPE_PRICE_STARTER'),
-            'growth' => env('STRIPE_PRICE_GROWTH'),
-            'pro' => env('STRIPE_PRICE_PRO'),
+            'starter' => config('saas.stripe_prices.starter'),
+            'growth' => config('saas.stripe_prices.growth'),
+            'pro' => config('saas.stripe_prices.pro'),
             default => abort(404),
         };
 

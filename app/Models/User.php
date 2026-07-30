@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +13,7 @@ use Laravel\Cashier\Billable;
 
 class User extends Authenticatable implements FilamentUser
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use Billable, HasFactory, Notifiable;
 
     /**
@@ -67,10 +68,12 @@ class User extends Authenticatable implements FilamentUser
 
         $priceId = $subscription->stripe_price;
 
+        $stripePrices = config('saas.stripe_prices', []);
+
         return match ($priceId) {
-            config('saas.stripe_prices.starter', env('STRIPE_PRICE_STARTER')) => 'starter',
-            config('saas.stripe_prices.growth', env('STRIPE_PRICE_GROWTH')) => 'growth',
-            config('saas.stripe_prices.pro', env('STRIPE_PRICE_PRO')) => 'pro',
+            $stripePrices['starter'] ?? null => 'starter',
+            $stripePrices['growth'] ?? null => 'growth',
+            $stripePrices['pro'] ?? null => 'pro',
             default => null,
         };
     }
