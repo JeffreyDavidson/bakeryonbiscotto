@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Plan;
 use Illuminate\Http\Request;
 
 class BillingController extends Controller
@@ -22,15 +23,10 @@ class BillingController extends Controller
      */
     public function checkout(Request $request, string $plan)
     {
-        $priceId = match ($plan) {
-            'starter' => config('saas.stripe_prices.starter'),
-            'growth' => config('saas.stripe_prices.growth'),
-            'pro' => config('saas.stripe_prices.pro'),
-            default => abort(404),
-        };
+        $subscriptionPlan = Plan::fromRoute($plan) ?? abort(404);
 
         return $request->user()
-            ->newSubscription('default', $priceId)
+            ->newSubscription('default', $subscriptionPlan->stripePriceId())
             ->trialDays(config('saas.trial_days', 30))
             ->allowPromotionCodes()
             ->checkout([
@@ -60,14 +56,9 @@ class BillingController extends Controller
      */
     public function swap(Request $request, string $plan)
     {
-        $priceId = match ($plan) {
-            'starter' => config('saas.stripe_prices.starter'),
-            'growth' => config('saas.stripe_prices.growth'),
-            'pro' => config('saas.stripe_prices.pro'),
-            default => abort(404),
-        };
+        $subscriptionPlan = Plan::fromRoute($plan) ?? abort(404);
 
-        $request->user()->subscription('default')->swap($priceId);
+        $request->user()->subscription('default')->swap($subscriptionPlan->stripePriceId());
 
         return redirect()->route('billing.plans')
             ->with('success', 'Your plan has been updated!');

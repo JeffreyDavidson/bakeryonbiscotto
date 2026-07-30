@@ -27,11 +27,6 @@ class EnsureSubscribed
 
     private function hasRequiredPlan($user, string $requiredPlan): bool
     {
-        $hierarchy = ['starter' => 1, 'growth' => 2, 'pro' => 3];
-        $currentPlan = $user->currentPlan();
-        $currentLevel = $hierarchy[$currentPlan] ?? 0;
-        $requiredLevel = $hierarchy[$requiredPlan] ?? 0;
-
-        return $currentLevel >= $requiredLevel;
+        return $user->hasPlan($requiredPlan);
     }
 }

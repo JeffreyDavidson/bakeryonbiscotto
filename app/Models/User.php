@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\Plan;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -66,16 +67,7 @@ class User extends Authenticatable implements FilamentUser
             return null;
         }
 
-        $priceId = $subscription->stripe_price;
-
-        $stripePrices = config('saas.stripe_prices', []);
-
-        return match ($priceId) {
-            $stripePrices['starter'] ?? null => 'starter',
-            $stripePrices['growth'] ?? null => 'growth',
-            $stripePrices['pro'] ?? null => 'pro',
-            default => null,
-        };
+        return Plan::fromStripePriceId($subscription->stripe_price)?->value;
     }
 
     /**
@@ -83,10 +75,13 @@ class User extends Authenticatable implements FilamentUser
      */
     public function hasPlan(string $plan): bool
     {
-        $hierarchy = ['starter' => 1, 'growth' => 2, 'pro' => 3];
-        $currentLevel = $hierarchy[$this->currentPlan()] ?? 0;
-        $requiredLevel = $hierarchy[$plan] ?? 0;
+        $currentPlan = Plan::fromRoute($this->currentPlan() ?? '');
+        $requiredPlan = Plan::fromRoute($plan);
 
-        return $currentLevel >= $requiredLevel;
+        if (! $currentPlan || ! $requiredPlan) {
+            return false;
+        }
+
+        return $currentPlan->includes($requiredPlan);
     }
 }
