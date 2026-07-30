@@ -29,3 +29,11 @@ test('subscription plan helpers resolve configured Stripe prices without runtime
         ->hasPlan('growth')->toBeTrue()
         ->hasPlan('starter')->toBeTrue();
 });
+
+test('checkout rejects unsupported route plans before matching a Stripe price', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post(route('billing.checkout', ['plan' => 'enterprise']))
+        ->assertNotFound();
+});

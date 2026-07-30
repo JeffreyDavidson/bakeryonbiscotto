@@ -47,12 +47,6 @@ jobs:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
 
-      - name: Run PHP tests
-        run: php artisan test --compact
-        env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
-
       - name: Install Node dependencies
         run: npm ci
 
@@ -61,3 +55,9 @@ jobs:
 
       - name: Build frontend assets
         run: npm run build
+
+      - name: Run PHP tests
+        run: php artisan test --compact
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite

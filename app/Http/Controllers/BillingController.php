@@ -22,12 +22,11 @@ class BillingController extends Controller
      */
     public function checkout(Request $request, string $plan)
     {
-        $request->validate(['plan' => 'in:starter,growth,pro']);
-
         $priceId = match ($plan) {
             'starter' => config('saas.stripe_prices.starter'),
             'growth' => config('saas.stripe_prices.growth'),
             'pro' => config('saas.stripe_prices.pro'),
+            default => abort(404),
         };
 
         return $request->user()
