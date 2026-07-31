@@ -10,6 +10,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Cashier\Billable;
 
 class User extends Authenticatable implements FilamentUser
@@ -53,7 +54,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return in_array($this->email, config('saas.admin_emails', []), true);
+        return Gate::forUser($this)->allows('access-admin-panel');
     }
 
     /**

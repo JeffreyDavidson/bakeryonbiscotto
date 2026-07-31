@@ -78,4 +78,6 @@ return [
     ],
 
     'trial_days' => 30,
+
+    'admin_emails' => array_filter(array_map('trim', explode(',', env('SAAS_ADMIN_EMAILS', '')))),
 ];
