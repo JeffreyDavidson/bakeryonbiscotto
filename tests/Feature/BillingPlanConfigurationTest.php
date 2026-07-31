@@ -94,6 +94,18 @@ test('billing routes reject unsupported plans through implicit enum route bindin
     'swap' => 'billing.swap',
 ]);
 
+test('subscribed billing routes redirect authenticated non-subscribed users to plans', function (string $method, string $routeName, array $parameters = []) {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->{$method}(route($routeName, $parameters))
+        ->assertRedirect(route('billing.plans'));
+})->with([
+    'portal' => ['get', 'billing.portal'],
+    'cancel' => ['post', 'billing.cancel'],
+    'swap' => ['post', 'billing.swap', ['plan' => Plan::Growth->value]],
+]);
+
 test('valid billing plans reach controller plan price lookup', function () {
     $this->withoutExceptionHandling();
 

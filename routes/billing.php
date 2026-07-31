@@ -11,9 +11,12 @@ use Laravel\Cashier\Http\Controllers\WebhookController;
 Route::middleware(['web', 'auth'])->prefix('billing')->name('billing.')->group(function () {
     Route::get('/plans', ShowPlansController::class)->name('plans');
     Route::post('/checkout/{plan}', CheckoutController::class)->name('checkout');
-    Route::get('/portal', PortalController::class)->name('portal');
-    Route::post('/cancel', CancelController::class)->name('cancel');
-    Route::post('/swap/{plan}', SwapController::class)->name('swap');
+
+    Route::middleware('subscribed')->group(function () {
+        Route::get('/portal', PortalController::class)->name('portal');
+        Route::post('/cancel', CancelController::class)->name('cancel');
+        Route::post('/swap/{plan}', SwapController::class)->name('swap');
+    });
 });
 
 // Stripe webhooks (excluded from CSRF)
