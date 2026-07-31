@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "infinity-digital/bakeryonbiscotto",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Bakery on Biscotto SaaS application.",
     "keywords": [
         "laravel",
         "framework"
@@ -46,7 +46,7 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php artisan key:generate",
             "@php artisan migrate --force",
-            "npm install",
+            "npm ci",
             "npm run build"
         ],
         "dev": [

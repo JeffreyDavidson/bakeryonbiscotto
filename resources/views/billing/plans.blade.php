@@ -108,7 +108,7 @@
                         @endforeach
                     </ul>
 
-                    @if($currentPlan === $key)
+                    @if($currentPlan?->value === $key)
                         <span class="plan-btn plan-btn-current">Current Plan</span>
                     @elseif($currentPlan)
                         <form action="{{ route('billing.swap', $key) }}" method="POST">

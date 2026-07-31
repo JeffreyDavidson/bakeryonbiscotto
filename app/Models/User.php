@@ -3,16 +3,19 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\Plan;
+use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Cashier\Billable;
 
 class User extends Authenticatable implements FilamentUser
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use Billable, HasFactory, Notifiable;
 
     /**
@@ -51,39 +54,22 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return Gate::forUser($this)->allows('access-admin-panel');
     }
 
     /**
-     * Get the user's current subscription plan key.
+     * Get the user's current subscription plan.
      */
-    public function currentPlan(): ?string
+    public function currentPlan(): ?Plan
     {
-        $subscription = $this->subscription('default');
-
-        if (! $subscription) {
-            return null;
-        }
-
-        $priceId = $subscription->stripe_price;
-
-        return match ($priceId) {
-            config('saas.stripe_prices.starter', env('STRIPE_PRICE_STARTER')) => 'starter',
-            config('saas.stripe_prices.growth', env('STRIPE_PRICE_GROWTH')) => 'growth',
-            config('saas.stripe_prices.pro', env('STRIPE_PRICE_PRO')) => 'pro',
-            default => null,
-        };
+        return Plan::fromStripePriceId($this->subscription('default')?->stripe_price);
     }
 
     /**
      * Check if user has at least the given plan tier.
      */
-    public function hasPlan(string $plan): bool
+    public function hasPlan(Plan $plan): bool
     {
-        $hierarchy = ['starter' => 1, 'growth' => 2, 'pro' => 3];
-        $currentLevel = $hierarchy[$this->currentPlan()] ?? 0;
-        $requiredLevel = $hierarchy[$plan] ?? 0;
-
-        return $currentLevel >= $requiredLevel;
+        return $this->currentPlan()?->includes($plan) ?? false;
     }
 }

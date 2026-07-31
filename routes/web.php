@@ -78,4 +78,4 @@ Route::get('/wow', fn() => view('wow'));
 Route::get('/admin/orders/{order}/invoice', function (\App\Models\Order $order) {
     $order->load('items');
     return view('filament.pages.order-invoice', compact('order'));
-})->middleware(['web', 'auth'])->name('admin.orders.invoice');
+})->middleware(['web', 'auth', 'can:access-admin-panel'])->name('admin.orders.invoice');
