@@ -53,35 +53,22 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return in_array($this->email, config('saas.admin_emails', []), true);
     }
 
     /**
-     * Get the user's current subscription plan key.
+     * Get the user's current subscription plan.
      */
-    public function currentPlan(): ?string
+    public function currentPlan(): ?Plan
     {
-        $subscription = $this->subscription('default');
-
-        if (! $subscription) {
-            return null;
-        }
-
-        return Plan::fromStripePriceId($subscription->stripe_price)?->value;
+        return Plan::fromStripePriceId($this->subscription('default')?->stripe_price);
     }
 
     /**
      * Check if user has at least the given plan tier.
      */
-    public function hasPlan(string $plan): bool
+    public function hasPlan(Plan $plan): bool
     {
-        $currentPlan = Plan::fromRoute($this->currentPlan() ?? '');
-        $requiredPlan = Plan::fromRoute($plan);
-
-        if (! $currentPlan || ! $requiredPlan) {
-            return false;
-        }
-
-        return $currentPlan->includes($requiredPlan);
+        return $this->currentPlan()?->includes($plan) ?? false;
     }
 }
