@@ -38,9 +38,9 @@ jobs:
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Merge main into develop
+      - name: Fast-forward develop to main
         if: steps.merge-check.outputs.skip == 'false'
-        run: 'git merge origin/main --no-ff -m "chore: back-merge main into develop (auto)"'
+        run: git merge --ff-only origin/main
 
       - name: Push develop
         if: steps.merge-check.outputs.skip == 'false'
