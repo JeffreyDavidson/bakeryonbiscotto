@@ -20,7 +20,7 @@ class NewReviewNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Review Submitted — ' . $this->review->name,
+            subject: 'New Review Submitted — '.$this->review->name,
         );
     }
 

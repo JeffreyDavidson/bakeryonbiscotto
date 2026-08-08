@@ -28,7 +28,7 @@ class OrderFactory extends Factory
         ];
 
         return [
-            'order_number' => 'BOB-' . strtoupper(Str::random(8)),
+            'order_number' => 'BOB-'.strtoupper(Str::random(8)),
             'customer_name' => fake()->name(),
             'customer_email' => fake()->safeEmail(),
             'customer_phone' => fake()->phoneNumber(),

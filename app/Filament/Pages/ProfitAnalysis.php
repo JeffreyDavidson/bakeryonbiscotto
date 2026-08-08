@@ -7,7 +7,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use BackedEnum;
 use Filament\Pages\Page;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Livewire\Attributes\Url;
 
 class ProfitAnalysis extends Page
@@ -47,10 +47,10 @@ class ProfitAnalysis extends Page
 
     public function mount(): void
     {
-        if (!$this->dateFrom) {
+        if (! $this->dateFrom) {
             $this->dateFrom = now()->subDays(30)->format('Y-m-d');
         }
-        if (!$this->dateTo) {
+        if (! $this->dateTo) {
             $this->dateTo = now()->format('Y-m-d');
         }
     }
@@ -65,7 +65,7 @@ class ProfitAnalysis extends Page
         }
     }
 
-    public function getCategories(): \Illuminate\Support\Collection
+    public function getCategories(): Collection
     {
         return Category::orderBy('name')->pluck('name', 'id');
     }
@@ -117,6 +117,7 @@ class ProfitAnalysis extends Page
             $va = $a[$key] ?? 0;
             $vb = $b[$key] ?? 0;
             $cmp = is_string($va) ? strcasecmp($va, $vb) : ($va <=> $vb);
+
             return $this->sortDir === 'asc' ? $cmp : -$cmp;
         });
 
@@ -131,8 +132,12 @@ class ProfitAnalysis extends Page
         $highest = null;
         $lowest = null;
         foreach ($withMargin as $r) {
-            if ($highest === null || $r['margin'] > $highest['margin']) $highest = $r;
-            if ($lowest === null || $r['margin'] < $lowest['margin']) $lowest = $r;
+            if ($highest === null || $r['margin'] > $highest['margin']) {
+                $highest = $r;
+            }
+            if ($lowest === null || $r['margin'] < $lowest['margin']) {
+                $lowest = $r;
+            }
         }
 
         $totalProfit = array_sum(array_map(fn ($r) => $r['total_profit'] ?? 0, $rows));

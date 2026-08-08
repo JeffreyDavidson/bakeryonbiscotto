@@ -6,6 +6,9 @@ use App\Models\CustomerFavorite;
 use App\Models\CustomerNote;
 use App\Models\CustomerProfile;
 use App\Models\Order;
+use Filament\Actions\Action;
+use Filament\Forms\Components\Select;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\EmbeddedTable;
 use Filament\Schemas\Schema;
@@ -15,6 +18,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class CustomerDirectory extends Page implements HasTable
@@ -44,7 +48,7 @@ class CustomerDirectory extends Page implements HasTable
         ];
     }
 
-    public function getTableRecordKey(\Illuminate\Database\Eloquent\Model|array $record): string
+    public function getTableRecordKey(Model|array $record): string
     {
         return $record->customer_email ?? '';
     }
@@ -134,7 +138,7 @@ class CustomerDirectory extends Page implements HasTable
                     }),
                 Tables\Filters\Filter::make('last_order')
                     ->form([
-                        \Filament\Forms\Components\Select::make('period')
+                        Select::make('period')
                             ->label('Last Ordered')
                             ->options([
                                 '7' => 'Last 7 days',
@@ -167,7 +171,7 @@ class CustomerDirectory extends Page implements HasTable
             ->defaultSort('last_order_date', 'desc')
             ->defaultKeySort(false)
             ->actions([
-                \Filament\Actions\Action::make('view')
+                Action::make('view')
                     ->label('View')
                     ->icon('heroicon-o-eye')
                     ->modalHeading(fn ($record) => $record->customer_name)
@@ -214,7 +218,7 @@ class CustomerDirectory extends Page implements HasTable
             'created_by' => auth()->user()?->name,
         ]);
 
-        \Filament\Notifications\Notification::make()
+        Notification::make()
             ->title('Note added')
             ->success()
             ->send();

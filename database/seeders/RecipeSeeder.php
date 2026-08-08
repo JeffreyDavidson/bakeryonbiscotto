@@ -284,7 +284,9 @@ class RecipeSeeder extends Seeder
 
         foreach ($recipes as $productName => $data) {
             $product = $products->get($productName);
-            if (!$product) continue;
+            if (! $product) {
+                continue;
+            }
 
             $recipe = Recipe::create([
                 'product_id' => $product->id,

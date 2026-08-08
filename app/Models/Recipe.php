@@ -47,7 +47,7 @@ class Recipe extends Model
 
     public function getProfitMarginAttribute(): ?float
     {
-        if (!$this->product || !$this->product->price || $this->product->price == 0) {
+        if (! $this->product || ! $this->product->price || $this->product->price == 0) {
             return null;
         }
 

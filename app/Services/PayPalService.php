@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Order;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -115,13 +116,13 @@ class PayPalService
         $firstName = $nameParts[0];
         $lastName = $nameParts[1] ?? '';
 
-        $templateId = \App\Models\Setting::get('paypal_template_id');
+        $templateId = Setting::get('paypal_template_id');
 
         $detail = [
             'invoice_number' => substr($order->order_number.'-'.time(), 0, 25),
             'currency_code' => 'USD',
-            'note' => \App\Models\Setting::get('invoice_seller_note', 'While certain items may not contain allergens they are produced in an environment where allergens could be present. Please proceed with caution. '.\App\Models\Setting::get('business_name', 'Bakery on Biscotto').' is not responsible for any ill effects.'),
-            'terms_and_conditions' => \App\Models\Setting::get('invoice_terms', "Payment must be made in full for an order to be considered placed. Please pay your invoice as soon as possible as some items take more time to complete than others, and your order will not be started until payment is made.\n\nCancellations made at least 48 hours in advance will receive a full refund. Anything between 24 and 48 hours notice will receive a 50% refund. Anything under 24 hours is non-refundable."),
+            'note' => Setting::get('invoice_seller_note', 'While certain items may not contain allergens they are produced in an environment where allergens could be present. Please proceed with caution. '.Setting::get('business_name', 'Bakery on Biscotto').' is not responsible for any ill effects.'),
+            'terms_and_conditions' => Setting::get('invoice_terms', "Payment must be made in full for an order to be considered placed. Please pay your invoice as soon as possible as some items take more time to complete than others, and your order will not be started until payment is made.\n\nCancellations made at least 48 hours in advance will receive a full refund. Anything between 24 and 48 hours notice will receive a 50% refund. Anything under 24 hours is non-refundable."),
             'payment_term' => [
                 'due_date' => $order->payment_deadline->format('Y-m-d'),
             ],
@@ -134,7 +135,7 @@ class PayPalService
         $invoicePayload = [
             'detail' => $detail,
             'invoicer' => [
-                'business_name' => \App\Models\Setting::get('business_name', 'Bakery on Biscotto'),
+                'business_name' => Setting::get('business_name', 'Bakery on Biscotto'),
             ],
             'primary_recipients' => [
                 [
@@ -338,7 +339,7 @@ class PayPalService
         $response = Http::withToken($token)
             ->post("{$this->baseUrl}/v2/invoicing/invoices/{$invoiceId}/cancel", [
                 'subject' => 'Order cancelled',
-                'note' => 'This invoice has been cancelled by '.\App\Models\Setting::get('business_name', 'Bakery on Biscotto').'.',
+                'note' => 'This invoice has been cancelled by '.Setting::get('business_name', 'Bakery on Biscotto').'.',
                 'send_to_invoicer' => true,
                 'send_to_recipient' => true,
             ]);

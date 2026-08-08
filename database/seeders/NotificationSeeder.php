@@ -3,16 +3,18 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
 
 class NotificationSeeder extends Seeder
 {
     public function run(): void
     {
         $user = User::first();
-        if (!$user) return;
+        if (! $user) {
+            return;
+        }
 
         // Clear existing notifications so we don't duplicate
         $user->notifications()->delete();

@@ -46,7 +46,7 @@ class Order extends Model
     {
         static::creating(function (Order $order) {
             if (empty($order->order_number)) {
-                $order->order_number = 'BOB-' . strtoupper(Str::random(8));
+                $order->order_number = 'BOB-'.strtoupper(Str::random(8));
             }
         });
     }

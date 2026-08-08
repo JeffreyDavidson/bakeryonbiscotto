@@ -5,9 +5,13 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\RecipeResource\Pages;
 use App\Models\Recipe;
 use App\Models\RecipeIngredient;
-use App\Models\RecipeStage;
 use BackedEnum;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -33,19 +37,19 @@ class RecipeResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->columns(1)->components([
-            \Filament\Schemas\Components\Section::make('Recipe Details')
+            Section::make('Recipe Details')
                 ->icon('heroicon-o-beaker')
                 ->description('Basic recipe information')
                 ->columns(2)
                 ->columnSpanFull()
                 ->components([
-                    \Filament\Forms\Components\TextInput::make('name')
+                    TextInput::make('name')
                         ->required()
                         ->maxLength(255)
                         ->prefixIcon('heroicon-o-tag')
                         ->placeholder('e.g. Classic Sourdough Loaf')
                         ->columnSpanFull(),
-                    \Filament\Forms\Components\Select::make('product_id')
+                    Select::make('product_id')
                         ->label('Linked Product')
                         ->relationship('product', 'name')
                         ->searchable()
@@ -53,48 +57,48 @@ class RecipeResource extends Resource
                         ->prefixIcon('heroicon-o-link')
                         ->placeholder('Optional — link to a product for margin calculation')
                         ->columnSpanFull(),
-                    \Filament\Forms\Components\TextInput::make('servings')
+                    TextInput::make('servings')
                         ->required()
                         ->numeric()
                         ->default(1)
                         ->minValue(1)
                         ->prefixIcon('heroicon-o-squares-2x2')
                         ->placeholder('1'),
-                    \Filament\Forms\Components\TextInput::make('prep_time_minutes')
+                    TextInput::make('prep_time_minutes')
                         ->label('Prep Time (minutes)')
                         ->numeric()
                         ->minValue(0)
                         ->prefixIcon('heroicon-o-clock')
                         ->placeholder('e.g. 120'),
-                    \Filament\Forms\Components\Textarea::make('description')
+                    Textarea::make('description')
                         ->rows(3)
                         ->placeholder('Describe the recipe — technique notes, variations, etc.')
                         ->columnSpanFull(),
-                    \Filament\Forms\Components\Textarea::make('notes')
+                    Textarea::make('notes')
                         ->rows(2)
                         ->placeholder('Personal notes, tips, lessons learned...')
                         ->columnSpanFull(),
                 ]),
-            \Filament\Schemas\Components\Section::make('Ingredients')
+            Section::make('Ingredients')
                 ->icon('heroicon-o-list-bullet')
                 ->description('What goes into this recipe')
                 ->columnSpanFull()
                 ->components([
-                    \Filament\Forms\Components\Repeater::make('ingredients')
+                    Repeater::make('ingredients')
                         ->relationship()
                         ->schema([
-                            \Filament\Forms\Components\TextInput::make('name')
+                            TextInput::make('name')
                                 ->required()
                                 ->placeholder('e.g. All-purpose flour'),
-                            \Filament\Forms\Components\TextInput::make('quantity')
+                            TextInput::make('quantity')
                                 ->required()
                                 ->numeric()
                                 ->step('0.01')
                                 ->minValue(0),
-                            \Filament\Forms\Components\Select::make('unit')
+                            Select::make('unit')
                                 ->required()
                                 ->options(RecipeIngredient::UNITS),
-                            \Filament\Forms\Components\TextInput::make('cost_per_unit')
+                            TextInput::make('cost_per_unit')
                                 ->label('Cost per Unit')
                                 ->required()
                                 ->numeric()
@@ -107,18 +111,18 @@ class RecipeResource extends Resource
                         ->addActionLabel('Add Ingredient')
                         ->reorderable(false),
                 ]),
-            \Filament\Schemas\Components\Section::make('Prep Stages')
+            Section::make('Prep Stages')
                 ->icon('heroicon-o-clock')
                 ->description('Define each stage working backwards from pickup/delivery time')
                 ->columnSpanFull()
                 ->components([
-                    \Filament\Forms\Components\Repeater::make('stages')
+                    Repeater::make('stages')
                         ->relationship()
                         ->schema([
-                            \Filament\Forms\Components\TextInput::make('name')
+                            TextInput::make('name')
                                 ->required()
                                 ->placeholder('e.g. Feed starter, Mix dough, Bake'),
-                            \Filament\Forms\Components\TextInput::make('hours_before')
+                            TextInput::make('hours_before')
                                 ->label('Hours Before Pickup')
                                 ->required()
                                 ->numeric()
@@ -126,12 +130,12 @@ class RecipeResource extends Resource
                                 ->minValue(0)
                                 ->suffix('hrs')
                                 ->helperText('How many hours before the order is due'),
-                            \Filament\Forms\Components\TextInput::make('duration_minutes')
+                            TextInput::make('duration_minutes')
                                 ->label('Duration')
                                 ->numeric()
                                 ->default(30)
                                 ->suffix('min'),
-                            \Filament\Forms\Components\TextInput::make('instructions')
+                            TextInput::make('instructions')
                                 ->placeholder('Optional notes for this stage'),
                         ])
                         ->columns(4)
@@ -146,7 +150,7 @@ class RecipeResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->heading("Recipes")
+            ->heading('Recipes')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
@@ -170,7 +174,7 @@ class RecipeResource extends Resource
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('profit_margin')
                     ->label('Margin %')
-                    ->formatStateUsing(fn ($state) => $state !== null ? number_format($state, 1) . '%' : '—')
+                    ->formatStateUsing(fn ($state) => $state !== null ? number_format($state, 1).'%' : '—')
                     ->toggleable(),
             ])
             ->filters([

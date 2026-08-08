@@ -2,10 +2,13 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Resources\OrderResource;
 use App\Models\CustomerNote;
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\PayPalService;
 use BackedEnum;
+use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
@@ -23,6 +26,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class QuickOrder extends Page
@@ -238,7 +242,7 @@ class QuickOrder extends Page
                         }
                         $html .= '</div>';
 
-                        return new \Illuminate\Support\HtmlString($html);
+                        return new HtmlString($html);
                     }),
 
                 Section::make('Order Items')
@@ -285,7 +289,7 @@ class QuickOrder extends Page
                                         $productId = $get('product_id');
                                         $price = $productPrices[$productId] ?? 0;
 
-                                        return new \Illuminate\Support\HtmlString(
+                                        return new HtmlString(
                                             '<div style="padding:0.5rem 0.75rem;background:#fdf8f2;border:1px solid #e8d0b0;border-radius:8px;color:#3d2314;font-weight:600;text-align:center;">$'.number_format($price, 2).'</div>'
                                         );
                                     }),
@@ -298,14 +302,14 @@ class QuickOrder extends Page
                                         $qty = (int) ($get('quantity') ?: 1);
                                         $total = $price * $qty;
 
-                                        return new \Illuminate\Support\HtmlString(
+                                        return new HtmlString(
                                             '<div style="padding:0.5rem 0.75rem;background:linear-gradient(135deg,#3d2314,#6b4c3b);border-radius:8px;color:white;font-weight:700;text-align:center;font-size:1rem;">$'.number_format($total, 2).'</div>'
                                         );
                                     }),
                                 Placeholder::make('remove_btn')
                                     ->label("\u{200B}")
                                     ->columnSpan(1)
-                                    ->content(new \Illuminate\Support\HtmlString(
+                                    ->content(new HtmlString(
                                         '<div style="display:flex;align-items:center;justify-content:center;height:100%;min-height:2.625rem;margin-left:-2px;">'
                                         .'<button type="button" x-on:click="$wire.removeItem($el.closest(\'li[x-sortable-item]\').getAttribute(\'x-sortable-item\'))" style="background:none;border:none;cursor:pointer;color:#3d2314;transition:color 0.15s;padding:0.5rem;margin:0;display:flex;align-items:center;justify-content:center;border-radius:6px;" onmouseover="this.style.color=\'#c0392b\';this.style.background=\'#fdf0e6\'" onmouseout="this.style.color=\'#3d2314\';this.style.background=\'none\'">'
                                         .'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:1.5rem;height:1.5rem;"><path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>'
@@ -335,7 +339,7 @@ class QuickOrder extends Page
                                             ? '✅ All flavors selected!'
                                             : "🎁 Choose {$count} flavors — {$totalPicked} of {$count} selected";
 
-                                        return new \Illuminate\Support\HtmlString($status.$bar);
+                                        return new HtmlString($status.$bar);
                                     }),
                                 Repeater::make('selections')
                                     ->label('Flavor Selections')
@@ -370,7 +374,7 @@ class QuickOrder extends Page
                                     ->columns(3)
                                     ->defaultItems(0)
                                     ->addActionLabel('+ Add Flavor')
-                                    ->addAction(function (\Filament\Actions\Action $action) use ($bundlePickCounts) {
+                                    ->addAction(function (Action $action) use ($bundlePickCounts) {
                                         return $action->hidden(function (Repeater $component) use ($bundlePickCounts): bool {
                                             // Walk up to the parent items repeater to get this item's product_id
                                             $itemState = $component->getContainer()->getRawState();
@@ -391,9 +395,9 @@ class QuickOrder extends Page
                             ])
                             ->columns(5)
                             ->defaultItems(1)
-                            ->deleteAction(fn (\Filament\Actions\Action $action) => $action->hidden())
+                            ->deleteAction(fn (Action $action) => $action->hidden())
                             ->addActionLabel('+ Add Another Product')
-                            ->addAction(function (\Filament\Actions\Action $action) {
+                            ->addAction(function (Action $action) {
                                 return $action->disabled(function (Repeater $component): bool {
                                     foreach ($component->getRawState() ?? [] as $item) {
                                         if (empty($item['product_id'])) {
@@ -441,7 +445,7 @@ class QuickOrder extends Page
                                     return [];
                                 }
 
-                                $dayOfWeek = \Carbon\Carbon::parse($date)->dayOfWeek;
+                                $dayOfWeek = Carbon::parse($date)->dayOfWeek;
 
                                 // Same schedule as storefront: 0=Sun, 1=Mon, etc.
                                 $scheduleByDay = [
@@ -503,9 +507,9 @@ class QuickOrder extends Page
                             ->label('Payment Deadline')
                             ->visible(fn (Get $get) => $get('payment_method') === 'paypal' && $get('requested_date'))
                             ->content(function (Get $get) {
-                                $date = \Carbon\Carbon::parse($get('requested_date'))->subDays(2);
+                                $date = Carbon::parse($get('requested_date'))->subDays(2);
 
-                                return new \Illuminate\Support\HtmlString(
+                                return new HtmlString(
                                     '<div style="padding:0.5rem 0.75rem;background:#fdf8f2;border:1px solid #e8d0b0;border-radius:8px;color:#3d2314;font-weight:600;">'
                                     .'📅 Must be paid by '.$date->format('M j, Y')
                                     .'</div>'
@@ -514,7 +518,7 @@ class QuickOrder extends Page
                         Placeholder::make('cash_note')
                             ->label('')
                             ->visible(fn (Get $get) => $get('payment_method') === 'cash')
-                            ->content(new \Illuminate\Support\HtmlString(
+                            ->content(new HtmlString(
                                 '<div style="padding:0.5rem 0.75rem;background:#d4edda;border:1px solid #c3e6cb;border-radius:8px;color:#155724;font-weight:500;">'
                                 .'✅ Cash payment — will be marked as paid on creation'
                                 .'</div>'
@@ -636,7 +640,7 @@ class QuickOrder extends Page
             'payment_method' => $paymentMethod,
             'payment_status' => $isCash ? 'paid' : 'unpaid',
             'paid_at' => $isCash ? now() : null,
-            'payment_deadline' => ! $isCash ? \Carbon\Carbon::parse($data['requested_date'])->subDays(2)->toDateString() : null,
+            'payment_deadline' => ! $isCash ? Carbon::parse($data['requested_date'])->subDays(2)->toDateString() : null,
         ];
 
         $order = DB::transaction(function () use ($orderData, $itemsData) {
@@ -653,7 +657,7 @@ class QuickOrder extends Page
         if ($paymentMethod === 'paypal') {
             try {
                 $order->load('items');
-                $paypalService = app(\App\Services\PayPalService::class);
+                $paypalService = app(PayPalService::class);
                 $invoiceResult = $paypalService->createAndSendInvoice($order);
 
                 Notification::make()
@@ -674,6 +678,6 @@ class QuickOrder extends Page
             ->success()
             ->send();
 
-        $this->redirect(\App\Filament\Resources\OrderResource::getUrl('view', ['record' => $order]));
+        $this->redirect(OrderResource::getUrl('view', ['record' => $order]));
     }
 }

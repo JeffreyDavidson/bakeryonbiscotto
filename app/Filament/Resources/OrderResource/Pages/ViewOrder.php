@@ -2,13 +2,15 @@
 
 namespace App\Filament\Resources\OrderResource\Pages;
 
+use App\Filament\Pages\QuickOrder;
 use App\Filament\Resources\OrderResource;
-use App\Models\Order;
 use App\Models\OrderNote;
 use BackedEnum;
 use Filament\Actions;
-use Filament\Resources\Pages\Page;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
+use Filament\Resources\Pages\Page;
 
 class ViewOrder extends Page
 {
@@ -39,7 +41,7 @@ class ViewOrder extends Page
 
     public function getTitle(): string
     {
-        return 'Order ' . $this->record->order_number;
+        return 'Order '.$this->record->order_number;
     }
 
     public function getHeading(): string
@@ -63,7 +65,7 @@ class ViewOrder extends Page
                         'order_id' => $this->record->id,
                         'user_id' => auth()->id(),
                         'type' => 'status_change',
-                        'content' => 'Status changed from ' . ucfirst($oldStatus) . ' to Confirmed',
+                        'content' => 'Status changed from '.ucfirst($oldStatus).' to Confirmed',
                     ]);
                     $this->redirect(static::getResource()::getUrl('view', ['record' => $this->record]));
                 }),
@@ -81,7 +83,7 @@ class ViewOrder extends Page
                         'order_id' => $this->record->id,
                         'user_id' => auth()->id(),
                         'type' => 'status_change',
-                        'content' => 'Status changed from ' . ucfirst($oldStatus) . ' to Baking',
+                        'content' => 'Status changed from '.ucfirst($oldStatus).' to Baking',
                     ]);
                     $this->redirect(static::getResource()::getUrl('view', ['record' => $this->record]));
                 }),
@@ -99,7 +101,7 @@ class ViewOrder extends Page
                         'order_id' => $this->record->id,
                         'user_id' => auth()->id(),
                         'type' => 'status_change',
-                        'content' => 'Status changed from ' . ucfirst($oldStatus) . ' to Ready',
+                        'content' => 'Status changed from '.ucfirst($oldStatus).' to Ready',
                     ]);
                     $this->redirect(static::getResource()::getUrl('view', ['record' => $this->record]));
                 }),
@@ -120,7 +122,7 @@ class ViewOrder extends Page
                         'order_id' => $this->record->id,
                         'user_id' => auth()->id(),
                         'type' => 'status_change',
-                        'content' => 'Status changed from ' . ucfirst($oldStatus) . ' to Delivered',
+                        'content' => 'Status changed from '.ucfirst($oldStatus).' to Delivered',
                     ]);
                     $this->redirect(static::getResource()::getUrl('view', ['record' => $this->record]));
                 }),
@@ -134,7 +136,7 @@ class ViewOrder extends Page
                 ->modalHeading('Cancel this order?')
                 ->modalDescription('This will mark the order as cancelled.')
                 ->form([
-                    \Filament\Forms\Components\Select::make('payment_status')
+                    Select::make('payment_status')
                         ->label('Payment Status')
                         ->options([
                             'paid' => 'Paid (no refund yet)',
@@ -154,7 +156,7 @@ class ViewOrder extends Page
                         'order_id' => $this->record->id,
                         'user_id' => auth()->id(),
                         'type' => 'status_change',
-                        'content' => 'Status changed from ' . ucfirst($oldStatus) . ' to Cancelled',
+                        'content' => 'Status changed from '.ucfirst($oldStatus).' to Cancelled',
                     ]);
                     $this->redirect(static::getResource()::getUrl('view', ['record' => $this->record]));
                 }),
@@ -164,7 +166,7 @@ class ViewOrder extends Page
                 ->icon('heroicon-o-chat-bubble-left-ellipsis')
                 ->color('gray')
                 ->form([
-                    \Filament\Forms\Components\Textarea::make('content')
+                    Textarea::make('content')
                         ->label('Note')
                         ->required()
                         ->rows(3),
@@ -190,7 +192,7 @@ class ViewOrder extends Page
                 ->label('Reorder')
                 ->icon('heroicon-o-arrow-path')
                 ->color('gray')
-                ->url(fn () => \App\Filament\Pages\QuickOrder::getUrl() . '?reorder=' . $this->record->id),
+                ->url(fn () => QuickOrder::getUrl().'?reorder='.$this->record->id),
 
             Actions\Action::make('edit')
                 ->label('Edit Order')

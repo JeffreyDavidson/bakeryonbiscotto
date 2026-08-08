@@ -5,12 +5,18 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CouponResource\Pages;
 use App\Models\Coupon;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
@@ -41,20 +47,20 @@ class CouponResource extends Resource
                 ->columns(2)
                 ->columnSpanFull()
                 ->components([
-                    \Filament\Forms\Components\TextInput::make('code')
+                    TextInput::make('code')
                         ->required()
                         ->maxLength(50)
                         ->unique(ignoreRecord: true)
                         ->placeholder('e.g. SUMMER20')
                         ->extraInputAttributes(['style' => 'text-transform: uppercase'])
                         ->suffixAction(
-                            \Filament\Actions\Action::make('generate')
+                            Action::make('generate')
                                 ->icon('heroicon-o-sparkles')
                                 ->action(function ($set) {
                                     $set('code', strtoupper(Str::random(8)));
                                 })
                         ),
-                    \Filament\Forms\Components\Select::make('type')
+                    Select::make('type')
                         ->options([
                             'percentage' => 'Percentage (%)',
                             'fixed_amount' => 'Fixed Amount ($)',
@@ -62,23 +68,23 @@ class CouponResource extends Resource
                         ->required()
                         ->default('percentage')
                         ->live(),
-                    \Filament\Forms\Components\TextInput::make('value')
+                    TextInput::make('value')
                         ->required()
                         ->numeric()
                         ->minValue(0)
                         ->suffix(fn ($get) => $get('type') === 'percentage' ? '%' : '$')
                         ->placeholder(fn ($get) => $get('type') === 'percentage' ? 'e.g. 15' : 'e.g. 5.00'),
-                    \Filament\Forms\Components\TextInput::make('minimum_order')
+                    TextInput::make('minimum_order')
                         ->numeric()
                         ->prefix('$')
                         ->placeholder('No minimum')
                         ->helperText('Leave empty for no minimum'),
-                    \Filament\Forms\Components\TextInput::make('max_uses')
+                    TextInput::make('max_uses')
                         ->numeric()
                         ->minValue(1)
                         ->placeholder('Unlimited')
                         ->helperText('Leave empty for unlimited uses'),
-                    \Filament\Forms\Components\Toggle::make('is_active')
+                    Toggle::make('is_active')
                         ->default(true)
                         ->label('Active'),
                 ]),
@@ -89,10 +95,10 @@ class CouponResource extends Resource
                 ->columnSpanFull()
                 ->collapsible()
                 ->components([
-                    \Filament\Forms\Components\DateTimePicker::make('starts_at')
+                    DateTimePicker::make('starts_at')
                         ->label('Starts At')
                         ->placeholder('Immediately'),
-                    \Filament\Forms\Components\DateTimePicker::make('expires_at')
+                    DateTimePicker::make('expires_at')
                         ->label('Expires At')
                         ->placeholder('Never'),
                 ]),
@@ -103,7 +109,7 @@ class CouponResource extends Resource
                 ->collapsible()
                 ->collapsed()
                 ->components([
-                    \Filament\Forms\Components\Textarea::make('description')
+                    Textarea::make('description')
                         ->hiddenLabel()
                         ->rows(3)
                         ->placeholder('Internal notes about this coupon...')
@@ -127,9 +133,10 @@ class CouponResource extends Resource
                     ->label('Discount')
                     ->formatStateUsing(function (Coupon $record) {
                         if ($record->type === 'percentage') {
-                            return number_format($record->value, 0) . '%';
+                            return number_format($record->value, 0).'%';
                         }
-                        return '$' . number_format($record->value, 2);
+
+                        return '$'.number_format($record->value, 2);
                     })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('times_used')
@@ -137,6 +144,7 @@ class CouponResource extends Resource
                     ->formatStateUsing(function (Coupon $record) {
                         $used = $record->times_used;
                         $max = $record->max_uses;
+
                         return $max ? "{$used} / {$max}" : "{$used} / ∞";
                     })
                     ->sortable(),
@@ -144,8 +152,13 @@ class CouponResource extends Resource
                     ->label('Status')
                     ->badge()
                     ->getStateUsing(function (Coupon $record) {
-                        if (!$record->is_active) return 'Inactive';
-                        if (!$record->isValid()) return 'Expired';
+                        if (! $record->is_active) {
+                            return 'Inactive';
+                        }
+                        if (! $record->isValid()) {
+                            return 'Expired';
+                        }
+
                         return 'Active';
                     })
                     ->color(fn (string $state) => match ($state) {

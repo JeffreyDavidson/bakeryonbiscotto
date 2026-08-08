@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Product;
+use App\Models\Setting;
 
 class CaptionGenerator
 {
@@ -31,20 +32,20 @@ class CaptionGenerator
             $cta = $ctas[array_rand($ctas)];
 
             $caption = $this->interpolate($hook, $product, $customNote)
-                . "\n\n"
-                . $this->interpolate($body, $product, $customNote);
+                ."\n\n"
+                .$this->interpolate($body, $product, $customNote);
 
             if ($customNote) {
                 $noteLines = $this->getNoteInsertions($customNote);
-                $caption .= "\n\n" . $noteLines[array_rand($noteLines)];
+                $caption .= "\n\n".$noteLines[array_rand($noteLines)];
             }
 
             if ($cta) {
-                $caption .= "\n\n" . $cta;
+                $caption .= "\n\n".$cta;
             }
 
             if ($hashtags) {
-                $caption .= "\n\n" . $hashtags;
+                $caption .= "\n\n".$hashtags;
             }
 
             $captions[] = trim($caption);
@@ -60,7 +61,7 @@ class CaptionGenerator
 
         return str_replace(
             ['{name}', '{description}', '{price}', '{category}'],
-            [$product->name, $product->description ?? 'something special', '$' . $price, strtolower($category)],
+            [$product->name, $product->description ?? 'something special', '$'.$price, strtolower($category)],
             $template,
         );
     }
@@ -167,7 +168,7 @@ class CaptionGenerator
     {
         $bodies = [
             'casual' => [
-                'Made from scratch right here in ' . \App\Models\Setting::get('store_state_full', 'Florida') . '. {description}.',
+                'Made from scratch right here in '.Setting::get('store_state_full', 'Florida').'. {description}.',
                 'Just your friendly cottage baker bringing you {category} goodness.',
                 'Homemade {category} made with real ingredients and zero shortcuts.',
                 'Small batch, big flavor. Every {name} is made with intention.',
@@ -238,11 +239,11 @@ class CaptionGenerator
 
         $category = $product->category?->name;
         if ($category) {
-            $tag = '#' . preg_replace('/[^a-z0-9]/', '', strtolower($category));
+            $tag = '#'.preg_replace('/[^a-z0-9]/', '', strtolower($category));
             $base[] = $tag;
         }
 
-        $nameTag = '#' . preg_replace('/[^a-z0-9]/', '', strtolower($product->name));
+        $nameTag = '#'.preg_replace('/[^a-z0-9]/', '', strtolower($product->name));
         if (strlen($nameTag) > 2 && strlen($nameTag) < 30) {
             $base[] = $nameTag;
         }

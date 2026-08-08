@@ -22,7 +22,7 @@ class BirthdayDiscount extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Happy Birthday, ' . $this->customer->name . '! 🎂 A treat from us!',
+            subject: 'Happy Birthday, '.$this->customer->name.'! 🎂 A treat from us!',
         );
     }
 

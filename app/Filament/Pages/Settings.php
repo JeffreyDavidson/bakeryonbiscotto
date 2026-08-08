@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\Setting;
+use App\Services\PayPalService;
 use Filament\Actions;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
@@ -10,18 +11,21 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Schema;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 class Settings extends Page
 {
-
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
+
     protected static ?string $navigationLabel = 'Settings';
+
     protected static string|\UnitEnum|null $navigationGroup = 'Admin';
+
     protected static ?int $navigationSort = 99;
+
     protected string $view = 'filament.pages.settings';
 
     public ?array $data = [];
@@ -364,7 +368,7 @@ class Settings extends Page
         Setting::set('revenue_cap_label', $data['revenue_cap_label'] ?? '');
 
         // Branding colors
-        foreach (['900','800','700','600','500','400','300','200','150','100','50'] as $shade) {
+        foreach (['900', '800', '700', '600', '500', '400', '300', '200', '150', '100', '50'] as $shade) {
             $key = "brand_color_{$shade}";
             if (isset($data[$key])) {
                 Setting::set($key, $data[$key]);
@@ -372,8 +376,12 @@ class Settings extends Page
         }
 
         // Logo/Favicon
-        if (isset($data['store_logo'])) Setting::set('store_logo', $data['store_logo']);
-        if (isset($data['store_favicon'])) Setting::set('store_favicon', $data['store_favicon']);
+        if (isset($data['store_logo'])) {
+            Setting::set('store_logo', $data['store_logo']);
+        }
+        if (isset($data['store_favicon'])) {
+            Setting::set('store_favicon', $data['store_favicon']);
+        }
 
         // Order Settings
         Setting::set('minimum_order_amount', $data['minimum_order_amount'] ?? '0');
@@ -411,7 +419,7 @@ class Settings extends Page
     public function syncFromPayPal(): void
     {
         try {
-            $paypal = app(\App\Services\PayPalService::class);
+            $paypal = app(PayPalService::class);
             $templates = $paypal->listTemplates();
 
             if (empty($templates)) {
@@ -420,6 +428,7 @@ class Settings extends Page
                     ->body('You can create one by filling in the fields below and clicking "Push to PayPal".')
                     ->warning()
                     ->send();
+
                 return;
             }
 
@@ -453,7 +462,7 @@ class Settings extends Page
     public function pushToPayPal(): void
     {
         try {
-            $paypal = app(\App\Services\PayPalService::class);
+            $paypal = app(PayPalService::class);
             $note = $this->data['invoice_seller_note'] ?? '';
             $terms = $this->data['invoice_terms'] ?? '';
             $templateId = $this->data['paypal_template_id'] ?? '';
@@ -466,7 +475,7 @@ class Settings extends Page
                     ->success()
                     ->send();
             } else {
-                $result = $paypal->createTemplate(\App\Models\Setting::get('business_name', 'Bakery on Biscotto'), $note, $terms);
+                $result = $paypal->createTemplate(Setting::get('business_name', 'Bakery on Biscotto'), $note, $terms);
                 $newId = $result['id'] ?? '';
                 if ($newId) {
                     $this->data['paypal_template_id'] = $newId;

@@ -5,12 +5,20 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
 use BackedEnum;
+use Carbon\Carbon;
+use Filament\Actions\Action as TableAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Actions\Action as TableAction;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderResource extends Resource
 {
@@ -46,16 +54,16 @@ class OrderResource extends Resource
             Section::make('Customer Info')
                 ->icon('heroicon-o-user')
                 ->components([
-                    \Filament\Forms\Components\TextInput::make('customer_name')
+                    TextInput::make('customer_name')
                         ->required()
                         ->placeholder('Jane Smith')
                         ->prefixIcon('heroicon-o-user'),
-                    \Filament\Forms\Components\TextInput::make('customer_email')
+                    TextInput::make('customer_email')
                         ->email()
                         ->required()
                         ->placeholder('jane@example.com')
                         ->prefixIcon('heroicon-o-envelope'),
-                    \Filament\Forms\Components\TextInput::make('customer_phone')
+                    TextInput::make('customer_phone')
                         ->placeholder('(555) 123-4567')
                         ->prefixIcon('heroicon-o-phone'),
                 ])->columns(3),
@@ -63,28 +71,28 @@ class OrderResource extends Resource
             Section::make('Fulfillment')
                 ->icon('heroicon-o-truck')
                 ->components([
-                    \Filament\Forms\Components\Select::make('fulfillment_type')
+                    Select::make('fulfillment_type')
                         ->options(['pickup' => '📦 Pickup', 'delivery' => '🚗 Delivery'])
                         ->required()
                         ->default('pickup')
                         ->live(),
-                    \Filament\Forms\Components\DatePicker::make('requested_date')
+                    DatePicker::make('requested_date')
                         ->required()
                         ->default(now())
                         ->prefixIcon('heroicon-o-calendar'),
-                    \Filament\Forms\Components\TextInput::make('requested_time')
+                    TextInput::make('requested_time')
                         ->label('Requested Time')
                         ->placeholder('e.g. 2:00 PM')
                         ->prefixIcon('heroicon-o-clock'),
-                    \Filament\Forms\Components\Textarea::make('delivery_address')
+                    Textarea::make('delivery_address')
                         ->visible(fn ($get) => $get('fulfillment_type') === 'delivery')
                         ->placeholder('Full delivery address')
                         ->rows(2)
                         ->columnSpanFull(),
-                    \Filament\Forms\Components\TextInput::make('delivery_zip')
+                    TextInput::make('delivery_zip')
                         ->visible(fn ($get) => $get('fulfillment_type') === 'delivery')
                         ->placeholder('33837'),
-                    \Filament\Forms\Components\TextInput::make('delivery_fee')
+                    TextInput::make('delivery_fee')
                         ->numeric()->prefix('$')->default(0)
                         ->visible(fn ($get) => $get('fulfillment_type') === 'delivery'),
                 ])->columns(3),
@@ -92,7 +100,7 @@ class OrderResource extends Resource
             Section::make('Notes')
                 ->icon('heroicon-o-chat-bubble-bottom-center-text')
                 ->components([
-                    \Filament\Forms\Components\Textarea::make('notes')
+                    Textarea::make('notes')
                         ->hiddenLabel()
                         ->rows(3)
                         ->placeholder('Special instructions, allergies, etc.')
@@ -104,7 +112,7 @@ class OrderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->heading("Orders")
+            ->heading('Orders')
             ->recordUrl(fn (Order $record) => static::getUrl('view', ['record' => $record]))
             ->columns([
                 Tables\Columns\TextColumn::make('order_number')
@@ -121,10 +129,12 @@ class OrderResource extends Resource
                         $count = Order::where('customer_email', $record->customer_email)
                             ->where('id', '!=', $record->id)
                             ->count();
+
                         return $count > 0 ? '🔄' : '';
                     })
                     ->tooltip(function (Order $record) {
                         $count = Order::where('customer_email', $record->customer_email)->count();
+
                         return $count > 1 ? "Repeat customer ({$count} orders)" : null;
                     }),
                 Tables\Columns\TextColumn::make('items_count')
@@ -144,13 +154,16 @@ class OrderResource extends Resource
                     ->label('Requested Date & Time')
                     ->formatStateUsing(function ($record) {
                         $date = $record->requested_date->format('M j, Y');
-                        if (! $record->requested_time) return $date;
+                        if (! $record->requested_time) {
+                            return $date;
+                        }
                         $time = $record->requested_time;
                         // Convert 24h format (e.g. "16:00") to 12h
-                        if (preg_match('/^\d{1,2}:\d{2}$/', $time) && !str_contains($time, 'AM') && !str_contains($time, 'PM')) {
+                        if (preg_match('/^\d{1,2}:\d{2}$/', $time) && ! str_contains($time, 'AM') && ! str_contains($time, 'PM')) {
                             $time = date('g:i A', strtotime($time));
                         }
-                        return $date . ' at ' . $time;
+
+                        return $date.' at '.$time;
                     })
                     ->sortable()
                     ->toggleable(),
@@ -202,18 +215,23 @@ class OrderResource extends Resource
                     ]),
                 Tables\Filters\Filter::make('requested_date')
                     ->form([
-                        \Filament\Forms\Components\DatePicker::make('from')->label('From'),
-                        \Filament\Forms\Components\DatePicker::make('until')->label('Until'),
+                        DatePicker::make('from')->label('From'),
+                        DatePicker::make('until')->label('Until'),
                     ])
-                    ->query(function (\Illuminate\Database\Eloquent\Builder $query, array $data): \Illuminate\Database\Eloquent\Builder {
+                    ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when($data['from'], fn ($q, $date) => $q->whereDate('requested_date', '>=', $date))
                             ->when($data['until'], fn ($q, $date) => $q->whereDate('requested_date', '<=', $date));
                     })
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
-                        if ($data['from'] ?? null) $indicators[] = 'From ' . \Carbon\Carbon::parse($data['from'])->format('M j, Y');
-                        if ($data['until'] ?? null) $indicators[] = 'Until ' . \Carbon\Carbon::parse($data['until'])->format('M j, Y');
+                        if ($data['from'] ?? null) {
+                            $indicators[] = 'From '.Carbon::parse($data['from'])->format('M j, Y');
+                        }
+                        if ($data['until'] ?? null) {
+                            $indicators[] = 'Until '.Carbon::parse($data['until'])->format('M j, Y');
+                        }
+
                         return $indicators;
                     }),
                 Tables\Filters\TernaryFilter::make('has_notes')
@@ -262,7 +280,7 @@ class OrderResource extends Resource
                         'status' => 'delivered',
                         'delivered_at' => now(),
                     ])),
-                \Filament\Actions\ViewAction::make()
+                ViewAction::make()
                     ->url(fn (Order $record) => static::getUrl('view', ['record' => $record])),
             ])
             ->bulkActions([])
@@ -280,7 +298,7 @@ class OrderResource extends Resource
         ];
     }
 
-    public static function getRecordSubNavigation(\Filament\Resources\Pages\Page $page): array
+    public static function getRecordSubNavigation(Page $page): array
     {
         return $page->generateNavigationItems([
             Pages\ViewOrder::class,

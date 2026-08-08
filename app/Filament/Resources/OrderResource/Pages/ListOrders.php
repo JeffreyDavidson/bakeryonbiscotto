@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\OrderResource\Pages;
 
 use App\Filament\Resources\OrderResource;
+use App\Models\Order;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,25 +21,25 @@ class ListOrders extends ListRecords
             'pending' => Tab::make('Pending')
                 ->icon('heroicon-o-clock')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'pending'))
-                ->badge(fn () => \App\Models\Order::where('status', 'pending')->count() ?: null)
+                ->badge(fn () => Order::where('status', 'pending')->count() ?: null)
                 ->badgeColor('warning'),
 
             'confirmed' => Tab::make('Confirmed')
                 ->icon('heroicon-o-check')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'confirmed'))
-                ->badge(fn () => \App\Models\Order::where('status', 'confirmed')->count() ?: null)
+                ->badge(fn () => Order::where('status', 'confirmed')->count() ?: null)
                 ->badgeColor('info'),
 
             'baking' => Tab::make('Baking')
                 ->icon('heroicon-o-fire')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'baking'))
-                ->badge(fn () => \App\Models\Order::where('status', 'baking')->count() ?: null)
+                ->badge(fn () => Order::where('status', 'baking')->count() ?: null)
                 ->badgeColor('primary'),
 
             'ready' => Tab::make('Ready')
                 ->icon('heroicon-o-check-circle')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'ready'))
-                ->badge(fn () => \App\Models\Order::where('status', 'ready')->count() ?: null)
+                ->badge(fn () => Order::where('status', 'ready')->count() ?: null)
                 ->badgeColor('success'),
 
             'delivered' => Tab::make('Delivered')

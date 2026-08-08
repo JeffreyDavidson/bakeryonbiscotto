@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Order;
+use App\Models\Setting;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -13,14 +14,12 @@ class PaymentReminderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public Order $order)
-    {
-    }
+    public function __construct(public Order $order) {}
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Payment Reminder - " . \App\Models\Setting::get('business_name', 'Bakery on Biscotto') . " Order {$this->order->order_number}",
+            subject: 'Payment Reminder - '.Setting::get('business_name', 'Bakery on Biscotto')." Order {$this->order->order_number}",
         );
     }
 

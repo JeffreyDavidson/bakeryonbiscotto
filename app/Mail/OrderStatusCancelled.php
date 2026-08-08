@@ -20,7 +20,7 @@ class OrderStatusCancelled extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Your Order Has Been Cancelled — ' . $this->order->order_number,
+            subject: 'Your Order Has Been Cancelled — '.$this->order->order_number,
         );
     }
 

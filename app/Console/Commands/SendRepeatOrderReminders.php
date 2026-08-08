@@ -19,6 +19,7 @@ class SendRepeatOrderReminders extends Command
     {
         if (Setting::get('send_repeat_reminders', '0') !== '1') {
             $this->info('Repeat order reminders are disabled.');
+
             return self::SUCCESS;
         }
 
