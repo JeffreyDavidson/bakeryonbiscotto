@@ -12,7 +12,7 @@ return new class extends Migration
             $table->boolean('is_bundle')->default(false)->after('is_featured');
             $table->unsignedInteger('bundle_pick_count')->nullable()->after('is_bundle');
             $table->foreignId('bundle_category_id')->nullable()->after('bundle_pick_count')
-                  ->constrained('categories')->nullOnDelete();
+                ->constrained('categories')->nullOnDelete();
         });
 
         Schema::table('order_items', function (Blueprint $table) {

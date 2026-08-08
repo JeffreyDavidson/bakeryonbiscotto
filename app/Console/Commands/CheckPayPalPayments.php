@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 class CheckPayPalPayments extends Command
 {
     protected $signature = 'payments:check-paypal';
+
     protected $description = 'Check PayPal invoice statuses and update orders';
 
     public function handle(PayPalService $paypalService): int
@@ -60,6 +61,7 @@ class CheckPayPalPayments extends Command
         }
 
         $this->info('Done.');
+
         return self::SUCCESS;
     }
 }

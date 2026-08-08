@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Models\Expense;
 use App\Models\Income;
 use App\Models\Order;
+use App\Models\Setting;
 use BackedEnum;
 use Filament\Pages\Page;
 use Illuminate\Support\Carbon;
@@ -136,7 +137,7 @@ class FinanceSummary extends Page
 
     public function getRevCapProperty(): array
     {
-        $cap = (int) \App\Models\Setting::get('revenue_cap', 250000);
+        $cap = (int) Setting::get('revenue_cap', 250000);
         $totalRevenue = $this->yearTotals['total_income'];
         $percentage = min(($totalRevenue / $cap) * 100, 100);
         $remaining = max($cap - $totalRevenue, 0);

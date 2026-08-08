@@ -7,9 +7,14 @@ use App\Mail\OrderConfirmation;
 use App\Models\CapacityLimit;
 use App\Models\Category;
 use App\Models\Coupon;
+use App\Models\CustomerProfile;
+use App\Models\Holiday;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Setting;
+use App\Models\WaitlistEntry;
 use App\Services\PayPalService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -120,7 +125,7 @@ class OrderController extends Controller
         ]]);
 
         try {
-            $result = $paypal->createOrder($calculated['total'], \App\Models\Setting::get('business_name', 'Bakery on Biscotto').' Order');
+            $result = $paypal->createOrder($calculated['total'], Setting::get('business_name', 'Bakery on Biscotto').' Order');
 
             if (empty($result['id'])) {
                 \Log::error('PayPal createOrder - no ID returned', ['result' => $result]);
@@ -224,7 +229,7 @@ class OrderController extends Controller
             if ($birthday) {
                 $profileData['birthday'] = $birthday;
             }
-            \App\Models\CustomerProfile::updateOrCreate(
+            CustomerProfile::updateOrCreate(
                 ['email' => $validated['customer_email']],
                 $profileData
             );
@@ -251,7 +256,7 @@ class OrderController extends Controller
     public function checkCapacity(string $date)
     {
         try {
-            $carbon = \Carbon\Carbon::parse($date);
+            $carbon = Carbon::parse($date);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Invalid date'], 422);
         }
@@ -260,7 +265,7 @@ class OrderController extends Controller
         $remaining = CapacityLimit::remainingSlots($carbon);
         $limit = CapacityLimit::forDate($carbon);
 
-        $holiday = \App\Models\Holiday::nearDate($carbon, 2);
+        $holiday = Holiday::nearDate($carbon, 2);
 
         return response()->json([
             'available' => $available,
@@ -373,7 +378,7 @@ class OrderController extends Controller
             'requested_date' => 'required|date|after_or_equal:today',
         ]);
 
-        \App\Models\WaitlistEntry::create(array_merge($validated, [
+        WaitlistEntry::create(array_merge($validated, [
             'status' => 'waiting',
         ]));
 

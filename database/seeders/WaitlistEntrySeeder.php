@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\WaitlistEntry;
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class WaitlistEntrySeeder extends Seeder

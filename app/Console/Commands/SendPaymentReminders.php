@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 class SendPaymentReminders extends Command
 {
     protected $signature = 'payments:send-reminders';
+
     protected $description = 'Send payment reminder emails for orders due tomorrow';
 
     public function handle(): int
@@ -38,6 +39,7 @@ class SendPaymentReminders extends Command
         }
 
         $this->info('Done.');
+
         return self::SUCCESS;
     }
 }

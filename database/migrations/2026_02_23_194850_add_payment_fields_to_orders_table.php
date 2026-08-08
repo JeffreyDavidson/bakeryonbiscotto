@@ -19,7 +19,7 @@ return new class extends Migration
         // Update existing orders: change payment_status default behavior
         // SQLite doesn't support ALTER COLUMN for enum changes, but since we use string type it just works
         // Set existing 'pending' payment_status rows to 'paid' (storefront orders were paid via PayPal checkout)
-        \DB::table('orders')->where('payment_status', 'pending')->update(['payment_status' => 'paid']);
+        DB::table('orders')->where('payment_status', 'pending')->update(['payment_status' => 'paid']);
 
         // Drop stripe columns - SQLite needs separate calls
         Schema::table('orders', function (Blueprint $table) {

@@ -8,7 +8,12 @@ use BackedEnum;
 use Carbon\Carbon;
 use Filament\Actions;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -34,46 +39,46 @@ class HolidayResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->columns(1)->components([
-            \Filament\Schemas\Components\Section::make('Holiday Details')
+            Section::make('Holiday Details')
                 ->icon('heroicon-o-calendar-days')
                 ->description('Plan for upcoming holiday orders')
                 ->columns(2)
                 ->columnSpanFull()
                 ->components([
-                    \Filament\Forms\Components\TextInput::make('name')
+                    TextInput::make('name')
                         ->label('Holiday Name')
                         ->required()
                         ->maxLength(255)
                         ->placeholder('e.g. Thanksgiving, Valentine\'s Day'),
 
-                    \Filament\Forms\Components\DatePicker::make('date')
+                    DatePicker::make('date')
                         ->label('Holiday Date')
                         ->required()
                         ->native(false),
 
-                    \Filament\Forms\Components\DatePicker::make('order_deadline')
+                    DatePicker::make('order_deadline')
                         ->label('Order Deadline')
                         ->required()
                         ->native(false)
                         ->helperText('Last day customers can place orders'),
 
-                    \Filament\Forms\Components\DatePicker::make('prep_start')
+                    DatePicker::make('prep_start')
                         ->label('Prep Start Date')
                         ->native(false)
                         ->helperText('When to begin prepping for this holiday'),
 
-                    \Filament\Forms\Components\TextInput::make('max_orders')
+                    TextInput::make('max_orders')
                         ->label('Max Orders')
                         ->numeric()
                         ->minValue(1)
                         ->prefixIcon('heroicon-o-shopping-bag')
                         ->helperText('Leave blank for no limit'),
 
-                    \Filament\Forms\Components\Toggle::make('is_active')
+                    Toggle::make('is_active')
                         ->label('Active')
                         ->default(true),
 
-                    \Filament\Forms\Components\Textarea::make('notes')
+                    Textarea::make('notes')
                         ->label('Notes')
                         ->rows(3)
                         ->maxLength(1000)
@@ -111,6 +116,7 @@ class HolidayResource extends Resource
                     ->label('Orders')
                     ->getStateUsing(function (Holiday $record) {
                         $count = $record->orderCount();
+
                         return $record->max_orders
                             ? "{$count} / {$record->max_orders}"
                             : (string) $count;
@@ -120,10 +126,17 @@ class HolidayResource extends Resource
                     ->label('Status')
                     ->badge()
                     ->getStateUsing(function (Holiday $record) {
-                        if ($record->date->isPast()) return 'Past';
-                        if ($record->isDeadlinePassed()) return 'Deadline passed';
+                        if ($record->date->isPast()) {
+                            return 'Past';
+                        }
+                        if ($record->isDeadlinePassed()) {
+                            return 'Deadline passed';
+                        }
                         $days = $record->daysUntilDeadline();
-                        if ($days <= 3) return 'Urgent';
+                        if ($days <= 3) {
+                            return 'Urgent';
+                        }
+
                         return 'Open';
                     })
                     ->color(fn (string $state) => match ($state) {
@@ -137,8 +150,11 @@ class HolidayResource extends Resource
                 Tables\Columns\TextColumn::make('days_until')
                     ->label('Days Until')
                     ->getStateUsing(function (Holiday $record) {
-                        if ($record->date->isPast()) return 'Passed';
+                        if ($record->date->isPast()) {
+                            return 'Passed';
+                        }
                         $days = (int) Carbon::today()->diffInDays($record->date, false);
+
                         return "{$days}d";
                     }),
 

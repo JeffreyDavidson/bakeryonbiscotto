@@ -29,7 +29,7 @@ class RepeatOrderReminder extends Mailable
         return new Content(
             markdown: 'mail.repeat-order-reminder',
             with: [
-                'reorderUrl' => url('/order?reorder=' . $this->order->id),
+                'reorderUrl' => url('/order?reorder='.$this->order->id),
             ],
         );
     }

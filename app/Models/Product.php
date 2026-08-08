@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -48,7 +49,7 @@ class Product extends Model
         return $this->belongsTo(Category::class, 'bundle_category_id');
     }
 
-    public function recipe(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function recipe(): HasOne
     {
         return $this->hasOne(Recipe::class);
     }
@@ -75,7 +76,7 @@ class Product extends Model
 
     public function getIsInSeasonAttribute(): bool
     {
-        if (!$this->is_seasonal) {
+        if (! $this->is_seasonal) {
             return true; // year-round products are always in season
         }
 
@@ -98,13 +99,15 @@ class Product extends Model
 
     public function getImageUrlAttribute(): ?string
     {
-        if (!$this->image) return null;
+        if (! $this->image) {
+            return null;
+        }
 
         // Support both storage uploads and direct public paths
         if (str_starts_with($this->image, 'images/') || str_starts_with($this->image, '/images/')) {
             return asset(ltrim($this->image, '/'));
         }
 
-        return asset('storage/' . $this->image);
+        return asset('storage/'.$this->image);
     }
 }

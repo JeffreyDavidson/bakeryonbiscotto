@@ -26,10 +26,15 @@ class PriceSuggestion extends Page
     }
 
     public float $ingredientCost = 0;
+
     public float $laborMinutes = 0;
+
     public float $hourlyRate = 25;
+
     public float $packagingCost = 0;
+
     public float $margin = 50;
+
     public float $servings = 1;
 
     public function setMargin(float $value): void

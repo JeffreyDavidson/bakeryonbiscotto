@@ -83,6 +83,7 @@ class BakingSheet extends Page
     public function getStatsProperty(): object
     {
         $orders = $this->orders;
+
         return (object) [
             'total_orders' => $orders->count(),
             'total_items' => $orders->sum(fn ($o) => $o->items->sum('quantity')),
@@ -100,7 +101,10 @@ class BakingSheet extends Page
     public function getTimelineProperty(): Collection
     {
         return $this->orders->groupBy(function ($order) {
-            if (!$order->requested_time) return 'No Time Set';
+            if (! $order->requested_time) {
+                return 'No Time Set';
+            }
+
             return $order->requested_time;
         })->sortKeys();
     }

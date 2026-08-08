@@ -7,7 +7,14 @@ use App\Models\CapacityLimit;
 use BackedEnum;
 use Filament\Actions;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -33,13 +40,13 @@ class CapacityLimitResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->columns(1)->components([
-            \Filament\Schemas\Components\Section::make('Capacity Limit')
+            Section::make('Capacity Limit')
                 ->icon('heroicon-o-clock')
                 ->description('Set order limits for a specific day or recurring weekday')
                 ->columns(2)
                 ->columnSpanFull()
                 ->components([
-                    \Filament\Forms\Components\Select::make('day_type')
+                    Select::make('day_type')
                         ->label('Day')
                         ->options([
                             '0' => 'Monday',
@@ -54,7 +61,9 @@ class CapacityLimitResource extends Resource
                         ->required()
                         ->live()
                         ->afterStateHydrated(function ($component, $record) {
-                            if (!$record) return;
+                            if (! $record) {
+                                return;
+                            }
                             if ($record->specific_date) {
                                 $component->state('specific');
                             } else {
@@ -71,15 +80,15 @@ class CapacityLimitResource extends Resource
                             }
                         }),
 
-                    \Filament\Forms\Components\DatePicker::make('specific_date')
+                    DatePicker::make('specific_date')
                         ->label('Date')
                         ->visible(fn ($get) => $get('day_type') === 'specific')
                         ->required(fn ($get) => $get('day_type') === 'specific')
                         ->native(false),
 
-                    \Filament\Forms\Components\Hidden::make('day_of_week'),
+                    Hidden::make('day_of_week'),
 
-                    \Filament\Forms\Components\TextInput::make('max_orders')
+                    TextInput::make('max_orders')
                         ->label('Max Orders')
                         ->numeric()
                         ->default(0)
@@ -87,11 +96,11 @@ class CapacityLimitResource extends Resource
                         ->prefixIcon('heroicon-o-shopping-bag')
                         ->helperText('0 = unlimited (unless blocked)'),
 
-                    \Filament\Forms\Components\Toggle::make('is_blocked')
+                    Toggle::make('is_blocked')
                         ->label('Block Day Entirely')
                         ->helperText('No orders allowed at all on this day'),
 
-                    \Filament\Forms\Components\Textarea::make('notes')
+                    Textarea::make('notes')
                         ->rows(2)
                         ->maxLength(500)
                         ->placeholder('Optional notes (e.g. "Holiday closure")')
@@ -112,11 +121,12 @@ class CapacityLimitResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('day_label')
                     ->label('Day / Date')
-                    ->sortable(query: fn ($query, $direction) => $query->orderByRaw('COALESCE(specific_date, day_of_week) ' . $direction))
+                    ->sortable(query: fn ($query, $direction) => $query->orderByRaw('COALESCE(specific_date, day_of_week) '.$direction))
                     ->getStateUsing(function (CapacityLimit $record) use ($dayNames) {
                         if ($record->specific_date) {
                             return $record->specific_date->format('D, M j, Y');
                         }
+
                         return $dayNames[$record->day_of_week] ?? '—';
                     }),
 

@@ -5,11 +5,22 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ExpenseResource\Pages;
 use App\Models\Expense;
 use BackedEnum;
+use Carbon\Carbon;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\HtmlString;
 
 class ExpenseResource extends Resource
 {
@@ -32,47 +43,47 @@ class ExpenseResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->columns(1)->components([
-            \Filament\Schemas\Components\Section::make('Expense Details')
+            Section::make('Expense Details')
                 ->icon('heroicon-o-banknotes')
                 ->description('What was purchased and how much')
                 ->columns(2)
                 ->columnSpanFull()
                 ->components([
-                    \Filament\Forms\Components\TextInput::make('description')
+                    TextInput::make('description')
                         ->required()
                         ->maxLength(255)
                         ->placeholder('e.g. Flour, sugar, butter from Publix')
                         ->prefixIcon('heroicon-o-document-text')
                         ->columnSpanFull(),
-                    \Filament\Forms\Components\Select::make('category')
+                    Select::make('category')
                         ->options(Expense::CATEGORIES)
                         ->required()
                         ->searchable()
                         ->prefixIcon('heroicon-o-folder')
                         ->helperText('Maps to IRS Schedule C categories'),
-                    \Filament\Forms\Components\TextInput::make('vendor')
+                    TextInput::make('vendor')
                         ->maxLength(255)
                         ->placeholder('e.g. Publix, Amazon, Costco')
                         ->prefixIcon('heroicon-o-building-storefront'),
-                    \Filament\Forms\Components\TextInput::make('amount')
+                    TextInput::make('amount')
                         ->required()
                         ->numeric()
                         ->prefix('$')
                         ->step('0.01')
                         ->placeholder('0.00'),
-                    \Filament\Forms\Components\DatePicker::make('date')
+                    DatePicker::make('date')
                         ->required()
                         ->default(now())
                         ->prefixIcon('heroicon-o-calendar'),
                 ]),
 
-            \Filament\Schemas\Components\Section::make('Business Use & Tax')
+            Section::make('Business Use & Tax')
                 ->icon('heroicon-o-calculator')
                 ->description('Deduction details for shared purchases')
                 ->columns(2)
                 ->columnSpanFull()
                 ->components([
-                    \Filament\Forms\Components\TextInput::make('business_percentage')
+                    TextInput::make('business_percentage')
                         ->label('Business Use %')
                         ->numeric()
                         ->default(100)
@@ -81,17 +92,18 @@ class ExpenseResource extends Resource
                         ->suffix('%')
                         ->prefixIcon('heroicon-o-chart-pie')
                         ->helperText('100% = fully business. Lower for shared purchases (e.g. groceries).'),
-                    \Filament\Forms\Components\Placeholder::make('deductible_preview')
+                    Placeholder::make('deductible_preview')
                         ->label('Deductible Amount')
                         ->content(function ($get) {
                             $amount = (float) ($get('amount') ?? 0);
                             $pct = (float) ($get('business_percentage') ?? 100);
                             $deductible = $amount * ($pct / 100);
-                            return new \Illuminate\Support\HtmlString(
-                                '<div style="padding:0.5rem 0.75rem;background:#fdf8f2;border:1px solid #e8d0b0;border-radius:8px;color:#3d2314;font-weight:600;">$' . number_format($deductible, 2) . '</div>'
+
+                            return new HtmlString(
+                                '<div style="padding:0.5rem 0.75rem;background:#fdf8f2;border:1px solid #e8d0b0;border-radius:8px;color:#3d2314;font-weight:600;">$'.number_format($deductible, 2).'</div>'
                             );
                         }),
-                    \Filament\Forms\Components\FileUpload::make('receipt')
+                    FileUpload::make('receipt')
                         ->image()
                         ->disk('public')
                         ->directory('receipts')
@@ -100,17 +112,17 @@ class ExpenseResource extends Resource
                         ->columnSpanFull(),
                 ]),
 
-            \Filament\Schemas\Components\Section::make('Recurring & Notes')
+            Section::make('Recurring & Notes')
                 ->icon('heroicon-o-arrow-path')
                 ->description('Set up recurring tracking')
                 ->columns(2)
                 ->columnSpanFull()
                 ->components([
-                    \Filament\Forms\Components\Toggle::make('is_recurring')
+                    Toggle::make('is_recurring')
                         ->label('Recurring expense')
                         ->helperText('Track this as a regular expense')
                         ->live(),
-                    \Filament\Forms\Components\Select::make('recurring_frequency')
+                    Select::make('recurring_frequency')
                         ->options([
                             'weekly' => '📅 Weekly',
                             'monthly' => '🗓️ Monthly',
@@ -120,7 +132,7 @@ class ExpenseResource extends Resource
                         ->visible(fn ($get) => $get('is_recurring'))
                         ->prefixIcon('heroicon-o-arrow-path')
                         ->placeholder('How often?'),
-                    \Filament\Forms\Components\Textarea::make('notes')
+                    Textarea::make('notes')
                         ->rows(3)
                         ->placeholder('Any additional notes about this expense...')
                         ->columnSpanFull(),
@@ -131,7 +143,7 @@ class ExpenseResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->heading("Expenses")
+            ->heading('Expenses')
             ->columns([
                 Tables\Columns\TextColumn::make('date')
                     ->date('M j, Y')
@@ -160,7 +172,7 @@ class ExpenseResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('business_percentage')
                     ->label('Biz %')
-                    ->formatStateUsing(fn ($state) => $state . '%')
+                    ->formatStateUsing(fn ($state) => $state.'%')
                     ->color(fn ($state) => $state < 100 ? 'warning' : 'gray')
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('deductible_amount')
@@ -179,7 +191,7 @@ class ExpenseResource extends Resource
                 Tables\Columns\IconColumn::make('receipt')
                     ->label('Receipt')
                     ->boolean()
-                    ->getStateUsing(fn ($record) => !empty($record->receipt))
+                    ->getStateUsing(fn ($record) => ! empty($record->receipt))
                     ->trueIcon('heroicon-o-camera')
                     ->trueColor('success')
                     ->falseIcon('')
@@ -192,18 +204,23 @@ class ExpenseResource extends Resource
                     ->multiple(),
                 Tables\Filters\Filter::make('date_range')
                     ->form([
-                        \Filament\Forms\Components\DatePicker::make('from')->label('From'),
-                        \Filament\Forms\Components\DatePicker::make('until')->label('Until'),
+                        DatePicker::make('from')->label('From'),
+                        DatePicker::make('until')->label('Until'),
                     ])
-                    ->query(function (\Illuminate\Database\Eloquent\Builder $query, array $data): \Illuminate\Database\Eloquent\Builder {
+                    ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when($data['from'] ?? null, fn ($q, $date) => $q->whereDate('date', '>=', $date))
                             ->when($data['until'] ?? null, fn ($q, $date) => $q->whereDate('date', '<=', $date));
                     })
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
-                        if ($data['from'] ?? null) $indicators[] = 'From ' . \Carbon\Carbon::parse($data['from'])->format('M j, Y');
-                        if ($data['until'] ?? null) $indicators[] = 'Until ' . \Carbon\Carbon::parse($data['until'])->format('M j, Y');
+                        if ($data['from'] ?? null) {
+                            $indicators[] = 'From '.Carbon::parse($data['from'])->format('M j, Y');
+                        }
+                        if ($data['until'] ?? null) {
+                            $indicators[] = 'Until '.Carbon::parse($data['until'])->format('M j, Y');
+                        }
+
                         return $indicators;
                     }),
                 Tables\Filters\TernaryFilter::make('is_recurring')

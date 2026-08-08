@@ -6,20 +6,24 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
+use App\Models\Category;
+use App\Models\GalleryPhoto;
+use App\Models\Order;
+use App\Models\Review;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function() {
-    $featuredReview = \App\Models\Review::approved()->where('is_featured', true)->first();
-    $approvedReviews = \App\Models\Review::approved()
-        ->when($featuredReview, fn($q) => $q->where('id', '!=', $featuredReview->id))
+Route::get('/', function () {
+    $featuredReview = Review::approved()->where('is_featured', true)->first();
+    $approvedReviews = Review::approved()
+        ->when($featuredReview, fn ($q) => $q->where('id', '!=', $featuredReview->id))
         ->inRandomOrder()
         ->take(4)
         ->get();
-    if (!$featuredReview && $approvedReviews->count()) {
+    if (! $featuredReview && $approvedReviews->count()) {
         $featuredReview = $approvedReviews->shift();
     }
 
-    $categories = \App\Models\Category::with(['products' => function($q) {
+    $categories = Category::with(['products' => function ($q) {
         $q->where('is_available', true)->orderBy('sort_order');
     }])->orderBy('sort_order')->get();
 
@@ -39,43 +43,47 @@ Route::get('/order/reorder/{order}', [OrderController::class, 'reorderData'])->n
 Route::get('/order/confirmation/{orderNumber}', [OrderController::class, 'confirmation'])->name('order.confirmation');
 Route::get('/order/capacity/{date}', [OrderController::class, 'checkCapacity'])->name('order.capacity');
 Route::post('/order/waitlist', [OrderController::class, 'joinWaitlist'])->name('order.waitlist');
-Route::get('/about', fn() => view('about'));
-Route::get('/review', fn() => view('review'));
+Route::get('/about', fn () => view('about'));
+Route::get('/review', fn () => view('review'));
 Route::get('/gallery', function () {
-    $photos = \App\Models\GalleryPhoto::visible()->ordered()->get();
+    $photos = GalleryPhoto::visible()->ordered()->get();
     $categories = $photos->pluck('category')->filter()->unique()->values();
+
     return view('gallery', compact('photos', 'categories'));
 });
-Route::get('/faq', fn() => view('faq'));
-Route::get('/menu', function() {
-    $categories = \App\Models\Category::with(['products' => function($q) {
+Route::get('/faq', fn () => view('faq'));
+Route::get('/menu', function () {
+    $categories = Category::with(['products' => function ($q) {
         $q->where('is_available', true)->orderBy('sort_order');
     }])->orderBy('sort_order')->get();
+
     return view('menu', compact('categories'));
 });
-Route::get('/menu-concepts', fn() => view('menu-concepts'));
+Route::get('/menu-concepts', fn () => view('menu-concepts'));
 
 // SEO
 Route::get('/sitemap.xml', function () {
     $xml = '<?xml version="1.0" encoding="UTF-8"?>';
     $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     foreach (['/' => '1.0', '/menu' => '0.9', '/order' => '0.9', '/about' => '0.8', '/gallery' => '0.7', '/review' => '0.7', '/faq' => '0.6', '/contact' => '0.6'] as $path => $priority) {
-        $xml .= '<url><loc>' . url($path) . '</loc><changefreq>weekly</changefreq><priority>' . $priority . '</priority></url>';
+        $xml .= '<url><loc>'.url($path).'</loc><changefreq>weekly</changefreq><priority>'.$priority.'</priority></url>';
     }
     $xml .= '</urlset>';
+
     return response($xml, 200, ['Content-Type' => 'application/xml']);
 });
-Route::get('/gallery-concepts', fn() => view('gallery-concepts'));
-Route::get('/gallery-concepts-2', fn() => view('gallery-concepts-2'));
-Route::get('/gallery-concepts-3', fn() => view('gallery-concepts-3'));
-Route::get('/gallery-concepts-4', fn() => view('gallery-concepts-4'));
-Route::get('/gallery-concepts-5', fn() => view('gallery-concepts-5'));
-Route::get('/gallery-finals', fn() => view('gallery-finals'));
-Route::get('/upgrades', fn() => view('upgrades'));
-Route::get('/wow', fn() => view('wow'));
+Route::get('/gallery-concepts', fn () => view('gallery-concepts'));
+Route::get('/gallery-concepts-2', fn () => view('gallery-concepts-2'));
+Route::get('/gallery-concepts-3', fn () => view('gallery-concepts-3'));
+Route::get('/gallery-concepts-4', fn () => view('gallery-concepts-4'));
+Route::get('/gallery-concepts-5', fn () => view('gallery-concepts-5'));
+Route::get('/gallery-finals', fn () => view('gallery-finals'));
+Route::get('/upgrades', fn () => view('upgrades'));
+Route::get('/wow', fn () => view('wow'));
 
 // Admin invoice route
-Route::get('/admin/orders/{order}/invoice', function (\App\Models\Order $order) {
+Route::get('/admin/orders/{order}/invoice', function (Order $order) {
     $order->load('items');
+
     return view('filament.pages.order-invoice', compact('order'));
-})->middleware(['web', 'auth'])->name('admin.orders.invoice');
+})->middleware(['web', 'auth', 'can:access-admin-panel'])->name('admin.orders.invoice');

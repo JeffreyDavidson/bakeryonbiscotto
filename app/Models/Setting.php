@@ -27,6 +27,7 @@ class Setting extends Model
         $message = strtolower($exception->getMessage());
 
         return str_contains($message, 'no such table: settings')
+            || (str_contains($message, 'database file at path') && str_contains($message, 'does not exist'))
             || (str_contains($message, 'base table or view not found') && str_contains($message, 'settings'))
             || (str_contains($message, 'undefined table') && str_contains($message, 'settings'))
             || str_contains($message, 'relation "settings" does not exist');
