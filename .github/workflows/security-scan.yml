@@ -1,0 +1,57 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    - cron: '0 9 * * 1'
+
+concurrency:
+  group: security-scan-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ward:
+    name: Ward Security Scan
+    runs-on: ubuntu-latest
+
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Go
+        uses: actions/setup-go@v7
+        with:
+          go-version: stable
+          cache: false
+
+      - name: Install Ward
+        run: go install github.com/eljakani/ward@latest
+
+      - name: Generate base-branch baseline
+        if: github.event_name == 'pull_request'
+        run: |
+          git checkout ${{ github.event.pull_request.base.sha }}
+          ward init
+          ward scan . --update-baseline "$RUNNER_TEMP/ward-baseline.json" || true
+          git checkout ${{ github.sha }}
+
+      - name: Initialize Ward
+        run: ward init
+
+      - name: Run security scan for pull request
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: ward scan . --fail-on high --baseline "$RUNNER_TEMP/ward-baseline.json"
+
+      - name: Run security scan for push or schedule
+        if: github.event_name != 'pull_request'
+        run: ward scan . --fail-on critical
