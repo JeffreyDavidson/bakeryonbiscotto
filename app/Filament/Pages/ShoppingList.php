@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Recipe;
 use BackedEnum;
 use Filament\Pages\Page;
@@ -66,6 +65,7 @@ class ShoppingList extends Page
     public function getStatsProperty(): object
     {
         $orders = $this->orders;
+
         return (object) [
             'total_orders' => $orders->count(),
             'total_items' => $orders->sum(fn ($o) => $o->items->sum('quantity')),
@@ -118,7 +118,7 @@ class ShoppingList extends Page
 
             if ($recipe && $recipe->ingredients->isNotEmpty()) {
                 foreach ($recipe->ingredients as $ingredient) {
-                    $key = strtolower($ingredient->name) . '|' . strtolower($ingredient->unit ?? '');
+                    $key = strtolower($ingredient->name).'|'.strtolower($ingredient->unit ?? '');
                     $scaledQty = (float) $ingredient->quantity * $pq->quantity;
 
                     if ($ingredients->has($key)) {
@@ -159,7 +159,7 @@ class ShoppingList extends Page
     public function getClipboardTextProperty(): string
     {
         $lines = [];
-        $lines[] = 'Shopping List: ' . Carbon::parse($this->startDate)->format('M j') . ' - ' . Carbon::parse($this->endDate)->format('M j, Y');
+        $lines[] = 'Shopping List: '.Carbon::parse($this->startDate)->format('M j').' - '.Carbon::parse($this->endDate)->format('M j, Y');
         $lines[] = str_repeat('-', 40);
 
         foreach ($this->shoppingList as $group => $items) {
@@ -185,10 +185,10 @@ class ShoppingList extends Page
         $end = Carbon::parse($this->endDate);
 
         if ($start->month === $end->month && $start->year === $end->year) {
-            return $start->format('M j') . ' – ' . $end->format('j, Y');
+            return $start->format('M j').' – '.$end->format('j, Y');
         }
 
-        return $start->format('M j') . ' – ' . $end->format('M j, Y');
+        return $start->format('M j').' – '.$end->format('M j, Y');
     }
 
     public function setThisWeek(): void

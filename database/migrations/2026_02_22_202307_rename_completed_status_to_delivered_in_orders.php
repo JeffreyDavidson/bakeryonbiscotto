@@ -36,7 +36,7 @@ return new class extends Migration
                 ? "CASE WHEN status = 'completed' THEN 'delivered' ELSE status END AS status"
                 : $col, $columns);
 
-            DB::statement("INSERT INTO orders ({$columnList}) SELECT " . implode(', ', $selectColumns) . " FROM orders_backup");
+            DB::statement("INSERT INTO orders ({$columnList}) SELECT ".implode(', ', $selectColumns).' FROM orders_backup');
             DB::statement('DROP TABLE orders_backup');
             DB::statement('PRAGMA foreign_keys=ON');
         } else {

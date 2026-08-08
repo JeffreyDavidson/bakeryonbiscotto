@@ -6,13 +6,17 @@ use App\Filament\Resources\WaitlistEntryResource\Pages;
 use App\Mail\WaitlistSpotAvailable;
 use App\Models\WaitlistEntry;
 use BackedEnum;
+use Carbon\Carbon;
 use Filament\Actions;
+use Filament\Forms\Components\DatePicker;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
 
 class WaitlistEntryResource extends Resource
@@ -38,6 +42,7 @@ class WaitlistEntryResource extends Resource
         $count = WaitlistEntry::waiting()
             ->where('requested_date', '>=', now()->toDateString())
             ->count();
+
         return $count > 0 ? (string) $count : null;
     }
 
@@ -92,20 +97,25 @@ class WaitlistEntryResource extends Resource
                         'converted' => 'Converted',
                         'expired' => 'Expired',
                     ]),
-                \Filament\Tables\Filters\Filter::make('date_range')
+                Filter::make('date_range')
                     ->form([
-                        \Filament\Forms\Components\DatePicker::make('from')->label('From'),
-                        \Filament\Forms\Components\DatePicker::make('until')->label('Until'),
+                        DatePicker::make('from')->label('From'),
+                        DatePicker::make('until')->label('Until'),
                     ])
-                    ->query(function (\Illuminate\Database\Eloquent\Builder $query, array $data): \Illuminate\Database\Eloquent\Builder {
+                    ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when($data['from'] ?? null, fn ($q, $date) => $q->whereDate('requested_date', '>=', $date))
                             ->when($data['until'] ?? null, fn ($q, $date) => $q->whereDate('requested_date', '<=', $date));
                     })
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
-                        if ($data['from'] ?? null) $indicators[] = 'From ' . \Carbon\Carbon::parse($data['from'])->format('M j, Y');
-                        if ($data['until'] ?? null) $indicators[] = 'Until ' . \Carbon\Carbon::parse($data['until'])->format('M j, Y');
+                        if ($data['from'] ?? null) {
+                            $indicators[] = 'From '.Carbon::parse($data['from'])->format('M j, Y');
+                        }
+                        if ($data['until'] ?? null) {
+                            $indicators[] = 'Until '.Carbon::parse($data['until'])->format('M j, Y');
+                        }
+
                         return $indicators;
                     }),
             ])
@@ -145,7 +155,7 @@ class WaitlistEntryResource extends Resource
                     ->requiresConfirmation()
                     ->action(fn (WaitlistEntry $record) => $record->delete()),
             ])
-            ->emptyStateHeading("No one on the waitlist — capacity is looking good!")
+            ->emptyStateHeading('No one on the waitlist — capacity is looking good!')
             ->emptyStateIcon('heroicon-o-queue-list');
     }
 

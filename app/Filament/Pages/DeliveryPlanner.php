@@ -5,7 +5,6 @@ namespace App\Filament\Pages;
 use App\Models\Order;
 use BackedEnum;
 use Filament\Pages\Page;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Url;
 
@@ -56,7 +55,7 @@ class DeliveryPlanner extends Page
     {
         $origin = '28.31716,-81.65249';
         $addresses = $this->deliveries
-            ->filter(fn ($o) => !empty($o->delivery_address))
+            ->filter(fn ($o) => ! empty($o->delivery_address))
             ->pluck('delivery_address')
             ->map(fn ($a) => urlencode($a))
             ->toArray();
@@ -74,7 +73,7 @@ class DeliveryPlanner extends Page
     {
         $origin = '28.31716,-81.65249';
 
-        return "https://www.google.com/maps/dir/{$origin}/" . urlencode($address);
+        return "https://www.google.com/maps/dir/{$origin}/".urlencode($address);
     }
 
     public function getBreadcrumbs(): array

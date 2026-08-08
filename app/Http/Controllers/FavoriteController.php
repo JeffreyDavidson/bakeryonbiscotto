@@ -21,6 +21,7 @@ class FavoriteController extends Controller
 
         if ($existing) {
             $existing->delete();
+
             return response()->json(['favorited' => false]);
         }
 

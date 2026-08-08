@@ -5,14 +5,21 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\GalleryPhotoResource\Pages;
 use App\Models\GalleryPhoto;
 use BackedEnum;
+use Filament\Actions\BulkAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\Action;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 
 class GalleryPhotoResource extends Resource
 {
@@ -35,13 +42,13 @@ class GalleryPhotoResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->columns(1)->components([
-            \Filament\Schemas\Components\Section::make('Photo Details')
+            Section::make('Photo Details')
                 ->icon('heroicon-o-photo')
                 ->description('Upload and configure gallery photo')
                 ->columns(2)
                 ->columnSpanFull()
                 ->components([
-                    \Filament\Forms\Components\FileUpload::make('image_path')
+                    FileUpload::make('image_path')
                         ->label('Image')
                         ->image()
                         ->directory('gallery')
@@ -50,10 +57,10 @@ class GalleryPhotoResource extends Resource
                         ->columnSpanFull()
                         ->imageResizeMode('cover')
                         ->imageCropAspectRatio(null),
-                    \Filament\Forms\Components\TextInput::make('title')
+                    TextInput::make('title')
                         ->maxLength(255)
                         ->placeholder('Photo title (optional)'),
-                    \Filament\Forms\Components\Select::make('category')
+                    Select::make('category')
                         ->options([
                             'products' => 'Products',
                             'kitchen' => 'Kitchen',
@@ -61,16 +68,16 @@ class GalleryPhotoResource extends Resource
                             'custom' => 'Custom',
                         ])
                         ->placeholder('Select category'),
-                    \Filament\Forms\Components\Textarea::make('description')
+                    Textarea::make('description')
                         ->maxLength(500)
                         ->rows(3)
                         ->placeholder('Optional description')
                         ->columnSpanFull(),
-                    \Filament\Forms\Components\TextInput::make('sort_order')
+                    TextInput::make('sort_order')
                         ->numeric()
                         ->default(0)
                         ->prefixIcon('heroicon-o-arrows-up-down'),
-                    \Filament\Forms\Components\Toggle::make('is_visible')
+                    Toggle::make('is_visible')
                         ->label('Visible')
                         ->default(true),
                 ]),
@@ -132,12 +139,12 @@ class GalleryPhotoResource extends Resource
             ])
             ->bulkActions([
                 DeleteBulkAction::make(),
-                \Filament\Actions\BulkAction::make('toggle_visibility')
+                BulkAction::make('toggle_visibility')
                     ->label('Toggle Visibility')
                     ->icon('heroicon-o-eye')
                     ->requiresConfirmation()
-                    ->action(function (\Illuminate\Database\Eloquent\Collection $records) {
-                        $records->each(fn (GalleryPhoto $record) => $record->update(['is_visible' => !$record->is_visible]));
+                    ->action(function (Collection $records) {
+                        $records->each(fn (GalleryPhoto $record) => $record->update(['is_visible' => ! $record->is_visible]));
                     }),
             ])
             ->emptyStateHeading('No gallery photos yet')

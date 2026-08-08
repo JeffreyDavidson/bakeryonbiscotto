@@ -30,14 +30,20 @@ class InstagramCaptions extends Page
 
     // Form state
     public ?int $product_id = null;
+
     public string $caption_style = 'casual';
+
     public string $tone = 'fun';
+
     public bool $include_hashtags = true;
+
     public string $custom_note = '';
+
     public string $call_to_action = 'order_now';
 
     // Results
     public array $captions = [];
+
     public bool $generated = false;
 
     public function getProductsProperty(): Collection
@@ -47,17 +53,17 @@ class InstagramCaptions extends Page
 
     public function generate(): void
     {
-        if (!$this->product_id) {
+        if (! $this->product_id) {
             return;
         }
 
         $product = Product::with('category')->find($this->product_id);
 
-        if (!$product) {
+        if (! $product) {
             return;
         }
 
-        $generator = new CaptionGenerator();
+        $generator = new CaptionGenerator;
 
         $this->captions = $generator->generate(
             product: $product,

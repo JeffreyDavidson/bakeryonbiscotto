@@ -18,7 +18,7 @@ class NewReviewSubmitted extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '⭐ New Review from ' . $this->review->name,
+            subject: '⭐ New Review from '.$this->review->name,
         );
     }
 

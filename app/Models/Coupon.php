@@ -64,10 +64,19 @@ class Coupon extends Model
 
     public function isValid(): bool
     {
-        if (!$this->is_active) return false;
-        if ($this->starts_at && $this->starts_at->isFuture()) return false;
-        if ($this->expires_at && $this->expires_at->isPast()) return false;
-        if ($this->max_uses !== null && $this->times_used >= $this->max_uses) return false;
+        if (! $this->is_active) {
+            return false;
+        }
+        if ($this->starts_at && $this->starts_at->isFuture()) {
+            return false;
+        }
+        if ($this->expires_at && $this->expires_at->isPast()) {
+            return false;
+        }
+        if ($this->max_uses !== null && $this->times_used >= $this->max_uses) {
+            return false;
+        }
+
         return true;
     }
 

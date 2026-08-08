@@ -4,14 +4,22 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContactMessageResource\Pages;
 use App\Models\ContactMessage;
+use App\Models\Order;
+use Carbon\Carbon;
 use Filament\Actions;
+use Filament\Forms\Components\DatePicker;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Component;
-use Filament\Tables\Table;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\HtmlString;
 
 class ContactMessageResource extends Resource
 {
@@ -34,6 +42,7 @@ class ContactMessageResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         $count = ContactMessage::where('status', 'new')->count();
+
         return $count > 0 ? (string) $count : null;
     }
 
@@ -45,7 +54,7 @@ class ContactMessageResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->heading("Messages")
+            ->heading('Messages')
             ->columns([
                 TextColumn::make('name')
                     ->searchable()
@@ -79,27 +88,32 @@ class ContactMessageResource extends Resource
                         'read' => 'Read',
                         'replied' => 'Replied',
                     ]),
-                \Filament\Tables\Filters\Filter::make('date_range')
+                Filter::make('date_range')
                     ->form([
-                        \Filament\Forms\Components\DatePicker::make('from')->label('From'),
-                        \Filament\Forms\Components\DatePicker::make('until')->label('Until'),
+                        DatePicker::make('from')->label('From'),
+                        DatePicker::make('until')->label('Until'),
                     ])
-                    ->query(function (\Illuminate\Database\Eloquent\Builder $query, array $data): \Illuminate\Database\Eloquent\Builder {
+                    ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when($data['from'] ?? null, fn ($q, $date) => $q->whereDate('created_at', '>=', $date))
                             ->when($data['until'] ?? null, fn ($q, $date) => $q->whereDate('created_at', '<=', $date));
                     })
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
-                        if ($data['from'] ?? null) $indicators[] = 'From ' . \Carbon\Carbon::parse($data['from'])->format('M j, Y');
-                        if ($data['until'] ?? null) $indicators[] = 'Until ' . \Carbon\Carbon::parse($data['until'])->format('M j, Y');
+                        if ($data['from'] ?? null) {
+                            $indicators[] = 'From '.Carbon::parse($data['from'])->format('M j, Y');
+                        }
+                        if ($data['until'] ?? null) {
+                            $indicators[] = 'Until '.Carbon::parse($data['until'])->format('M j, Y');
+                        }
+
                         return $indicators;
                     }),
-                \Filament\Tables\Filters\TernaryFilter::make('has_orders')
+                TernaryFilter::make('has_orders')
                     ->label('Has Orders')
                     ->queries(
-                        true: fn ($query) => $query->whereIn('email', \App\Models\Order::select('customer_email')),
-                        false: fn ($query) => $query->whereNotIn('email', \App\Models\Order::select('customer_email')),
+                        true: fn ($query) => $query->whereIn('email', Order::select('customer_email')),
+                        false: fn ($query) => $query->whereNotIn('email', Order::select('customer_email')),
                     ),
             ])
             ->actions([
@@ -111,7 +125,7 @@ class ContactMessageResource extends Resource
                     ->slideOver()
                     ->modalContent(fn (ContactMessage $record) => view('filament.pages.contact-message-detail', [
                         'message' => $record,
-                        'orders' => \App\Models\Order::where('customer_email', $record->email)
+                        'orders' => Order::where('customer_email', $record->email)
                             ->orderByDesc('created_at')
                             ->limit(10)
                             ->get(),
@@ -126,7 +140,7 @@ class ContactMessageResource extends Resource
                             ->label('Reply via Email')
                             ->icon('heroicon-o-paper-airplane')
                             ->color('primary')
-                            ->url(fn () => 'mailto:' . $record->email . '?subject=Re: ' . urlencode($record->subject))
+                            ->url(fn () => 'mailto:'.$record->email.'?subject=Re: '.urlencode($record->subject))
                             ->openUrlInNewTab()
                             ->after(function () use ($record) {
                                 if ($record->status !== 'replied') {
@@ -165,18 +179,18 @@ class ContactMessageResource extends Resource
     public static function infolist(Schema $schema): Schema
     {
         return $schema->columns(5)->components([
-            \Filament\Schemas\Components\Grid::make(1)->schema([
-                \Filament\Infolists\Components\TextEntry::make('name')
+            Grid::make(1)->schema([
+                TextEntry::make('name')
                     ->size('lg')
                     ->weight('bold'),
-                \Filament\Infolists\Components\TextEntry::make('email')
+                TextEntry::make('email')
                     ->icon('heroicon-o-envelope')
                     ->copyable(),
-                \Filament\Infolists\Components\TextEntry::make('phone')
+                TextEntry::make('phone')
                     ->icon('heroicon-o-phone')
                     ->copyable()
                     ->default('—'),
-                \Filament\Infolists\Components\TextEntry::make('status')
+                TextEntry::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'new' => 'warning',
@@ -184,10 +198,10 @@ class ContactMessageResource extends Resource
                         'replied' => 'success',
                         default => 'gray',
                     }),
-                \Filament\Infolists\Components\TextEntry::make('created_at')
+                TextEntry::make('created_at')
                     ->label('Received')
                     ->since(),
-                \Filament\Infolists\Components\TextEntry::make('previous_messages')
+                TextEntry::make('previous_messages')
                     ->label('Contact History')
                     ->state(function (ContactMessage $record): string {
                         $count = ContactMessage::where('email', $record->email)
@@ -198,34 +212,34 @@ class ContactMessageResource extends Resource
                             return 'First message';
                         }
 
-                        return ($count + 1) . ' total messages';
+                        return ($count + 1).' total messages';
                     })
                     ->icon('heroicon-o-chat-bubble-left-right'),
             ])->columnSpan(1),
 
-            \Filament\Schemas\Components\Grid::make(1)->schema([
-                \Filament\Infolists\Components\TextEntry::make('subject')
+            Grid::make(1)->schema([
+                TextEntry::make('subject')
                     ->size('lg')
                     ->weight('bold'),
-                \Filament\Infolists\Components\TextEntry::make('message')
+                TextEntry::make('message')
                     ->prose()
                     ->hiddenLabel(),
             ])->columnSpan(2),
 
-            \Filament\Schemas\Components\Grid::make(1)->schema([
+            Grid::make(1)->schema([
                 Section::make('Order History')
                     ->icon('heroicon-o-shopping-bag')
                     ->schema([
-                        \Filament\Infolists\Components\TextEntry::make('order_history')
+                        TextEntry::make('order_history')
                             ->hiddenLabel()
-                            ->state(function (ContactMessage $record): \Illuminate\Support\HtmlString {
-                                $orders = \App\Models\Order::where('customer_email', $record->email)
+                            ->state(function (ContactMessage $record): HtmlString {
+                                $orders = Order::where('customer_email', $record->email)
                                     ->orderByDesc('created_at')
                                     ->limit(10)
                                     ->get();
 
                                 if ($orders->isEmpty()) {
-                                    return new \Illuminate\Support\HtmlString(
+                                    return new HtmlString(
                                         '<span style="color:#a08060;font-size:0.85rem;font-style:italic;">No previous orders</span>'
                                     );
                                 }
@@ -254,9 +268,9 @@ class ContactMessageResource extends Resource
                                 })->join('');
 
                                 $count = $orders->count();
-                                $totalSpent = '$' . number_format($orders->sum('total'), 2);
+                                $totalSpent = '$'.number_format($orders->sum('total'), 2);
 
-                                return new \Illuminate\Support\HtmlString(
+                                return new HtmlString(
                                     "<div style=\"font-size:0.75rem;color:#a08060;margin-bottom:0.5rem;\">{$count} orders · {$totalSpent} total</div>{$html}"
                                 );
                             })

@@ -29,6 +29,6 @@ class ReviewController extends Controller
             report($e);
         }
 
-        return redirect(url()->previous() . '#review-form')->with('review_submitted', true);
+        return redirect(url()->previous().'#review-form')->with('review_submitted', true);
     }
 }

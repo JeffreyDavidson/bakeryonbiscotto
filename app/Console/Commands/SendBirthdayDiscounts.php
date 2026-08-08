@@ -13,12 +13,14 @@ use Illuminate\Support\Str;
 class SendBirthdayDiscounts extends Command
 {
     protected $signature = 'customers:send-birthday-discounts';
+
     protected $description = 'Send birthday discount coupons to customers whose birthday is today';
 
     public function handle(): int
     {
         if (Setting::get('birthday_program_enabled', '0') !== '1') {
             $this->info('Birthday program is disabled.');
+
             return self::SUCCESS;
         }
 
@@ -27,7 +29,7 @@ class SendBirthdayDiscounts extends Command
         $customers = CustomerProfile::birthdayToday()
             ->where(function ($q) {
                 $q->whereNull('birthday_reminder_sent_at')
-                  ->orWhere('birthday_reminder_sent_at', '<', now()->startOfYear());
+                    ->orWhere('birthday_reminder_sent_at', '<', now()->startOfYear());
             })
             ->get();
 
@@ -35,7 +37,7 @@ class SendBirthdayDiscounts extends Command
 
         foreach ($customers as $customer) {
             try {
-                $code = 'BDAY-' . strtoupper(Str::random(6));
+                $code = 'BDAY-'.strtoupper(Str::random(6));
 
                 $coupon = Coupon::create([
                     'code' => $code,
@@ -63,6 +65,7 @@ class SendBirthdayDiscounts extends Command
         }
 
         $this->info("Done. Sent {$sent} birthday discount(s).");
+
         return self::SUCCESS;
     }
 }

@@ -5,14 +5,17 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ReviewResource\Pages;
 use App\Models\Review;
 use BackedEnum;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
 use Filament\Actions\Action;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Schemas\Components\Component;
+use Illuminate\Support\HtmlString;
 
 class ReviewResource extends Resource
 {
@@ -43,35 +46,35 @@ class ReviewResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->columns(1)->components([
-            \Filament\Schemas\Components\Section::make('Review Details')
+            Section::make('Review Details')
                 ->icon('heroicon-o-star')
                 ->description('Customer feedback and moderation')
                 ->columns(2)
                 ->columnSpanFull()
                 ->components([
-                    \Filament\Forms\Components\TextInput::make('name')
+                    TextInput::make('name')
                         ->required()
                         ->maxLength(100)
                         ->prefixIcon('heroicon-o-user')
                         ->placeholder('Customer name'),
-                    \Filament\Forms\Components\TextInput::make('email')
+                    TextInput::make('email')
                         ->email()
                         ->maxLength(255)
                         ->prefixIcon('heroicon-o-envelope')
                         ->placeholder('customer@email.com'),
-                    \Filament\Forms\Components\Select::make('rating')
+                    Select::make('rating')
                         ->options([5 => '⭐⭐⭐⭐⭐ 5 Stars', 4 => '⭐⭐⭐⭐ 4 Stars', 3 => '⭐⭐⭐ 3 Stars', 2 => '⭐⭐ 2 Stars', 1 => '⭐ 1 Star'])
                         ->required(),
-                    \Filament\Forms\Components\Select::make('status')
+                    Select::make('status')
                         ->options(['pending' => '⏳ Pending', 'approved' => '✅ Approved', 'rejected' => '❌ Rejected'])
                         ->required(),
-                    \Filament\Forms\Components\Textarea::make('body')
+                    Textarea::make('body')
                         ->required()
                         ->maxLength(1000)
                         ->rows(4)
                         ->placeholder('What the customer said...')
                         ->columnSpanFull(),
-                    \Filament\Forms\Components\TextInput::make('favorite_bread')
+                    TextInput::make('favorite_bread')
                         ->maxLength(100)
                         ->prefixIcon('heroicon-o-heart')
                         ->placeholder('Their favorite product')
@@ -83,7 +86,7 @@ class ReviewResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->heading("Reviews")
+            ->heading('Reviews')
             ->columns([
                 Tables\Columns\IconColumn::make('is_featured')
                     ->label('')
@@ -94,8 +97,8 @@ class ReviewResource extends Resource
                     ->width('1rem'),
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('rating')
-                    ->formatStateUsing(fn ($state) => new \Illuminate\Support\HtmlString(
-                        str_repeat('<span style="color:#d97706;font-size:1rem;">★</span>', $state) .
+                    ->formatStateUsing(fn ($state) => new HtmlString(
+                        str_repeat('<span style="color:#d97706;font-size:1rem;">★</span>', $state).
                         str_repeat('<span style="color:#e8d0b0;font-size:1rem;">★</span>', 5 - $state)
                     ))
                     ->sortable(),
@@ -132,7 +135,7 @@ class ReviewResource extends Resource
                     ->icon('heroicon-o-star')
                     ->color('warning')
                     ->label('Highlight')
-                    ->visible(fn (Review $record) => $record->status === 'approved' && !$record->is_featured)
+                    ->visible(fn (Review $record) => $record->status === 'approved' && ! $record->is_featured)
                     ->action(function (Review $record) {
                         Review::where('is_featured', true)->update(['is_featured' => false]);
                         $record->update(['is_featured' => true]);

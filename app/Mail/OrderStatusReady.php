@@ -20,7 +20,7 @@ class OrderStatusReady extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Your Order is Ready! — ' . $this->order->order_number,
+            subject: 'Your Order is Ready! — '.$this->order->order_number,
         );
     }
 

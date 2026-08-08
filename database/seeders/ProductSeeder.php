@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
@@ -35,7 +36,7 @@ class ProductSeeder extends Seeder
             }
             Product::create(array_merge([
                 'category_id' => $sourdoughLoaves->id,
-                'slug' => \Illuminate\Support\Str::slug($loaf['name']),
+                'slug' => Str::slug($loaf['name']),
                 'is_available' => true,
                 'is_featured' => false,
                 'image' => null,
@@ -52,7 +53,7 @@ class ProductSeeder extends Seeder
         foreach ($sourdoughBreads as $bread) {
             Product::create(array_merge([
                 'category_id' => $otherSourdough->id,
-                'slug' => \Illuminate\Support\Str::slug($bread['name']),
+                'slug' => Str::slug($bread['name']),
                 'is_available' => true,
                 'is_featured' => false,
                 'image' => null,
@@ -70,7 +71,7 @@ class ProductSeeder extends Seeder
         foreach ($others as $other) {
             Product::create(array_merge([
                 'category_id' => $otherBreads->id,
-                'slug' => \Illuminate\Support\Str::slug($other['name']),
+                'slug' => Str::slug($other['name']),
                 'is_available' => true,
                 'is_featured' => false,
                 'image' => null,

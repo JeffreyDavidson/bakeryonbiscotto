@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 class ListPayPalTemplates extends Command
 {
     protected $signature = 'paypal:templates';
+
     protected $description = 'List all PayPal invoice templates';
 
     public function handle()
@@ -16,7 +17,7 @@ class ListPayPalTemplates extends Command
         $clientId = config('services.paypal.client_id');
         $clientSecret = config('services.paypal.client_secret');
 
-        $this->info("Mode: " . config('services.paypal.mode'));
+        $this->info('Mode: '.config('services.paypal.mode'));
         $this->info("Base URL: {$baseUrl}");
 
         // Get access token
@@ -26,20 +27,22 @@ class ListPayPalTemplates extends Command
                 'grant_type' => 'client_credentials',
             ]);
 
-        if (!$tokenResponse->successful()) {
-            $this->error('Failed to get access token: ' . $tokenResponse->body());
+        if (! $tokenResponse->successful()) {
+            $this->error('Failed to get access token: '.$tokenResponse->body());
+
             return 1;
         }
 
         $token = $tokenResponse->json('access_token');
-        $this->info("✅ Authenticated");
+        $this->info('✅ Authenticated');
 
         // List templates
         $response = Http::withToken($token)
             ->get("{$baseUrl}/v2/invoicing/templates");
 
-        if (!$response->successful()) {
-            $this->error('Failed to list templates: ' . $response->body());
+        if (! $response->successful()) {
+            $this->error('Failed to list templates: '.$response->body());
+
             return 1;
         }
 
@@ -48,20 +51,21 @@ class ListPayPalTemplates extends Command
 
         if (empty($templates)) {
             $this->warn('No custom templates found.');
+
             return 0;
         }
 
-        $this->info("\nFound " . count($templates) . " template(s):\n");
+        $this->info("\nFound ".count($templates)." template(s):\n");
 
         foreach ($templates as $t) {
-            $this->line("ID: " . ($t['id'] ?? 'N/A'));
-            $this->line("Name: " . ($t['name'] ?? 'Unnamed'));
-            $this->line("Default: " . (($t['standard_template'] ?? false) ? 'Yes' : 'No'));
-            if (!empty($t['detail']['note'])) {
-                $this->line("Note: " . $t['detail']['note']);
+            $this->line('ID: '.($t['id'] ?? 'N/A'));
+            $this->line('Name: '.($t['name'] ?? 'Unnamed'));
+            $this->line('Default: '.(($t['standard_template'] ?? false) ? 'Yes' : 'No'));
+            if (! empty($t['detail']['note'])) {
+                $this->line('Note: '.$t['detail']['note']);
             }
-            if (!empty($t['detail']['terms_and_conditions'])) {
-                $this->line("Terms: " . $t['detail']['terms_and_conditions']);
+            if (! empty($t['detail']['terms_and_conditions'])) {
+                $this->line('Terms: '.$t['detail']['terms_and_conditions']);
             }
             $this->line(str_repeat('-', 50));
         }

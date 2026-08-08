@@ -7,7 +7,6 @@ use App\Models\Recipe;
 use BackedEnum;
 use Filament\Pages\Page;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 use Livewire\Attributes\Url;
 
 class WeeklyPrepPlanner extends Page

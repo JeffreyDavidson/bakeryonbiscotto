@@ -20,7 +20,7 @@ class OrderStatusBaking extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'We\'re Baking Your Order! 🍞 — ' . $this->order->order_number,
+            subject: 'We\'re Baking Your Order! 🍞 — '.$this->order->order_number,
         );
     }
 

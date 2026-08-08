@@ -20,6 +20,7 @@ class OrderSeeder extends Seeder
         $products = Product::all();
         if ($products->isEmpty()) {
             $this->command->warn('No products found. Run ProductSeeder first.');
+
             return;
         }
 
@@ -152,7 +153,7 @@ class OrderSeeder extends Seeder
             $total = max(0, $subtotal - $discountAmount + $deliveryFee);
 
             $order = Order::create([
-                'order_number' => 'BOB-' . strtoupper(Str::random(8)),
+                'order_number' => 'BOB-'.strtoupper(Str::random(8)),
                 'customer_name' => $customer['name'],
                 'customer_email' => $customer['email'],
                 'customer_phone' => $customer['phone'],

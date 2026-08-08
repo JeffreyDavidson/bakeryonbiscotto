@@ -20,7 +20,7 @@ class OrderStatusDelivered extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Your Order Has Been Delivered! — ' . $this->order->order_number,
+            subject: 'Your Order Has Been Delivered! — '.$this->order->order_number,
         );
     }
 

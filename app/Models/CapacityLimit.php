@@ -49,7 +49,7 @@ class CapacityLimit extends Model
     {
         $limit = static::forDate($date);
 
-        if (!$limit) {
+        if (! $limit) {
             return true; // No limit set = open
         }
 
@@ -71,7 +71,7 @@ class CapacityLimit extends Model
     {
         $limit = static::forDate($date);
 
-        if (!$limit) {
+        if (! $limit) {
             return PHP_INT_MAX; // No limit
         }
 
@@ -103,7 +103,7 @@ class CapacityLimit extends Model
     {
         $limit = static::forDate($date);
 
-        if (!$limit || $limit->max_orders <= 0) {
+        if (! $limit || $limit->max_orders <= 0) {
             return null;
         }
 
